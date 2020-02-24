@@ -7,7 +7,7 @@
     <ProjectGuid>{E60408EF-487A-413B-A2F9-76CEEFFC560A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BimaruGame</RootNamespace>
+    <RootNamespace>Bimaru</RootNamespace>
     <AssemblyName>BimaruGame</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -42,7 +42,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Game.cs" />
+    <Compile Include="General\FieldBoundaries.cs" />
+    <Compile Include="General\FieldValueChangedEventArgs.cs" />
+    <Compile Include="General\IFieldBoundary.cs" />
+    <Compile Include="Interfaces\IGame.cs" />
+    <Compile Include="RollbackGrid.cs" />
+    <Compile Include="Interfaces\IRollbackGrid.cs" />
+    <Compile Include="FieldValueTypes.cs" />
+    <Compile Include="Tally.cs" />
+    <Compile Include="General\Direction.cs" />
+    <Compile Include="FieldValues.cs" />
+    <Compile Include="Grid.cs" />
+    <Compile Include="General\GeneralExtensions.cs" />
+    <Compile Include="General\GridBase.cs" />
+    <Compile Include="General\GridPoint.cs" />
+    <Compile Include="Interfaces\IGrid.cs" />
+    <Compile Include="Interfaces\ITally.cs" />
+    <Compile Include="General\IGridPoint.cs" />
+    <Compile Include="Interfaces\IShipSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ShipSettings.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
