@@ -1,7 +1,7 @@
+using BimaruGame;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Bimaru;
-using Bimaru.General;
 using System.Collections.Generic;
+using Utility;
 
 namespace BimaruTest
 {

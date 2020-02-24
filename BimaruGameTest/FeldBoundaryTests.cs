@@ -1,6 +1,5 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Bimaru;
-using Bimaru.General;
+using Utility;
 
 namespace BimaruTest
 {

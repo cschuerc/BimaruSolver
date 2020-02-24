@@ -1,4 +1,4 @@
-﻿namespace Bimaru.Interfaces
+﻿namespace BimaruInterfaces
 {
     /// <summary>
     /// Grid with savepoints and rollback mechanism

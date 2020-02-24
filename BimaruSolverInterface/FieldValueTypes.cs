@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using Utility;
 
-namespace Bimaru
+namespace BimaruInterfaces
 {
     /// <summary>
     /// Different types of field values

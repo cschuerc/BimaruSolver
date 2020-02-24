@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Bimaru.General
+namespace Utility
 {
     /// <summary>
     /// Boundaries of two neighbouring (also diagonally) fields.

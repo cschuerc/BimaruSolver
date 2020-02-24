@@ -1,8 +1,9 @@
-﻿using Bimaru.General;
+﻿using BimaruInterfaces;
 using System;
 using System.Collections.Generic;
+using Utility;
 
-namespace Bimaru
+namespace BimaruGame
 {
     /// <summary>
     /// Bimaru grid implementation

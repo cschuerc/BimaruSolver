@@ -1,7 +1,7 @@
-﻿using Bimaru.General;
-using System;
+﻿using System;
+using Utility;
 
-namespace Bimaru
+namespace BimaruGame
 {
     /// <summary>
     /// Implementation of a two-dimensional grid of fixed size

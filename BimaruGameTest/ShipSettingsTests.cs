@@ -1,5 +1,5 @@
+using BimaruGame;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Bimaru;
 using System;
 
 namespace BimaruTest

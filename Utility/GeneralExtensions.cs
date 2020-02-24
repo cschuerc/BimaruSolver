@@ -1,4 +1,4 @@
-﻿namespace Bimaru
+﻿namespace Utility
 {
     /// <summary>
     /// General extension class

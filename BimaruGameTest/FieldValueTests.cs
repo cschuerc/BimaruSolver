@@ -1,6 +1,7 @@
+using BimaruInterfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Bimaru;
 using System;
+using Utility;
 
 namespace BimaruTest
 {

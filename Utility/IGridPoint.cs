@@ -1,6 +1,4 @@
-﻿using Bimaru.General;
-
-namespace Bimaru
+﻿namespace Utility
 {
     /// <summary>
     /// A point on a two-dimensional integer grid

@@ -1,4 +1,4 @@
-﻿namespace Bimaru.Interfaces
+﻿namespace BimaruInterfaces
 {
     /// <summary>
     /// Bimaru game

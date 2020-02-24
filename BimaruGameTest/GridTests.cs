@@ -1,6 +1,8 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Bimaru;
 using System.Linq;
+using Utility;
+using BimaruInterfaces;
+using BimaruGame;
 
 namespace BimaruTest
 {

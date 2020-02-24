@@ -1,9 +1,9 @@
-﻿using Bimaru.General;
-using Bimaru.Interfaces;
+﻿using BimaruInterfaces;
 using System;
 using System.Collections.Generic;
+using Utility;
 
-namespace Bimaru
+namespace BimaruGame
 {
     /// <summary>
     /// Grid with savepoint and rollback mechanism.

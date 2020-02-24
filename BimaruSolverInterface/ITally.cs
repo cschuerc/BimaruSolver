@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Bimaru
+namespace BimaruInterfaces
 {
     /// <summary>
     /// Tally (total number of ship fields per row or column) of a Bimaru game

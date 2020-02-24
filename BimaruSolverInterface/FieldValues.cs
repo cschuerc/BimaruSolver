@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using Utility;
 
-namespace Bimaru
+namespace BimaruInterfaces
 {
     /// <summary>
     /// Enumerates all possible field values (empty, water, ship, ...) of a Bimaru game.

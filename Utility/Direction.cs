@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Bimaru
+namespace Utility
 {
     /// <summary>
     /// Horizontal, vertical and diagonal directions.

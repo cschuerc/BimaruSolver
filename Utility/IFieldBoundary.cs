@@ -1,4 +1,4 @@
-﻿namespace Bimaru.General
+﻿namespace Utility
 {
     /// <summary>
     /// Boundaries of two neighbouring fields.

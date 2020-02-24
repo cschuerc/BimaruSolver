@@ -1,9 +1,11 @@
-﻿using System;
+﻿using BimaruInterfaces;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Utility;
 
-namespace Bimaru
+namespace BimaruGame
 {
     /// <summary>
     /// Implementation of ITally

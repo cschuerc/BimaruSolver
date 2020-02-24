@@ -1,4 +1,4 @@
-﻿namespace Bimaru
+﻿namespace BimaruInterfaces
 {
     /// <summary>
     /// Settings of the number of requested ships per length

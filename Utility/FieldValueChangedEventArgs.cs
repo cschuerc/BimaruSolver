@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Bimaru.General
+namespace Utility
 {
     /// <summary>
     /// Arguments for a grid field value changed event

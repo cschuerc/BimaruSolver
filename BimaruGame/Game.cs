@@ -1,9 +1,9 @@
-﻿using Bimaru.Interfaces;
+﻿using BimaruInterfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Bimaru
+namespace BimaruGame
 {
     /// <summary>
     /// Implementatio of the Bimaru game
