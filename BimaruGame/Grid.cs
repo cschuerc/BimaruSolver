@@ -32,7 +32,11 @@ namespace BimaruGame
             _incompatibleBoundaries = new HashSet<IFieldBoundary>();
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// As the base class but allows off-grid points where WATER is returned.
+        /// </summary>
+        /// <param name="point"> Point whose grid field value is returned </param>
+        /// <returns> Value of the desired grid field </returns>
         public override FieldValues GetFieldValue(IGridPoint point)
         {
             if (!IsPointInGrid(point))
@@ -40,7 +44,23 @@ namespace BimaruGame
                 return FieldValues.WATER;
             }
 
-            return GetFieldValueNoCheck(point);
+            return base.GetFieldValue(point);
+        }
+
+        /// <summary>
+        /// As the base class but allows off-grid points if they will be set to WATER.
+        /// </summary>
+        /// <param name="point"> Point whose grid field value is set </param>
+        /// <param name="value"> Value which the field is set to </param>
+        public override void SetFieldValue(IGridPoint point, FieldValues value)
+        {
+            if (!IsPointInGrid(point) && value == FieldValues.WATER)
+            {
+                // No contradiction as the world around the grid is water.
+                return;
+            }
+
+            base.SetFieldValue(point, value);
         }
 
         /// <inheritdoc/>

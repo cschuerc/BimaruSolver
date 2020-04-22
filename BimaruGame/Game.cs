@@ -115,10 +115,10 @@ namespace BimaruGame
         }
 
         private bool IsRowTallySatisfied
-            => RowTally.SequenceEqual<int>(Grid.GetNumShipFieldsRow);
+            => RowTally.SequenceEqual(Grid.GetNumShipFieldsRow);
 
         private bool IsColumnTallySatisfied
-            => ColumnTally.SequenceEqual<int>(Grid.GetNumShipFieldsColumn);
+            => ColumnTally.SequenceEqual(Grid.GetNumShipFieldsColumn);
 
         private bool AreShipSettingsSatisfied
         {
@@ -156,13 +156,36 @@ namespace BimaruGame
             }
         }
 
+        private bool IsRowTallySatisfiable(int rowIndex)
+        {
+            return RowTally[rowIndex] >= Grid.GetNumShipFieldsRow[rowIndex] &&
+                MissingShipFieldsRow(rowIndex) <= Grid.GetNumEmptyFieldsRow[rowIndex];
+        }
+
+        private bool IsColumnTallySatisfiable(int columnIndex)
+        {
+            return ColumnTally[columnIndex] >= Grid.GetNumShipFieldsColumn[columnIndex] &&
+                MissingShipFieldsColumn(columnIndex) <= Grid.GetNumEmptyFieldsColumn[columnIndex];
+        }
+
         /// <inheritdoc/>
-        public bool IsSolved
+        public bool IsValid
         {
             get
             {
                 return !IsUnsolvable &&
                     Grid.IsValid &&
+                    new int[Grid.NumRows].All(rowIndex => IsRowTallySatisfiable(rowIndex)) &&
+                    new int[Grid.NumColumns].All(columnIndex => IsColumnTallySatisfiable(columnIndex));
+            }
+        }
+
+        /// <inheritdoc/>
+        public bool IsSolved
+        {
+            get
+            {
+                return IsValid &&
                     Grid.IsFullyDetermined && 
                     IsRowTallySatisfied &&
                     IsColumnTallySatisfied &&

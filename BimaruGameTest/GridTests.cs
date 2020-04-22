@@ -36,6 +36,25 @@ namespace BimaruTest
         }
 
         [TestMethod]
+        public void TestSetFieldValue()
+        {
+            int numRows = 4;
+            int numColumns = 3;
+            var grid = new Grid(numRows, numColumns);
+
+            var pointOutOfGrid0 = new GridPoint(0, -1);
+
+            var pointInGrid0 = new GridPoint(0, 0);
+
+            grid.SetFieldValue(pointOutOfGrid0, FieldValues.WATER);
+            Assert.ThrowsException<InvalidFieldChange>(() => grid.SetFieldValue(pointOutOfGrid0, FieldValues.UNDETERMINED));
+            Assert.ThrowsException<InvalidFieldChange>(() => grid.SetFieldValue(pointOutOfGrid0, FieldValues.SHIP_SINGLE));
+
+            grid.SetFieldValue(pointInGrid0, FieldValues.UNDETERMINED);
+            grid.SetFieldValue(pointInGrid0, FieldValues.SHIP_CONT_LEFT);
+        }
+
+        [TestMethod]
         public void TestFieldCount()
         {
             int numRows = 4;

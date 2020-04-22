@@ -102,5 +102,17 @@ namespace BimaruInterfaces
         {
             return _startFieldValue[value.GetOpposite()];
         }
+
+        /// <summary>
+        /// Whether a new field value is compatible with the original value.
+        /// </summary>
+        /// <param name="oldValue"> Original value </param>
+        /// <param name="newValue"> New value </param>
+        /// <returns></returns>
+        public static bool IsCompatibleChange(this FieldValues oldValue, FieldValues newValue)
+        {
+            return oldValue == FieldValues.UNDETERMINED ||
+                (oldValue == FieldValues.SHIP_UNDETERMINED && newValue.IsShip());
+        }
     }
 }

@@ -59,8 +59,10 @@ namespace BimaruGame
             IGrid poppedGrid = _gridStack.Pop();
             poppedGrid.FieldValueChanged -= GridFieldValueChanged;
 
-            // By design, there has to be a grid after a Pop operation
-            ActiveGrid.FieldValueChanged += GridFieldValueChanged;
+            if (_gridStack.Count > 0)
+            {
+                ActiveGrid.FieldValueChanged += GridFieldValueChanged;
+            }
         }
 
         /// <inheritdoc/>
@@ -79,29 +81,35 @@ namespace BimaruGame
             }
 
             Pop();
+
+            OnRollbackHappened();
         }
 
         /// <inheritdoc/>
         public void RollbackToInitial()
         {
-            int numGridsToBackTrack = _gridStack.Count - 1;
+            bool hasRollbackHappened = _gridStack.Count > 1;
 
-            while (numGridsToBackTrack > 0)
+            while (_gridStack.Count > 1)
             {
                 Pop();
+            }
 
-                numGridsToBackTrack--;
+            if (hasRollbackHappened)
+            {
+                OnRollbackHappened();
             }
         }
 
         /// <inheritdoc/>
-        public void RemoveIntermediate()
+        public void RemovePrevious()
         {
             if (_gridStack.Count > 1)
             {
                 IGrid activeGrid = ActiveGrid;
 
-                RollbackToInitial();
+                Pop();
+                Pop();
 
                 Push(activeGrid);
             }
@@ -112,6 +120,17 @@ namespace BimaruGame
         /// </summary>
         protected IGrid ActiveGrid
             => _gridStack.Peek();
+
+        /// <inheritdoc/>
+        public event Action RollbackHappened;
+
+        /// <summary>
+        /// RollbackHappened event-raising method
+        /// </summary>
+        protected virtual void OnRollbackHappened()
+        {
+            RollbackHappened?.Invoke();
+        }
 
         /// <inheritdoc/>
         public event EventHandler<FieldValueChangedEventArgs<FieldValues>> FieldValueChanged;

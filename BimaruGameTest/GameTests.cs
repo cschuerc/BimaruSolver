@@ -136,6 +136,53 @@ namespace BimaruTest
         }
 
         [TestMethod]
+        public void TestIsValid()
+        {
+            int numRows = 4;
+            int numColumns = 3;
+
+            Game game = SetupGame(numRows, numColumns);
+
+            Assert.IsTrue(game.IsValid);
+
+            game.Settings[1] = 1;
+
+            Assert.IsFalse(game.IsValid);
+
+            game.RowTally[0] = 1;
+
+            Assert.IsFalse(game.IsValid);
+
+            game.ColumnTally[2] = 1;
+
+            Assert.IsTrue(game.IsValid);
+
+            game.Grid.SetFieldValue(new GridPoint(0, 0), FieldValues.SHIP_SINGLE);
+
+            Assert.IsFalse(game.IsValid);
+
+            game.Grid.SetFieldValue(new GridPoint(0, 0), FieldValues.WATER);
+
+            Assert.IsTrue(game.IsValid);
+
+            game.Grid.SetFieldValue(new GridPoint(0, 1), FieldValues.WATER);
+
+            Assert.IsTrue(game.IsValid);
+
+            game.Grid.SetFieldValue(new GridPoint(0, 2), FieldValues.WATER);
+
+            Assert.IsFalse(game.IsValid);
+
+            game.Grid.SetFieldValue(new GridPoint(0, 2), FieldValues.SHIP_SINGLE);
+
+            Assert.IsTrue(game.IsValid);
+
+            game.Grid.SetFieldValue(new GridPoint(0, 2), FieldValues.SHIP_CONT_DOWN);
+
+            Assert.IsFalse(game.IsValid);
+        }
+
+        [TestMethod]
         public void TestIsSolved()
         {
             int numRows = 4;

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BimaruInterfaces;
+using System;
 using Utility;
 
 namespace BimaruGame
@@ -170,11 +171,11 @@ namespace BimaruGame
         /// </summary>
         /// <param name="point"> Point whose field value is set </param>
         /// <param name="value"> Value which the field value is set to </param>
-        public void SetFieldValue(IGridPoint point, T value)
+        public virtual void SetFieldValue(IGridPoint point, T value)
         {
             if (!IsPointInGrid(point))
             {
-                throw new ArgumentOutOfRangeException();
+                throw new InvalidFieldChange();
             }
 
             T origValue = GetFieldValueNoCheck(point);

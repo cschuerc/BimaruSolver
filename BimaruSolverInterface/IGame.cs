@@ -54,10 +54,20 @@
         int MissingShipFieldsColumn(int index);
 
         /// <summary>
-        /// True, if the current Bimaru given is unsolvable.
+        /// True, if the current Bimaru game is unsolvable.
+        /// This means that no solution exists independently of the grid field values.
         /// False does not mean the game is solvable.
         /// </summary>
         bool IsUnsolvable
+        {
+            get;
+        }
+
+        /// <summary>
+        /// True, if the current Bimaru given is valid.
+        /// This means that it is not unsolvable and that all basic checks allow a solution to exist.
+        /// </summary>
+        bool IsValid
         {
             get;
         }

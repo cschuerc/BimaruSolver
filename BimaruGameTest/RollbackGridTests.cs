@@ -67,15 +67,23 @@ namespace BimaruTest
 
             var rollbackGrid = new RollbackGrid(initialGrid);
 
+            int numRollbackEvents = 0;
+            rollbackGrid.RollbackHappened += delegate ()
+            {
+                numRollbackEvents++;
+            };
+
             rollbackGrid.SetSavePoint();
 
             rollbackGrid.SetFieldValue(p1, FieldValues.UNDETERMINED);
 
             Assert.AreEqual(FieldValues.UNDETERMINED, rollbackGrid.GetFieldValue(p1));
+            Assert.AreEqual(0, numRollbackEvents);
 
             rollbackGrid.Rollback();
 
             Assert.AreEqual(FieldValues.WATER, rollbackGrid.GetFieldValue(p1));
+            Assert.AreEqual(1, numRollbackEvents);
 
             AssertAreEqualGrids(rollbackGrid, initialGrid);
         }
@@ -95,6 +103,12 @@ namespace BimaruTest
 
             var rollbackGrid = new RollbackGrid(initialGrid);
 
+            int numRollbackEvents = 0;
+            rollbackGrid.RollbackHappened += delegate ()
+            {
+                numRollbackEvents++;
+            };
+
             rollbackGrid.SetSavePoint();
 
             rollbackGrid.SetFieldValue(p1, FieldValues.UNDETERMINED);
@@ -105,13 +119,17 @@ namespace BimaruTest
 
             Assert.AreEqual(FieldValues.SHIP_CONT_DOWN, rollbackGrid.GetFieldValue(p0));
             Assert.AreEqual(FieldValues.UNDETERMINED, rollbackGrid.GetFieldValue(p1));
+            Assert.AreEqual(0, numRollbackEvents);
 
             rollbackGrid.Rollback();
 
             Assert.AreEqual(FieldValues.SHIP_SINGLE, rollbackGrid.GetFieldValue(p0));
             Assert.AreEqual(FieldValues.UNDETERMINED, rollbackGrid.GetFieldValue(p1));
+            Assert.AreEqual(1, numRollbackEvents);
 
             rollbackGrid.Rollback();
+
+            Assert.AreEqual(2, numRollbackEvents);
 
             AssertAreEqualGrids(rollbackGrid, initialGrid);
         }
@@ -131,8 +149,17 @@ namespace BimaruTest
 
             var rollbackGrid = new RollbackGrid(initialGrid);
 
+            int numRollbackEvents = 0;
+            rollbackGrid.RollbackHappened += delegate ()
+            {
+                numRollbackEvents++;
+            };
+
+            Assert.AreEqual(0, numRollbackEvents);
+
             rollbackGrid.RollbackToInitial();
 
+            Assert.AreEqual(0, numRollbackEvents);
             AssertAreEqualGrids(rollbackGrid, initialGrid);
 
             rollbackGrid.SetSavePoint();
@@ -143,13 +170,16 @@ namespace BimaruTest
 
             rollbackGrid.SetFieldValue(p0, FieldValues.SHIP_CONT_DOWN);
 
+            Assert.AreEqual(0, numRollbackEvents);
+
             rollbackGrid.RollbackToInitial();
 
+            Assert.AreEqual(1, numRollbackEvents);
             AssertAreEqualGrids(rollbackGrid, initialGrid);
         }
 
         [TestMethod]
-        public void TestRemoveIntermediate()
+        public void TestRemovePrevious()
         {
             int numRows = 1;
             int numColumns = 2;
@@ -163,29 +193,31 @@ namespace BimaruTest
 
             var rollbackGrid = new RollbackGrid(initialGrid);
 
-            rollbackGrid.RemoveIntermediate();
+            rollbackGrid.RemovePrevious();
 
             AssertAreEqualGrids(rollbackGrid, initialGrid);
 
             rollbackGrid.SetSavePoint();
-
             rollbackGrid.SetFieldValue(p1, FieldValues.UNDETERMINED);
 
-            rollbackGrid.RemoveIntermediate();
+            rollbackGrid.RemovePrevious();
 
             Assert.AreEqual(FieldValues.UNDETERMINED, rollbackGrid.GetFieldValue(p1));
 
             rollbackGrid.SetSavePoint();
-
             rollbackGrid.SetFieldValue(p0, FieldValues.SHIP_CONT_DOWN);
+            rollbackGrid.SetSavePoint();
+            rollbackGrid.SetFieldValue(p1, FieldValues.SHIP_MIDDLE);
 
-            rollbackGrid.RemoveIntermediate();
+            rollbackGrid.RemovePrevious();
 
             Assert.AreEqual(FieldValues.SHIP_CONT_DOWN, rollbackGrid.GetFieldValue(p0));
+            Assert.AreEqual(FieldValues.SHIP_MIDDLE, rollbackGrid.GetFieldValue(p1));
 
             rollbackGrid.Rollback();
 
-            AssertAreEqualGrids(rollbackGrid, initialGrid);
+            Assert.AreEqual(FieldValues.SHIP_SINGLE, rollbackGrid.GetFieldValue(p0));
+            Assert.AreEqual(FieldValues.UNDETERMINED, rollbackGrid.GetFieldValue(p1));
         }
     }
 }

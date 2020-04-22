@@ -21,8 +21,13 @@
         void RollbackToInitial();
 
         /// <summary>
-        /// Removes all savepoints except the first without altering the current state of the grid.
+        /// Removes the previous savepoint.
         /// </summary>
-        void RemoveIntermediate();
+        void RemovePrevious();
+
+        /// <summary>
+        /// Event raised after every rollback.
+        /// </summary>
+        event System.Action RollbackHappened;
     }
 }
