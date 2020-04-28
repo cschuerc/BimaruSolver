@@ -10,22 +10,30 @@ namespace BimaruGame
     /// </summary>
     public class RollbackGrid: IRollbackGrid
     {
-        private Stack<IGrid> _gridStack;
-
         /// <summary>
         /// Initializes the grid with an initial grid.
         /// </summary>
         /// <param name="initialGrid"> Initial grid </param>
         public RollbackGrid(IGrid initialGrid)
         {
+            _gridStack = new Stack<IGrid>();
+
             if (initialGrid == null)
             {
                 throw new ArgumentNullException();
             }
 
-            _gridStack = new Stack<IGrid>();
             Push((IGrid)initialGrid.Clone());
         }
+
+        #region Stack operations
+        private Stack<IGrid> _gridStack;
+
+        /// <summary>
+        /// Currently active grid
+        /// </summary>
+        protected IGrid ActiveGrid
+            => _gridStack.Peek();
 
         /// <summary>
         /// Pushes the grid onto the grid stack
@@ -35,20 +43,11 @@ namespace BimaruGame
         {
             if (_gridStack.Count > 0)
             {
-                IGrid activeGrid = ActiveGrid;
-                if (activeGrid != null)
-                {
-                    activeGrid.FieldValueChanged -= GridFieldValueChanged;
-                }
+                ActiveGrid.FieldValueChanged -= GridFieldValueChanged;
             }
 
             gridToPush.FieldValueChanged += GridFieldValueChanged;
             _gridStack.Push(gridToPush);
-        }
-
-        private void GridFieldValueChanged(object sender, FieldValueChangedEventArgs<FieldValues> e)
-        {
-            OnFieldValueChanged(e);
         }
 
         /// <summary>
@@ -86,22 +85,6 @@ namespace BimaruGame
         }
 
         /// <inheritdoc/>
-        public void RollbackToInitial()
-        {
-            bool hasRollbackHappened = _gridStack.Count > 1;
-
-            while (_gridStack.Count > 1)
-            {
-                Pop();
-            }
-
-            if (hasRollbackHappened)
-            {
-                OnRollbackHappened();
-            }
-        }
-
-        /// <inheritdoc/>
         public void RemovePrevious()
         {
             if (_gridStack.Count > 1)
@@ -114,13 +97,9 @@ namespace BimaruGame
                 Push(activeGrid);
             }
         }
+        #endregion
 
-        /// <summary>
-        /// Currently active grid
-        /// </summary>
-        protected IGrid ActiveGrid
-            => _gridStack.Peek();
-
+        #region Events
         /// <inheritdoc/>
         public event Action RollbackHappened;
 
@@ -133,30 +112,43 @@ namespace BimaruGame
         }
 
         /// <inheritdoc/>
-        public event EventHandler<FieldValueChangedEventArgs<FieldValues>> FieldValueChanged;
+        public event EventHandler<FieldValueChangedEventArgs<BimaruValue>> FieldValueChanged;
 
-        /// <summary>
-        /// FieldValueChanged event-raising method
-        /// </summary>
-        /// <param name="e"> Event arguments </param>
-        protected virtual void OnFieldValueChanged(FieldValueChangedEventArgs<FieldValues> e)
+        private void GridFieldValueChanged(object sender, FieldValueChangedEventArgs<BimaruValue> e)
         {
+            // Don't use 'sender' as for the outside world the RollbackGrid is the sender
             FieldValueChanged?.Invoke(this, e);
         }
+        #endregion
 
+        #region Relayed methods
         /// <inheritdoc/>
-        public void SetFieldValue(IGridPoint point, FieldValues value)
+        public void SetFieldValue(GridPoint point, BimaruValue value)
             => ActiveGrid.SetFieldValue(point, value);
 
         /// <inheritdoc/>
-        public FieldValues GetFieldValue(IGridPoint point)
+        public BimaruValue GetFieldValue(GridPoint point)
             => ActiveGrid.GetFieldValue(point);
 
         /// <inheritdoc/>
-        public object Clone()
-        {
-            throw new InvalidOperationException();
-        }
+        public void FillUndeterminedFieldsRow(int rowIndex, BimaruValueConstraint constraint)
+            => ActiveGrid.FillUndeterminedFieldsRow(rowIndex, constraint);
+
+        /// <inheritdoc/>
+        public void FillUndeterminedFieldsColumn(int columnIndex, BimaruValueConstraint constraint)
+            => ActiveGrid.FillUndeterminedFieldsColumn(columnIndex, constraint);
+
+        /// <inheritdoc/>
+        public IEnumerable<GridPoint> AllPoints()
+            => ActiveGrid.AllPoints();
+
+        /// <inheritdoc/>
+        public IEnumerable<GridPoint> PointsOfRow(int rowIndex)
+            => ActiveGrid.PointsOfRow(rowIndex);
+
+        /// <inheritdoc/>
+        public IEnumerable<GridPoint> PointsOfColumn(int columnIndex)
+            => ActiveGrid.PointsOfColumn(columnIndex);
 
         /// <inheritdoc/>
         public int NumRows
@@ -175,12 +167,12 @@ namespace BimaruGame
             => ActiveGrid.GetNumShipFieldsColumn;
 
         /// <inheritdoc/>
-        public IReadOnlyList<int> GetNumEmptyFieldsRow
-            => ActiveGrid.GetNumEmptyFieldsRow;
+        public IReadOnlyList<int> GetNumUndeterminedFieldsRow
+            => ActiveGrid.GetNumUndeterminedFieldsRow;
 
         /// <inheritdoc/>
-        public IReadOnlyList<int> GetNumEmptyFieldsColumn
-            => ActiveGrid.GetNumEmptyFieldsColumn;
+        public IReadOnlyList<int> GetNumUndeterminedFieldsColumn
+            => ActiveGrid.GetNumUndeterminedFieldsColumn;
 
         /// <inheritdoc/>
         public IReadOnlyList<int> GetNumShips
@@ -193,5 +185,12 @@ namespace BimaruGame
         /// <inheritdoc/>
         public bool IsFullyDetermined
             => ActiveGrid.IsFullyDetermined;
+        #endregion
+
+        /// <inheritdoc/>
+        public object Clone()
+        {
+            throw new InvalidOperationException();
+        }
     }
 }

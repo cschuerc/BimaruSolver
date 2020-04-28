@@ -1,53 +1,113 @@
-﻿using BimaruInterfaces;
-using System;
+﻿using System;
 using System.Linq;
 using System.Collections.Generic;
 using Utility;
 
-namespace BimaruSolver
+namespace BimaruInterfaces
 {
     /// <summary>
-    /// Generic Bimaru solver
+    /// Standard implementation of ISolver
     /// </summary>
     public class Solver : ISolver
     {
         /// <summary>
         /// Creates a generic Bimaru solver.
         /// </summary>
-        /// <param name="fieldChangedRules"> Solving rules triggered after every field change. </param>
+        /// <param name="fieldChangedRules"> Solving rules triggered for every field change. </param>
         /// <param name="fullGridRules"> General solving rules without guessing. </param>
         /// <param name="trialRule"> Single rule that tries out different possibilities. </param>
-        public Solver(IList<IFieldChangedRule> fieldChangedRules,
-            IList<IFullGridRule> fullGridRules,
+        public Solver(IEnumerable<IFieldChangedRule> fieldChangedRules,
+            IEnumerable<IFullGridRule> fullGridRules,
             ITrialAndErrorRule trialRule)
         {
-            FieldChangedRules = (fieldChangedRules == null) ?
-                new List<IFieldChangedRule>() :
-                fieldChangedRules.ToList();
-
-            FullGridRules = (fullGridRules == null) ?
-                new List<IFullGridRule>() :
-                fullGridRules.ToList();
-
+            FieldChangedRules = fieldChangedRules;
+            FullGridRules = fullGridRules;
             TrialRule = trialRule;
         }
+
+        /// <inheritdoc/>
+        public virtual void Solve(IGame game)
+        {
+            if (!game.IsValid)
+            {
+                throw new InvalidBimaruGame();
+            }
+
+            InitUnhandledFieldChanges(game.Grid);
+
+            void FieldChangedHandler(object sender, FieldValueChangedEventArgs<BimaruValue> e)
+            {
+                CheckIsChangeValid(game, e);
+                UnhandledFieldChanges.Enqueue(e);
+            }
+
+            game.Grid.FieldValueChanged += FieldChangedHandler;
+
+            game.Grid.SetSavePoint();
+
+            try
+            {
+                RunRules(game, true);
+            }
+            catch (InvalidBimaruGame)
+            {
+            }
+            finally
+            {
+                if (!game.IsSolved)
+                {
+                    game.Grid.Rollback();
+                }
+
+                game.Grid.FieldValueChanged -= FieldChangedHandler;
+            }
+        }
+
+        #region Rules
+        private List<IFieldChangedRule> _fieldChangedRules;
 
         /// <summary>
         /// Solving rules triggered after every field change.
         /// </summary>
-        protected IList<IFieldChangedRule> FieldChangedRules
+        protected IEnumerable<IFieldChangedRule> FieldChangedRules
         {
-            get;
-            private set;
+            get
+            {
+                return _fieldChangedRules;
+            }
+
+            private set
+            {
+                _fieldChangedRules = new List<IFieldChangedRule>();
+
+                if (value != null)
+                {
+                    _fieldChangedRules.AddRange(value);
+                }
+            }
         }
+
+        private List<IFullGridRule> _fullGridRules;
 
         /// <summary>
         /// General solving rules without guessing.
         /// </summary>
-        protected IList<IFullGridRule> FullGridRules
+        protected IEnumerable<IFullGridRule> FullGridRules
         {
-            get;
-            private set;
+            get
+            {
+                return _fullGridRules;
+            }
+
+            private set
+            {
+                _fullGridRules = new List<IFullGridRule>();
+
+                if (value != null)
+                {
+                    _fullGridRules.AddRange(value);
+                }
+            }
         }
 
         /// <summary>
@@ -58,86 +118,60 @@ namespace BimaruSolver
             get;
             private set;
         }
+        #endregion
 
-        /// <inheritdoc/>
-        public virtual void Solve(IGame game)
+        #region Handle field changes
+        private Queue<FieldValueChangedEventArgs<BimaruValue>> UnhandledFieldChanges
         {
-            if (!game.IsValid)
+            get;
+            set;
+        }
+
+        private void InitUnhandledFieldChanges(IGrid grid)
+        {
+            UnhandledFieldChanges = new Queue<FieldValueChangedEventArgs<BimaruValue>>();
+
+            foreach (GridPoint p in grid.AllPoints().Where(p => grid.GetFieldValue(p) != BimaruValue.UNDETERMINED))
             {
-                throw new InvalidBimaruGame("This Bimaru game is invalid.");
+                UnhandledFieldChanges.Enqueue(new FieldValueChangedEventArgs<BimaruValue>(p, BimaruValue.UNDETERMINED));
             }
+        }
 
-            void FieldChangedHandler(object sender, FieldValueChangedEventArgs<FieldValues> e)
+        private void HandleFieldChanges(IGame game)
+        {
+            while (UnhandledFieldChanges.Count > 0)
             {
-                CheckIsChangeValid(game, e);
-                RunFieldValueChangedRules(game, e);
-            }
-
-            game.Grid.FieldValueChanged += FieldChangedHandler;
-
-            game.Grid.SetSavePoint();
-
-            try
-            {
-                RunInitialFieldValueChangedRules(game);
-
-                RunFullGridRules(game);
-                RunTrialAndErrorRule(game);
-            }
-            catch (InvalidFieldChange)
-            {
-                // Invalid field changes are caused either by a wrong rule
-                // or by an unsolvable game. Since we cannot distinguish the
-                // two situations and because the rules should be well tested
-                // we assume an unsolvable game => Just do nothing.
-            }
-            finally
-            {
-                game.Grid.FieldValueChanged -= FieldChangedHandler;
-
-                if (!game.IsSolved)
+                var e = UnhandledFieldChanges.Dequeue();
+                foreach (IFieldChangedRule rule in FieldChangedRules)
                 {
-                    game.Grid.Rollback();
+                    rule.FieldValueChanged(game, e);
                 }
             }
         }
 
-        private void RunFieldValueChangedRules(IGame game, FieldValueChangedEventArgs<FieldValues> e)
+        private void CheckIsChangeValid(IGame game, FieldValueChangedEventArgs<BimaruValue> e)
         {
-            foreach (IFieldChangedRule rule in FieldChangedRules)
-            {
-                rule.FieldValueChanged(game, e);
-            }
-        }
-
-        private void CheckIsChangeValid(IGame game, FieldValueChangedEventArgs<FieldValues> e)
-        {
-            FieldValues newValue = game.Grid.GetFieldValue(e.Point);
+            BimaruValue newValue = game.Grid.GetFieldValue(e.Point);
             if (!game.IsValid || !e.OriginalValue.IsCompatibleChange(newValue))
             {
                 throw new InvalidFieldChange();
             }
         }
+        #endregion
 
-        private void RunInitialFieldValueChangedRules(IGame game)
+        #region Run rules
+        private void RunRules(IGame game, bool isFirstCall)
         {
-            for (int rowIndex = 0; rowIndex < game.Grid.NumRows; rowIndex++)
-            {
-                for (int columnIndex = 0; columnIndex < game.Grid.NumColumns; columnIndex++)
-                {
-                    IGridPoint point = new GridPoint(rowIndex, columnIndex);
-                    if (game.Grid.GetFieldValue(point) != FieldValues.UNDETERMINED)
-                    {
-                        var e = new FieldValueChangedEventArgs<FieldValues>(point, FieldValues.UNDETERMINED);
-                        RunFieldValueChangedRules(game, e);
-                    }
-                }
-            }
+            HandleFieldChanges(game);
+            RunFullGridRules(game, isFirstCall);
+            HandleFieldChanges(game);
+
+            RunTrialAndErrorRule(game);
         }
 
-        private void RunFullGridRules(IGame game)
+        private void RunFullGridRules(IGame game, bool isFirstCall)
         {
-            foreach (IFullGridRule rule in FullGridRules)
+            foreach (IFullGridRule rule in FullGridRules.Where(rule => isFirstCall || !rule.ShallBeAppliedOnce))
             {
                 rule.Solve(game);
             }
@@ -150,13 +184,17 @@ namespace BimaruSolver
                 return;
             }
 
-            foreach (IEnumerable<FieldToChange> changes in TrialRule.GetCompleteChangeTrials(game))
+            foreach (FieldsToChange<BimaruValue> changes in TrialRule.GetCompleteChangeTrials(game))
             {
                 game.Grid.SetSavePoint();
 
                 try
                 {
-                    ApplyChangesAndRunRules(game, changes);
+                    ApplyChanges(game, changes);
+                    RunRules(game, false);
+                }
+                catch (InvalidBimaruGame)
+                {
                 }
                 finally
                 {
@@ -177,31 +215,20 @@ namespace BimaruSolver
             }
         }
 
-        private void ApplyChangesAndRunRules(IGame game, IEnumerable<FieldToChange> changes)
+        private void ApplyChanges(IGame game, FieldsToChange<BimaruValue> changes)
         {
-            try
+            int numChangedFields = 0;
+            foreach (var c in changes)
             {
-                int numChangedFields = 0;
-                foreach (FieldToChange c in changes)
-                {
-                    numChangedFields += (c.NewValue == game.Grid.GetFieldValue(c.Point)) ? 0 : 1;
-                    game.Grid.SetFieldValue(c.Point, c.NewValue);
-                }
-
-                if (numChangedFields == 0)
-                {
-                    // Prevent an infinite recursion from changes that don't change anything.
-                    throw new InvalidOperationException();
-                }
-
-                RunFullGridRules(game);
-            }
-            catch (InvalidFieldChange)
-            {
-
+                numChangedFields += (c.NewValue == game.Grid.GetFieldValue(c.Point)) ? 0 : 1;
+                game.Grid.SetFieldValue(c.Point, c.NewValue);
             }
 
-            RunTrialAndErrorRule(game);
+            if (numChangedFields == 0)
+            {
+                throw new InvalidOperationException("Invalid Bimaru field changes (could lead to an infinite recursion).");
+            }
         }
+        #endregion
     }
 }

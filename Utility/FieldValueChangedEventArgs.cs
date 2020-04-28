@@ -13,7 +13,7 @@ namespace Utility
         /// </summary>
         /// <param name="point"> Grid point whose field value was changed. </param>
         /// <param name="origValue"> Original value of the field before the change. </param>
-        public FieldValueChangedEventArgs(IGridPoint point, T origValue)
+        public FieldValueChangedEventArgs(GridPoint point, T origValue)
         {
             Point = point;
             OriginalValue = origValue;
@@ -22,7 +22,7 @@ namespace Utility
         /// <summary>
         /// Grid point whose field value was changed.
         /// </summary>
-        public IGridPoint Point
+        public GridPoint Point
         {
             get;
             private set;

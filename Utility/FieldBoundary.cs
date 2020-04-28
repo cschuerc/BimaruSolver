@@ -7,7 +7,7 @@ namespace Utility
     /// Each field on the grid has eight possible boundaries.
     /// For each possible direction one.
     /// </summary>
-    public struct FieldBoundary: IFieldBoundary
+    public struct FieldBoundary
     {
         /// <summary>
         /// Subset of directions such that the boundary representation is unique.
@@ -18,35 +18,53 @@ namespace Utility
         /// RIGHT and LEFT
         /// RIGHT_DOWN and LEFT_UP
         /// </summary>
-        private static readonly HashSet<Directions> _baseDirections =
-            new HashSet<Directions>()
+        private static readonly HashSet<Direction> _baseDirections =
+            new HashSet<Direction>()
             {
-                Directions.UP,
-                Directions.RIGHT_UP,
-                Directions.RIGHT,
-                Directions.RIGHT_DOWN
+                Direction.UP,
+                Direction.RIGHT_UP,
+                Direction.RIGHT,
+                Direction.RIGHT_DOWN
             };
-            
-        private readonly IGridPoint _basePoint;
-
-        private readonly Directions _boundaryDirectionFromBase;
 
         /// <summary>
-        /// Constructs a field boundary with a unique representation
+        /// Constructs a field boundary with a unique representation. For example,
+        /// if this is called once with (0, 0) UP and once with (1, 0) DOWN
+        /// then both represent the same boundary and are stored identically.
         /// </summary>
-        /// <param name="basePoint"></param>
-        /// <param name="direction"></param>
-        public FieldBoundary(IGridPoint basePoint, Directions direction)
+        /// <param name="basePoint"> Point which has the boundary </param>
+        /// <param name="directionFromBase"> Direction of the boundary relative to the base point </param>
+        public FieldBoundary(GridPoint basePoint, Direction directionFromBase)
         {
             // Unique representation for the same boundary
-            if (!_baseDirections.Contains(direction))
+            if (!_baseDirections.Contains(directionFromBase))
             {
-                basePoint = basePoint.GetNextPoint(direction);
-                direction = direction.GetOpposite();
+                basePoint = basePoint.GetNextPoint(directionFromBase);
+                directionFromBase = directionFromBase.GetOpposite();
             }
 
-            _basePoint = basePoint;
-            _boundaryDirectionFromBase = direction;
+            BasePoint = basePoint;
+            DirectionFromBase = directionFromBase;
+        }
+
+        /// <summary>
+        /// One of the two possible base points of the boundary.
+        /// Is unambiguous, so for example for the boundary between (0, 0)
+        /// and (1, 0), the base point is always (0, 0)).
+        /// </summary>
+        public GridPoint BasePoint
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Direction of the boundary relative to the base point.
+        /// </summary>
+        public Direction DirectionFromBase
+        {
+            get;
+            private set;
         }
     }
 }

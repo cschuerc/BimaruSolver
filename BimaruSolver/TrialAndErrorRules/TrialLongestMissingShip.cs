@@ -1,0 +1,116 @@
+﻿using System.Collections.Generic;
+using System.Linq;
+using BimaruInterfaces;
+using Utility;
+
+namespace BimaruSolver
+{
+    /// <summary>
+    /// Try all possible locations for the longest ship that is still missing.
+    /// </summary>
+    public class TrialLongestMissingShip : ITrialAndErrorRule
+    {
+        private int LengthOfLongestMissingShip(IGame game)
+        {
+            int length = game.ShipSettings.LongestShipLength;
+            while (length > 0)
+            {
+                int numShipsGap = game.ShipSettings[length] - game.Grid.GetNumShips[length];
+                if (numShipsGap < 0)
+                {
+                    throw new InvalidBimaruGame();
+                }
+                else if (numShipsGap > 0)
+                {
+                    break;
+                }
+
+                length--;
+            }
+
+            return length;
+        }
+
+        private bool IsCompatibleButNotEqual(IGame game, FieldsToChange<BimaruValue> changes)
+        {
+            bool isEqual = true;
+
+            foreach (var c in changes)
+            {
+                BimaruValue currentValue = game.Grid.GetFieldValue(c.Point);
+
+                if (!currentValue.IsCompatibleChange(c.NewValue))
+                {
+                    return false;
+                }
+
+                isEqual = isEqual && (currentValue == c.NewValue);
+            }
+
+            return !isEqual;
+        }
+
+        private FieldsToChange<BimaruValue> UndeterminedToWaterChanges(IGame game)
+        {
+            var changes = new FieldsToChange<BimaruValue>();
+
+            foreach (GridPoint p in game.Grid.AllPoints().Where(p => !game.Grid.GetFieldValue(p).IsFullyDetermined()))
+            {
+                changes.AddField(p, BimaruValue.WATER);
+            }
+
+            return changes;
+        }
+
+        /// <inheritdoc/>
+        public IEnumerable<FieldsToChange<BimaruValue>> GetCompleteChangeTrials(IGame game)
+        {
+            int shipLength = LengthOfLongestMissingShip(game);
+            
+            if (shipLength <= 0)
+            {
+                // All ships are set => Set the non-determined fields to water
+                yield return UndeterminedToWaterChanges(game);
+                yield break;
+            }
+
+            int numStartRows = game.Grid.NumRows - shipLength + 1;
+            foreach (int columnIndex in Enumerable.Range(0, game.Grid.NumColumns).Where(i => game.ColumnTally[i] >= shipLength))
+            {
+                foreach (int rowIndex in Enumerable.Range(0, numStartRows))
+                {
+                    GridPoint p = new GridPoint(rowIndex, columnIndex);
+                    var shipFields = BimaruValueExtensions.FieldValuesOfShip(Direction.UP, shipLength);
+                    var changes = new FieldsToChange<BimaruValue>(p, Direction.UP, shipFields);
+                    
+                    if (IsCompatibleButNotEqual(game, changes))
+                    {
+                        yield return changes;
+                    }
+                }
+            }
+
+            if (shipLength == 1)
+            {
+                // Single ships are already considered
+                yield break;
+            }
+
+            int numStartColumns = game.Grid.NumColumns - shipLength + 1;
+            foreach (int rowIndex in Enumerable.Range(0, game.Grid.NumRows).Where(i => game.RowTally[i] >= shipLength))
+            {
+                foreach (int columnIndex in Enumerable.Range(0, numStartColumns))
+                {
+                    GridPoint p = new GridPoint(rowIndex, columnIndex);
+                    var shipFields = BimaruValueExtensions.FieldValuesOfShip(Direction.RIGHT, shipLength);
+                    var changes = new FieldsToChange<BimaruValue>(p, Direction.RIGHT, shipFields);
+
+                    if (IsCompatibleButNotEqual(game, changes))
+                    {
+                        yield return changes;
+                    }
+                }
+            }
+        }
+    }
+}

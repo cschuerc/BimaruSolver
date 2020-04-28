@@ -8,7 +8,7 @@ using Utility;
 namespace BimaruGame
 {
     /// <summary>
-    /// Implementation of ITally
+    /// Standard implementation of ITally
     /// </summary>
     public class Tally : ITally
     {
@@ -19,7 +19,6 @@ namespace BimaruGame
         public Tally(int length)
         {
             Length = length;
-            IsReadOnly = false;
 
             _numShipFields = new int[length].InitValues(0);
 
@@ -27,7 +26,7 @@ namespace BimaruGame
         }
 
 
-        private readonly int[] _numShipFields;
+        private int[] _numShipFields;
 
         /// <inheritdoc/>
         public int this[int index]
@@ -39,9 +38,9 @@ namespace BimaruGame
 
             set
             {
-                if (IsReadOnly)
+                if (value < 0)
                 {
-                    throw new InvalidOperationException("Tally is read-only.");
+                    throw new ArgumentOutOfRangeException();
                 }
 
                 if (_numShipFields[index] != value)
@@ -76,10 +75,11 @@ namespace BimaruGame
         }
 
         /// <inheritdoc/>
-        public int Sum { get; private set; }
-
-        /// <inheritdoc/>
-        public bool IsReadOnly { get; set; }
+        public int Sum
+        {
+            get;
+            private set;
+        }
 
         /// <inheritdoc/>
         public IEnumerator<int> GetEnumerator()

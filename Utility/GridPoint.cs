@@ -6,7 +6,7 @@ namespace Utility
     /// <summary>
     /// A point on a two-dimensional integer grid
     /// </summary>
-    public struct GridPoint : IGridPoint
+    public struct GridPoint
     {
         /// <summary>
         /// Constructs a grid point
@@ -19,43 +19,57 @@ namespace Utility
             ColumnIndex = columnIndex;
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Get the row index of the point
+        /// </summary>
+        /// <returns> Row index of the point </returns>
         public int RowIndex
         {
             get;
-            private set;
+            set;
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Get the column index of the point
+        /// </summary>
+        /// <returns> Column index of the point </returns>
         public int ColumnIndex
         {
             get;
-            private set;
+            set;
         }
 
-        private static readonly Dictionary<Directions, Tuple<int, int>> _indexOffsets =
-            new Dictionary<Directions, Tuple<int, int>>()
+        private static readonly Dictionary<Direction, Tuple<int, int>> _indexOffsets =
+            new Dictionary<Direction, Tuple<int, int>>()
             {
-                {Directions.DOWN      , new Tuple<int, int>(-1, 0) },
-                {Directions.LEFT      , new Tuple<int, int>( 0,-1) },
-                {Directions.LEFT_DOWN , new Tuple<int, int>(-1,-1) },
-                {Directions.LEFT_UP   , new Tuple<int, int>( 1,-1) },
-                {Directions.RIGHT     , new Tuple<int, int>( 0, 1) },
-                {Directions.RIGHT_DOWN, new Tuple<int, int>(-1, 1) },
-                {Directions.RIGHT_UP  , new Tuple<int, int>( 1, 1) },
-                {Directions.UP        , new Tuple<int, int>( 1, 0) }
+                {Direction.DOWN      , new Tuple<int, int>(-1, 0) },
+                {Direction.LEFT      , new Tuple<int, int>( 0,-1) },
+                {Direction.LEFT_DOWN , new Tuple<int, int>(-1,-1) },
+                {Direction.LEFT_UP   , new Tuple<int, int>( 1,-1) },
+                {Direction.RIGHT     , new Tuple<int, int>( 0, 1) },
+                {Direction.RIGHT_DOWN, new Tuple<int, int>(-1, 1) },
+                {Direction.RIGHT_UP  , new Tuple<int, int>( 1, 1) },
+                {Direction.UP        , new Tuple<int, int>( 1, 0) }
             };
 
-        /// <inheritdoc/>
-        public IGridPoint GetNextPoint(Directions direction)
+        /// <summary>
+        /// Get the next integer grid point in the specified direction
+        /// </summary>
+        /// <param name="direction"> Direction </param>
+        /// <returns> The next point in the specified direction </returns>
+        public GridPoint GetNextPoint(Direction direction)
         {
             var offsets = _indexOffsets[direction];
 
             return new GridPoint(RowIndex + offsets.Item1, ColumnIndex + offsets.Item2);
         }
 
-        /// <inheritdoc/>
-        public IFieldBoundary GetBoundary(Directions direction)
+        /// <summary>
+        /// Get the boundary when going from the point in the direction.
+        /// </summary>
+        /// <param name="direction"> Direction to go </param>
+        /// <returns> Field boundary from this point in the direction </returns>
+        public FieldBoundary GetBoundary(Direction direction)
         {
             return new FieldBoundary(this, direction);
         }

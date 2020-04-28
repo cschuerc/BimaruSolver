@@ -47,9 +47,8 @@
     <Compile Include="FieldBoundary.cs" />
     <Compile Include="FieldValueChangedEventArgs.cs" />
     <Compile Include="GeneralExtensions.cs" />
+    <Compile Include="FieldsToChange.cs" />
     <Compile Include="GridPoint.cs" />
-    <Compile Include="IFieldBoundary.cs" />
-    <Compile Include="IGridPoint.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

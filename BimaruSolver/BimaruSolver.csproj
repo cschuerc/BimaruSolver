@@ -43,12 +43,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FieldToChange.cs" />
-    <Compile Include="FieldChangedRules\IFieldChangedRule.cs" />
-    <Compile Include="FullGridRules\IFullGridRule.cs" />
-    <Compile Include="TrialAndErrorRules\ITrialAndErrorRule.cs" />
+    <Compile Include="CombinedRules\FillRowOrColumnWithWater.cs" />
+    <Compile Include="CombinedRules\FillRowOrColumnWithShips.cs" />
+    <Compile Include="FieldChangedRules\SetShipEnvironment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Solver.cs" />
+    <Compile Include="TrialAndErrorRules\TrialLongestMissingShip.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BimaruSolverInterface\BimaruInterfaces.csproj">
@@ -59,6 +59,12 @@
       <Project>{7f908209-ed83-4b1a-875a-fa329703f374}</Project>
       <Name>Utility</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="FullGridRules\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

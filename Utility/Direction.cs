@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Utility
 {
     /// <summary>
     /// Horizontal, vertical and diagonal directions.
     /// </summary>
-    public enum Directions
+    public enum Direction
     {
         /// <summary>
         /// Left
@@ -49,51 +50,86 @@ namespace Utility
     }
 
     /// <summary>
+    /// Direction types
+    /// </summary>
+    public enum DirectionType
+    {
+        /// <summary>
+        /// Row (horizontal) direction
+        /// </summary>
+        ROW,
+
+        /// <summary>
+        /// Column (vertical) direction
+        /// </summary>
+        COLUMN,
+
+        /// <summary>
+        /// Diagonal direction
+        /// </summary>
+        DIAGONAL
+    }
+
+    /// <summary>
     /// Extensions for directions
     /// </summary>
-    public static class DirectionsExtensions
+    public static class DirectionExtensions
     {
-        private static readonly Dictionary<Directions, Directions> _opposite =
-            new Dictionary<Directions, Directions>()
+        /// <summary>
+        /// Get all directions in arbitrary order.
+        /// </summary>
+        /// <returns></returns>
+        public static IEnumerable<Direction> AllDirections()
+        {
+            return (IEnumerable<Direction>)Enum.GetValues(typeof(Direction));
+
+        }
+
+        private static readonly Dictionary<Direction, Direction> _opposite =
+            new Dictionary<Direction, Direction>()
                 {
-                    { Directions.DOWN, Directions.UP },
-                    { Directions.LEFT, Directions.RIGHT },
-                    { Directions.RIGHT, Directions.LEFT },
-                    { Directions.UP, Directions.DOWN },
-                    { Directions.LEFT_DOWN, Directions.RIGHT_UP },
-                    { Directions.LEFT_UP, Directions.RIGHT_DOWN },
-                    { Directions.RIGHT_DOWN, Directions.LEFT_UP },
-                    { Directions.RIGHT_UP, Directions.LEFT_DOWN },
+                    { Direction.DOWN, Direction.UP },
+                    { Direction.LEFT, Direction.RIGHT },
+                    { Direction.RIGHT, Direction.LEFT },
+                    { Direction.UP, Direction.DOWN },
+                    { Direction.LEFT_DOWN, Direction.RIGHT_UP },
+                    { Direction.LEFT_UP, Direction.RIGHT_DOWN },
+                    { Direction.RIGHT_DOWN, Direction.LEFT_UP },
+                    { Direction.RIGHT_UP, Direction.LEFT_DOWN },
                 };
 
         /// <summary>
         /// Get the opposite direction
         /// </summary>
-        /// <param name="value"> Direction to take the opposite from </param>
+        /// <param name="direction"> Direction to take the opposite from </param>
         /// <returns> Opposite of the direction </returns>
-        public static Directions GetOpposite(this Directions value)
+        public static Direction GetOpposite(this Direction direction)
         {
-            return _opposite[value];
+            return _opposite[direction];
         }
 
 
-        private static readonly HashSet<Directions> _isDiagonal =
-            new HashSet<Directions>()
-            {
-                Directions.LEFT_DOWN,
-                Directions.LEFT_UP,
-                Directions.RIGHT_DOWN,
-                Directions.RIGHT_UP
-            };
+        private static readonly Dictionary<Direction, DirectionType> _directionType =
+            new Dictionary<Direction, DirectionType>()
+                {
+                    { Direction.DOWN, DirectionType.COLUMN },
+                    { Direction.LEFT, DirectionType.ROW },
+                    { Direction.RIGHT, DirectionType.ROW },
+                    { Direction.UP, DirectionType.COLUMN },
+                    { Direction.LEFT_DOWN, DirectionType.DIAGONAL },
+                    { Direction.LEFT_UP, DirectionType.DIAGONAL },
+                    { Direction.RIGHT_DOWN, DirectionType.DIAGONAL },
+                    { Direction.RIGHT_UP, DirectionType.DIAGONAL },
+                };
 
         /// <summary>
-        /// Whether the direction is diagonal or not.
+        /// Type of the direction
         /// </summary>
-        /// <param name="value"> Direction </param>
-        /// <returns>True, if the direction is diagonal. </returns>
-        public static bool IsDiagonal(this Directions value)
+        /// <param name="direction"> Direction </param>
+        /// <returns> Direction type </returns>
+        public static DirectionType GetDirectionType(this Direction direction)
         {
-            return _isDiagonal.Contains(value);
+            return _directionType[direction];
         }
     }
 }

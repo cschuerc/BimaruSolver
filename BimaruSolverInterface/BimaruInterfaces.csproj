@@ -43,16 +43,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FieldValues.cs" />
-    <Compile Include="FieldValueTypes.cs" />
-    <Compile Include="IGame.cs" />
-    <Compile Include="IGrid.cs" />
-    <Compile Include="InvalidBimaruGame.cs" />
-    <Compile Include="InvalidFieldChange.cs" />
-    <Compile Include="IRollbackGrid.cs" />
-    <Compile Include="IShipSettings.cs" />
-    <Compile Include="ISolver.cs" />
-    <Compile Include="ITally.cs" />
+    <Compile Include="BimaruSolver\IFieldChangedRule.cs" />
+    <Compile Include="BimaruSolver\IFullGridRule.cs" />
+    <Compile Include="BimaruSolver\ITrialAndErrorRule.cs" />
+    <Compile Include="General\BimaruValue.cs" />
+    <Compile Include="General\BimaruValueConstraint.cs" />
+    <Compile Include="BimaruGame\IGame.cs" />
+    <Compile Include="BimaruGame\IGrid.cs" />
+    <Compile Include="BimaruGame\InvalidBimaruGame.cs" />
+    <Compile Include="General\InvalidFieldChange.cs" />
+    <Compile Include="BimaruGame\IRollbackGrid.cs" />
+    <Compile Include="BimaruGame\IShipSettings.cs" />
+    <Compile Include="BimaruSolver\ISolver.cs" />
+    <Compile Include="BimaruGame\ITally.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

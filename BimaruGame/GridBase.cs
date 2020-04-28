@@ -1,5 +1,6 @@
 ﻿using BimaruInterfaces;
 using System;
+using System.Collections.Generic;
 using Utility;
 
 namespace BimaruGame
@@ -10,29 +11,6 @@ namespace BimaruGame
     /// <typeparam name="T"> The type of the field values </typeparam>
     public class GridBase<T>: ICloneable
     {
-        private T[,] _grid;
-
-        /// <summary>
-        /// Allocates a grid with fix dimensions and default value
-        /// </summary>
-        /// <param name="numRows"> Number of rows of the grid </param>
-        /// <param name="numColumns"> Number of columns of the grid </param>
-        /// <param name="defaultValue"> Default value for all grid fields </param>
-        /// <returns> A new grid of given dimensions and filled with default values </returns>
-        private T[,] AllocateGrid(int numRows, int numColumns, T defaultValue)
-        {
-            var grid = new T[numRows, numColumns];
-            for (int rowIndex = 0; rowIndex < numRows; rowIndex++)
-            {
-                for (int columnIndex = 0; columnIndex < numColumns; columnIndex++)
-                {
-                    grid[rowIndex, columnIndex] = defaultValue;
-                }
-            }
-
-            return grid;
-        }
-
         /// <summary>
         /// Creates a grid with given number of rows and columns and all fields are initialized to the default value
         /// </summary>
@@ -45,6 +23,27 @@ namespace BimaruGame
             NumColumns = numColumns;
 
             _grid = AllocateGrid(numRows, numColumns, defaultValue);
+        }
+
+        #region Grid properties
+        private T[,] _grid;
+
+        /// <summary>
+        /// Allocates a grid with fix dimensions and default value
+        /// </summary>
+        /// <param name="numRows"> Number of rows of the grid </param>
+        /// <param name="numColumns"> Number of columns of the grid </param>
+        /// <param name="defaultValue"> Default value for all grid fields </param>
+        /// <returns> A new grid of given dimensions and filled with default values </returns>
+        private T[,] AllocateGrid(int numRows, int numColumns, T defaultValue)
+        {
+            var grid = new T[numRows, numColumns];
+            foreach (GridPoint p in AllPoints())
+            {
+                grid[p.RowIndex, p.ColumnIndex] = defaultValue;
+            }
+
+            return grid;
         }
 
         private int _numRows;
@@ -60,7 +59,7 @@ namespace BimaruGame
             {
                 if (value <= 0)
                 {
-                    throw new System.ArgumentOutOfRangeException("The number of grid rows has to be > 0.");
+                    throw new ArgumentOutOfRangeException("The number of grid rows has to be > 0.");
                 }
 
                 _numRows = value;
@@ -80,13 +79,15 @@ namespace BimaruGame
             {
                 if (value <= 0)
                 {
-                    throw new System.ArgumentOutOfRangeException("The number of grid columns has to be > 0.");
+                    throw new ArgumentOutOfRangeException("The number of grid columns has to be > 0.");
                 }
 
                 _numColumns = value;
             }
         }
+        #endregion
 
+        #region Get/set fields
         /// <summary>
         /// Whether the index is in the range.
         /// </summary>
@@ -99,11 +100,11 @@ namespace BimaruGame
         }
 
         /// <summary>
-        /// Whether the point is inside the grid.
+        /// Whether the point is inside the grid or not.
         /// </summary>
         /// <param name="point"> Point to check </param>
         /// <returns> True, if the point is in the grid </returns>
-        protected bool IsPointInGrid(IGridPoint point)
+        protected bool IsPointInGrid(GridPoint point)
         {
             return IsIndexValid(point.RowIndex, NumRows) &&
                 IsIndexValid(point.ColumnIndex, NumColumns);
@@ -112,19 +113,19 @@ namespace BimaruGame
         /// <summary>
         /// Get the field value at the given point without checking whether the point is inside the grid or not.
         /// </summary>
-        /// <param name="point"> Point inside grid whose value is returned </param>
-        /// <returns> Value of the field at the given grid point </returns>
-        protected T GetFieldValueNoCheck(IGridPoint point)
+        /// <param name="point"> Point whose value is returned. </param>
+        /// <returns> Value of the field at the given grid point. </returns>
+        protected T GetFieldValueNoCheck(GridPoint point)
         {
             return _grid[point.RowIndex, point.ColumnIndex];
         }
 
         /// <summary>
-        /// Get the field value at the given point
+        /// Get the field value at the given point.
         /// </summary>
         /// <param name="point"> Point whose grid value is returned </param>
         /// <returns></returns>
-        public virtual T GetFieldValue(IGridPoint point)
+        public virtual T GetFieldValue(GridPoint point)
         {
             if (!IsPointInGrid(point))
             {
@@ -135,25 +136,39 @@ namespace BimaruGame
         }
 
         /// <summary>
-        /// Is called before a field value is set.
+        /// Sets the field value at the given point.
         /// </summary>
-        /// <param name="point"> Point whose field value will be set </param>
-        protected virtual void OnBeforeFieldValueSet(IGridPoint point)
+        /// <param name="point"> Point whose field value is set. </param>
+        /// <param name="value"> Value which the field value is set to. </param>
+        public virtual void SetFieldValue(GridPoint point, T value)
+        {
+            if (!IsPointInGrid(point))
+            {
+                throw new InvalidFieldChange();
+            }
+
+            T origValue = GetFieldValueNoCheck(point);
+            if (!origValue.Equals(value))
+            {
+                _grid[point.RowIndex, point.ColumnIndex] = value;
+
+                var e = new FieldValueChangedEventArgs<T>(point, origValue);
+                OnAfterFieldValueSet(e);
+                OnFieldValueChanged(e);
+            }
+        }
+
+        /// <summary>
+        /// Is called after a field value is changed.
+        /// </summary>
+        /// <param name="e"> Event arguments of the field change. </param>
+        protected virtual void OnAfterFieldValueSet(FieldValueChangedEventArgs<T> e)
         {
 
         }
 
         /// <summary>
-        /// Is called after a field value is set
-        /// </summary>
-        /// <param name="point"> Point whose field value was set </param>
-        protected virtual void OnAfterFieldValueSet(IGridPoint point)
-        {
-
-        }
-
-        /// <summary>
-        /// Event raised after every field value change.
+        /// Event raised after a field value has changed.
         /// </summary>
         public event EventHandler<FieldValueChangedEventArgs<T>> FieldValueChanged;
 
@@ -165,31 +180,56 @@ namespace BimaruGame
         {
             FieldValueChanged?.Invoke(this, e);
         }
+        #endregion
 
+        #region Point enumerables
         /// <summary>
-        /// Sets the field value at the given point
+        /// Enumerable over all points of the given row starting from the zero column.
         /// </summary>
-        /// <param name="point"> Point whose field value is set </param>
-        /// <param name="value"> Value which the field value is set to </param>
-        public virtual void SetFieldValue(IGridPoint point, T value)
+        /// <param name="rowIndex"> Index of the row to enumerate over. </param>
+        /// <returns></returns>
+        public IEnumerable<GridPoint> PointsOfRow(int rowIndex)
         {
-            if (!IsPointInGrid(point))
+            GridPoint currentPoint = new GridPoint(rowIndex, 0);
+            while (currentPoint.ColumnIndex < NumColumns)
             {
-                throw new InvalidFieldChange();
-            }
+                yield return currentPoint;
 
-            T origValue = GetFieldValueNoCheck(point);
-            if (!origValue.Equals(value))
-            {
-                OnBeforeFieldValueSet(point);
-
-                _grid[point.RowIndex, point.ColumnIndex] = value;
-
-                OnAfterFieldValueSet(point);
-
-                OnFieldValueChanged(new FieldValueChangedEventArgs<T>(point, origValue));
+                currentPoint.ColumnIndex++;
             }
         }
+
+        /// <summary>
+        /// Enumerable over all points of the given column starting from the zero row.
+        /// </summary>
+        /// <param name="columnIndex"> Index of the column to enumerate over. </param>
+        /// <returns></returns>
+        public IEnumerable<GridPoint> PointsOfColumn(int columnIndex)
+        {
+            GridPoint currentPoint = new GridPoint(0, columnIndex);
+            while (currentPoint.RowIndex < NumRows)
+            {
+                yield return currentPoint;
+
+                currentPoint.RowIndex++;
+            }
+        }
+
+        /// <summary>
+        /// Enumerable over all points of the grid. Arbitrary order.
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<GridPoint> AllPoints()
+        {
+            for (int rowIndex = 0; rowIndex < NumRows; rowIndex++)
+            {
+                foreach (GridPoint p in PointsOfRow(rowIndex))
+                {
+                    yield return p;
+                }
+            }
+        }
+        #endregion
 
         /// <summary>
         /// Clone the grid by a deep copy (except the T instances are shallowly copied)
@@ -197,9 +237,10 @@ namespace BimaruGame
         /// <returns> The clone of the grid </returns>
         public virtual object Clone()
         {
-            GridBase<T> clonedGrid = (GridBase<T>)this.MemberwiseClone();
+            GridBase<T> clonedGrid = (GridBase<T>)MemberwiseClone();
 
-            clonedGrid._grid = (T[,])this._grid.Clone();
+            clonedGrid.FieldValueChanged = null;
+            clonedGrid._grid = (T[,])_grid.Clone();
 
             return clonedGrid;
         }

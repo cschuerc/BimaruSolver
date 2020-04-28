@@ -6,7 +6,7 @@ using System.Linq;
 namespace BimaruGame
 {
     /// <summary>
-    /// Implementation of IShipSettings
+    /// Standard implementation of IShipSettings
     /// </summary>
     public class ShipSettings : IShipSettings
     {
@@ -29,11 +29,6 @@ namespace BimaruGame
             }
             set
             {
-                if (IsReadOnly)
-                {
-                    throw new InvalidOperationException("Ship settings are read-only.");
-                }
-
                 if (length <= 0)
                 {
                     throw new ArgumentOutOfRangeException("Ship lengths must be positive.");
@@ -42,7 +37,7 @@ namespace BimaruGame
                 _numShipsPerLength.TryGetValue(length, out int origNumShips);
                 if (value < 0)
                 {
-                    throw new ArgumentOutOfRangeException("Number of ships must be positive.");
+                    throw new ArgumentOutOfRangeException("Number of ships must be non-negative.");
                 }
                 else if (value == 0)
                 {
@@ -54,21 +49,6 @@ namespace BimaruGame
                 }
 
                 NumShipFields += (value - origNumShips) * length;
-            }
-        }
-
-        /// <inheritdoc/>
-        public int ShortestShipLength {
-            get
-            {
-                int shortestLength = 1;
-
-                if (_numShipsPerLength.Count > 0)
-                {
-                    shortestLength = _numShipsPerLength.First().Key;
-                }
-
-                return shortestLength;
             }
         }
 
@@ -93,8 +73,5 @@ namespace BimaruGame
             get;
             private set;
         }
-
-        /// <inheritdoc/>
-        public bool IsReadOnly { get; set; }
     }
 }

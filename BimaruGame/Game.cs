@@ -6,7 +6,7 @@ using System.Linq;
 namespace BimaruGame
 {
     /// <summary>
-    /// Implementatio of the Bimaru game
+    /// Standard implementation of a Bimaru game
     /// </summary>
     public class Game : IGame
     {
@@ -24,17 +24,34 @@ namespace BimaruGame
         {
             RowTally = rowTally;
             ColumnTally = columnTally;
-            Settings = settings;
+            ShipSettings = settings;
             Grid = grid;
 
-            if (rowTally.Length != grid.NumRows ||
-                columnTally.Length != grid.NumColumns)
+            if (rowTally.Length != grid.NumRows || columnTally.Length != grid.NumColumns)
             {
                 throw new ArgumentOutOfRangeException("The number of rows/columns does not agree between tallies and grid.");
             }
         }
 
+        private enum Satisfiability
+        {
+            /// <summary>
+            /// The constraint is violated
+            /// </summary>
+            VIOLATED,
 
+            /// <summary>
+            /// The constraint is not satisfied but also not violated
+            /// </summary>
+            SATISFIABLE,
+
+            /// <summary>
+            /// The constraint is satisfied with equality
+            /// </summary>
+            SATISFIED
+        }
+
+        #region Tallies
         private ITally _rowTally;
 
         /// <inheritdoc/>
@@ -48,6 +65,28 @@ namespace BimaruGame
             private set
             {
                 _rowTally = value ?? throw new ArgumentNullException("RowTally");
+            }
+        }
+
+        private Satisfiability RowTallySatisfiability
+        {
+            get
+            {
+                bool isSatisfied = true;
+                for (int rowIndex = 0; rowIndex < Grid.NumRows; rowIndex++)
+                {
+                    int numMissingShipFields = MissingShipFieldsRow(rowIndex);
+                    if (numMissingShipFields < 0 || numMissingShipFields > Grid.GetNumUndeterminedFieldsRow[rowIndex])
+                    {
+                        return Satisfiability.VIOLATED;
+                    }
+                    else if (numMissingShipFields != 0)
+                    {
+                        isSatisfied = false;
+                    }
+                }
+
+                return isSatisfied ? Satisfiability.SATISFIED : Satisfiability.SATISFIABLE;
             }
         }
 
@@ -68,11 +107,34 @@ namespace BimaruGame
             }
         }
 
+        private Satisfiability ColumnTallySatisfiability
+        {
+            get
+            {
+                bool isSatisfied = true;
+                for (int columnIndex = 0; columnIndex < Grid.NumColumns; columnIndex++)
+                {
+                    int numMissingShipFields = MissingShipFieldsColumn(columnIndex);
+                    if (numMissingShipFields < 0 || numMissingShipFields > Grid.GetNumUndeterminedFieldsColumn[columnIndex])
+                    {
+                        return Satisfiability.VIOLATED;
+                    }
+                    else if (numMissingShipFields != 0)
+                    {
+                        isSatisfied = false;
+                    }
+                }
 
+                return isSatisfied ? Satisfiability.SATISFIED : Satisfiability.SATISFIABLE;
+            }
+        }
+        #endregion
+
+        #region Ship settings
         private IShipSettings _shipSettings;
 
         /// <inheritdoc/>
-        public IShipSettings Settings
+        public IShipSettings ShipSettings
         {
             get
             {
@@ -85,7 +147,34 @@ namespace BimaruGame
             }
         }
 
+        private Satisfiability ShipSettingsSatisfiability
+        {
+            get
+            {
+                IReadOnlyList<int> numShipsPerLength = Grid.GetNumShips;
 
+                bool areEqual = true;
+                for (int length = 0; length < numShipsPerLength.Count; length++)
+                {
+                    int gap = ShipSettings[length] - numShipsPerLength[length];
+                    if (gap < 0)
+                    {
+                        return Satisfiability.VIOLATED;
+                    }
+                    else if (gap != 0)
+                    {
+                        areEqual = false;
+                    }
+                }
+
+                bool isSatisfied = areEqual && ShipSettings.LongestShipLength <= (numShipsPerLength.Count - 1);
+
+                return isSatisfied ? Satisfiability.SATISFIED : Satisfiability.SATISFIABLE;
+            }
+        }
+        #endregion
+
+        #region Grid
         private IRollbackGrid _grid;
 
         /// <inheritdoc/>
@@ -113,59 +202,20 @@ namespace BimaruGame
         {
             return _columnTally[index] - _grid.GetNumShipFieldsColumn[index];
         }
+        #endregion
 
-        private bool IsRowTallySatisfied
-            => RowTally.SequenceEqual(Grid.GetNumShipFieldsRow);
-
-        private bool IsColumnTallySatisfied
-            => ColumnTally.SequenceEqual(Grid.GetNumShipFieldsColumn);
-
-        private bool AreShipSettingsSatisfied
-        {
-            get
-            {
-                IReadOnlyList<int> numShipsPerLength = Grid.GetNumShips;
-
-                int longestLength = Settings.LongestShipLength;
-
-                if (longestLength > (numShipsPerLength.Count - 1))
-                {
-                    return false;
-                }
-
-                for (int length = 0; length < numShipsPerLength.Count; length++)
-                {
-                    if (numShipsPerLength[length] != Settings[length])
-                    {
-                        return false;
-                    }
-                }
-
-                return true;
-            }
-        }
-
+        #region Game properties
         /// <inheritdoc/>
         public bool IsUnsolvable
         {
             get
             {
-                return RowTally.Sum != Settings.NumShipFields ||
-                    ColumnTally.Sum != Settings.NumShipFields ||
-                    Settings.LongestShipLength > Math.Max(Grid.NumColumns, Grid.NumRows);
+                return RowTally.Any(t => t > Grid.NumColumns) ||
+                    RowTally.Sum != ShipSettings.NumShipFields ||
+                    ColumnTally.Any(t => t > Grid.NumRows) ||
+                    ColumnTally.Sum != ShipSettings.NumShipFields ||
+                    ShipSettings.LongestShipLength > Math.Max(Grid.NumColumns, Grid.NumRows);
             }
-        }
-
-        private bool IsRowTallySatisfiable(int rowIndex)
-        {
-            return RowTally[rowIndex] >= Grid.GetNumShipFieldsRow[rowIndex] &&
-                MissingShipFieldsRow(rowIndex) <= Grid.GetNumEmptyFieldsRow[rowIndex];
-        }
-
-        private bool IsColumnTallySatisfiable(int columnIndex)
-        {
-            return ColumnTally[columnIndex] >= Grid.GetNumShipFieldsColumn[columnIndex] &&
-                MissingShipFieldsColumn(columnIndex) <= Grid.GetNumEmptyFieldsColumn[columnIndex];
         }
 
         /// <inheritdoc/>
@@ -175,8 +225,9 @@ namespace BimaruGame
             {
                 return !IsUnsolvable &&
                     Grid.IsValid &&
-                    new int[Grid.NumRows].All(rowIndex => IsRowTallySatisfiable(rowIndex)) &&
-                    new int[Grid.NumColumns].All(columnIndex => IsColumnTallySatisfiable(columnIndex));
+                    RowTallySatisfiability != Satisfiability.VIOLATED &&
+                    ColumnTallySatisfiability != Satisfiability.VIOLATED &&
+                    ShipSettingsSatisfiability != Satisfiability.VIOLATED;
             }
         }
 
@@ -185,12 +236,14 @@ namespace BimaruGame
         {
             get
             {
-                return IsValid &&
+                return !IsUnsolvable &&
+                    Grid.IsValid &&
                     Grid.IsFullyDetermined && 
-                    IsRowTallySatisfied &&
-                    IsColumnTallySatisfied &&
-                    AreShipSettingsSatisfied;
+                    RowTallySatisfiability == Satisfiability.SATISFIED &&
+                    ColumnTallySatisfiability == Satisfiability.SATISFIED &&
+                    ShipSettingsSatisfiability == Satisfiability.SATISFIED;
             }
         }
+        #endregion
     }
 }
