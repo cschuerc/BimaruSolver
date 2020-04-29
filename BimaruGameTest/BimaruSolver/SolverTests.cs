@@ -44,8 +44,9 @@ namespace BimaruSolver
 
             var solver = new Solver(null, null, null);
 
-            // Sum(RowTally) != Sum(ColumnTally) => Invalid
-            Assert.ThrowsException<InvalidBimaruGame>(() => solver.Solve(game));
+            Assert.AreEqual(0, solver.Solve(game));
+
+            Assert.IsFalse(game.IsSolved);
         }
 
         [TestMethod]
@@ -56,7 +57,7 @@ namespace BimaruSolver
 
             var game = SetupGame(numRows, numColumns);
             var solver = new Solver(null, null, new BruteForce());
-            solver.Solve(game);
+            Assert.AreEqual(1, solver.Solve(game));
 
             //   00
             //   --
@@ -82,7 +83,8 @@ namespace BimaruSolver
             // 1|WS
             // 1|WS
 
-            solver.Solve(game);
+            Assert.AreEqual(1, solver.Solve(game));
+
             Assert.IsTrue(game.IsSolved);
             Assert.AreEqual(BimaruValue.WATER, game.Grid.GetFieldValue(new GridPoint(0, 0)));
             Assert.AreEqual(BimaruValue.WATER, game.Grid.GetFieldValue(new GridPoint(1, 0)));
@@ -95,6 +97,9 @@ namespace BimaruSolver
             Assert.AreEqual(BimaruValue.UNDETERMINED, game.Grid.GetFieldValue(new GridPoint(1, 0)));
             Assert.AreEqual(BimaruValue.SHIP_UNDETERMINED, game.Grid.GetFieldValue(new GridPoint(0, 1)));
             Assert.AreEqual(BimaruValue.UNDETERMINED, game.Grid.GetFieldValue(new GridPoint(1, 1)));
+
+            // Check no more grids on the stack
+            Assert.ThrowsException<InvalidOperationException>(() => game.Grid.Rollback());
         }
 
         [TestMethod]
@@ -118,7 +123,7 @@ namespace BimaruSolver
             // -> No solution
 
             var solver = new Solver(null, null, new BruteForce());
-            solver.Solve(game);
+            Assert.AreEqual(0, solver.Solve(game));
 
             Assert.IsFalse(game.IsSolved);
             Assert.AreEqual(BimaruValue.UNDETERMINED, game.Grid.GetFieldValue(new GridPoint(0, 0)));
@@ -191,7 +196,7 @@ namespace BimaruSolver
 
             var changeLogger = new ChangeLogger();
             var solver = new Solver(new List<IFieldChangedRule>() { changeLogger }, null, null);
-            solver.Solve(game);
+            Assert.AreEqual(0, solver.Solve(game));
 
             Assert.IsFalse(game.IsSolved);
             Assert.AreEqual(BimaruValue.SHIP_SINGLE, game.Grid.GetFieldValue(new GridPoint(0, 0)));
@@ -225,7 +230,7 @@ namespace BimaruSolver
             // 1|??
 
             var solver = new Solver(null, null, null);
-            solver.Solve(game);
+            Assert.AreEqual(0, solver.Solve(game));
 
             // No InvalidFieldChange Exception here, although we change a field value back
             game.Grid.SetFieldValue(new GridPoint(0, 0), BimaruValue.SHIP_SINGLE);
@@ -252,7 +257,7 @@ namespace BimaruSolver
             var fieldChangedRules = new List<IFieldChangedRule>() { new WaterAroundSingleShip() };
             var fullGridRules = new List<IFullGridRule>() { new OneShipRowCol() };
             var solver = new Solver(fieldChangedRules, fullGridRules, null);
-            solver.Solve(game);
+            Assert.AreEqual(1, solver.Solve(game));
 
             Assert.IsTrue(game.IsSolved);
             Assert.AreEqual(BimaruValue.SHIP_SINGLE, game.Grid.GetFieldValue(new GridPoint(0, 0)));
@@ -281,7 +286,7 @@ namespace BimaruSolver
             var changesOnce = new ChangeLogger(true);
             var changesUnlimited = new ChangeLogger(false);
             var solver = new Solver(null, new List<IFullGridRule>() { changesOnce, changesUnlimited }, new BruteForce());
-            solver.Solve(game);
+            Assert.AreEqual(1, solver.Solve(game));
 
             Assert.IsTrue(changesOnce.CallCounter == 1);
             Assert.IsTrue(changesUnlimited.CallCounter > 1);
@@ -309,6 +314,43 @@ namespace BimaruSolver
             // A non-changing trial and error rule could lead to an infinite recursion
             // => check if instead correct exception
             Assert.ThrowsException<InvalidOperationException>(() => solver.Solve(game));
+        }
+
+        [TestMethod]
+        public void TestSeveralSolutions()
+        {
+            int numRows = 2;
+            int numColumns = 3;
+
+            var game = SetupGame(numRows, numColumns);
+            game.RowTally[0] = 1;
+            game.RowTally[1] = 1;
+            game.ColumnTally[0] = 1;
+            game.ColumnTally[2] = 1;
+            game.ShipSettings[1] = 2;
+
+            // 2xSUBMARINE
+            //   101
+            //   ---
+            // 1|???
+            // 1|???
+            // => Has 2 solutions
+
+            var solver = new Solver(null, null, new BruteForce());
+            Assert.AreEqual(2, solver.Solve(game));
+
+            Assert.IsTrue(game.IsSolved);
+            Assert.AreEqual(BimaruValue.WATER, game.Grid.GetFieldValue(new GridPoint(0, 1)));
+            Assert.AreEqual(BimaruValue.WATER, game.Grid.GetFieldValue(new GridPoint(1, 1)));
+
+            game.Grid.Rollback();
+
+            solver = new Solver(null, null, new BruteForce(), true);
+            Assert.AreEqual(1, solver.Solve(game));
+
+            Assert.IsTrue(game.IsSolved);
+            Assert.AreEqual(BimaruValue.WATER, game.Grid.GetFieldValue(new GridPoint(0, 1)));
+            Assert.AreEqual(BimaruValue.WATER, game.Grid.GetFieldValue(new GridPoint(1, 1)));
         }
     }
 }

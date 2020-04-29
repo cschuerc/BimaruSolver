@@ -6,7 +6,19 @@ using Utility;
 namespace BimaruSolver
 {
     /// <summary>
-    /// Try all possible locations for the longest ship that is still missing.
+    /// Try all possible locations for the longest, still missing ship.
+    /// 
+    /// Note that this rule does not produce disjoint trials
+    /// and hence it cannot be used to count the number
+    /// of solutions in a Bimaru game.
+    /// 
+    /// To see this, suppose that two battleships are missing in a game
+    /// with a unique solution. Then this rule will produce at least two
+    /// trials for battleships, one for each correct location of a
+    /// battleship. However, each of those two trials will lead to a
+    /// solution (which is the same in both cases). A solver that just
+    /// counts the number of trial paths with solutions will count both
+    /// paths.
     /// </summary>
     public class TrialLongestMissingShip : ITrialAndErrorRule
     {

@@ -16,9 +16,14 @@
         void Rollback();
 
         /// <summary>
-        /// Removes the previous savepoint without changing the current grid.
+        /// Saves the current grid to the clipboard (separate from the savepoint, rollback area).
         /// </summary>
-        void RemovePrevious();
+        void CloneToClipboard();
+
+        /// <summary>
+        /// Sets a savepoint and puts the grid in the clipboard as the current grid.
+        /// </summary>
+        void RestoreFromClipboard();
 
         /// <summary>
         /// Event raised after every rollback.

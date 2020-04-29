@@ -1,5 +1,6 @@
 using BimaruInterfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Utility;
@@ -82,6 +83,9 @@ namespace BimaruGame
             Assert.AreEqual(1, numRollbackEvents);
 
             AssertAreEqualGrids(rollbackGrid, initialGrid);
+
+            // Check no more grids on the stack
+            Assert.ThrowsException<InvalidOperationException>(() => rollbackGrid.Rollback());
         }
 
         private void CheckChangedEvent(FieldValueChangedEventArgs<BimaruValue> eExp, FieldValueChangedEventArgs<BimaruValue> eActual)
@@ -145,10 +149,13 @@ namespace BimaruGame
             Assert.AreEqual(2, changedEventArgs.Count);
 
             AssertAreEqualGrids(rollbackGrid, initialGrid);
+
+            // Check no more grids on the stack
+            Assert.ThrowsException<InvalidOperationException>(() => rollbackGrid.Rollback());
         }
 
         [TestMethod]
-        public void TestRemovePrevious()
+        public void TestClipboard()
         {
             int numRows = 1;
             int numColumns = 2;
@@ -162,31 +169,30 @@ namespace BimaruGame
 
             var rollbackGrid = new RollbackGrid(initialGrid);
 
-            rollbackGrid.RemovePrevious();
-
-            AssertAreEqualGrids(rollbackGrid, initialGrid);
-
             rollbackGrid.SetSavePoint();
-            rollbackGrid.SetFieldValue(p1, BimaruValue.UNDETERMINED);
 
-            rollbackGrid.RemovePrevious();
+            rollbackGrid.CloneToClipboard();
 
-            Assert.AreEqual(BimaruValue.UNDETERMINED, rollbackGrid.GetFieldValue(p1));
+            rollbackGrid.SetFieldValue(p0, BimaruValue.SHIP_CONT_UP);
+            rollbackGrid.SetFieldValue(p1, BimaruValue.SHIP_CONT_DOWN);
 
-            rollbackGrid.SetSavePoint();
-            rollbackGrid.SetFieldValue(p0, BimaruValue.SHIP_CONT_DOWN);
-            rollbackGrid.SetSavePoint();
-            rollbackGrid.SetFieldValue(p1, BimaruValue.SHIP_MIDDLE);
-
-            rollbackGrid.RemovePrevious();
-
-            Assert.AreEqual(BimaruValue.SHIP_CONT_DOWN, rollbackGrid.GetFieldValue(p0));
-            Assert.AreEqual(BimaruValue.SHIP_MIDDLE, rollbackGrid.GetFieldValue(p1));
+            rollbackGrid.CloneToClipboard();
 
             rollbackGrid.Rollback();
 
-            Assert.AreEqual(BimaruValue.SHIP_SINGLE, rollbackGrid.GetFieldValue(p0));
-            Assert.AreEqual(BimaruValue.UNDETERMINED, rollbackGrid.GetFieldValue(p1));
+            AssertAreEqualGrids(rollbackGrid, initialGrid);
+
+            rollbackGrid.RestoreFromClipboard();
+
+            Assert.AreEqual(BimaruValue.SHIP_CONT_UP, rollbackGrid.GetFieldValue(p0));
+            Assert.AreEqual(BimaruValue.SHIP_CONT_DOWN, rollbackGrid.GetFieldValue(p1));
+
+            rollbackGrid.Rollback();
+
+            AssertAreEqualGrids(rollbackGrid, initialGrid);
+
+            // Check no more grids on the stack
+            Assert.ThrowsException<InvalidOperationException>(() => rollbackGrid.Rollback());
         }
     }
 }

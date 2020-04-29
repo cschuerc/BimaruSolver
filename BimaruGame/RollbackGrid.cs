@@ -84,18 +84,27 @@ namespace BimaruGame
             OnRollbackHappened();
         }
 
-        /// <inheritdoc/>
-        public void RemovePrevious()
+        private IGrid Clipboard
         {
-            if (_gridStack.Count > 1)
+            get;
+            set;
+        }
+
+        /// <inheritdoc/>
+        public void CloneToClipboard()
+        {
+            Clipboard = (IGrid)ActiveGrid.Clone();
+        }
+
+        /// <inheritdoc/>
+        public void RestoreFromClipboard()
+        {
+            if (Clipboard == null)
             {
-                IGrid activeGrid = ActiveGrid;
-
-                Pop();
-                Pop();
-
-                Push(activeGrid);
+                throw new InvalidOperationException("No grid in the clipboard.");
             }
+
+            Push(Clipboard);
         }
         #endregion
 

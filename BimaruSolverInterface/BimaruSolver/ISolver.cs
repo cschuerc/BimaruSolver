@@ -6,11 +6,15 @@
     public interface ISolver
     {
         /// <summary>
-        /// Tries to solve the Bimaru game.
-        /// If it succeeds, the solution is on top of the grid stack right above the pre-solved game.
-        /// If it fails, only the pre-solved game is on the grid stack.
+        /// Computes the number of solutions of the Bimaru game.
+        /// 
+        /// If at least one solution is found, an arbitrary solution
+        /// is on top of the grid stack right above the pre-solved game.
+        /// 
+        /// If no solution is found, the grid is left unchanged.
         /// </summary>
         /// <param name="game"> Bimaru game to solve </param>
-        void Solve(IGame game);
+        /// <returns> Number of solutions. </returns>
+        int Solve(IGame game);
     }
 }

@@ -17,16 +17,15 @@ namespace BimaruInterfaces
         /// An example is when there are exactly N different possible
         /// locations for a single BATTLESHIP. Then this method would
         /// enumerate each of these N possibilities exactly once. Each
-        /// of these change trials consists of four FieldToChange elements
-        /// where each represents one piece of the BATTLESHIP.
+        /// of these change trials consists of four elements where each
+        /// represents one piece of the BATTLESHIP.
         /// 
         /// Note that this method has to give always at least one set of
         /// non-trivial changes unless the Bimaru grid is fully determined.
         /// 
-        /// For counting the number of solutions, it would also be necessary that
+        /// For counting the number of solutions, it is also necessary that
         /// the trial changes are disjoint. Disjoint means that each solution is a
-        /// descendant of exactly one trial change. However, at the moment this
-        /// is not done and hence disjointness is not mandatory.
+        /// descendant of exactly one trial change.
         /// 
         /// </summary>
         /// <param name="game"> Bimaru game </param>

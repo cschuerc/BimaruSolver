@@ -34,7 +34,7 @@ namespace BimaruSolver
 
             var trialAndErrorRule = new TrialLongestMissingShip();
 
-            return new Solver(fieldChangedRules, fullGridRules, trialAndErrorRule);
+            return new Solver(fieldChangedRules, fullGridRules, trialAndErrorRule, true);
         }
 
         private static Game SetupGameSmall()
@@ -104,6 +104,7 @@ namespace BimaruSolver
             game.Grid.SetFieldValue(new GridPoint(0, 3), BimaruValue.SHIP_CONT_RIGHT);
             game.Grid.SetFieldValue(new GridPoint(0, 6), BimaruValue.WATER);
             game.Grid.SetFieldValue(new GridPoint(3, 6), BimaruValue.WATER);
+            game.Grid.SetFieldValue(new GridPoint(8, 9), BimaruValue.SHIP_SINGLE);
 
             return game;
         }
