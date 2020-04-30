@@ -8,6 +8,7 @@ namespace BimaruGame
     /// <summary>
     /// Standard implementation of IShipSettings
     /// </summary>
+    [Serializable]
     public class ShipSettings : IShipSettings
     {
         private SortedDictionary<int, int> _numShipsPerLength;

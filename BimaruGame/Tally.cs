@@ -10,6 +10,7 @@ namespace BimaruGame
     /// <summary>
     /// Standard implementation of ITally
     /// </summary>
+    [Serializable]
     public class Tally : ITally
     {
         /// <summary>

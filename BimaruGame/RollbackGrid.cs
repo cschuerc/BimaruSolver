@@ -8,6 +8,7 @@ namespace BimaruGame
     /// <summary>
     /// Grid with savepoint and rollback mechanism.
     /// </summary>
+    [Serializable]
     public class RollbackGrid: IRollbackGrid
     {
         /// <summary>
@@ -110,6 +111,7 @@ namespace BimaruGame
 
         #region Events
         /// <inheritdoc/>
+        [field: NonSerialized]
         public event Action RollbackHappened;
 
         /// <summary>
@@ -121,6 +123,7 @@ namespace BimaruGame
         }
 
         /// <inheritdoc/>
+        [field: NonSerialized]
         public event EventHandler<FieldValueChangedEventArgs<BimaruValue>> FieldValueChanged;
 
         private void GridFieldValueChanged(object sender, FieldValueChangedEventArgs<BimaruValue> e)

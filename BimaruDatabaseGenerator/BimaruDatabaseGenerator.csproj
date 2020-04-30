@@ -4,16 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B8BAA0B3-7981-4D88-A12A-66FDBE6E7FFA}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BimaruInterfaces</RootNamespace>
-    <AssemblyName>BimaruInterfaces</AssemblyName>
+    <ProjectGuid>{45C9866F-916A-4B60-A255-C1AB48E33E10}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>BimaruDatabaseGenerator</RootNamespace>
+    <AssemblyName>BimaruDatabaseGenerator</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -21,10 +22,9 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\BimaruInterfaces.xml</DocumentationFile>
-    <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -43,32 +43,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BimaruSolver\IFieldChangedRule.cs" />
-    <Compile Include="BimaruSolver\IFullGridRule.cs" />
-    <Compile Include="BimaruSolver\ITrialAndErrorRule.cs" />
-    <Compile Include="BimaruDatabase\GameDifficulty.cs" />
-    <Compile Include="BimaruDatabase\GameSize.cs" />
-    <Compile Include="General\BimaruValue.cs" />
-    <Compile Include="General\BimaruValueConstraint.cs" />
-    <Compile Include="BimaruGame\IGame.cs" />
-    <Compile Include="BimaruGame\IGrid.cs" />
-    <Compile Include="BimaruGame\InvalidBimaruGame.cs" />
-    <Compile Include="General\InvalidFieldChange.cs" />
-    <Compile Include="BimaruGame\IRollbackGrid.cs" />
-    <Compile Include="BimaruGame\IShipSettings.cs" />
-    <Compile Include="BimaruSolver\ISolver.cs" />
-    <Compile Include="BimaruGame\ITally.cs" />
-    <Compile Include="BimaruDatabase\IDatabaseGame.cs" />
-    <Compile Include="BimaruDatabase\IGameMetaInfo.cs" />
-    <Compile Include="BimaruDatabase\IDatabase.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BimariDatabase\BimaruDatabase.csproj">
+      <Project>{263b8b66-dcc4-4295-9183-ffbf5e84d0ef}</Project>
+      <Name>BimaruDatabase</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BimaruGame\BimaruGame.csproj">
+      <Project>{e60408ef-487a-413b-a2f9-76ceeffc560a}</Project>
+      <Name>BimaruGame</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BimaruSolverInterface\BimaruInterfaces.csproj">
+      <Project>{b8baa0b3-7981-4d88-a12a-66fdbe6e7ffa}</Project>
+      <Name>BimaruInterfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Utility\Utility.csproj">
       <Project>{7f908209-ed83-4b1a-875a-fa329703f374}</Project>
       <Name>Utility</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

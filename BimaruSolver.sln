@@ -13,6 +13,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility", "Utility\Utility.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BimaruSolver", "BimaruSolver\BimaruSolver.csproj", "{0C0BA203-55FF-4EFC-A0E9-AF1FA30D4699}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BimaruDatabase", "BimariDatabase\BimaruDatabase.csproj", "{263B8B66-DCC4-4295-9183-FFBF5E84D0EF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BimaruDatabaseGenerator", "BimaruDatabaseGenerator\BimaruDatabaseGenerator.csproj", "{45C9866F-916A-4B60-A255-C1AB48E33E10}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +43,14 @@ Global
 		{0C0BA203-55FF-4EFC-A0E9-AF1FA30D4699}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0C0BA203-55FF-4EFC-A0E9-AF1FA30D4699}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0C0BA203-55FF-4EFC-A0E9-AF1FA30D4699}.Release|Any CPU.Build.0 = Release|Any CPU
+		{263B8B66-DCC4-4295-9183-FFBF5E84D0EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{263B8B66-DCC4-4295-9183-FFBF5E84D0EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{263B8B66-DCC4-4295-9183-FFBF5E84D0EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{263B8B66-DCC4-4295-9183-FFBF5E84D0EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45C9866F-916A-4B60-A255-C1AB48E33E10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45C9866F-916A-4B60-A255-C1AB48E33E10}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45C9866F-916A-4B60-A255-C1AB48E33E10}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45C9866F-916A-4B60-A255-C1AB48E33E10}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

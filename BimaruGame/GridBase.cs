@@ -9,6 +9,7 @@ namespace BimaruGame
     /// Implementation of a two-dimensional grid of fixed size
     /// </summary>
     /// <typeparam name="T"> The type of the field values </typeparam>
+    [Serializable]
     public class GridBase<T>: ICloneable
     {
         /// <summary>
@@ -170,6 +171,7 @@ namespace BimaruGame
         /// <summary>
         /// Event raised after a field value has changed.
         /// </summary>
+        [field: NonSerialized]
         public event EventHandler<FieldValueChangedEventArgs<T>> FieldValueChanged;
 
         /// <summary>

@@ -8,6 +8,7 @@ namespace BimaruGame
     /// <summary>
     /// Standard implementation of a Bimaru game
     /// </summary>
+    [Serializable]
     public class Game : IGame
     {
         /// <summary>

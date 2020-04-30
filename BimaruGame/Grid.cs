@@ -9,6 +9,7 @@ namespace BimaruGame
     /// <summary>
     /// Bimaru grid implementation
     /// </summary>
+    [Serializable]
     public class Grid : GridBase<BimaruValue>, IGrid
     {
         /// <summary>
