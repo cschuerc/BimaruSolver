@@ -60,5 +60,31 @@
     <EmbeddedResource Include="Games\bimaru1.bin" />
     <EmbeddedResource Include="Games\bimaru2.bin" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Games\bimaru24.bin" />
+    <EmbeddedResource Include="Games\bimaru3.bin" />
+    <EmbeddedResource Include="Games\bimaru4.bin" />
+    <EmbeddedResource Include="Games\bimaru5.bin" />
+    <EmbeddedResource Include="Games\bimaru6.bin" />
+    <EmbeddedResource Include="Games\bimaru7.bin" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Games\bimaru10.bin" />
+    <EmbeddedResource Include="Games\bimaru11.bin" />
+    <EmbeddedResource Include="Games\bimaru12.bin" />
+    <EmbeddedResource Include="Games\bimaru13.bin" />
+    <EmbeddedResource Include="Games\bimaru14.bin" />
+    <EmbeddedResource Include="Games\bimaru15.bin" />
+    <EmbeddedResource Include="Games\bimaru16.bin" />
+    <EmbeddedResource Include="Games\bimaru17.bin" />
+    <EmbeddedResource Include="Games\bimaru18.bin" />
+    <EmbeddedResource Include="Games\bimaru19.bin" />
+    <EmbeddedResource Include="Games\bimaru20.bin" />
+    <EmbeddedResource Include="Games\bimaru21.bin" />
+    <EmbeddedResource Include="Games\bimaru22.bin" />
+    <EmbeddedResource Include="Games\bimaru23.bin" />
+    <EmbeddedResource Include="Games\bimaru8.bin" />
+    <EmbeddedResource Include="Games\bimaru9.bin" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
