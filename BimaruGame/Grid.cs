@@ -10,7 +10,7 @@ namespace BimaruGame
     /// Bimaru grid implementation
     /// </summary>
     [Serializable]
-    public class Grid : GridBase<BimaruValue>, IGrid
+    public class Grid : GridBase<BimaruValue>, IGrid, ICloneable
     {
         /// <summary>
         /// Instantiates a bimaru grid with corresponding number of rows/columns
@@ -284,20 +284,33 @@ namespace BimaruGame
         public bool IsFullyDetermined
             => _numNotFullyDeterminedFields == 0;
 
-        /// <inheritdoc/>
-        public override object Clone()
+        #region Cloning
+        /// <summary>
+        /// Do a deep copy from a Grid template object
+        /// </summary>
+        /// <param name="template"> Grid to copy from </param>
+        public void CopyFrom(Grid template)
         {
-            Grid clonedGrid = (Grid)base.Clone();
+            base.CopyFrom(template);
 
-            clonedGrid._numUndeterminedFieldsColumn = (int[])_numUndeterminedFieldsColumn.Clone();
-            clonedGrid._numUndeterminedFieldsRow = (int[])_numUndeterminedFieldsRow.Clone();
-            clonedGrid._numShipFieldsColumn = (int[])_numShipFieldsColumn.Clone();
-            clonedGrid._numShipFieldsRow = (int[])_numShipFieldsRow.Clone();
-            clonedGrid._numShipsOfLength = (int[])_numShipsOfLength.Clone();
+            _numNotFullyDeterminedFields = template._numNotFullyDeterminedFields;
 
-            clonedGrid._invalidBoundaries = new HashSet<FieldBoundary>(_invalidBoundaries);
+            _numUndeterminedFieldsColumn = (int[])template._numUndeterminedFieldsColumn.Clone();
+            _numUndeterminedFieldsRow = (int[])template._numUndeterminedFieldsRow.Clone();
+            _numShipFieldsColumn = (int[])template._numShipFieldsColumn.Clone();
+            _numShipFieldsRow = (int[])template._numShipFieldsRow.Clone();
+            _numShipsOfLength = (int[])template._numShipsOfLength.Clone();
 
+            _invalidBoundaries = new HashSet<FieldBoundary>(template._invalidBoundaries);
+        }
+
+        /// <inheritdoc/>
+        public virtual object Clone()
+        {
+            Grid clonedGrid = new Grid(NumRows, NumColumns);
+            clonedGrid.CopyFrom(this);
             return clonedGrid;
         }
+        #endregion
     }
 }

@@ -15,8 +15,7 @@ namespace BimaruSolver
             var rowTally = new Tally(numRows);
             Tally columnTally = new Tally(numColumns);
             ShipSettings settings = new ShipSettings();
-            Grid initialGrid = new Grid(numRows, numColumns);
-            RollbackGrid grid = new RollbackGrid(initialGrid);
+            RollbackGrid grid = new RollbackGrid(numRows, numColumns);
 
             return new Game(rowTally, columnTally, settings, grid);
         }

@@ -26,8 +26,8 @@
         void RestoreFromClipboard();
 
         /// <summary>
-        /// Event raised after every rollback.
+        /// Event raised after every restore (from clipboard or by a rollback).
         /// </summary>
-        event System.Action RollbackHappened;
+        event System.Action RestoreHappened;
     }
 }

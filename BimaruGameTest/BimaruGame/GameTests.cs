@@ -13,8 +13,7 @@ namespace BimaruGame
             var rowTally = new Tally(numRows);
             Tally columnTally = new Tally(numColumns);
             ShipSettings settings = new ShipSettings();
-            Grid initialGrid = new Grid(numRows, numColumns);
-            RollbackGrid grid = new RollbackGrid(initialGrid);
+            RollbackGrid grid = new RollbackGrid(numRows, numColumns);
 
             return new Game(rowTally, columnTally, settings, grid);
         }
@@ -28,8 +27,7 @@ namespace BimaruGame
             var rowTally = new Tally(numRows);
             Tally columnTally = new Tally(numColumns);
             ShipSettings settings = new ShipSettings();
-            Grid initialGrid = new Grid(numRows, numColumns);
-            RollbackGrid grid = new RollbackGrid(initialGrid);
+            RollbackGrid grid = new RollbackGrid(numRows, numColumns);
 
             Assert.ThrowsException<ArgumentNullException>(() => new Game(null, columnTally, settings, grid));
             Assert.ThrowsException<ArgumentNullException>(() => new Game(rowTally, null, settings, grid));
@@ -46,8 +44,7 @@ namespace BimaruGame
             Tally rowTally;
             Tally columnTally;
             ShipSettings settings = new ShipSettings();
-            Grid initialGrid = new Grid(numRows, numColumns);
-            RollbackGrid grid = new RollbackGrid(initialGrid);
+            RollbackGrid grid = new RollbackGrid(numRows, numColumns);
 
             rowTally = new Tally(numRows + 1);
             columnTally = new Tally(numColumns);

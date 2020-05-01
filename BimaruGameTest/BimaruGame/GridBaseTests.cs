@@ -122,32 +122,6 @@ namespace BimaruGame
             Assert.AreEqual(p0, eventArgs[2].Point);
         }
 
-        [TestMethod]
-        public void TestClone()
-        {
-            int numRows = 1;
-            int numColumns = 2;
-            var grid = new GridBase<int>(numRows, numColumns);
-
-            var p0 = new GridPoint(0, 0);
-            var p1 = new GridPoint(0, 1);
-            int valueP0 = 5;
-            int valueP1 = 17;
-
-            grid.SetFieldValue(p0, valueP0);
-            grid.SetFieldValue(p1, valueP1);
-
-            GridBase<int> clonedGrid = (GridBase<int>)grid.Clone();
-
-            grid.SetFieldValue(p0, -1);
-
-            Assert.AreEqual(numRows, clonedGrid.NumRows);
-            Assert.AreEqual(numColumns, clonedGrid.NumColumns);
-
-            Assert.AreEqual(valueP0, clonedGrid.GetFieldValue(p0));
-            Assert.AreEqual(valueP1, clonedGrid.GetFieldValue(p1));
-        }
-
         private void CheckPointsOfRow<T>(GridBase<T> grid, int rowIndex)
         {
             int columnIndex = 0;

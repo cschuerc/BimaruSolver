@@ -32,24 +32,6 @@ namespace BimaruGame
         }
 
         [TestMethod]
-        public void TestInitialGrid()
-        {
-            int numRows = 1;
-            int numColumns = 2;
-            var initialGrid = new Grid(numRows, numColumns);
-
-            var p0 = new GridPoint(0, 0);
-            var p1 = new GridPoint(0, 1);
-
-            initialGrid.SetFieldValue(p0, BimaruValue.SHIP_SINGLE);
-            initialGrid.SetFieldValue(p1, BimaruValue.WATER);
-
-            var rollbackGrid = new RollbackGrid(initialGrid);
-
-            AssertAreEqualGrids(initialGrid, rollbackGrid);
-        }
-
-        [TestMethod]
         public void TestRollback()
         {
             int numRows = 1;
@@ -62,10 +44,11 @@ namespace BimaruGame
             initialGrid.SetFieldValue(p0, BimaruValue.SHIP_SINGLE);
             initialGrid.SetFieldValue(p1, BimaruValue.WATER);
 
-            var rollbackGrid = new RollbackGrid(initialGrid);
+            var rollbackGrid = new RollbackGrid(numRows, numColumns);
+            rollbackGrid.CopyFrom(initialGrid);
 
             int numRollbackEvents = 0;
-            rollbackGrid.RollbackHappened += delegate ()
+            rollbackGrid.RestoreHappened += delegate ()
             {
                 numRollbackEvents++;
             };
@@ -107,10 +90,11 @@ namespace BimaruGame
             initialGrid.SetFieldValue(p0, BimaruValue.SHIP_SINGLE);
             initialGrid.SetFieldValue(p1, BimaruValue.WATER);
 
-            var rollbackGrid = new RollbackGrid(initialGrid);
+            var rollbackGrid = new RollbackGrid(numRows, numColumns);
+            rollbackGrid.CopyFrom(initialGrid);
 
             int numRollbackEvents = 0;
-            rollbackGrid.RollbackHappened += delegate ()
+            rollbackGrid.RestoreHappened += delegate ()
             {
                 numRollbackEvents++;
             };
@@ -167,7 +151,8 @@ namespace BimaruGame
             initialGrid.SetFieldValue(p0, BimaruValue.SHIP_SINGLE);
             initialGrid.SetFieldValue(p1, BimaruValue.WATER);
 
-            var rollbackGrid = new RollbackGrid(initialGrid);
+            var rollbackGrid = new RollbackGrid(numRows, numColumns);
+            rollbackGrid.CopyFrom(initialGrid);
 
             rollbackGrid.SetSavePoint();
 

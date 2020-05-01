@@ -46,13 +46,13 @@ namespace BimaruDatabaseGenerator
 
         private static IRollbackGrid GenerateGrid(int numRows, int numColumns, IEnumerable<Tuple<GridPoint, BimaruValue>> initialFieldValues)
         {
-            var grid = new Grid(numRows, numColumns);
+            var grid = new RollbackGrid(numRows, numColumns);
             foreach (var c in initialFieldValues)
             {
                 grid.SetFieldValue(c.Item1, c.Item2);
             }
 
-            return new RollbackGrid(grid);
+            return grid;
         }
 
         private static IGame GenerateGame(

@@ -10,7 +10,7 @@ namespace BimaruGame
     /// </summary>
     /// <typeparam name="T"> The type of the field values </typeparam>
     [Serializable]
-    public class GridBase<T>: ICloneable
+    public class GridBase<T>
     {
         /// <summary>
         /// Creates a grid with given number of rows and columns and all fields are initialized to the default value
@@ -233,18 +233,24 @@ namespace BimaruGame
         }
         #endregion
 
+        #region Cloning
         /// <summary>
-        /// Clone the grid by a deep copy (except the T instances are shallowly copied)
+        /// Do a deep copy from a GridBase template object.
+        /// Leave the events alone.
         /// </summary>
-        /// <returns> The clone of the grid </returns>
-        public virtual object Clone()
+        /// <param name="template"> GridBase to copy from </param>
+        protected void CopyFrom(GridBase<T> template)
         {
-            GridBase<T> clonedGrid = (GridBase<T>)MemberwiseClone();
+            if (template == null)
+            {
+                throw new ArgumentNullException();
+            }
 
-            clonedGrid.FieldValueChanged = null;
-            clonedGrid._grid = (T[,])_grid.Clone();
-
-            return clonedGrid;
+            // Keep subscribers to events
+            _numRows = template._numRows;
+            _numColumns = template._numColumns;
+            _grid = (T[,])template._grid.Clone();
         }
+        #endregion
     }
 }
