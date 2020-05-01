@@ -14,8 +14,10 @@ namespace BimaruSolver
             var fieldChangedRules = new List<IFieldChangedRule>()
             {   new SetShipEnvironment(),
                 new FillRowOrColumnWithWater(),
-                new FillRowOrColumnWithShips()
+                new FillRowOrColumnWithShips(),
+                new DetermineShipUndetermined()
             };
+
             var fullGridRules = new List<IFullGridRule>()
             {   new FillRowOrColumnWithWater(),
                 new FillRowOrColumnWithShips()

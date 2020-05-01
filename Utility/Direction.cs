@@ -82,7 +82,18 @@ namespace Utility
         public static IEnumerable<Direction> AllDirections()
         {
             return (IEnumerable<Direction>)Enum.GetValues(typeof(Direction));
+        }
 
+        /// <summary>
+        /// Get all non-diagonal directions
+        /// </summary>
+        /// <returns></returns>
+        public static IEnumerable<Direction> AllNonDiagonalDirections()
+        {
+            yield return Direction.LEFT;
+            yield return Direction.UP;
+            yield return Direction.RIGHT;
+            yield return Direction.DOWN;
         }
 
         private static readonly Dictionary<Direction, Direction> _opposite =

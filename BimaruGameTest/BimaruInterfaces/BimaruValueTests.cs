@@ -56,7 +56,7 @@ namespace BimaruInterfaces
 
 
             // Diagonal already checked
-            foreach (Direction direction in DirectionExtensions.AllDirections().Where(d => d.GetDirectionType() != DirectionType.DIAGONAL))
+            foreach (Direction direction in DirectionExtensions.AllNonDiagonalDirections())
             {
                 foreach (BimaruValue value in startEndShipFields)
                 {
@@ -92,7 +92,7 @@ namespace BimaruInterfaces
                 };
 
             // Diagonal already checked
-            foreach (Direction direction in DirectionExtensions.AllDirections().Where(d => d.GetDirectionType() != DirectionType.DIAGONAL))
+            foreach (Direction direction in DirectionExtensions.AllNonDiagonalDirections())
             {
                 foreach (BimaruValue value in remainingShipFields)
                 {
