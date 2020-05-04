@@ -2,8 +2,9 @@
 using System.Linq;
 using System.Collections.Generic;
 using Utility;
+using BimaruInterfaces;
 
-namespace BimaruInterfaces
+namespace BimaruSolver
 {
     /// <summary>
     /// Standard implementation of ISolver
