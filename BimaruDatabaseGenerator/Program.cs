@@ -465,7 +465,7 @@ namespace BimaruDatabaseGenerator
                     {
                         { new GridPoint(0, 3), BimaruValue.SHIP_CONT_RIGHT },
                         { new GridPoint(0, 6), BimaruValue.WATER },
-                        { new GridPoint(2, 6), BimaruValue.WATER },
+                        { new GridPoint(3, 6), BimaruValue.WATER },
                         { new GridPoint(7, 0), BimaruValue.SHIP_CONT_DOWN },
                         { new GridPoint(8, 9), BimaruValue.SHIP_SINGLE },
                     })
