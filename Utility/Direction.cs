@@ -85,6 +85,18 @@ namespace Utility
         }
 
         /// <summary>
+        /// Get all diagonal directions
+        /// </summary>
+        /// <returns></returns>
+        public static IEnumerable<Direction> AllDiagonalDirections()
+        {
+            yield return Direction.LEFT_UP;
+            yield return Direction.RIGHT_UP;
+            yield return Direction.RIGHT_DOWN;
+            yield return Direction.LEFT_DOWN;
+        }
+
+        /// <summary>
         /// Get all non-diagonal directions
         /// </summary>
         /// <returns></returns>
@@ -94,6 +106,26 @@ namespace Utility
             yield return Direction.UP;
             yield return Direction.RIGHT;
             yield return Direction.DOWN;
+        }
+
+        /// <summary>
+        /// Get all horizontal directions
+        /// </summary>
+        /// <returns></returns>
+        public static IEnumerable<Direction> AllHorizontalDirections()
+        {
+            yield return Direction.LEFT;
+            yield return Direction.RIGHT;
+        }
+
+        /// <summary>
+        /// Get all horizontal directions
+        /// </summary>
+        /// <returns></returns>
+        public static IEnumerable<Direction> AllVerticalDirections()
+        {
+            yield return Direction.DOWN;
+            yield return Direction.UP;
         }
 
         private static readonly Dictionary<Direction, Direction> _opposite =

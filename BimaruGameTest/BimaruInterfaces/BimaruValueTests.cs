@@ -28,7 +28,7 @@ namespace BimaruInterfaces
         public void TestCompatibilityDiagonal()
         {
             // Ship fields are incompatible with neighbour ship fields at the diagonal
-            foreach (Direction direction in DirectionExtensions.AllDirections().Where( d => d.GetDirectionType() == DirectionType.DIAGONAL))
+            foreach (Direction direction in DirectionExtensions.AllDiagonalDirections())
             {
                 foreach (BimaruValue value in BimaruValueExtensions.AllBimaruValues())
                 {

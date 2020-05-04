@@ -15,7 +15,7 @@ namespace BimaruSolver
             {   new SetShipEnvironment(),
                 new FillRowOrColumnWithWater(),
                 new FillRowOrColumnWithShips(),
-                new DetermineShipUndetermined()
+                new DetermineShipFields()
             };
 
             var fullGridRules = new List<IFullGridRule>()
