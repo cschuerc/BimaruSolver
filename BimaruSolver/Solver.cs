@@ -16,16 +16,22 @@ namespace BimaruInterfaces
         /// <param name="fieldChangedRules"> Solving rules triggered for every field change. </param>
         /// <param name="fullGridRules"> General solving rules without guessing. </param>
         /// <param name="trialRule"> Single rule that tries out different possibilities. </param>
-        /// <param name="shallStopWhenSolved"> True, if the solver shall stop and return the first solution. </param>
+        /// <param name="shallCountSolutions"> True, if the solver shall count the number of solutions. </param>
         public Solver(IEnumerable<IFieldChangedRule> fieldChangedRules,
             IEnumerable<IFullGridRule> fullGridRules,
             ITrialAndErrorRule trialRule,
-            bool shallStopWhenSolved = false)
+            bool shallCountSolutions = false)
         {
             FieldChangedRules = fieldChangedRules;
             FullGridRules = fullGridRules;
             TrialRule = trialRule;
-            ShallStopWhenSolved = shallStopWhenSolved;
+            ShallCountSolutions = shallCountSolutions;
+
+            if (ShallCountSolutions && (TrialRule == null || !TrialRule.AreTrialsDisjoint))
+            {
+                throw new ArgumentException(@"This solver cannot count the number of
+                                              solutions without a disjoint trial rule.");
+            }
         }
 
         /// <inheritdoc/>
@@ -101,7 +107,7 @@ namespace BimaruInterfaces
         /// <summary>
         /// Whether the solver shall stop and return the first discovered solution.
         /// </summary>
-        protected bool ShallStopWhenSolved
+        protected bool ShallCountSolutions
         {
             get;
             private set;
@@ -241,7 +247,7 @@ namespace BimaruInterfaces
             {
                 numSolutions += RunRulesInSavepoint(game, false, changes);
 
-                if (ShallStopWhenSolved && numSolutions > 0)
+                if (!ShallCountSolutions && numSolutions > 0)
                 {
                     return numSolutions;
                 }

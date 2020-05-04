@@ -11,6 +11,9 @@ namespace BimaruSolver
     internal class SingleTrivialChange : ITrialAndErrorRule
     {
         /// <inheritdoc/>
+        public bool AreTrialsDisjoint => false;
+
+        /// <inheritdoc/>
         public IEnumerable<FieldsToChange<BimaruValue>> GetCompleteChangeTrials(IGame game)
         {
             var p = new GridPoint(0, 0);

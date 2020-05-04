@@ -8,7 +8,7 @@ using Utility;
 namespace BimaruSolver
 {
     [TestClass]
-    public class TrialLongestShipTests
+    public class LongestMissingShipTests
     {
         private static Game SetupGame(int numRows, int numColumns)
         {
@@ -88,7 +88,7 @@ namespace BimaruSolver
             // 1|WW?
             // 0|WWW
 
-            var rule = new TrialLongestMissingShip();
+            var rule = new LongestMissingShip();
 
             
             int shipLength = 2;
@@ -129,7 +129,7 @@ namespace BimaruSolver
             // 2|???
             // 3|???
 
-            var rule = new TrialLongestMissingShip();
+            var rule = new LongestMissingShip();
 
 
             int shipLength = 3;
@@ -171,7 +171,7 @@ namespace BimaruSolver
             // 1|??
             // 1|??
 
-            var rule = new TrialLongestMissingShip();
+            var rule = new LongestMissingShip();
 
 
             var startChange0 = new SingleChange<BimaruValue>(new GridPoint(0, 0), BimaruValue.SHIP_SINGLE);
@@ -220,7 +220,7 @@ namespace BimaruSolver
             // 1|???
             // 2|S?W
 
-            var rule = new TrialLongestMissingShip();
+            var rule = new LongestMissingShip();
 
 
             int shipLength = 2;
@@ -268,7 +268,7 @@ namespace BimaruSolver
             // 2|??S
             // 1|??S
 
-            var rule = new TrialLongestMissingShip();
+            var rule = new LongestMissingShip();
 
 
             int shipLength = 2;

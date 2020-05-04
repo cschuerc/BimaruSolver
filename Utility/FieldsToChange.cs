@@ -53,7 +53,7 @@ namespace Utility
         /// <param name="newValue"> New value </param>
         public FieldsToChange(GridPoint point, T newValue) : this()
         {
-            AddField(point, newValue);
+            Add(point, newValue);
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace Utility
         /// </summary>
         /// <param name="point"> Point of the field change </param>
         /// <param name="newValue"> New value </param>
-        public void AddField(GridPoint point, T newValue)
+        public void Add(GridPoint point, T newValue)
         {
             Changes[point] = new SingleChange<T>(point, newValue);
         }
@@ -99,7 +99,7 @@ namespace Utility
             GridPoint currentPoint = startPoint;
             foreach (T v in values)
             {
-                AddField(currentPoint, v);
+                Add(currentPoint, v);
                 currentPoint = currentPoint.GetNextPoint(direction);
             }
         }

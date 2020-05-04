@@ -33,6 +33,20 @@ namespace BimaruSolver
         }
 
         [TestMethod]
+        public void TestInvalidCounting()
+        {
+            int numRows = 4;
+            int numColumns = 3;
+
+            var game = SetupGame(numRows, numColumns);
+
+            Assert.ThrowsException<ArgumentException>(() => new Solver(null, null, null, true));
+
+            var ruleNotDisjoint = new SingleTrivialChange();
+            Assert.ThrowsException<ArgumentException>(() => new Solver(null, null, ruleNotDisjoint, true));
+        }
+
+        [TestMethod]
         public void TestInvalidGame()
         {
             int numRows = 2;
@@ -55,7 +69,7 @@ namespace BimaruSolver
             int numColumns = 2;
 
             var game = SetupGame(numRows, numColumns);
-            var solver = new Solver(null, null, new BruteForce());
+            var solver = new Solver(null, null, new BruteForce(), true);
             Assert.AreEqual(1, solver.Solve(game));
 
             //   00
@@ -121,7 +135,7 @@ namespace BimaruSolver
             // 1|WS
             // -> No solution
 
-            var solver = new Solver(null, null, new BruteForce());
+            var solver = new Solver(null, null, new BruteForce(), true);
             Assert.AreEqual(0, solver.Solve(game));
 
             Assert.IsFalse(game.IsSolved);
@@ -284,7 +298,7 @@ namespace BimaruSolver
 
             var changesOnce = new ChangeLogger(true);
             var changesUnlimited = new ChangeLogger(false);
-            var solver = new Solver(null, new List<IFullGridRule>() { changesOnce, changesUnlimited }, new BruteForce());
+            var solver = new Solver(null, new List<IFullGridRule>() { changesOnce, changesUnlimited }, new BruteForce(), true);
             Assert.AreEqual(1, solver.Solve(game));
 
             Assert.IsTrue(changesOnce.CallCounter == 1);
@@ -335,7 +349,7 @@ namespace BimaruSolver
             // 1|???
             // => Has 2 solutions
 
-            var solver = new Solver(null, null, new BruteForce());
+            var solver = new Solver(null, null, new BruteForce(), true);
             Assert.AreEqual(2, solver.Solve(game));
 
             Assert.IsTrue(game.IsSolved);
@@ -344,7 +358,7 @@ namespace BimaruSolver
 
             game.Grid.Rollback();
 
-            solver = new Solver(null, null, new BruteForce(), true);
+            solver = new Solver(null, null, new BruteForce(), false);
             Assert.AreEqual(1, solver.Solve(game));
 
             Assert.IsTrue(game.IsSolved);

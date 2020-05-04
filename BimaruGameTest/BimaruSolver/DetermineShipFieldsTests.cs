@@ -7,7 +7,7 @@ using Utility;
 namespace BimaruSolver
 {
     [TestClass]
-    public class DetermineShipUndeterminedTests
+    public class DetermineShipFieldsTests
     {
         private static Game SetupGame(int numRows, int numColumns)
         {

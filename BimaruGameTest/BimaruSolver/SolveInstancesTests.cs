@@ -9,7 +9,7 @@ namespace BimaruSolver
     [TestClass]
     public class SolveInstancesTests
     {
-        private static ISolver SetupNonCountingSolver()
+        private static Solver SetupSolver(ITrialAndErrorRule trialRule, bool shallCountSolutions)
         {
             var fieldChangedRules = new List<IFieldChangedRule>()
             {   new SetShipEnvironment(),
@@ -23,15 +23,15 @@ namespace BimaruSolver
                 new FillRowOrColumnWithShips()
             };
 
-            var trialAndErrorRule = new TrialLongestMissingShip();
+            var trialAndErrorRule = new LongestMissingShip();
 
-            return new Solver(fieldChangedRules, fullGridRules, trialAndErrorRule, true);
+            return new Solver(fieldChangedRules, fullGridRules, trialRule, shallCountSolutions);
         }
 
         [TestMethod]
-        public void TestAllGames()
+        public void TestAllGamesNonCounting()
         {
-            var solver = SetupNonCountingSolver();
+            var solver = SetupSolver(new LongestMissingShip(), false);
             var database = new Database(new BinaryFormatter());
 
             foreach (var databaseGame in database.GetAllGames(null))
@@ -41,6 +41,23 @@ namespace BimaruSolver
                 solver.Solve(databaseGame.Game);
 
                 Assert.IsTrue(databaseGame.Game.IsSolved);
+            }
+        }
+
+        [TestMethod]
+        public void TestAllGamesCounting()
+        {
+            var solver = SetupSolver(new OneMissingShipOrWater(new BruteForce()), true);
+            var database = new Database(new BinaryFormatter());
+
+            foreach (var databaseGame in database.GetAllGames(null))
+            {
+                Assert.IsFalse(databaseGame.Game.IsSolved);
+
+                int numSolutions = solver.Solve(databaseGame.Game);
+
+                Assert.IsTrue(databaseGame.Game.IsSolved);
+                Assert.AreEqual(1, numSolutions);
             }
         }
     }
