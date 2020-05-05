@@ -13,6 +13,17 @@ namespace BimaruDatabase
     [TestClass]
     public class DatabaseTests
     {
+        [TestMethod]
+        public void TestNoSerializer()
+        {
+            BinaryFormatter serializer = new BinaryFormatter();
+
+            Assert.ThrowsException<ArgumentNullException>(
+                () => new Database(null));
+
+            new Database(serializer);
+        }
+
         private static void CheckEquality(IDatabaseGame gameExp, IDatabaseGame gameActual)
         {
             if (gameExp == null && gameActual == null)
@@ -27,6 +38,18 @@ namespace BimaruDatabase
             Assert.IsTrue(gameExp.Game.RowTally.SequenceEqual(gameActual.Game.RowTally));
             Assert.IsTrue(gameExp.Game.ColumnTally.SequenceEqual(gameActual.Game.ColumnTally));
 
+            Assert.AreEqual(gameExp.Game.ShipSettings.LongestShipLength, gameActual.Game.ShipSettings.LongestShipLength);
+
+            foreach (int shipLength in Enumerable.Range(1, gameExp.Game.ShipSettings.LongestShipLength))
+            {
+                Assert.AreEqual(gameExp.Game.ShipSettings[shipLength], gameActual.Game.ShipSettings[shipLength]);
+            }
+
+            foreach (var p in gameExp.Game.Grid.AllPoints())
+            {
+                Assert.AreEqual(gameExp.Game.Grid[p], gameActual.Game.Grid[p]);
+            }
+
             // More checks are possible
         }
 
@@ -38,29 +61,28 @@ namespace BimaruDatabase
             {
                 var match = gamesActual.First(g => g.MetaInfo.ID == game.MetaInfo.ID);
 
-                Assert.AreNotEqual(null, match);
                 CheckEquality(game, match);
             }
         }
 
-        private static void CheckContainsGame(IEnumerable<IDatabaseGame> gamesExp, IDatabaseGame gamesActual)
+        private static void CheckContainsGame(IEnumerable<IDatabaseGame> gamesExp, IDatabaseGame gameActual)
         {
-            if (gamesExp.Count() == 0 && gamesActual == null)
+            if (gamesExp.Count() == 0 && gameActual == null)
             {
                 return;
             }
 
-            Assert.AreNotEqual(null, gamesActual);
+            Assert.IsNotNull(gameActual);
 
-            var match = gamesExp.First(g => g.MetaInfo.ID == gamesActual.MetaInfo.ID);
+            var match = gamesExp.First(g => g.MetaInfo.ID == gameActual.MetaInfo.ID);
 
-            Assert.AreNotEqual(null, match);
-            CheckEquality(match, gamesActual);
+            CheckEquality(match, gameActual);
         }
 
         private static IEnumerable<IDatabaseGame> GetAllGames(IFormatter serializer)
         {
             var games = new Dictionary<int, IDatabaseGame>();
+
             var databaseAssembly = Assembly.GetAssembly(typeof(Database));
             foreach (string resourceName in databaseAssembly.GetManifestResourceNames())
             {
@@ -94,25 +116,26 @@ namespace BimaruDatabase
             var db = new Database(serializer);
             var allGames = GetAllGames(serializer);
 
-            foreach (var isOkay in _filters)
+            foreach (var filter in _filters)
             {
-                CheckEqualGames(allGames.Where(g => isOkay == null || isOkay(g.MetaInfo)), db.GetAllGames(isOkay));
+                CheckEqualGames(allGames.Where(g => filter == null || filter(g.MetaInfo)), db.GetAllGames(filter));
             }
         }
 
         [TestMethod]
         public void TestGetRandomGame()
         {
+            int numTrials = 100;
             BinaryFormatter serializer = new BinaryFormatter();
 
             var db = new Database(serializer);
             var allGames = GetAllGames(serializer);
 
-            foreach (var isOkay in _filters)
+            foreach (var filter in _filters)
             {
-                foreach (int i in Enumerable.Range(0, 100))
+                foreach (int i in Enumerable.Range(0, numTrials))
                 {
-                    CheckContainsGame(allGames.Where(g => isOkay == null || isOkay(g.MetaInfo)), db.GetRandomGame(isOkay));
+                    CheckContainsGame(allGames.Where(g => filter == null || filter(g.MetaInfo)), db.GetRandomGame(filter));
                 }
             }
         }

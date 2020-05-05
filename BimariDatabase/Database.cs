@@ -91,11 +91,8 @@ namespace BimaruDatabase
             var assembly = Assembly.GetExecutingAssembly();
             foreach (string resourceName in assembly.GetManifestResourceNames())
             {
-                using (Stream stream = assembly.GetManifestResourceStream(resourceName))
-                {
-                    var game = (IDatabaseGame)Serializer.Deserialize(stream);
-                    Thumbnails.Add(new Thumbnail(game.MetaInfo, resourceName));
-                }
+                var game = LoadGame(resourceName);
+                Thumbnails.Add(new Thumbnail(game.MetaInfo, resourceName));
             }
         }
 
