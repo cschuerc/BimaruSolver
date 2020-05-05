@@ -1,7 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Utility;
 
 namespace BimaruInterfaces
@@ -153,8 +152,8 @@ namespace BimaruInterfaces
         public void TestFieldValuesOfShip()
         {
             // Length should be at least 1
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => BimaruValueExtensions.FieldValuesOfShip(Direction.RIGHT , - 2).GetEnumerator().MoveNext());
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => BimaruValueExtensions.FieldValuesOfShip(Direction.RIGHT, 0).GetEnumerator().MoveNext());
+            Assert.ThrowsException<ArgumentOutOfRangeException>(
+                () => BimaruValueExtensions.FieldValuesOfShip(Direction.RIGHT, 0).GetEnumerator().MoveNext());
 
             // Only check RIGHT, LEFT, UP and DOWN as no ships exist in the other directions.
             CheckFieldValues(BimaruValueExtensions.FieldValuesOfShip(Direction.RIGHT, 1),

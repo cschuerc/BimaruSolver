@@ -24,7 +24,7 @@ namespace BimaruInterfaces
     }
 
     /// <summary>
-    /// Extensions to the ship boundaries
+    /// Extensions to the constraints
     /// </summary>
     public static class BimaruValueConstraintExtensions
     {
