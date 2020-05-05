@@ -102,7 +102,8 @@ namespace BimaruSolver
         protected ITrialAndErrorRule TrialRule { get; private set; }
 
         /// <summary>
-        /// Whether the solver shall stop and return the first discovered solution.
+        /// Whether the solver shall count the solutions or not.
+        /// If not, it stops after having found the first solution.
         /// </summary>
         protected bool ShallCountSolutions { get; private set; }
         #endregion
@@ -229,7 +230,7 @@ namespace BimaruSolver
                 return 1;
             }
 
-            if (game.Grid.IsFullyDetermined || TrialRule == null)
+            if (TrialRule == null)
             {
                 return 0;
             }

@@ -15,14 +15,23 @@ namespace BimaruSolver
     /// </summary>
     public class BruteForce : ITrialAndErrorRule
     {
+        private GridPoint? GetNotFullyDeterminedGridPoint(IGame game)
+        {
+            foreach (var p in game.Grid.AllPoints().Where(p => !game.Grid[p].IsFullyDetermined()))
+            {
+                return p;
+            }
+
+            return null;
+        }
+
         /// <inheritdoc/>
         public bool AreTrialsDisjoint => true;
 
         /// <inheritdoc/>
         public IEnumerable<FieldsToChange<BimaruValue>> GetCompleteChangeTrials(IGame game)
         {
-            GridPoint? notFullyDetPoint = game.Grid.AllPoints().FirstOrDefault(p =>
-                !game.Grid[p].IsFullyDetermined());
+            var notFullyDetPoint = GetNotFullyDeterminedGridPoint(game);
 
             if (notFullyDetPoint == null)
             {

@@ -10,14 +10,22 @@ namespace BimaruSolver
     [TestClass]
     public class SolverTests
     {
-        [TestMethod]
-        public void TestNullArguments()
+        /// <summary>
+        /// A trial and error rule that produces a single trial
+        /// with a single but trivial change.
+        /// </summary>
+        private class SingleTrivialChange : ITrialAndErrorRule
         {
-            var game = (new GameFactory()).GenerateGameOneSolution();
+            /// <inheritdoc/>
+            public bool AreTrialsDisjoint => false;
 
-            var solver = new Solver(null, null, null);
-            Assert.AreEqual(0, solver.Solve(game));
-            Assert.IsFalse(game.IsSolved);
+            /// <inheritdoc/>
+            public IEnumerable<FieldsToChange<BimaruValue>> GetCompleteChangeTrials(IGame game)
+            {
+                var p = new GridPoint(0, 0);
+                BimaruValue oldValue = game.Grid[p];
+                yield return new FieldsToChange<BimaruValue>(p, oldValue);
+            }
         }
 
         [TestMethod]
@@ -25,9 +33,17 @@ namespace BimaruSolver
         {
             var game = (new GameFactory()).GenerateGameOneSolution();
 
+            new Solver(null, null, null, false);
+
+            // No trial rule, so no counting
             Assert.ThrowsException<ArgumentException>(() => new Solver(null, null, null, true));
 
+            
             var ruleNotDisjoint = new SingleTrivialChange();
+
+            new Solver(null, null, ruleNotDisjoint, false);
+
+            // No disjoint trial rule, so no counting
             Assert.ThrowsException<ArgumentException>(() => new Solver(null, null, ruleNotDisjoint, true));
         }
 
@@ -42,33 +58,7 @@ namespace BimaruSolver
         }
 
         [TestMethod]
-        public void TestTrialAndErrorRuleSuccess()
-        {
-            var game = (new GameFactory()).GenerateGameOneSolution();
-
-            var unsolvedValues = new Dictionary<GridPoint, BimaruValue>();
-            foreach (var p in game.Grid.AllPoints())
-            {
-                unsolvedValues[p] = game.Grid[p];
-            }
-
-            var solver = new Solver(null, null, new BruteForce());
-            Assert.AreEqual(1, solver.Solve(game));
-            Assert.IsTrue(game.IsSolved);
-
-            game.Grid.Rollback();
-            Assert.IsFalse(game.IsSolved);
-            foreach (var p in game.Grid.AllPoints())
-            {
-                Assert.AreEqual(unsolvedValues[p], game.Grid[p]);
-            }
-
-            // Check no more grids on the stack
-            Assert.ThrowsException<InvalidOperationException>(() => game.Grid.Rollback());
-        }
-
-        [TestMethod]
-        public void TestTrialAndErrorRuleFail()
+        public void TestNoSolution()
         {
             var game = (new GameFactory()).GenerateGameNoSolution();
 
@@ -78,6 +68,46 @@ namespace BimaruSolver
 
             // No solution => Only a single grid on the stack
             Assert.ThrowsException<InvalidOperationException>(() => game.Grid.Rollback());
+        }
+
+        [TestMethod]
+        public void TestOneSolution()
+        {
+            var game = (new GameFactory()).GenerateGameOneSolution();
+
+            var preSolvingValues = new Dictionary<GridPoint, BimaruValue>();
+            foreach (var p in game.Grid.AllPoints())
+            {
+                preSolvingValues[p] = game.Grid[p];
+            }
+
+            var solver = new Solver(null, null, new BruteForce(), true);
+            Assert.AreEqual(1, solver.Solve(game));
+            Assert.IsTrue(game.IsSolved);
+
+            game.Grid.Rollback();
+            Assert.IsFalse(game.IsSolved);
+            foreach (var p in game.Grid.AllPoints())
+            {
+                Assert.AreEqual(preSolvingValues[p], game.Grid[p]);
+            }
+
+            // Check no more grids on the stack
+            Assert.ThrowsException<InvalidOperationException>(() => game.Grid.Rollback());
+        }
+
+        [TestMethod]
+        public void TestTwoSolutions()
+        {
+            var game = (new GameFactory()).GenerateGameTwoSolutions();
+            var solver = new Solver(null, null, new BruteForce(), true);
+            Assert.AreEqual(2, solver.Solve(game));
+            Assert.IsTrue(game.IsSolved);
+
+            game = (new GameFactory()).GenerateGameTwoSolutions();
+            solver = new Solver(null, null, new BruteForce(), false);
+            Assert.AreEqual(1, solver.Solve(game));
+            Assert.IsTrue(game.IsSolved);
         }
 
         private class ChangeLogger : IFieldChangedRule, IFullGridRule
@@ -109,12 +139,9 @@ namespace BimaruSolver
         }
 
         [TestMethod]
-        public void TestInitialConditions()
+        public void TestInitialFieldChanges()
         {
-            int numRows = 2;
-            int numColumns = 2;
-
-            var game = (new GameFactory()).GenerateEmptyGame(numRows, numColumns);
+            var game = (new GameFactory()).GenerateEmptyGame(2, 2);
             game.Grid[new GridPoint(0, 0)] = BimaruValue.SHIP_SINGLE;
             game.Grid[new GridPoint(0, 1)] = BimaruValue.WATER;
             game.RowTally[0] = 1;
@@ -122,7 +149,7 @@ namespace BimaruSolver
             game.ShipSettings[1] = 1;
 
             // 1xSUBMARINE
-            //   01
+            //   10
             //   --
             // 0|??
             // 1|SW
@@ -132,7 +159,6 @@ namespace BimaruSolver
             solver.Solve(game);
 
             Assert.AreEqual(2, changeLogger.Changes.Count);
-
             Assert.AreEqual(BimaruValue.UNDETERMINED, changeLogger.Changes[0].OriginalValue);
             Assert.AreEqual(new GridPoint(0, 0), changeLogger.Changes[0].Point);
             Assert.AreEqual(BimaruValue.UNDETERMINED, changeLogger.Changes[1].OriginalValue);
@@ -153,50 +179,74 @@ namespace BimaruSolver
         }
 
         [TestMethod]
-        public void TestFullGridAndChangedRules()
+        public void TestFieldChangedRules()
         {
-            int numRows = 2;
-            int numColumns = 2;
-
-            var game = (new GameFactory()).GenerateEmptyGame(numRows, numColumns);
+            var game = (new GameFactory()).GenerateEmptyGame(2, 2);
             game.RowTally[0] = 1;
             game.ColumnTally[0] = 1;
             game.ShipSettings[1] = 1;
+            game.Grid[new GridPoint(0, 0)] = BimaruValue.SHIP_SINGLE;
 
             // 1xSUBMARINE
             //   10
             //   --
             // 0|??
-            // 1|??
+            // 1|S?
 
-            var fieldChangedRules = new List<IFieldChangedRule>()
+            var fieldChangedRule = new List<IFieldChangedRule>()
             {
-                new FillRowOrColumnWithShips(),
-                new DetermineShipFields()
+                new SetShipEnvironment()
             };
 
-            var fullGridRules = new List<IFullGridRule>()
-            {
-                new FillRowOrColumnWithWater()
-            };
-
-            var solver = new Solver(fieldChangedRules, fullGridRules, null);
+            var solver = new Solver(fieldChangedRule, null, null);
             Assert.AreEqual(1, solver.Solve(game));
 
             Assert.IsTrue(game.IsSolved);
         }
 
         [TestMethod]
-        public void TestOnceRule()
+        public void TestFullGridRules()
+        {
+            var game = (new GameFactory()).GenerateEmptyGame(2, 2);
+            game.RowTally[0] = 1;
+            game.ColumnTally[0] = 1;
+            game.ShipSettings[1] = 1;
+            game.Grid[new GridPoint(0, 0)] = BimaruValue.SHIP_SINGLE;
+
+            // 1xSUBMARINE
+            //   10
+            //   --
+            // 0|??
+            // 1|S?
+
+            var fullGridRules = new List<IFullGridRule>()
+            {
+                new FillRowOrColumnWithWater()
+            };
+
+            var solver = new Solver(null, fullGridRules, null);
+            Assert.AreEqual(1, solver.Solve(game));
+
+            Assert.IsTrue(game.IsSolved);
+        }
+
+        [TestMethod]
+        public void TestFullGridOnceRule()
         {
             var game = (new GameFactory()).GenerateGameOneSolution();
 
             var changesOnce = new ChangeLogger(true);
             var changesUnlimited = new ChangeLogger(false);
-            var solver = new Solver(null, new List<IFullGridRule>() { changesOnce, changesUnlimited }, new BruteForce(), true);
-            Assert.AreEqual(1, solver.Solve(game));
+            var fullGridRules = new List<IFullGridRule>()
+            {
+                changesOnce,
+                changesUnlimited
+            };
 
-            Assert.IsTrue(changesOnce.CallCounter == 1);
+            var solver = new Solver(null, fullGridRules, new BruteForce());
+            solver.Solve(game);
+
+            Assert.AreEqual(1, changesOnce.CallCounter);
             Assert.IsTrue(changesUnlimited.CallCounter > 1);
         }
 
@@ -204,27 +254,11 @@ namespace BimaruSolver
         public void TestNonChanging()
         {
             var game = (new GameFactory()).GenerateGameOneSolution();
-
             var solver = new Solver(null, null, new SingleTrivialChange());
 
             // A non-changing trial and error rule could lead to an infinite recursion
             // => check if instead correct exception
             Assert.ThrowsException<InvalidOperationException>(() => solver.Solve(game));
-        }
-
-        [TestMethod]
-        public void TestSeveralSolutions()
-        {
-            var game = (new GameFactory()).GenerateGameTwoSolutions();
-            var solver = new Solver(null, null, new BruteForce(), true);
-            Assert.AreEqual(2, solver.Solve(game));
-            Assert.IsTrue(game.IsSolved);
-
-
-            game = (new GameFactory()).GenerateGameTwoSolutions();
-            solver = new Solver(null, null, new BruteForce(), false);
-            Assert.AreEqual(1, solver.Solve(game));
-            Assert.IsTrue(game.IsSolved);
         }
     }
 }

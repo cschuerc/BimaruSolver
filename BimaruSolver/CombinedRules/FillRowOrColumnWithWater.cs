@@ -9,7 +9,7 @@ namespace BimaruSolver
     /// if the row or column tally is already satisfied.
     /// 
     /// A FieldChangedRule as well as a FullGridRule exist, because a FieldChangedRule
-    /// alone would miss the case where a tally contained a 0. However, a FullGridRule
+    /// alone might miss the case where a tally contained a 0. However, a FullGridRule
     /// is much less efficient than a FieldChangedRule and hence the FullGridRule is
     /// used once and thereafter only the FieldChangedRule.
     /// </summary>

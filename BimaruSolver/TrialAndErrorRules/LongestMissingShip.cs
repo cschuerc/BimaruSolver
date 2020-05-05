@@ -72,21 +72,11 @@ namespace BimaruSolver
                 changes.Add(p, BimaruValue.WATER);
             }
 
-            return changes;
+            return changes.Count() > 0 ? changes: null;
         }
 
-        /// <inheritdoc/>
-        public IEnumerable<FieldsToChange<BimaruValue>> GetCompleteChangeTrials(IGame game)
+        private IEnumerable<FieldsToChange<BimaruValue>> GetTrialsForVerticalShips(IGame game, int shipLength)
         {
-            int shipLength = LengthOfLongestMissingShip(game);
-            
-            if (shipLength <= 0)
-            {
-                // All ships are set => Set the non-determined fields to water
-                yield return UndeterminedToWaterChanges(game);
-                yield break;
-            }
-
             int numStartRows = game.Grid.NumRows - shipLength + 1;
             foreach (int columnIndex in Enumerable.Range(0, game.Grid.NumColumns).Where(i => game.ColumnTally[i] >= shipLength))
             {
@@ -95,20 +85,17 @@ namespace BimaruSolver
                     GridPoint p = new GridPoint(rowIndex, columnIndex);
                     var shipFields = BimaruValueExtensions.FieldValuesOfShip(Direction.UP, shipLength);
                     var changes = new FieldsToChange<BimaruValue>(p, Direction.UP, shipFields);
-                    
+
                     if (IsCompatibleButNotEqual(game, changes))
                     {
                         yield return changes;
                     }
                 }
             }
+        }
 
-            if (shipLength == 1)
-            {
-                // Single ships are already considered
-                yield break;
-            }
-
+        private IEnumerable<FieldsToChange<BimaruValue>> GetTrialsForHorizontalShips(IGame game, int shipLength)
+        {
             int numStartColumns = game.Grid.NumColumns - shipLength + 1;
             foreach (int rowIndex in Enumerable.Range(0, game.Grid.NumRows).Where(i => game.RowTally[i] >= shipLength))
             {
@@ -123,6 +110,41 @@ namespace BimaruSolver
                         yield return changes;
                     }
                 }
+            }
+        }
+
+        /// <inheritdoc/>
+        public IEnumerable<FieldsToChange<BimaruValue>> GetCompleteChangeTrials(IGame game)
+        {
+            int shipLength = LengthOfLongestMissingShip(game);
+            
+            if (shipLength <= 0)
+            {
+                // All ships are set => Set the non-determined fields to water
+                var trial = UndeterminedToWaterChanges(game);
+
+                if (trial != null)
+                {
+                    yield return trial;
+                }
+
+                yield break;
+            }
+
+            foreach (var trial in GetTrialsForVerticalShips(game, shipLength))
+            {
+                yield return trial;
+            }
+
+            if (shipLength == 1)
+            {
+                // Single ships are already considered
+                yield break;
+            }
+
+            foreach (var trial in GetTrialsForHorizontalShips(game, shipLength))
+            {
+                yield return trial;
             }
         }
     }

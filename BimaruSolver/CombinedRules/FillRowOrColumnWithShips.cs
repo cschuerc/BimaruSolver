@@ -9,7 +9,7 @@ namespace BimaruSolver
     /// if their number equals the number of missing ships in the row or column.
     /// 
     /// A FieldChangedRule as well as a FullGridRule exist, because a FieldChangedRule
-    /// alone would miss the case where a whole row or column is filled with only ships.
+    /// alone might miss the case where a whole row or column is filled with only ships.
     /// However, a FullGridRule is much less efficient than a FieldChangedRule and hence
     /// the FullGridRule is used once and thereafter only the FieldChangedRule.
     /// </summary>

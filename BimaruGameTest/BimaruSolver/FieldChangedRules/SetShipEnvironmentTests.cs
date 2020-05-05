@@ -11,15 +11,12 @@ namespace BimaruSolver
         [TestMethod]
         public void TestWater()
         {
-            int numRows = 3;
-            int numColumns = 3;
-
-            var game = (new GameFactory()).GenerateEmptyGame(numRows, numColumns);
+            var game = (new GameFactory()).GenerateEmptyGame(3, 3);
             var p11 = new GridPoint(1, 1);
-            game.Grid[p11] = BimaruValue.WATER;
-
-            var rule = new SetShipEnvironment();
-            rule.FieldValueChanged(game, new FieldValueChangedEventArgs<BimaruValue>(p11, BimaruValue.UNDETERMINED));
+            using (var subscriber = new ChangedRuleSubscriber(game, new SetShipEnvironment()))
+            {
+                game.Grid[p11] = BimaruValue.WATER;
+            }
 
             Assert.AreEqual(BimaruValue.WATER, game.Grid[p11]);
 
@@ -36,16 +33,16 @@ namespace BimaruSolver
         [TestMethod]
         public void TestSingleShip()
         {
-            int numRows = 3;
-            int numColumns = 3;
-
-            var game = (new GameFactory()).GenerateEmptyGame(numRows, numColumns);
-
+            var game = (new GameFactory()).GenerateEmptyGame(3, 3);
             game.RowTally[1] = 1;
             game.ColumnTally[1] = 1;
             game.ShipSettings[1] = 1;
+
             var p11 = new GridPoint(1, 1);
-            game.Grid[p11] = BimaruValue.SHIP_SINGLE;
+            using (var subscriber = new ChangedRuleSubscriber(game, new SetShipEnvironment()))
+            {
+                game.Grid[p11] = BimaruValue.SHIP_SINGLE;
+            }
 
             // 1xBATTLESHIP
             //   010
@@ -54,28 +51,19 @@ namespace BimaruSolver
             // 1|?S?
             // 0|???
 
-            var rule = new SetShipEnvironment();
-            rule.FieldValueChanged(game, new FieldValueChangedEventArgs<BimaruValue>(p11, BimaruValue.UNDETERMINED));
-
             Assert.IsTrue(game.IsSolved);
         }
 
         [TestMethod]
         public void TestMiddleShip()
         {
-            int numRows = 3;
-            int numColumns = 3;
-
-            var game = (new GameFactory()).GenerateEmptyGame(numRows, numColumns);
+            var game = (new GameFactory()).GenerateEmptyGame(3, 3);
 
             var p11 = new GridPoint(1, 1);
-            game.Grid[p11] = BimaruValue.SHIP_MIDDLE;
-
-
-            var rule = new SetShipEnvironment();
-            rule.FieldValueChanged(game, new FieldValueChangedEventArgs<BimaruValue>(p11, BimaruValue.UNDETERMINED));
-
-            Assert.IsFalse(game.IsSolved);
+            using (var subscriber = new ChangedRuleSubscriber(game, new SetShipEnvironment()))
+            {
+                game.Grid[p11] = BimaruValue.SHIP_MIDDLE;
+            }
 
             Assert.AreEqual(BimaruValue.SHIP_MIDDLE, game.Grid[p11]);
 
@@ -93,16 +81,13 @@ namespace BimaruSolver
         [TestMethod]
         public void TestShipUndet()
         {
-            int numRows = 3;
-            int numColumns = 3;
-
-            var game = (new GameFactory()).GenerateEmptyGame(numRows, numColumns);
+            var game = (new GameFactory()).GenerateEmptyGame(3, 3);
 
             var p11 = new GridPoint(1, 1);
-            game.Grid[p11] = BimaruValue.SHIP_UNDETERMINED;
-
-            var rule = new SetShipEnvironment();
-            rule.FieldValueChanged(game, new FieldValueChangedEventArgs<BimaruValue>(p11, BimaruValue.UNDETERMINED));
+            using (var subscriber = new ChangedRuleSubscriber(game, new SetShipEnvironment()))
+            {
+                game.Grid[p11] = BimaruValue.SHIP_UNDETERMINED;
+            }
 
             Assert.AreEqual(BimaruValue.SHIP_UNDETERMINED, game.Grid[p11]);
 
@@ -120,15 +105,12 @@ namespace BimaruSolver
         [TestMethod]
         public void TestShipCont()
         {
-            int numRows = 3;
-            int numColumns = 3;
-
-            var game = (new GameFactory()).GenerateEmptyGame(numRows, numColumns);
+            var game = (new GameFactory()).GenerateEmptyGame(3, 3);
             var p11 = new GridPoint(1, 1);
-            game.Grid[p11] = BimaruValue.SHIP_CONT_RIGHT;
-
-            var rule = new SetShipEnvironment();
-            rule.FieldValueChanged(game, new FieldValueChangedEventArgs<BimaruValue>(p11, BimaruValue.UNDETERMINED));
+            using (var subscriber = new ChangedRuleSubscriber(game, new SetShipEnvironment()))
+            {
+                game.Grid[p11] = BimaruValue.SHIP_CONT_RIGHT;
+            }
 
             Assert.AreEqual(BimaruValue.SHIP_CONT_RIGHT, game.Grid[p11]);
 
@@ -147,19 +129,19 @@ namespace BimaruSolver
         [TestMethod]
         public void TestShipContOverwrite()
         {
-            int numRows = 3;
-            int numColumns = 3;
-
-            var game = (new GameFactory()).GenerateEmptyGame(numRows, numColumns);
-
+            var game = (new GameFactory()).GenerateEmptyGame(3, 3);
             game.RowTally[1] = 2;
             game.ColumnTally[1] = 1;
             game.ColumnTally[2] = 1;
             game.ShipSettings[2] = 1;
+
             var p11 = new GridPoint(1, 1);
-            game.Grid[p11] = BimaruValue.SHIP_CONT_RIGHT;
             var p12 = new GridPoint(1, 2);
-            game.Grid[p12] = BimaruValue.SHIP_CONT_LEFT;
+            using (var subscriber = new ChangedRuleSubscriber(game, new SetShipEnvironment()))
+            {
+                game.Grid[p11] = BimaruValue.SHIP_CONT_RIGHT;
+                game.Grid[p12] = BimaruValue.SHIP_CONT_LEFT;
+            }
 
             // 1xDESTROYER
             //   011
@@ -167,10 +149,6 @@ namespace BimaruSolver
             // 0|???
             // 2|?SS
             // 0|???
-
-            var rule = new SetShipEnvironment();
-            rule.FieldValueChanged(game, new FieldValueChangedEventArgs<BimaruValue>(p11, BimaruValue.UNDETERMINED));
-            rule.FieldValueChanged(game, new FieldValueChangedEventArgs<BimaruValue>(p12, BimaruValue.UNDETERMINED));
 
             Assert.IsTrue(game.IsSolved);
         }

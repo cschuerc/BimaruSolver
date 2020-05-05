@@ -45,10 +45,10 @@
   <ItemGroup>
     <Compile Include="Game.cs" />
     <Compile Include="GameFactory.cs" />
-    <Compile Include="RollbackGrid.cs" />
+    <Compile Include="Grid\RollbackGrid.cs" />
     <Compile Include="Tally.cs" />
-    <Compile Include="Grid.cs" />
-    <Compile Include="GridBase.cs" />
+    <Compile Include="Grid\Grid.cs" />
+    <Compile Include="Grid\GridBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ShipSettings.cs" />
   </ItemGroup>

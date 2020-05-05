@@ -16,24 +16,16 @@ namespace BimaruSolver
             return new FieldsToChange<BimaruValue>(p, direction, values);
         }
 
-        private static bool AreEqualChanges(FieldsToChange<BimaruValue> first, FieldsToChange<BimaruValue> second)
+        private static void CheckEqualChanges(FieldsToChange<BimaruValue> first, FieldsToChange<BimaruValue> second)
         {
-            if (first.Count() != second.Count())
-            {
-                return false;
-            }
+            Assert.AreEqual(first.Count(), second.Count());
 
             // FieldsToChange contains by design no duplicate SingleChange
             // => Same count and first contained in second is enough for equality
             foreach (var c in first)
             {
-                if (!second.Contains(c))
-                {
-                    return false;
-                }
+                Assert.IsTrue(second.Contains(c));
             }
-
-            return true;
         }
 
         private static void CheckCorrectTrialChanges(
@@ -45,17 +37,25 @@ namespace BimaruSolver
             foreach (var changesExp in expected)
             {
                 var changesActual = actual.FirstOrDefault(a => a.Contains(changesExp.Key));
-                Assert.IsTrue(changesActual != null && AreEqualChanges(changesActual, changesExp.Value));
+
+                Assert.IsNotNull(changesActual);
+                CheckEqualChanges(changesActual, changesExp.Value);
             }
+        }
+
+        [TestMethod]
+        public void TestFullyDetermined()
+        {
+            var game = (new GameFactory()).GenerateEmptyGame(1, 1);
+            game.Grid[new GridPoint(0, 0)] = BimaruValue.SHIP_MIDDLE;
+            var rule = new LongestMissingShip();
+            Assert.AreEqual(0, rule.GetCompleteChangeTrials(game).Count());
         }
 
         [TestMethod]
         public void TestBasic()
         {
-            int numRows = 3;
-            int numColumns = 3;
-
-            var game = (new GameFactory()).GenerateEmptyGame(numRows, numColumns);
+            var game = (new GameFactory()).GenerateEmptyGame(3, 3);
             game.RowTally[1] = 1;
             game.RowTally[2] = 2;
 
@@ -98,10 +98,7 @@ namespace BimaruSolver
         [TestMethod]
         public void TestEmptyGrid()
         {
-            int numRows = 3;
-            int numColumns = 3;
-
-            var game = (new GameFactory()).GenerateEmptyGame(numRows, numColumns);
+            var game = (new GameFactory()).GenerateEmptyGame(3, 3);
             game.RowTally[0] = 3;
             game.RowTally[1] = 2;
             game.RowTally[2] = 3;
@@ -143,10 +140,7 @@ namespace BimaruSolver
         [TestMethod]
         public void TestSingleShip()
         {
-            int numRows = 2;
-            int numColumns = 2;
-
-            var game = (new GameFactory()).GenerateEmptyGame(numRows, numColumns);
+            var game = (new GameFactory()).GenerateEmptyGame(2, 2);
             game.RowTally[0] = 1;
             game.RowTally[1] = 1;
 
@@ -184,10 +178,7 @@ namespace BimaruSolver
         [TestMethod]
         public void TestPreset()
         {
-            int numRows = 3;
-            int numColumns = 3;
-
-            var game = (new GameFactory()).GenerateEmptyGame(numRows, numColumns);
+            var game = (new GameFactory()).GenerateEmptyGame(3, 3);
             game.RowTally[0] = 2;
             game.RowTally[1] = 1;
             game.RowTally[2] = 2;
@@ -232,10 +223,7 @@ namespace BimaruSolver
         [TestMethod]
         public void TestShipLength()
         {
-            int numRows = 3;
-            int numColumns = 3;
-
-            var game = (new GameFactory()).GenerateEmptyGame(numRows, numColumns);
+            var game = (new GameFactory()).GenerateEmptyGame(3, 3);
             game.RowTally[0] = 1;
             game.RowTally[1] = 2;
             game.RowTally[2] = 2;

@@ -27,10 +27,7 @@ namespace BimaruSolver
         [TestMethod]
         public void TestFullyDetermined()
         {
-            int numRows = 1;
-            int numColumns = 1;
-
-            var game = (new GameFactory()).GenerateEmptyGame(numRows, numColumns);
+            var game = (new GameFactory()).GenerateEmptyGame(1, 1);
             game.Grid[new GridPoint(0, 0)] = BimaruValue.SHIP_MIDDLE;
             var rule = new OneMissingShipOrWater(null);
             Assert.AreEqual(0, rule.GetCompleteChangeTrials(game).Count());
@@ -39,10 +36,7 @@ namespace BimaruSolver
         [TestMethod]
         public void TestOneMissingShip()
         {
-            int numRows = 3;
-            int numColumns = 4;
-
-            var game = (new GameFactory()).GenerateEmptyGame(numRows, numColumns);
+            var game = (new GameFactory()).GenerateEmptyGame(3, 4);
             game.Grid[new GridPoint(2, 3)] = BimaruValue.WATER;
             game.RowTally[0] = 2;
             game.RowTally[1] = 2;
@@ -75,10 +69,7 @@ namespace BimaruSolver
         [TestMethod]
         public void TestOneMissingWater()
         {
-            int numRows = 3;
-            int numColumns = 4;
-
-            var game = (new GameFactory()).GenerateEmptyGame(numRows, numColumns);
+            var game = (new GameFactory()).GenerateEmptyGame(3, 4);
             game.Grid[new GridPoint(2, 3)] = BimaruValue.SHIP_UNDETERMINED;
             game.RowTally[0] = 2;
             game.RowTally[1] = 2;
@@ -129,10 +120,7 @@ namespace BimaruSolver
         [TestMethod]
         public void TestNeverOneMissing()
         {
-            int numRows = 2;
-            int numColumns = 4;
-
-            var game = (new GameFactory()).GenerateEmptyGame(numRows, numColumns);
+            var game = (new GameFactory()).GenerateEmptyGame(2, 4);
             game.RowTally[0] = 2;
             game.RowTally[1] = 2;
             game.ColumnTally[0] = 2;
