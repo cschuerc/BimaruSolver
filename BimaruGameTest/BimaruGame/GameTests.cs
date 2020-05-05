@@ -8,16 +8,6 @@ namespace BimaruGame
     [TestClass]
     public class GameTests
     {
-        private Game SetupGame(int numRows, int numColumns)
-        {
-            var rowTally = new Tally(numRows);
-            Tally columnTally = new Tally(numColumns);
-            ShipSettings settings = new ShipSettings();
-            RollbackGrid grid = new RollbackGrid(numRows, numColumns);
-
-            return new Game(rowTally, columnTally, settings, grid);
-        }
-
         [TestMethod]
         public void TestNullArguments()
         {
@@ -71,7 +61,7 @@ namespace BimaruGame
             int numRows = 4;
             int numColumns = 3;
 
-            Game game = SetupGame(numRows, numColumns);
+            IGame game = (new GameFactory()).GenerateEmptyGame(numRows, numColumns);
 
             game.ShipSettings[1] = 1;
             game.ShipSettings[2] = 1;
@@ -110,7 +100,7 @@ namespace BimaruGame
             int numRows = 4;
             int numColumns = 3;
 
-            Game game = SetupGame(numRows, numColumns);
+            IGame game = (new GameFactory()).GenerateEmptyGame(numRows, numColumns);
 
             Assert.IsFalse(game.IsUnsolvable);
 
@@ -145,7 +135,7 @@ namespace BimaruGame
             int numRows = 4;
             int numColumns = 3;
 
-            Game game = SetupGame(numRows, numColumns);
+            IGame game = (new GameFactory()).GenerateEmptyGame(numRows, numColumns);
 
             Assert.IsTrue(game.IsValid);
 
@@ -200,7 +190,7 @@ namespace BimaruGame
             int numRows = 4;
             int numColumns = 3;
 
-            Game game = SetupGame(numRows, numColumns);
+            IGame game = (new GameFactory()).GenerateEmptyGame(numRows, numColumns);
 
             Assert.IsFalse(game.IsSolved);
 

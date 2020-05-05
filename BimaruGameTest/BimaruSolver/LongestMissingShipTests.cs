@@ -10,16 +10,6 @@ namespace BimaruSolver
     [TestClass]
     public class LongestMissingShipTests
     {
-        private static Game SetupGame(int numRows, int numColumns)
-        {
-            var rowTally = new Tally(numRows);
-            Tally columnTally = new Tally(numColumns);
-            ShipSettings settings = new ShipSettings();
-            RollbackGrid grid = new RollbackGrid(numRows, numColumns);
-
-            return new Game(rowTally, columnTally, settings, grid);
-        }
-
         private static FieldsToChange<BimaruValue> GenChangesShip(GridPoint p, Direction direction, int shipLength)
         {
             var values = BimaruValueExtensions.FieldValuesOfShip(direction, shipLength);
@@ -65,7 +55,7 @@ namespace BimaruSolver
             int numRows = 3;
             int numColumns = 3;
 
-            var game = SetupGame(numRows, numColumns);
+            var game = (new GameFactory()).GenerateEmptyGame(numRows, numColumns);
             game.RowTally[1] = 1;
             game.RowTally[2] = 2;
 
@@ -111,7 +101,7 @@ namespace BimaruSolver
             int numRows = 3;
             int numColumns = 3;
 
-            var game = SetupGame(numRows, numColumns);
+            var game = (new GameFactory()).GenerateEmptyGame(numRows, numColumns);
             game.RowTally[0] = 3;
             game.RowTally[1] = 2;
             game.RowTally[2] = 3;
@@ -156,7 +146,7 @@ namespace BimaruSolver
             int numRows = 2;
             int numColumns = 2;
 
-            var game = SetupGame(numRows, numColumns);
+            var game = (new GameFactory()).GenerateEmptyGame(numRows, numColumns);
             game.RowTally[0] = 1;
             game.RowTally[1] = 1;
 
@@ -197,7 +187,7 @@ namespace BimaruSolver
             int numRows = 3;
             int numColumns = 3;
 
-            var game = SetupGame(numRows, numColumns);
+            var game = (new GameFactory()).GenerateEmptyGame(numRows, numColumns);
             game.RowTally[0] = 2;
             game.RowTally[1] = 1;
             game.RowTally[2] = 2;
@@ -245,7 +235,7 @@ namespace BimaruSolver
             int numRows = 3;
             int numColumns = 3;
 
-            var game = SetupGame(numRows, numColumns);
+            var game = (new GameFactory()).GenerateEmptyGame(numRows, numColumns);
             game.RowTally[0] = 1;
             game.RowTally[1] = 2;
             game.RowTally[2] = 2;

@@ -1,37 +1,37 @@
 using BimaruDatabase;
-using BimaruInterfaces;
+using BimaruGame;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
 using System.Runtime.Serialization.Formatters.Binary;
 
 namespace BimaruSolver
 {
     [TestClass]
-    public class SolveInstancesTests
+    public class SolverFactoryTests
     {
-        private static Solver SetupSolver(ITrialAndErrorRule trialRule, bool shallCountSolutions)
+        [TestMethod]
+        public void TestFactory()
         {
-            var fieldChangedRules = new List<IFieldChangedRule>()
-            {   new SetShipEnvironment(),
-                new FillRowOrColumnWithWater(),
-                new FillRowOrColumnWithShips(),
-                new DetermineShipFields()
-            };
+            var solverNonCounting = (new SolverFactory()).GenerateSolver(false);
+            var game = (new GameFactory()).GenerateGameTwoSolutions();
 
-            var fullGridRules = new List<IFullGridRule>()
-            {   new FillRowOrColumnWithWater(),
-                new FillRowOrColumnWithShips()
-            };
+            Assert.IsFalse(game.IsSolved);
+            int numSolutions = solverNonCounting.Solve(game);
+            Assert.IsTrue(game.IsSolved);
+            Assert.AreEqual(1, numSolutions);
 
-            var trialAndErrorRule = new LongestMissingShip();
+            var solverCounting = (new SolverFactory()).GenerateSolver(true);
+            game = (new GameFactory()).GenerateGameTwoSolutions();
 
-            return new Solver(fieldChangedRules, fullGridRules, trialRule, shallCountSolutions);
+            Assert.IsFalse(game.IsSolved);
+            numSolutions = solverCounting.Solve(game);
+            Assert.IsTrue(game.IsSolved);
+            Assert.AreEqual(2, numSolutions);
         }
 
         [TestMethod]
         public void TestAllGamesNonCounting()
         {
-            var solver = SetupSolver(new LongestMissingShip(), false);
+            var solver = (new SolverFactory()).GenerateSolver(false);
             var database = new Database(new BinaryFormatter());
 
             foreach (var databaseGame in database.GetAllGames(null))
@@ -47,7 +47,7 @@ namespace BimaruSolver
         [TestMethod]
         public void TestAllGamesCounting()
         {
-            var solver = SetupSolver(new OneMissingShipOrWater(new BruteForce()), true);
+            var solver = (new SolverFactory()).GenerateSolver(true);
             var database = new Database(new BinaryFormatter());
 
             foreach (var databaseGame in database.GetAllGames(null))

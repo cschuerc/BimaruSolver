@@ -47,6 +47,7 @@
     <Compile Include="CombinedRules\FillRowOrColumnWithShips.cs" />
     <Compile Include="FieldChangedRules\DetermineShipFields.cs" />
     <Compile Include="FieldChangedRules\SetShipEnvironment.cs" />
+    <Compile Include="SolverFactory.cs" />
     <Compile Include="TrialAndErrorRules\BruteForce.cs" />
     <Compile Include="TrialAndErrorRules\OneMissingShipOrWater.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

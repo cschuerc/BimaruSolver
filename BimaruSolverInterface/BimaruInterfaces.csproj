@@ -48,6 +48,7 @@
     <Compile Include="BimaruSolver\ITrialAndErrorRule.cs" />
     <Compile Include="BimaruDatabase\GameDifficulty.cs" />
     <Compile Include="BimaruDatabase\GameSize.cs" />
+    <Compile Include="BimaruGame\IGameFactory.cs" />
     <Compile Include="General\BimaruValue.cs" />
     <Compile Include="General\BimaruValueConstraint.cs" />
     <Compile Include="BimaruGame\IGame.cs" />
@@ -61,6 +62,7 @@
     <Compile Include="BimaruDatabase\IDatabaseGame.cs" />
     <Compile Include="BimaruDatabase\IGameMetaInfo.cs" />
     <Compile Include="BimaruDatabase\IDatabase.cs" />
+    <Compile Include="BimaruSolver\ISolverFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

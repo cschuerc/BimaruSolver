@@ -8,23 +8,13 @@ namespace BimaruSolver
     [TestClass]
     public class SetShipEnvironmentTests
     {
-        private static Game SetupGame(int numRows, int numColumns)
-        {
-            var rowTally = new Tally(numRows);
-            Tally columnTally = new Tally(numColumns);
-            ShipSettings settings = new ShipSettings();
-            RollbackGrid grid = new RollbackGrid(numRows, numColumns);
-
-            return new Game(rowTally, columnTally, settings, grid);
-        }
-
         [TestMethod]
         public void TestWater()
         {
             int numRows = 3;
             int numColumns = 3;
 
-            var game = SetupGame(numRows, numColumns);
+            var game = (new GameFactory()).GenerateEmptyGame(numRows, numColumns);
             var p11 = new GridPoint(1, 1);
             game.Grid.SetFieldValue(p11, BimaruValue.WATER);
 
@@ -49,7 +39,7 @@ namespace BimaruSolver
             int numRows = 3;
             int numColumns = 3;
 
-            var game = SetupGame(numRows, numColumns);
+            var game = (new GameFactory()).GenerateEmptyGame(numRows, numColumns);
 
             game.RowTally[1] = 1;
             game.ColumnTally[1] = 1;
@@ -76,7 +66,7 @@ namespace BimaruSolver
             int numRows = 3;
             int numColumns = 3;
 
-            var game = SetupGame(numRows, numColumns);
+            var game = (new GameFactory()).GenerateEmptyGame(numRows, numColumns);
 
             var p11 = new GridPoint(1, 1);
             game.Grid.SetFieldValue(p11, BimaruValue.SHIP_MIDDLE);
@@ -106,7 +96,7 @@ namespace BimaruSolver
             int numRows = 3;
             int numColumns = 3;
 
-            var game = SetupGame(numRows, numColumns);
+            var game = (new GameFactory()).GenerateEmptyGame(numRows, numColumns);
 
             var p11 = new GridPoint(1, 1);
             game.Grid.SetFieldValue(p11, BimaruValue.SHIP_UNDETERMINED);
@@ -133,7 +123,7 @@ namespace BimaruSolver
             int numRows = 3;
             int numColumns = 3;
 
-            var game = SetupGame(numRows, numColumns);
+            var game = (new GameFactory()).GenerateEmptyGame(numRows, numColumns);
             var p11 = new GridPoint(1, 1);
             game.Grid.SetFieldValue(p11, BimaruValue.SHIP_CONT_RIGHT);
 
@@ -160,7 +150,7 @@ namespace BimaruSolver
             int numRows = 3;
             int numColumns = 3;
 
-            var game = SetupGame(numRows, numColumns);
+            var game = (new GameFactory()).GenerateEmptyGame(numRows, numColumns);
 
             game.RowTally[1] = 2;
             game.ColumnTally[1] = 1;

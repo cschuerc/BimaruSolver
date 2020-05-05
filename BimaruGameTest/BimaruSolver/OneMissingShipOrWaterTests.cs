@@ -11,16 +11,6 @@ namespace BimaruSolver
     [TestClass]
     public class OneMissingShipOrWaterTests
     {
-        private static Game SetupGame(int numRows, int numColumns)
-        {
-            var rowTally = new Tally(numRows);
-            Tally columnTally = new Tally(numColumns);
-            ShipSettings settings = new ShipSettings();
-            RollbackGrid grid = new RollbackGrid(numRows, numColumns);
-
-            return new Game(rowTally, columnTally, settings, grid);
-        }
-
         private static void CheckCorrectTrialChanges(
             IEnumerable<SingleChange<BimaruValue>> expected,
             IEnumerable<FieldsToChange<BimaruValue>> actual)
@@ -40,7 +30,7 @@ namespace BimaruSolver
             int numRows = 1;
             int numColumns = 1;
 
-            var game = SetupGame(numRows, numColumns);
+            var game = (new GameFactory()).GenerateEmptyGame(numRows, numColumns);
             game.Grid.SetFieldValue(new GridPoint(0, 0), BimaruValue.SHIP_MIDDLE);
             var rule = new OneMissingShipOrWater(null);
             Assert.AreEqual(0, rule.GetCompleteChangeTrials(game).Count());
@@ -52,7 +42,7 @@ namespace BimaruSolver
             int numRows = 3;
             int numColumns = 4;
 
-            var game = SetupGame(numRows, numColumns);
+            var game = (new GameFactory()).GenerateEmptyGame(numRows, numColumns);
             game.Grid.SetFieldValue(new GridPoint(2, 3), BimaruValue.WATER);
             game.RowTally[0] = 2;
             game.RowTally[1] = 2;
@@ -88,7 +78,7 @@ namespace BimaruSolver
             int numRows = 3;
             int numColumns = 4;
 
-            var game = SetupGame(numRows, numColumns);
+            var game = (new GameFactory()).GenerateEmptyGame(numRows, numColumns);
             game.Grid.SetFieldValue(new GridPoint(2, 3), BimaruValue.SHIP_UNDETERMINED);
             game.RowTally[0] = 2;
             game.RowTally[1] = 2;
@@ -142,7 +132,7 @@ namespace BimaruSolver
             int numRows = 2;
             int numColumns = 4;
 
-            var game = SetupGame(numRows, numColumns);
+            var game = (new GameFactory()).GenerateEmptyGame(numRows, numColumns);
             game.RowTally[0] = 2;
             game.RowTally[1] = 2;
             game.ColumnTally[0] = 2;

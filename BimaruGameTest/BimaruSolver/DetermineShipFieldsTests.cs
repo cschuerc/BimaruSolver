@@ -9,16 +9,6 @@ namespace BimaruSolver
     [TestClass]
     public class DetermineShipFieldsTests
     {
-        private static Game SetupGame(int numRows, int numColumns)
-        {
-            var rowTally = new Tally(numRows);
-            Tally columnTally = new Tally(numColumns);
-            ShipSettings settings = new ShipSettings();
-            RollbackGrid grid = new RollbackGrid(numRows, numColumns);
-
-            return new Game(rowTally, columnTally, settings, grid);
-        }
-
         private static void SubscribeRule(IGame game)
         {
             var rule = new DetermineShipFields();
@@ -32,14 +22,13 @@ namespace BimaruSolver
         }
 
 
-
         [TestMethod]
         public void TestDetShipSingle()
         {
             int numRows = 3;
             int numColumns = 3;
 
-            var game = SetupGame(numRows, numColumns);
+            var game = (new GameFactory()).GenerateEmptyGame(numRows, numColumns);
             SubscribeRule(game);
 
             var p11 = new GridPoint(1, 1);
@@ -65,7 +54,7 @@ namespace BimaruSolver
 
             var p11 = new GridPoint(1, 1);
 
-            var game = SetupGame(numRows, numColumns);
+            var game = (new GameFactory()).GenerateEmptyGame(numRows, numColumns);
             SubscribeRule(game);
             game.Grid.SetFieldValue(p11, BimaruValue.SHIP_UNDETERMINED);
             game.Grid.SetFieldValue(new GridPoint(1, 0), BimaruValue.SHIP_UNDETERMINED);
@@ -78,7 +67,7 @@ namespace BimaruSolver
             Assert.AreEqual(BimaruValue.SHIP_MIDDLE, game.Grid.GetFieldValue(p11));
 
 
-            game = SetupGame(numRows, numColumns);
+            game = (new GameFactory()).GenerateEmptyGame(numRows, numColumns);
             SubscribeRule(game);
             game.Grid.SetFieldValue(p11, BimaruValue.SHIP_UNDETERMINED);
             game.Grid.SetFieldValue(new GridPoint(0, 1), BimaruValue.SHIP_UNDETERMINED);
@@ -99,7 +88,7 @@ namespace BimaruSolver
 
             var p11 = new GridPoint(1, 1);
 
-            var game = SetupGame(numRows, numColumns);
+            var game = (new GameFactory()).GenerateEmptyGame(numRows, numColumns);
             SubscribeRule(game);
             game.Grid.SetFieldValue(p11, BimaruValue.SHIP_UNDETERMINED);
             game.Grid.SetFieldValue(new GridPoint(1, 0), BimaruValue.WATER);
@@ -112,7 +101,7 @@ namespace BimaruSolver
             Assert.AreEqual(BimaruValue.SHIP_CONT_RIGHT, game.Grid.GetFieldValue(p11));
 
 
-            game = SetupGame(numRows, numColumns);
+            game = (new GameFactory()).GenerateEmptyGame(numRows, numColumns);
             SubscribeRule(game);
             game.Grid.SetFieldValue(p11, BimaruValue.SHIP_UNDETERMINED);
             game.Grid.SetFieldValue(new GridPoint(1, 0), BimaruValue.SHIP_UNDETERMINED);
@@ -125,7 +114,7 @@ namespace BimaruSolver
             Assert.AreEqual(BimaruValue.SHIP_CONT_LEFT, game.Grid.GetFieldValue(p11));
 
 
-            game = SetupGame(numRows, numColumns);
+            game = (new GameFactory()).GenerateEmptyGame(numRows, numColumns);
             SubscribeRule(game);
             game.Grid.SetFieldValue(p11, BimaruValue.SHIP_UNDETERMINED);
             game.Grid.SetFieldValue(new GridPoint(0, 1), BimaruValue.WATER);
@@ -138,7 +127,7 @@ namespace BimaruSolver
             Assert.AreEqual(BimaruValue.SHIP_CONT_UP, game.Grid.GetFieldValue(p11));
 
 
-            game = SetupGame(numRows, numColumns);
+            game = (new GameFactory()).GenerateEmptyGame(numRows, numColumns);
             SubscribeRule(game);
             game.Grid.SetFieldValue(p11, BimaruValue.SHIP_UNDETERMINED);
             game.Grid.SetFieldValue(new GridPoint(0, 1), BimaruValue.SHIP_UNDETERMINED);
@@ -159,7 +148,7 @@ namespace BimaruSolver
 
             var p11 = new GridPoint(1, 1);
 
-            var game = SetupGame(numRows, numColumns);
+            var game = (new GameFactory()).GenerateEmptyGame(numRows, numColumns);
             SubscribeRule(game);
             game.Grid.SetFieldValue(p11, BimaruValue.SHIP_MIDDLE);
 
@@ -173,7 +162,7 @@ namespace BimaruSolver
             Assert.AreEqual(BimaruValue.UNDETERMINED, game.Grid.GetFieldValue(new GridPoint(2, 1)));
 
 
-            game = SetupGame(numRows, numColumns);
+            game = (new GameFactory()).GenerateEmptyGame(numRows, numColumns);
             SubscribeRule(game);
             game.Grid.SetFieldValue(p11, BimaruValue.SHIP_MIDDLE);
             game.Grid.SetFieldValue(new GridPoint(0, 1), BimaruValue.UNDETERMINED);
@@ -189,7 +178,7 @@ namespace BimaruSolver
             Assert.AreEqual(BimaruValue.SHIP_CONT_DOWN, game.Grid.GetFieldValue(new GridPoint(2, 1)));
 
 
-            game = SetupGame(numRows, numColumns);
+            game = (new GameFactory()).GenerateEmptyGame(numRows, numColumns);
             SubscribeRule(game);
             game.Grid.SetFieldValue(p11, BimaruValue.SHIP_MIDDLE);
             game.Grid.SetFieldValue(new GridPoint(0, 1), BimaruValue.UNDETERMINED);
@@ -211,7 +200,7 @@ namespace BimaruSolver
             int numRows = 5;
             int numColumns = 5;
 
-            var game = SetupGame(numRows, numColumns);
+            var game = (new GameFactory()).GenerateEmptyGame(numRows, numColumns);
             SubscribeRule(game);
             game.Grid.SetFieldValue(new GridPoint(0, 0), BimaruValue.SHIP_UNDETERMINED);
             game.Grid.SetFieldValue(new GridPoint(0, 1), BimaruValue.SHIP_MIDDLE);

@@ -19,40 +19,29 @@ namespace BimaruDatabaseGenerator
             }
         }
 
-        private static ITally GenerateTally(int[] tallyData)
+        private static void CopyToTally(ITally tally, int[] tallyData)
         {
-            var tally = new Tally(tallyData.Length);
-
             for (int i = 0; i < tallyData.Length; i++)
             {
                 tally[i] = tallyData[i];
             }
-
-            return tally;
         }
 
-        private static IShipSettings GenerateShipSettings(int[] shipSettingsData)
+        private static void CopyToShipSettings(IShipSettings settings, int[] shipSettingsData)
         {
-            var settings = new ShipSettings();
-
             // Ignore shipSettingsData[0], as 0-length ships do not exist
             for (int i = 1; i < shipSettingsData.Length; i++)
             {
                 settings[i] = shipSettingsData[i];
             }
-
-            return settings;
         }
 
-        private static IRollbackGrid GenerateGrid(int numRows, int numColumns, IEnumerable<Tuple<GridPoint, BimaruValue>> initialFieldValues)
+        private static void CopyToGrid(IGrid grid, IEnumerable<Tuple<GridPoint, BimaruValue>> initialFieldValues)
         {
-            var grid = new RollbackGrid(numRows, numColumns);
             foreach (var c in initialFieldValues)
             {
                 grid.SetFieldValue(c.Item1, c.Item2);
             }
-
-            return grid;
         }
 
         private static IGame GenerateGame(
@@ -61,12 +50,14 @@ namespace BimaruDatabaseGenerator
             int[] shipSettingsData,
             IEnumerable<Tuple<GridPoint, BimaruValue>> initialFieldValues)
         {
-            var rowTally = GenerateTally(rowTallyData);
-            var columnTally = GenerateTally(columnTallyData);
-            var shipSettings = GenerateShipSettings(shipSettingsData);
-            var grid = GenerateGrid(rowTally.Length, columnTally.Length, initialFieldValues);
+            var game = (new GameFactory()).GenerateEmptyGame(rowTallyData.Length, columnTallyData.Length);
 
-            return new Game(rowTally, columnTally, shipSettings, grid);
+            CopyToTally(game.RowTally, rowTallyData);
+            CopyToTally(game.ColumnTally, columnTallyData);
+            CopyToShipSettings(game.ShipSettings, shipSettingsData);
+            CopyToGrid(game.Grid, initialFieldValues);
+
+            return game;
         }
 
         private static IDatabaseGame GenerateDatabaseGame(
@@ -92,7 +83,6 @@ namespace BimaruDatabaseGenerator
             {
                 using (Stream fileStream = File.Create(string.Format(databaseNameFormat, game.MetaInfo.ID)))
                 {
-
                     serializer.Serialize(fileStream, game);
                 }
             }

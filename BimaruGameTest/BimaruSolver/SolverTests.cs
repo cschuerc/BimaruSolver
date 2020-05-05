@@ -10,35 +10,20 @@ namespace BimaruSolver
     [TestClass]
     public class SolverTests
     {
-        private static Game SetupGame(int numRows, int numColumns)
-        {
-            var rowTally = new Tally(numRows);
-            Tally columnTally = new Tally(numColumns);
-            ShipSettings settings = new ShipSettings();
-            RollbackGrid grid = new RollbackGrid(numRows, numColumns);
-
-            return new Game(rowTally, columnTally, settings, grid);
-        }
-
         [TestMethod]
         public void TestNullArguments()
         {
-            int numRows = 4;
-            int numColumns = 3;
-
-            var game = SetupGame(numRows, numColumns);
+            var game = (new GameFactory()).GenerateGameOneSolution();
 
             var solver = new Solver(null, null, null);
-            solver.Solve(game);
+            Assert.AreEqual(0, solver.Solve(game));
+            Assert.IsFalse(game.IsSolved);
         }
 
         [TestMethod]
         public void TestInvalidCounting()
         {
-            int numRows = 4;
-            int numColumns = 3;
-
-            var game = SetupGame(numRows, numColumns);
+            var game = (new GameFactory()).GenerateGameOneSolution();
 
             Assert.ThrowsException<ArgumentException>(() => new Solver(null, null, null, true));
 
@@ -47,69 +32,36 @@ namespace BimaruSolver
         }
 
         [TestMethod]
-        public void TestInvalidGame()
+        public void TestNoRules()
         {
-            int numRows = 2;
-            int numColumns = 2;
-
-            var game = SetupGame(numRows, numColumns);
-            game.RowTally[0] = 1;
-
+            var game = (new GameFactory()).GenerateGameOneSolution();
             var solver = new Solver(null, null, null);
 
             Assert.AreEqual(0, solver.Solve(game));
-
             Assert.IsFalse(game.IsSolved);
         }
 
         [TestMethod]
         public void TestTrialAndErrorRuleSuccess()
         {
-            int numRows = 2;
-            int numColumns = 2;
+            var game = (new GameFactory()).GenerateGameOneSolution();
 
-            var game = SetupGame(numRows, numColumns);
-            var solver = new Solver(null, null, new BruteForce(), true);
+            var unsolvedValues = new Dictionary<GridPoint, BimaruValue>();
+            foreach (var p in game.Grid.AllPoints())
+            {
+                unsolvedValues[p] = game.Grid.GetFieldValue(p);
+            }
+
+            var solver = new Solver(null, null, new BruteForce());
             Assert.AreEqual(1, solver.Solve(game));
-
-            //   00
-            //   --
-            // 0|WW
-            // 0|WW
-
             Assert.IsTrue(game.IsSolved);
-            Assert.AreEqual(BimaruValue.WATER, game.Grid.GetFieldValue(new GridPoint(0, 0)));
-            Assert.AreEqual(BimaruValue.WATER, game.Grid.GetFieldValue(new GridPoint(1, 0)));
-            Assert.AreEqual(BimaruValue.WATER, game.Grid.GetFieldValue(new GridPoint(0, 1)));
-            Assert.AreEqual(BimaruValue.WATER, game.Grid.GetFieldValue(new GridPoint(1, 1)));
-
-            game = SetupGame(numRows, numColumns);
-            game.Grid.SetFieldValue(new GridPoint(0, 1), BimaruValue.SHIP_UNDETERMINED);
-            game.RowTally[0] = 1;
-            game.RowTally[1] = 1;
-            game.ColumnTally[1] = 2;
-            game.ShipSettings[2] = 1;
-
-            // 1xDESTROYER
-            //   02
-            //   --
-            // 1|WS
-            // 1|WS
-
-            Assert.AreEqual(1, solver.Solve(game));
-
-            Assert.IsTrue(game.IsSolved);
-            Assert.AreEqual(BimaruValue.WATER, game.Grid.GetFieldValue(new GridPoint(0, 0)));
-            Assert.AreEqual(BimaruValue.WATER, game.Grid.GetFieldValue(new GridPoint(1, 0)));
-            Assert.AreEqual(BimaruValue.SHIP_CONT_UP, game.Grid.GetFieldValue(new GridPoint(0, 1)));
-            Assert.AreEqual(BimaruValue.SHIP_CONT_DOWN, game.Grid.GetFieldValue(new GridPoint(1, 1)));
 
             game.Grid.Rollback();
             Assert.IsFalse(game.IsSolved);
-            Assert.AreEqual(BimaruValue.UNDETERMINED, game.Grid.GetFieldValue(new GridPoint(0, 0)));
-            Assert.AreEqual(BimaruValue.UNDETERMINED, game.Grid.GetFieldValue(new GridPoint(1, 0)));
-            Assert.AreEqual(BimaruValue.SHIP_UNDETERMINED, game.Grid.GetFieldValue(new GridPoint(0, 1)));
-            Assert.AreEqual(BimaruValue.UNDETERMINED, game.Grid.GetFieldValue(new GridPoint(1, 1)));
+            foreach (var p in game.Grid.AllPoints())
+            {
+                Assert.AreEqual(unsolvedValues[p], game.Grid.GetFieldValue(p));
+            }
 
             // Check no more grids on the stack
             Assert.ThrowsException<InvalidOperationException>(() => game.Grid.Rollback());
@@ -118,31 +70,11 @@ namespace BimaruSolver
         [TestMethod]
         public void TestTrialAndErrorRuleFail()
         {
-            int numRows = 2;
-            int numColumns = 2;
-
-            var game = SetupGame(numRows, numColumns);
-            game.RowTally[0] = 1;
-            game.RowTally[1] = 1;
-            game.ColumnTally[0] = 1;
-            game.ColumnTally[1] = 1;
-            game.ShipSettings[1] = 2;
-
-            // 2xSUBMARINE
-            //   11
-            //   --
-            // 1|SW
-            // 1|WS
-            // -> No solution
+            var game = (new GameFactory()).GenerateGameNoSolution();
 
             var solver = new Solver(null, null, new BruteForce(), true);
             Assert.AreEqual(0, solver.Solve(game));
-
             Assert.IsFalse(game.IsSolved);
-            Assert.AreEqual(BimaruValue.UNDETERMINED, game.Grid.GetFieldValue(new GridPoint(0, 0)));
-            Assert.AreEqual(BimaruValue.UNDETERMINED, game.Grid.GetFieldValue(new GridPoint(1, 0)));
-            Assert.AreEqual(BimaruValue.UNDETERMINED, game.Grid.GetFieldValue(new GridPoint(0, 1)));
-            Assert.AreEqual(BimaruValue.UNDETERMINED, game.Grid.GetFieldValue(new GridPoint(1, 1)));
 
             // No solution => Only a single grid on the stack
             Assert.ThrowsException<InvalidOperationException>(() => game.Grid.Rollback());
@@ -194,7 +126,7 @@ namespace BimaruSolver
             int numRows = 2;
             int numColumns = 2;
 
-            var game = SetupGame(numRows, numColumns);
+            var game = (new GameFactory()).GenerateEmptyGame(numRows, numColumns);
             game.Grid.SetFieldValue(new GridPoint(0, 0), BimaruValue.SHIP_SINGLE);
             game.Grid.SetFieldValue(new GridPoint(0, 1), BimaruValue.WATER);
             game.RowTally[0] = 1;
@@ -209,13 +141,7 @@ namespace BimaruSolver
 
             var changeLogger = new ChangeLogger();
             var solver = new Solver(new List<IFieldChangedRule>() { changeLogger }, null, null);
-            Assert.AreEqual(0, solver.Solve(game));
-
-            Assert.IsFalse(game.IsSolved);
-            Assert.AreEqual(BimaruValue.SHIP_SINGLE, game.Grid.GetFieldValue(new GridPoint(0, 0)));
-            Assert.AreEqual(BimaruValue.UNDETERMINED, game.Grid.GetFieldValue(new GridPoint(1, 0)));
-            Assert.AreEqual(BimaruValue.WATER, game.Grid.GetFieldValue(new GridPoint(0, 1)));
-            Assert.AreEqual(BimaruValue.UNDETERMINED, game.Grid.GetFieldValue(new GridPoint(1, 1)));
+            solver.Solve(game);
 
             Assert.AreEqual(2, changeLogger.Changes.Count);
 
@@ -228,19 +154,7 @@ namespace BimaruSolver
         [TestMethod]
         public void TestCorrectUnsubscription()
         {
-            int numRows = 2;
-            int numColumns = 2;
-
-            var game = SetupGame(numRows, numColumns);
-            game.RowTally[0] = 1;
-            game.ColumnTally[0] = 1;
-            game.ShipSettings[1] = 1;
-
-            // 1xSUBMARINE
-            //   10
-            //   --
-            // 0|??
-            // 1|??
+            var game = (new GameFactory()).GenerateGameOneSolution();
 
             var solver = new Solver(null, null, null);
             Assert.AreEqual(0, solver.Solve(game));
@@ -256,7 +170,7 @@ namespace BimaruSolver
             int numRows = 2;
             int numColumns = 2;
 
-            var game = SetupGame(numRows, numColumns);
+            var game = (new GameFactory()).GenerateEmptyGame(numRows, numColumns);
             game.RowTally[0] = 1;
             game.ColumnTally[0] = 1;
             game.ShipSettings[1] = 1;
@@ -267,34 +181,27 @@ namespace BimaruSolver
             // 0|??
             // 1|??
 
-            var fieldChangedRules = new List<IFieldChangedRule>() { new WaterAroundSingleShip() };
-            var fullGridRules = new List<IFullGridRule>() { new OneShipRowCol() };
+            var fieldChangedRules = new List<IFieldChangedRule>()
+            {
+                new FillRowOrColumnWithShips(),
+                new DetermineShipFields()
+            };
+
+            var fullGridRules = new List<IFullGridRule>()
+            {
+                new FillRowOrColumnWithWater()
+            };
+
             var solver = new Solver(fieldChangedRules, fullGridRules, null);
             Assert.AreEqual(1, solver.Solve(game));
 
             Assert.IsTrue(game.IsSolved);
-            Assert.AreEqual(BimaruValue.SHIP_SINGLE, game.Grid.GetFieldValue(new GridPoint(0, 0)));
-            Assert.AreEqual(BimaruValue.WATER, game.Grid.GetFieldValue(new GridPoint(1, 0)));
-            Assert.AreEqual(BimaruValue.WATER, game.Grid.GetFieldValue(new GridPoint(0, 1)));
-            Assert.AreEqual(BimaruValue.WATER, game.Grid.GetFieldValue(new GridPoint(1, 1)));
         }
 
         [TestMethod]
         public void TestOnceRule()
         {
-            int numRows = 2;
-            int numColumns = 2;
-
-            var game = SetupGame(numRows, numColumns);
-            game.RowTally[0] = 1;
-            game.ColumnTally[0] = 1;
-            game.ShipSettings[1] = 1;
-
-            // 1xSUBMARINE
-            //   10
-            //   --
-            // 0|??
-            // 1|??
+            var game = (new GameFactory()).GenerateGameOneSolution();
 
             var changesOnce = new ChangeLogger(true);
             var changesUnlimited = new ChangeLogger(false);
@@ -308,19 +215,7 @@ namespace BimaruSolver
         [TestMethod]
         public void TestNonChanging()
         {
-            int numRows = 2;
-            int numColumns = 2;
-
-            var game = SetupGame(numRows, numColumns);
-            game.RowTally[0] = 1;
-            game.ColumnTally[0] = 1;
-            game.ShipSettings[1] = 1;
-
-            // 1xSUBMARINE
-            //   10
-            //   --
-            // 0|??
-            // 1|??
+            var game = (new GameFactory()).GenerateGameOneSolution();
 
             var solver = new Solver(null, null, new SingleTrivialChange());
 
@@ -332,38 +227,16 @@ namespace BimaruSolver
         [TestMethod]
         public void TestSeveralSolutions()
         {
-            int numRows = 2;
-            int numColumns = 3;
-
-            var game = SetupGame(numRows, numColumns);
-            game.RowTally[0] = 1;
-            game.RowTally[1] = 1;
-            game.ColumnTally[0] = 1;
-            game.ColumnTally[2] = 1;
-            game.ShipSettings[1] = 2;
-
-            // 2xSUBMARINE
-            //   101
-            //   ---
-            // 1|???
-            // 1|???
-            // => Has 2 solutions
-
+            var game = (new GameFactory()).GenerateGameTwoSolutions();
             var solver = new Solver(null, null, new BruteForce(), true);
             Assert.AreEqual(2, solver.Solve(game));
-
             Assert.IsTrue(game.IsSolved);
-            Assert.AreEqual(BimaruValue.WATER, game.Grid.GetFieldValue(new GridPoint(0, 1)));
-            Assert.AreEqual(BimaruValue.WATER, game.Grid.GetFieldValue(new GridPoint(1, 1)));
 
-            game.Grid.Rollback();
 
+            game = (new GameFactory()).GenerateGameTwoSolutions();
             solver = new Solver(null, null, new BruteForce(), false);
             Assert.AreEqual(1, solver.Solve(game));
-
             Assert.IsTrue(game.IsSolved);
-            Assert.AreEqual(BimaruValue.WATER, game.Grid.GetFieldValue(new GridPoint(0, 1)));
-            Assert.AreEqual(BimaruValue.WATER, game.Grid.GetFieldValue(new GridPoint(1, 1)));
         }
     }
 }
