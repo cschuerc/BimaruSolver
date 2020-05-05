@@ -40,30 +40,28 @@ namespace BimaruGame
         /// </summary>
         /// <param name="point"> Point whose grid field value is returned </param>
         /// <returns> Value of the desired grid field </returns>
-        public override BimaruValue GetFieldValue(GridPoint point)
+        public override BimaruValue this[GridPoint point]
         {
-            if (!IsPointInGrid(point))
+            get
             {
-                return BimaruValue.WATER;
+                if (!IsPointInGrid(point))
+                {
+                    return BimaruValue.WATER;
+                }
+
+                return base[point];
             }
 
-            return base.GetFieldValue(point);
-        }
-
-        /// <summary>
-        /// As the base class but allows off-grid points if they will be set to WATER.
-        /// </summary>
-        /// <param name="point"> Point whose grid field value is set </param>
-        /// <param name="value"> Value which the field is set to </param>
-        public override void SetFieldValue(GridPoint point, BimaruValue value)
-        {
-            if (!IsPointInGrid(point) && value == BimaruValue.WATER)
+            set
             {
-                // No contradiction as the world around the grid is water.
-                return;
-            }
+                if (!IsPointInGrid(point) && value == BimaruValue.WATER)
+                {
+                    // No contradiction as the world around the grid is water.
+                    return;
+                }
 
-            base.SetFieldValue(point, value);
+                base[point] = value;
+            }
         }
 
         /// <inheritdoc/>
@@ -78,7 +76,7 @@ namespace BimaruGame
 
             foreach (GridPoint p in PointsOfRow(rowIndex).Where( p => GetFieldValueNoCheck(p) == BimaruValue.UNDETERMINED))
             {
-                SetFieldValue(p, valueToSet);
+                this[p] = valueToSet;
             }
         }
 
@@ -94,7 +92,7 @@ namespace BimaruGame
 
             foreach (GridPoint p in PointsOfColumn(columnIndex).Where( p => GetFieldValueNoCheck(p) == BimaruValue.UNDETERMINED))
             {
-                SetFieldValue(p, valueToSet);
+                this[p] = valueToSet;
             }
         }
 
@@ -138,9 +136,14 @@ namespace BimaruGame
 
         private int _numNotFullyDeterminedFields;
 
+        /// <inheritdoc/>
+        public bool IsFullyDetermined
+            => _numNotFullyDeterminedFields == 0;
+
+
         private void UpdateFieldCountNumbers(FieldValueChangedEventArgs<BimaruValue> e)
         {
-            var newValue = GetFieldValue(e.Point);
+            var newValue = this[e.Point];
 
             int numShipChange = GetFieldCountChange(e.OriginalValue.IsShip(), newValue.IsShip());
             _numShipFieldsRow[e.Point.RowIndex] += numShipChange;
@@ -171,19 +174,15 @@ namespace BimaruGame
             BimaruValue centerValue = GetFieldValueNoCheck(center);
             foreach (Direction direction in DirectionExtensions.AllDirections())
             {
+                BimaruValue neighbourValue = this[center.GetNextPoint(direction)];
                 FieldBoundary boundary = center.GetBoundary(direction);
-                bool isInvalidOld = _invalidBoundaries.Contains(boundary);
-
-                BimaruValue neighbourValue = GetFieldValue(center.GetNextPoint(direction));
-                bool isInvalidNew = !centerValue.IsCompatibleWith(direction, neighbourValue);
-
-                if (!isInvalidOld && isInvalidNew)
-                {
-                    _invalidBoundaries.Add(boundary);
-                }
-                else if (isInvalidOld && !isInvalidNew)
+                if (centerValue.IsCompatibleWith(direction, neighbourValue))
                 {
                     _invalidBoundaries.Remove(boundary);
+                }
+                else
+                {
+                    _invalidBoundaries.Add(boundary);
                 }
             }
         }
@@ -211,14 +210,14 @@ namespace BimaruGame
             {
                 shipLength++;
                 currentPoint = currentPoint.GetNextPoint(direction);
-                currentValue = GetFieldValue(currentPoint);
+                currentValue = this[currentPoint];
             }
             
             while (currentValue == BimaruValue.SHIP_MIDDLE)
             {
                 shipLength++;
                 currentPoint = currentPoint.GetNextPoint(direction);
-                currentValue = GetFieldValue(currentPoint);
+                currentValue = this[currentPoint];
             }
 
             if (currentValue == direction.GetLastShipValue())
@@ -236,11 +235,13 @@ namespace BimaruGame
 
             if (directionType == DirectionType.ROW)
             {
+                // -1 due to double count of the cross point
                 shipLength = GetShipPartLength(crossPoint, crossValue, Direction.LEFT) +
                              GetShipPartLength(crossPoint, crossValue, Direction.RIGHT) - 1;
             }
             else if (directionType == DirectionType.COLUMN)
             {
+                // -1 due to double count of the cross point
                 shipLength = GetShipPartLength(crossPoint, crossValue, Direction.UP) +
                              GetShipPartLength(crossPoint, crossValue, Direction.DOWN) - 1;
             }
@@ -258,7 +259,7 @@ namespace BimaruGame
 
             int? verticalShipLengthOrig = GetShipLength(e.Point, e.OriginalValue, DirectionType.COLUMN);
             if (verticalShipLengthOrig.HasValue &&
-                e.OriginalValue != BimaruValue.SHIP_SINGLE) // SHIP_SINGLE was already detected horizontally
+                e.OriginalValue != BimaruValue.SHIP_SINGLE) // SHIP_SINGLE already detected horizontally
             {
                 _numShipsOfLength[verticalShipLengthOrig.Value]--;
             }
@@ -273,16 +274,12 @@ namespace BimaruGame
 
             int? verticalShipLength = GetShipLength(e.Point, newValue, DirectionType.COLUMN);
             if (verticalShipLength.HasValue &&
-                newValue != BimaruValue.SHIP_SINGLE) // SHIP_SINGLE was already detected horizontally
+                newValue != BimaruValue.SHIP_SINGLE) // SHIP_SINGLE already detected horizontally
             {
                 _numShipsOfLength[verticalShipLength.Value]++;
             }
         }
         #endregion
-
-        /// <inheritdoc/>
-        public bool IsFullyDetermined
-            => _numNotFullyDeterminedFields == 0;
 
         #region Cloning
         /// <summary>

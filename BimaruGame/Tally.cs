@@ -41,7 +41,7 @@ namespace BimaruGame
             {
                 if (value < 0)
                 {
-                    throw new ArgumentOutOfRangeException();
+                    throw new ArgumentOutOfRangeException("Negative tally entries are not allowed.");
                 }
 
                 if (_numShipFields[index] != value)
@@ -66,9 +66,9 @@ namespace BimaruGame
 
             private set
             {
-                if (value < 0)
+                if (value <= 0)
                 {
-                    throw new ArgumentOutOfRangeException();
+                    throw new ArgumentOutOfRangeException("A tally needs to have a length of at least one.");
                 }
 
                 _length = value;

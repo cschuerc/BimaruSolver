@@ -9,11 +9,12 @@ namespace BimaruGame
         [TestMethod]
         public void TestInvalidShipLength()
         {
-            int shipLength = 0;
-
             var settings = new ShipSettings();
 
+            int shipLength = 0;
             Assert.ThrowsException<ArgumentOutOfRangeException>(() => settings[shipLength] = 1);
+            shipLength = 1;
+            settings[shipLength] = 1;
         }
 
         [TestMethod]
@@ -29,17 +30,19 @@ namespace BimaruGame
         [TestMethod]
         public void TestInvalidNumShips()
         {
-            int shipLength = 1;
-
             var settings = new ShipSettings();
 
+            int shipLength = 1;
             Assert.ThrowsException<ArgumentOutOfRangeException>(() => settings[shipLength] = -1);
+            settings[shipLength] = 0;
         }
 
         [TestMethod]
         public void TestSetAndSum()
         {
             var settings = new ShipSettings();
+
+            Assert.AreEqual(0, settings.NumShipFields);
 
             settings[1] = 3;
             settings[1]++;
@@ -50,14 +53,16 @@ namespace BimaruGame
             Assert.AreEqual(4, settings[1]);
             Assert.AreEqual(0, settings[2]);
             Assert.AreEqual(6, settings[3]);
-
-            Assert.AreEqual(4 * 1 + 0 * 2 + 6 * 3, settings.NumShipFields);
+            Assert.AreEqual(0, settings[4]);
+            Assert.AreEqual(4 * 1 + 6 * 3, settings.NumShipFields);
         }
 
         [TestMethod]
         public void TestLongestShipLength()
         {
             var settings = new ShipSettings();
+
+            Assert.AreEqual(0, settings.LongestShipLength);
 
             settings[1] = 3;
             settings[1]++;

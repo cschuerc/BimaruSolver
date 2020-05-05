@@ -175,7 +175,7 @@ namespace BimaruSolver
 
         private static void CheckIsChangeValid(IGame game, FieldValueChangedEventArgs<BimaruValue> e)
         {
-            BimaruValue newValue = game.Grid.GetFieldValue(e.Point);
+            BimaruValue newValue = game.Grid[e.Point];
             if (!game.IsValid || !e.OriginalValue.IsCompatibleChange(newValue))
             {
                 throw new InvalidFieldChange();
@@ -184,7 +184,7 @@ namespace BimaruSolver
 
         private void FireInitialFieldChangedEvents(IGrid grid, EventHandler<FieldValueChangedEventArgs<BimaruValue>> eventHandler)
         {
-            foreach (GridPoint p in grid.AllPoints().Where(p => grid.GetFieldValue(p) != BimaruValue.UNDETERMINED))
+            foreach (GridPoint p in grid.AllPoints().Where(p => grid[p] != BimaruValue.UNDETERMINED))
             {
                 eventHandler(this, new FieldValueChangedEventArgs<BimaruValue>(p, BimaruValue.UNDETERMINED));
             }
@@ -198,8 +198,8 @@ namespace BimaruSolver
             {
                 foreach (var c in changes)
                 {
-                    numChangedFields += (c.NewValue == game.Grid.GetFieldValue(c.Point)) ? 0 : 1;
-                    game.Grid.SetFieldValue(c.Point, c.NewValue);
+                    numChangedFields += (c.NewValue == game.Grid[c.Point]) ? 0 : 1;
+                    game.Grid[c.Point] = c.NewValue;
                 }
             }
 

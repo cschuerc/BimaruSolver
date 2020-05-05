@@ -11,14 +11,14 @@ namespace BimaruSolver
         /// <inheritdoc/>
         public void FieldValueChanged(IGame game, FieldValueChangedEventArgs<BimaruValue> e)
         {
-            if (game.Grid.GetFieldValue(e.Point) != BimaruValue.SHIP_SINGLE)
+            if (game.Grid[e.Point] != BimaruValue.SHIP_SINGLE)
             {
                 return;
             }
 
             foreach (Direction direction in DirectionExtensions.AllDirections())
             {
-                game.Grid.SetFieldValue(e.Point.GetNextPoint(direction), BimaruValue.WATER);
+                game.Grid[e.Point.GetNextPoint(direction)] = BimaruValue.WATER;
             }
         }
     }

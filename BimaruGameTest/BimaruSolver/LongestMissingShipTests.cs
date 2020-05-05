@@ -64,12 +64,12 @@ namespace BimaruSolver
 
             game.ShipSettings[2] = 1;
 
-            game.Grid.SetFieldValue(new GridPoint(0, 0), BimaruValue.WATER);
-            game.Grid.SetFieldValue(new GridPoint(1, 0), BimaruValue.WATER);
-            game.Grid.SetFieldValue(new GridPoint(2, 0), BimaruValue.WATER);
-            game.Grid.SetFieldValue(new GridPoint(0, 1), BimaruValue.WATER);
-            game.Grid.SetFieldValue(new GridPoint(1, 1), BimaruValue.WATER);
-            game.Grid.SetFieldValue(new GridPoint(0, 2), BimaruValue.WATER);
+            game.Grid[new GridPoint(0, 0)] = BimaruValue.WATER;
+            game.Grid[new GridPoint(1, 0)] = BimaruValue.WATER;
+            game.Grid[new GridPoint(2, 0)] = BimaruValue.WATER;
+            game.Grid[new GridPoint(0, 1)] = BimaruValue.WATER;
+            game.Grid[new GridPoint(1, 1)] = BimaruValue.WATER;
+            game.Grid[new GridPoint(0, 2)] = BimaruValue.WATER;
 
             // 1xDESTROYER
             //   012
@@ -198,10 +198,10 @@ namespace BimaruSolver
 
             game.ShipSettings[2] = 1;
 
-            game.Grid.SetFieldValue(new GridPoint(0, 0), BimaruValue.SHIP_CONT_UP);
-            game.Grid.SetFieldValue(new GridPoint(2, 0), BimaruValue.SHIP_MIDDLE);
-            game.Grid.SetFieldValue(new GridPoint(0, 2), BimaruValue.WATER);
-            game.Grid.SetFieldValue(new GridPoint(2, 2), BimaruValue.SHIP_UNDETERMINED);
+            game.Grid[new GridPoint(0, 0)] = BimaruValue.SHIP_CONT_UP;
+            game.Grid[new GridPoint(2, 0)] = BimaruValue.SHIP_MIDDLE;
+            game.Grid[new GridPoint(0, 2)] = BimaruValue.WATER;
+            game.Grid[new GridPoint(2, 2)] = BimaruValue.SHIP_UNDETERMINED;
 
             // 1xDESTROYER
             //   212
@@ -247,9 +247,9 @@ namespace BimaruSolver
             game.ShipSettings[2] = 1;
             game.ShipSettings[3] = 1;
 
-            game.Grid.SetFieldValue(new GridPoint(0, 2), BimaruValue.SHIP_CONT_UP);
-            game.Grid.SetFieldValue(new GridPoint(1, 2), BimaruValue.SHIP_MIDDLE);
-            game.Grid.SetFieldValue(new GridPoint(2, 2), BimaruValue.SHIP_CONT_DOWN);
+            game.Grid[new GridPoint(0, 2)] = BimaruValue.SHIP_CONT_UP;
+            game.Grid[new GridPoint(1, 2)] = BimaruValue.SHIP_MIDDLE;
+            game.Grid[new GridPoint(2, 2)] = BimaruValue.SHIP_CONT_DOWN;
 
             // 1xDESTROYER, 1xCRUISER
             //   203

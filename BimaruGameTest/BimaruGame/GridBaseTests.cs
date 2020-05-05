@@ -10,53 +10,23 @@ namespace BimaruGame
     public class GridBaseTests
     {
         [TestMethod]
-        public void TestPositiveNumColumns()
+        public void TestInvalidNumColumns()
         {
             int numRows = 3;
             int numColumns = 0;
 
             Assert.ThrowsException<ArgumentOutOfRangeException>(() => new GridBase<int>(numRows, numColumns));
+            new GridBase<int>(numRows, 1);
         }
 
         [TestMethod]
-        public void TestPositiveNumRows()
+        public void TestInvalidNumRows()
         {
             int numRows = 0;
             int numColumns = 3;
 
             Assert.ThrowsException<ArgumentOutOfRangeException>(() => new GridBase<int>(numRows, numColumns));
-        }
-
-        [TestMethod]
-        public void TestInvalidRowIndex()
-        {
-            int numRows = 3;
-            int numColumns = 4;
-            var grid = new GridBase<int>(numRows, numColumns);
-
-            var p = new GridPoint(-1, 0);
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => grid.GetFieldValue(p));
-            Assert.ThrowsException<InvalidFieldChange>(() => grid.SetFieldValue(p, 2));
-
-            p = new GridPoint(numRows, 0);
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => grid.GetFieldValue(p));
-            Assert.ThrowsException<InvalidFieldChange>(() => grid.SetFieldValue(p, 2));
-        }
-
-        [TestMethod]
-        public void TestInvalidColumnIndex()
-        {
-            int numRows = 3;
-            int numColumns = 4;
-            var grid = new GridBase<int>(numRows, numColumns);
-
-            var p = new GridPoint(0, -1);
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => grid.GetFieldValue(p));
-            Assert.ThrowsException<InvalidFieldChange>(() => grid.SetFieldValue(p, 2));
-
-            p = new GridPoint(0, numColumns);
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => grid.GetFieldValue(p));
-            Assert.ThrowsException<InvalidFieldChange>(() => grid.SetFieldValue(p, 2));
+            new GridBase<int>(1, numColumns);
         }
 
         [TestMethod]
@@ -70,8 +40,40 @@ namespace BimaruGame
 
             foreach (GridPoint p in grid.AllPoints())
             {
-                Assert.AreEqual(defaultValue, grid.GetFieldValue(p));
+                Assert.AreEqual(defaultValue, grid[p]);
             }
+        }
+
+        [TestMethod]
+        public void TestInvalidRowIndex()
+        {
+            int numRows = 3;
+            int numColumns = 4;
+            var grid = new GridBase<int>(numRows, numColumns);
+
+            var p = new GridPoint(-1, 0);
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => grid[p]);
+            Assert.ThrowsException<InvalidFieldChange>(() => grid[p] = 2);
+
+            p = new GridPoint(numRows, 0);
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => grid[p]);
+            Assert.ThrowsException<InvalidFieldChange>(() => grid[p] = 2);
+        }
+
+        [TestMethod]
+        public void TestInvalidColumnIndex()
+        {
+            int numRows = 3;
+            int numColumns = 4;
+            var grid = new GridBase<int>(numRows, numColumns);
+
+            var p = new GridPoint(0, -1);
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => grid[p]);
+            Assert.ThrowsException<InvalidFieldChange>(() => grid[p] = 2);
+
+            p = new GridPoint(0, numColumns);
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => grid[p]);
+            Assert.ThrowsException<InvalidFieldChange>(() => grid[p] = 2);
         }
 
         [TestMethod]
@@ -82,11 +84,11 @@ namespace BimaruGame
             var grid = new GridBase<int>(numRows, numColumns);
 
             var p = new GridPoint(0, 0);
-            grid.SetFieldValue(p, 15);
-            Assert.AreEqual(15, grid.GetFieldValue(p));
+            grid[p] = 15;
+            Assert.AreEqual(15, grid[p]);
 
-            grid.SetFieldValue(p, -7);
-            Assert.AreEqual(-7, grid.GetFieldValue(p));
+            grid[p] = -7;
+            Assert.AreEqual(-7, grid[p]);
         }
 
         [TestMethod]
@@ -105,10 +107,10 @@ namespace BimaruGame
 
             var p0 = new GridPoint(0, 0);
             var p1 = new GridPoint(0, 1);
-            grid.SetFieldValue(p0, 15);
-            grid.SetFieldValue(p1, -7);
-            grid.SetFieldValue(p1, -7); // Should not trigger the event as no change
-            grid.SetFieldValue(p0, 16);
+            grid[p0] = 15;
+            grid[p1] = -7;
+            grid[p1] = -7; // Should not trigger the event as no change
+            grid[p0] = 16;
 
             Assert.AreEqual(3, eventArgs.Count);
 

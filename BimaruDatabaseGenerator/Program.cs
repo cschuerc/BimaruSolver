@@ -40,7 +40,7 @@ namespace BimaruDatabaseGenerator
         {
             foreach (var c in initialFieldValues)
             {
-                grid.SetFieldValue(c.Item1, c.Item2);
+                grid[c.Item1] = c.Item2;
             }
         }
 

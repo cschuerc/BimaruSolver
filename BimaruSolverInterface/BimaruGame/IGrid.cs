@@ -26,11 +26,11 @@ namespace BimaruInterfaces
         }
 
         /// <summary>
-        /// Set the value of a grid field.
+        /// Grid field value at a given point.
         /// </summary>
-        /// <param name="point"> Point whose grid field value is set. </param>
-        /// <param name="value"> Value which the field is set to. </param>
-        void SetFieldValue(GridPoint point, BimaruValue value);
+        /// <param name="point"> Point in the grid </param>
+        /// <returns> Value at the given point </returns>
+        BimaruValue this[GridPoint point] { get; set; }
 
         /// <summary>
         /// Fill all undetermined fields in a row to satisfy a given constraint.
@@ -50,13 +50,6 @@ namespace BimaruInterfaces
         /// Event raised after every field value change.
         /// </summary>
         event EventHandler<FieldValueChangedEventArgs<BimaruValue>> FieldValueChanged;
-
-        /// <summary>
-        /// Get the value of a grid field.
-        /// </summary>
-        /// <param name="point"> Point whose grid field value is returned. </param>
-        /// <returns> Value of the desired grid field. </returns>
-        BimaruValue GetFieldValue(GridPoint point);
 
         /// <summary>
         /// Get the number of ship fields per row.

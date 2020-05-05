@@ -49,7 +49,7 @@ namespace BimaruSolver
             var unsolvedValues = new Dictionary<GridPoint, BimaruValue>();
             foreach (var p in game.Grid.AllPoints())
             {
-                unsolvedValues[p] = game.Grid.GetFieldValue(p);
+                unsolvedValues[p] = game.Grid[p];
             }
 
             var solver = new Solver(null, null, new BruteForce());
@@ -60,7 +60,7 @@ namespace BimaruSolver
             Assert.IsFalse(game.IsSolved);
             foreach (var p in game.Grid.AllPoints())
             {
-                Assert.AreEqual(unsolvedValues[p], game.Grid.GetFieldValue(p));
+                Assert.AreEqual(unsolvedValues[p], game.Grid[p]);
             }
 
             // Check no more grids on the stack
@@ -127,8 +127,8 @@ namespace BimaruSolver
             int numColumns = 2;
 
             var game = (new GameFactory()).GenerateEmptyGame(numRows, numColumns);
-            game.Grid.SetFieldValue(new GridPoint(0, 0), BimaruValue.SHIP_SINGLE);
-            game.Grid.SetFieldValue(new GridPoint(0, 1), BimaruValue.WATER);
+            game.Grid[new GridPoint(0, 0)] = BimaruValue.SHIP_SINGLE;
+            game.Grid[new GridPoint(0, 1)] = BimaruValue.WATER;
             game.RowTally[0] = 1;
             game.ColumnTally[0] = 1;
             game.ShipSettings[1] = 1;
@@ -160,8 +160,8 @@ namespace BimaruSolver
             Assert.AreEqual(0, solver.Solve(game));
 
             // No InvalidFieldChange Exception here, although we change a field value back
-            game.Grid.SetFieldValue(new GridPoint(0, 0), BimaruValue.SHIP_SINGLE);
-            game.Grid.SetFieldValue(new GridPoint(0, 0), BimaruValue.UNDETERMINED);
+            game.Grid[new GridPoint(0, 0)] = BimaruValue.SHIP_SINGLE;
+            game.Grid[new GridPoint(0, 0)] = BimaruValue.UNDETERMINED;
         }
 
         [TestMethod]

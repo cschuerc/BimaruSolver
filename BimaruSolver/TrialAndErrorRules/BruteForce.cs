@@ -22,14 +22,14 @@ namespace BimaruSolver
         public IEnumerable<FieldsToChange<BimaruValue>> GetCompleteChangeTrials(IGame game)
         {
             GridPoint? notFullyDetPoint = game.Grid.AllPoints().FirstOrDefault(p =>
-                !game.Grid.GetFieldValue(p).IsFullyDetermined());
+                !game.Grid[p].IsFullyDetermined());
 
             if (notFullyDetPoint == null)
             {
                 yield break;
             }
 
-            var value = game.Grid.GetFieldValue(notFullyDetPoint.Value);
+            var value = game.Grid[notFullyDetPoint.Value];
 
             bool isDeterminedAndCompatible(BimaruValue newValue) =>
                 newValue.IsFullyDetermined() &&

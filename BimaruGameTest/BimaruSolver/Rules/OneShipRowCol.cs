@@ -30,7 +30,7 @@ namespace BimaruSolver
 
             if (rowIndex >= 0 && columnIndex >= 0)
             {
-                game.Grid.SetFieldValue(new GridPoint(rowIndex, columnIndex), BimaruValue.SHIP_SINGLE);
+                game.Grid[new GridPoint(rowIndex, columnIndex)] = BimaruValue.SHIP_SINGLE;
             }
         }
     }

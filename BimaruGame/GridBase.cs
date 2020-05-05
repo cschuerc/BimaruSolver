@@ -39,6 +39,7 @@ namespace BimaruGame
         private T[,] AllocateGrid(int numRows, int numColumns, T defaultValue)
         {
             var grid = new T[numRows, numColumns];
+
             foreach (GridPoint p in AllPoints())
             {
                 grid[p.RowIndex, p.ColumnIndex] = defaultValue;
@@ -46,6 +47,7 @@ namespace BimaruGame
 
             return grid;
         }
+
 
         private int _numRows;
 
@@ -66,6 +68,7 @@ namespace BimaruGame
                 _numRows = value;
             }
         }
+
 
         private int _numColumns;
 
@@ -122,40 +125,38 @@ namespace BimaruGame
         }
 
         /// <summary>
-        /// Get the field value at the given point.
+        /// Grid field value at a given point.
         /// </summary>
-        /// <param name="point"> Point whose grid value is returned </param>
-        /// <returns></returns>
-        public virtual T GetFieldValue(GridPoint point)
+        /// <param name="point"> Point in the grid </param>
+        /// <returns> Value at the given point </returns>
+        public virtual T this[GridPoint point]
         {
-            if (!IsPointInGrid(point))
+            get
             {
-                throw new ArgumentOutOfRangeException();
+                if (!IsPointInGrid(point))
+                {
+                    throw new ArgumentOutOfRangeException();
+                }
+
+                return GetFieldValueNoCheck(point);
             }
 
-            return GetFieldValueNoCheck(point);
-        }
-
-        /// <summary>
-        /// Sets the field value at the given point.
-        /// </summary>
-        /// <param name="point"> Point whose field value is set. </param>
-        /// <param name="value"> Value which the field value is set to. </param>
-        public virtual void SetFieldValue(GridPoint point, T value)
-        {
-            if (!IsPointInGrid(point))
+            set
             {
-                throw new InvalidFieldChange();
-            }
+                if (!IsPointInGrid(point))
+                {
+                    throw new InvalidFieldChange();
+                }
 
-            T origValue = GetFieldValueNoCheck(point);
-            if (!origValue.Equals(value))
-            {
-                _grid[point.RowIndex, point.ColumnIndex] = value;
+                T origValue = GetFieldValueNoCheck(point);
+                if (!origValue.Equals(value))
+                {
+                    _grid[point.RowIndex, point.ColumnIndex] = value;
 
-                var e = new FieldValueChangedEventArgs<T>(point, origValue);
-                OnAfterFieldValueSet(e);
-                OnFieldValueChanged(e);
+                    var e = new FieldValueChangedEventArgs<T>(point, origValue);
+                    OnAfterFieldValueSet(e);
+                    OnFieldValueChanged(e);
+                }
             }
         }
 

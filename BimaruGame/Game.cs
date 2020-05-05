@@ -168,7 +168,7 @@ namespace BimaruGame
                     }
                 }
 
-                bool isSatisfied = areEqual && ShipSettings.LongestShipLength <= (numShipsPerLength.Count - 1);
+                bool isSatisfied = areEqual && ShipSettings.LongestShipLength < numShipsPerLength.Count;
 
                 return isSatisfied ? Satisfiability.SATISFIED : Satisfiability.SATISFIABLE;
             }

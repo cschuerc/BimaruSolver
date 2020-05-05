@@ -13,7 +13,7 @@ namespace BimaruSolver
             foreach (var direction in DirectionExtensions.AllNonDiagonalDirections())
             {
                 var pointInDirection = center.GetNextPoint(direction);
-                if (constraint.IsSatisfiedBy(game.Grid.GetFieldValue(pointInDirection)))
+                if (constraint.IsSatisfiedBy(game.Grid[pointInDirection]))
                 {
                     return direction;
                 }
@@ -28,7 +28,7 @@ namespace BimaruSolver
             foreach (var direction in DirectionExtensions.AllNonDiagonalDirections())
             {
                 var pointInDirection = center.GetNextPoint(direction);
-                if (game.Grid.GetFieldValue(pointInDirection) != BimaruValue.WATER)
+                if (game.Grid[pointInDirection] != BimaruValue.WATER)
                 {
                     return false;
                 }
@@ -45,7 +45,7 @@ namespace BimaruSolver
             if (shipDirection.HasValue)
             {
                 var oppositePoint = shipUndeterminedpoint.GetNextPoint(shipDirection.Value.GetOpposite());
-                var oppositeValue = game.Grid.GetFieldValue(oppositePoint);
+                var oppositeValue = game.Grid[oppositePoint];
 
                 if (oppositeValue == BimaruValue.WATER)
                 {
@@ -69,7 +69,7 @@ namespace BimaruSolver
             BimaruValue? newValue = GetShipUndeterminedValue(game, shipUndetermined);
             if (newValue.HasValue)
             {
-                game.Grid.SetFieldValue(shipUndetermined, newValue.Value);
+                game.Grid[shipUndetermined] = newValue.Value;
             }
         }
         #endregion
@@ -110,10 +110,10 @@ namespace BimaruSolver
 
                 // Skip set if constraint already satisfied
                 var pointInDirection = shipMiddlePoint.GetNextPoint(direction);
-                if (!constraint.IsSatisfiedBy(game.Grid.GetFieldValue(pointInDirection)))
+                if (!constraint.IsSatisfiedBy(game.Grid[pointInDirection]))
                 {
                     BimaruValue valueToSet = constraint.GetRepresentativeValue();
-                    game.Grid.SetFieldValue(pointInDirection, valueToSet);
+                    game.Grid[pointInDirection] = valueToSet;
                 }
             }
         }
@@ -130,7 +130,7 @@ namespace BimaruSolver
 
         private void DetermineShip(IGame game, GridPoint point)
         {
-            BimaruValue value = game.Grid.GetFieldValue(point);
+            BimaruValue value = game.Grid[point];
             if (value == BimaruValue.SHIP_UNDETERMINED)
             {
                 DetermineShipUndetermined(game, point);

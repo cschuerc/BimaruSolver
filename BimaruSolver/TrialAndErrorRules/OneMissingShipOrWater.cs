@@ -117,7 +117,7 @@ namespace BimaruSolver
             foreach (int rowIndex in Enumerable.Range(0, game.Grid.NumRows))
             {
                 var undeterminedPointsInRow = game.Grid.PointsOfRow(rowIndex).
-                    Where(p => game.Grid.GetFieldValue(p) == BimaruValue.UNDETERMINED);
+                    Where(p => game.Grid[p] == BimaruValue.UNDETERMINED);
 
                 if (game.MissingShipFieldsRow(rowIndex) == 1)
                 {
@@ -143,7 +143,7 @@ namespace BimaruSolver
             foreach (int columnIndex in Enumerable.Range(0, game.Grid.NumColumns))
             {
                 var undeterminedPointsInColumn = game.Grid.PointsOfColumn(columnIndex).
-                    Where(p => game.Grid.GetFieldValue(p) == BimaruValue.UNDETERMINED);
+                    Where(p => game.Grid[p] == BimaruValue.UNDETERMINED);
 
                 if (game.MissingShipFieldsColumn(columnIndex) == 1)
                 {

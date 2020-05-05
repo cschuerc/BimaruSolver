@@ -7,13 +7,20 @@ namespace BimaruGame
     /// </summary>
     public class GameFactory : IGameFactory
     {
+        /// <inheritdoc/>
+        public IGame GenerateEmptyGame(int numRows, int numColumns)
+        {
+            return GenerateGame(numRows, numColumns);
+        }
+
+        #region Testing
         /// <summary>
         /// Generates a Bimaru game without a solution
         /// </summary>
         /// <returns></returns>
-        public IGame GenerateGameNoSolution()
+        public Game GenerateGameNoSolution()
         {
-            var game = GenerateEmptyGame(2, 2);
+            var game = GenerateGame(2, 2);
 
             game.RowTally[0] = 1;
             game.RowTally[1] = 1;
@@ -37,9 +44,9 @@ namespace BimaruGame
         /// Generates a Bimaru game with one solution
         /// </summary>
         /// <returns></returns>
-        public IGame GenerateGameOneSolution()
+        public Game GenerateGameOneSolution()
         {
-            var game = GenerateEmptyGame(2, 2);
+            var game = GenerateGame(2, 2);
 
             game.RowTally[0] = 1;
 
@@ -60,9 +67,9 @@ namespace BimaruGame
         /// Generates a Bimaru game with two solutions
         /// </summary>
         /// <returns></returns>
-        public IGame GenerateGameTwoSolutions()
+        public Game GenerateGameTwoSolutions()
         {
-            var game = GenerateEmptyGame(2, 3);
+            var game = GenerateGame(2, 3);
 
             game.RowTally[0] = 1;
             game.RowTally[1] = 1;
@@ -82,8 +89,13 @@ namespace BimaruGame
             return game;
         }
 
-        /// <inheritdoc/>
-        public IGame GenerateEmptyGame(int numRows, int numColumns)
+        /// <summary>
+        /// Generates an empty game.
+        /// </summary>
+        /// <param name="numRows"> Number of rows </param>
+        /// <param name="numColumns"> Number of columns </param>
+        /// <returns></returns>
+        public Game GenerateGame(int numRows, int numColumns)
         {
             var rowTally = new Tally(numRows);
             var columnTally = new Tally(numColumns);
@@ -92,5 +104,6 @@ namespace BimaruGame
 
             return new Game(rowTally, columnTally, shipSettings, grid);
         }
+        #endregion
     }
 }

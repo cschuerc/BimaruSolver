@@ -31,7 +31,7 @@ namespace BimaruSolver
             int numColumns = 1;
 
             var game = (new GameFactory()).GenerateEmptyGame(numRows, numColumns);
-            game.Grid.SetFieldValue(new GridPoint(0, 0), BimaruValue.SHIP_MIDDLE);
+            game.Grid[new GridPoint(0, 0)] = BimaruValue.SHIP_MIDDLE;
             var rule = new OneMissingShipOrWater(null);
             Assert.AreEqual(0, rule.GetCompleteChangeTrials(game).Count());
         }
@@ -43,7 +43,7 @@ namespace BimaruSolver
             int numColumns = 4;
 
             var game = (new GameFactory()).GenerateEmptyGame(numRows, numColumns);
-            game.Grid.SetFieldValue(new GridPoint(2, 3), BimaruValue.WATER);
+            game.Grid[new GridPoint(2, 3)] = BimaruValue.WATER;
             game.RowTally[0] = 2;
             game.RowTally[1] = 2;
             game.RowTally[2] = 1;
@@ -79,7 +79,7 @@ namespace BimaruSolver
             int numColumns = 4;
 
             var game = (new GameFactory()).GenerateEmptyGame(numRows, numColumns);
-            game.Grid.SetFieldValue(new GridPoint(2, 3), BimaruValue.SHIP_UNDETERMINED);
+            game.Grid[new GridPoint(2, 3)] = BimaruValue.SHIP_UNDETERMINED;
             game.RowTally[0] = 2;
             game.RowTally[1] = 2;
             game.RowTally[2] = 3;

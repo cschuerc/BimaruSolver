@@ -17,7 +17,7 @@ namespace BimaruSolver
         public IEnumerable<FieldsToChange<BimaruValue>> GetCompleteChangeTrials(IGame game)
         {
             var p = new GridPoint(0, 0);
-            BimaruValue oldValue = game.Grid.GetFieldValue(p);
+            BimaruValue oldValue = game.Grid[p];
             yield return new FieldsToChange<BimaruValue>(p, oldValue);
         }
     }

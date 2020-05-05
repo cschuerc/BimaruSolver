@@ -29,12 +29,17 @@ namespace BimaruGame
             _gridStack.Push((Grid)base.Clone());
         }
 
+        private void Restore(Grid gridToRestore)
+        {
+            CopyFrom(gridToRestore);
+
+            OnRestoreHappened();
+        }
+
         /// <inheritdoc/>
         public void Rollback()
         {
-            CopyFrom(_gridStack.Pop());
-
-            OnRestoreHappened();
+            Restore(_gridStack.Pop());
         }
         #endregion
 
@@ -57,7 +62,7 @@ namespace BimaruGame
 
             SetSavePoint();
 
-            CopyFrom(Clipboard);
+            Restore(Clipboard);
         }
         #endregion
 

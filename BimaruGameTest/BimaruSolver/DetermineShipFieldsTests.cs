@@ -32,18 +32,18 @@ namespace BimaruSolver
             SubscribeRule(game);
 
             var p11 = new GridPoint(1, 1);
-            game.Grid.SetFieldValue(p11, BimaruValue.SHIP_UNDETERMINED);
+            game.Grid[p11] = BimaruValue.SHIP_UNDETERMINED;
 
-            game.Grid.SetFieldValue(new GridPoint(0, 1), BimaruValue.WATER);
-            game.Grid.SetFieldValue(new GridPoint(1, 0), BimaruValue.WATER);
-            game.Grid.SetFieldValue(new GridPoint(1, 2), BimaruValue.WATER);
-            game.Grid.SetFieldValue(new GridPoint(2, 1), BimaruValue.WATER);
+            game.Grid[new GridPoint(0, 1)] = BimaruValue.WATER;
+            game.Grid[new GridPoint(1, 0)] = BimaruValue.WATER;
+            game.Grid[new GridPoint(1, 2)] = BimaruValue.WATER;
+            game.Grid[new GridPoint(2, 1)] = BimaruValue.WATER;
 
             // ?W?
             // WSW
             // ?W?
 
-            Assert.AreEqual(BimaruValue.SHIP_SINGLE, game.Grid.GetFieldValue(p11));
+            Assert.AreEqual(BimaruValue.SHIP_SINGLE, game.Grid[p11]);
         }
 
         [TestMethod]
@@ -56,28 +56,28 @@ namespace BimaruSolver
 
             var game = (new GameFactory()).GenerateEmptyGame(numRows, numColumns);
             SubscribeRule(game);
-            game.Grid.SetFieldValue(p11, BimaruValue.SHIP_UNDETERMINED);
-            game.Grid.SetFieldValue(new GridPoint(1, 0), BimaruValue.SHIP_UNDETERMINED);
-            game.Grid.SetFieldValue(new GridPoint(1, 2), BimaruValue.SHIP_UNDETERMINED);
+            game.Grid[p11] = BimaruValue.SHIP_UNDETERMINED;
+            game.Grid[new GridPoint(1, 0)] = BimaruValue.SHIP_UNDETERMINED;
+            game.Grid[new GridPoint(1, 2)] = BimaruValue.SHIP_UNDETERMINED;
 
             // ???
             // SSS
             // ???
 
-            Assert.AreEqual(BimaruValue.SHIP_MIDDLE, game.Grid.GetFieldValue(p11));
+            Assert.AreEqual(BimaruValue.SHIP_MIDDLE, game.Grid[p11]);
 
 
             game = (new GameFactory()).GenerateEmptyGame(numRows, numColumns);
             SubscribeRule(game);
-            game.Grid.SetFieldValue(p11, BimaruValue.SHIP_UNDETERMINED);
-            game.Grid.SetFieldValue(new GridPoint(0, 1), BimaruValue.SHIP_UNDETERMINED);
-            game.Grid.SetFieldValue(new GridPoint(2, 1), BimaruValue.SHIP_UNDETERMINED);
+            game.Grid[p11] = BimaruValue.SHIP_UNDETERMINED;
+            game.Grid[new GridPoint(0, 1)] = BimaruValue.SHIP_UNDETERMINED;
+            game.Grid[new GridPoint(2, 1)] = BimaruValue.SHIP_UNDETERMINED;
 
             // ?S?
             // ?S?
             // ?S?
 
-            Assert.AreEqual(BimaruValue.SHIP_MIDDLE, game.Grid.GetFieldValue(p11));
+            Assert.AreEqual(BimaruValue.SHIP_MIDDLE, game.Grid[p11]);
         }
 
         [TestMethod]
@@ -90,54 +90,54 @@ namespace BimaruSolver
 
             var game = (new GameFactory()).GenerateEmptyGame(numRows, numColumns);
             SubscribeRule(game);
-            game.Grid.SetFieldValue(p11, BimaruValue.SHIP_UNDETERMINED);
-            game.Grid.SetFieldValue(new GridPoint(1, 0), BimaruValue.WATER);
-            game.Grid.SetFieldValue(new GridPoint(1, 2), BimaruValue.SHIP_UNDETERMINED);
+            game.Grid[p11] = BimaruValue.SHIP_UNDETERMINED;
+            game.Grid[new GridPoint(1, 0)] = BimaruValue.WATER;
+            game.Grid[new GridPoint(1, 2)] = BimaruValue.SHIP_UNDETERMINED;
 
             // ???
             // WSS
             // ???
 
-            Assert.AreEqual(BimaruValue.SHIP_CONT_RIGHT, game.Grid.GetFieldValue(p11));
+            Assert.AreEqual(BimaruValue.SHIP_CONT_RIGHT, game.Grid[p11]);
 
 
             game = (new GameFactory()).GenerateEmptyGame(numRows, numColumns);
             SubscribeRule(game);
-            game.Grid.SetFieldValue(p11, BimaruValue.SHIP_UNDETERMINED);
-            game.Grid.SetFieldValue(new GridPoint(1, 0), BimaruValue.SHIP_UNDETERMINED);
-            game.Grid.SetFieldValue(new GridPoint(1, 2), BimaruValue.WATER);
+            game.Grid[p11] = BimaruValue.SHIP_UNDETERMINED;
+            game.Grid[new GridPoint(1, 0)] = BimaruValue.SHIP_UNDETERMINED;
+            game.Grid[new GridPoint(1, 2)] = BimaruValue.WATER;
 
             // ???
             // SSW
             // ???
 
-            Assert.AreEqual(BimaruValue.SHIP_CONT_LEFT, game.Grid.GetFieldValue(p11));
+            Assert.AreEqual(BimaruValue.SHIP_CONT_LEFT, game.Grid[p11]);
 
 
             game = (new GameFactory()).GenerateEmptyGame(numRows, numColumns);
             SubscribeRule(game);
-            game.Grid.SetFieldValue(p11, BimaruValue.SHIP_UNDETERMINED);
-            game.Grid.SetFieldValue(new GridPoint(0, 1), BimaruValue.WATER);
-            game.Grid.SetFieldValue(new GridPoint(2, 1), BimaruValue.SHIP_UNDETERMINED);
+            game.Grid[p11] = BimaruValue.SHIP_UNDETERMINED;
+            game.Grid[new GridPoint(0, 1)] = BimaruValue.WATER;
+            game.Grid[new GridPoint(2, 1)] = BimaruValue.SHIP_UNDETERMINED;
 
             // ?S?
             // ?S?
             // ?W?
 
-            Assert.AreEqual(BimaruValue.SHIP_CONT_UP, game.Grid.GetFieldValue(p11));
+            Assert.AreEqual(BimaruValue.SHIP_CONT_UP, game.Grid[p11]);
 
 
             game = (new GameFactory()).GenerateEmptyGame(numRows, numColumns);
             SubscribeRule(game);
-            game.Grid.SetFieldValue(p11, BimaruValue.SHIP_UNDETERMINED);
-            game.Grid.SetFieldValue(new GridPoint(0, 1), BimaruValue.SHIP_UNDETERMINED);
-            game.Grid.SetFieldValue(new GridPoint(2, 1), BimaruValue.WATER);
+            game.Grid[p11] = BimaruValue.SHIP_UNDETERMINED;
+            game.Grid[new GridPoint(0, 1)] = BimaruValue.SHIP_UNDETERMINED;
+            game.Grid[new GridPoint(2, 1)] = BimaruValue.WATER;
 
             // ?W?
             // ?S?
             // ?S?
 
-            Assert.AreEqual(BimaruValue.SHIP_CONT_DOWN, game.Grid.GetFieldValue(p11));
+            Assert.AreEqual(BimaruValue.SHIP_CONT_DOWN, game.Grid[p11]);
         }
 
         [TestMethod]
@@ -150,48 +150,48 @@ namespace BimaruSolver
 
             var game = (new GameFactory()).GenerateEmptyGame(numRows, numColumns);
             SubscribeRule(game);
-            game.Grid.SetFieldValue(p11, BimaruValue.SHIP_MIDDLE);
+            game.Grid[p11] = BimaruValue.SHIP_MIDDLE;
 
             // ???
             // ?S?
             // ???
 
-            Assert.AreEqual(BimaruValue.UNDETERMINED, game.Grid.GetFieldValue(new GridPoint(0, 1)));
-            Assert.AreEqual(BimaruValue.UNDETERMINED, game.Grid.GetFieldValue(new GridPoint(1, 0)));
-            Assert.AreEqual(BimaruValue.UNDETERMINED, game.Grid.GetFieldValue(new GridPoint(1, 2)));
-            Assert.AreEqual(BimaruValue.UNDETERMINED, game.Grid.GetFieldValue(new GridPoint(2, 1)));
+            Assert.AreEqual(BimaruValue.UNDETERMINED, game.Grid[new GridPoint(0, 1)]);
+            Assert.AreEqual(BimaruValue.UNDETERMINED, game.Grid[new GridPoint(1, 0)]);
+            Assert.AreEqual(BimaruValue.UNDETERMINED, game.Grid[new GridPoint(1, 2)]);
+            Assert.AreEqual(BimaruValue.UNDETERMINED, game.Grid[new GridPoint(2, 1)]);
 
 
             game = (new GameFactory()).GenerateEmptyGame(numRows, numColumns);
             SubscribeRule(game);
-            game.Grid.SetFieldValue(p11, BimaruValue.SHIP_MIDDLE);
-            game.Grid.SetFieldValue(new GridPoint(0, 1), BimaruValue.UNDETERMINED);
-            game.Grid.SetFieldValue(new GridPoint(2, 1), BimaruValue.SHIP_CONT_DOWN);
+            game.Grid[p11] = BimaruValue.SHIP_MIDDLE;
+            game.Grid[new GridPoint(0, 1)] = BimaruValue.UNDETERMINED;
+            game.Grid[new GridPoint(2, 1)] = BimaruValue.SHIP_CONT_DOWN;
 
             // ?S?
             // ?S?
             // ???
 
-            Assert.AreEqual(BimaruValue.SHIP_CONT_UP, game.Grid.GetFieldValue(new GridPoint(0, 1)));
-            Assert.AreEqual(BimaruValue.WATER, game.Grid.GetFieldValue(new GridPoint(1, 0)));
-            Assert.AreEqual(BimaruValue.WATER, game.Grid.GetFieldValue(new GridPoint(1, 2)));
-            Assert.AreEqual(BimaruValue.SHIP_CONT_DOWN, game.Grid.GetFieldValue(new GridPoint(2, 1)));
+            Assert.AreEqual(BimaruValue.SHIP_CONT_UP, game.Grid[new GridPoint(0, 1)]);
+            Assert.AreEqual(BimaruValue.WATER, game.Grid[new GridPoint(1, 0)]);
+            Assert.AreEqual(BimaruValue.WATER, game.Grid[new GridPoint(1, 2)]);
+            Assert.AreEqual(BimaruValue.SHIP_CONT_DOWN, game.Grid[new GridPoint(2, 1)]);
 
 
             game = (new GameFactory()).GenerateEmptyGame(numRows, numColumns);
             SubscribeRule(game);
-            game.Grid.SetFieldValue(p11, BimaruValue.SHIP_MIDDLE);
-            game.Grid.SetFieldValue(new GridPoint(0, 1), BimaruValue.UNDETERMINED);
-            game.Grid.SetFieldValue(new GridPoint(2, 1), BimaruValue.WATER);
+            game.Grid[p11] = BimaruValue.SHIP_MIDDLE;
+            game.Grid[new GridPoint(0, 1)] = BimaruValue.UNDETERMINED;
+            game.Grid[new GridPoint(2, 1)] = BimaruValue.WATER;
 
             // ?W?
             // ?S?
             // ???
 
-            Assert.AreEqual(BimaruValue.WATER, game.Grid.GetFieldValue(new GridPoint(0, 1)));
-            Assert.AreEqual(BimaruValue.SHIP_CONT_RIGHT, game.Grid.GetFieldValue(new GridPoint(1, 0)));
-            Assert.AreEqual(BimaruValue.SHIP_CONT_LEFT, game.Grid.GetFieldValue(new GridPoint(1, 2)));
-            Assert.AreEqual(BimaruValue.WATER, game.Grid.GetFieldValue(new GridPoint(2, 1)));
+            Assert.AreEqual(BimaruValue.WATER, game.Grid[new GridPoint(0, 1)]);
+            Assert.AreEqual(BimaruValue.SHIP_CONT_RIGHT, game.Grid[new GridPoint(1, 0)]);
+            Assert.AreEqual(BimaruValue.SHIP_CONT_LEFT, game.Grid[new GridPoint(1, 2)]);
+            Assert.AreEqual(BimaruValue.WATER, game.Grid[new GridPoint(2, 1)]);
         }
 
         [TestMethod]
@@ -202,23 +202,23 @@ namespace BimaruSolver
 
             var game = (new GameFactory()).GenerateEmptyGame(numRows, numColumns);
             SubscribeRule(game);
-            game.Grid.SetFieldValue(new GridPoint(0, 0), BimaruValue.SHIP_UNDETERMINED);
-            game.Grid.SetFieldValue(new GridPoint(0, 1), BimaruValue.SHIP_MIDDLE);
-            game.Grid.SetFieldValue(new GridPoint(0, 2), BimaruValue.SHIP_UNDETERMINED);
-            game.Grid.SetFieldValue(new GridPoint(0, 3), BimaruValue.SHIP_UNDETERMINED);
-            game.Grid.SetFieldValue(new GridPoint(0, 4), BimaruValue.WATER);
+            game.Grid[new GridPoint(0, 0)] = BimaruValue.SHIP_UNDETERMINED;
+            game.Grid[new GridPoint(0, 1)] = BimaruValue.SHIP_MIDDLE;
+            game.Grid[new GridPoint(0, 2)] = BimaruValue.SHIP_UNDETERMINED;
+            game.Grid[new GridPoint(0, 3)] = BimaruValue.SHIP_UNDETERMINED;
+            game.Grid[new GridPoint(0, 4)] = BimaruValue.WATER;
 
-            game.Grid.SetFieldValue(new GridPoint(1, 2), BimaruValue.WATER);
-            game.Grid.SetFieldValue(new GridPoint(2, 2), BimaruValue.SHIP_UNDETERMINED);
-            game.Grid.SetFieldValue(new GridPoint(3, 2), BimaruValue.SHIP_UNDETERMINED);
-            game.Grid.SetFieldValue(new GridPoint(4, 2), BimaruValue.WATER);
+            game.Grid[new GridPoint(1, 2)] = BimaruValue.WATER;
+            game.Grid[new GridPoint(2, 2)] = BimaruValue.SHIP_UNDETERMINED;
+            game.Grid[new GridPoint(3, 2)] = BimaruValue.SHIP_UNDETERMINED;
+            game.Grid[new GridPoint(4, 2)] = BimaruValue.WATER;
 
-            game.Grid.SetFieldValue(new GridPoint(4, 0), BimaruValue.SHIP_UNDETERMINED);
+            game.Grid[new GridPoint(4, 0)] = BimaruValue.SHIP_UNDETERMINED;
 
-            game.Grid.SetFieldValue(new GridPoint(2, 4), BimaruValue.WATER);
-            game.Grid.SetFieldValue(new GridPoint(3, 3), BimaruValue.WATER);
-            game.Grid.SetFieldValue(new GridPoint(3, 4), BimaruValue.SHIP_UNDETERMINED);
-            game.Grid.SetFieldValue(new GridPoint(4, 4), BimaruValue.WATER);
+            game.Grid[new GridPoint(2, 4)] = BimaruValue.WATER;
+            game.Grid[new GridPoint(3, 3)] = BimaruValue.WATER;
+            game.Grid[new GridPoint(3, 4)] = BimaruValue.SHIP_UNDETERMINED;
+            game.Grid[new GridPoint(4, 4)] = BimaruValue.WATER;
 
             // S? ?? WW ?? WW
             // ?? ?? S? WW S?
@@ -226,26 +226,26 @@ namespace BimaruSolver
             // ?? ?? WW ?? ??
             // S? SM S? S? WW
 
-            Assert.AreEqual(BimaruValue.SHIP_CONT_RIGHT, game.Grid.GetFieldValue(new GridPoint(0, 0)));
-            Assert.AreEqual(BimaruValue.SHIP_MIDDLE, game.Grid.GetFieldValue(new GridPoint(0, 1)));
-            Assert.AreEqual(BimaruValue.WATER, game.Grid.GetFieldValue(new GridPoint(1, 1)));
-            Assert.AreEqual(BimaruValue.SHIP_MIDDLE, game.Grid.GetFieldValue(new GridPoint(0, 2)));
-            Assert.AreEqual(BimaruValue.SHIP_CONT_LEFT, game.Grid.GetFieldValue(new GridPoint(0, 3)));
-            Assert.AreEqual(BimaruValue.WATER, game.Grid.GetFieldValue(new GridPoint(0, 4)));
+            Assert.AreEqual(BimaruValue.SHIP_CONT_RIGHT, game.Grid[new GridPoint(0, 0)]);
+            Assert.AreEqual(BimaruValue.SHIP_MIDDLE, game.Grid[new GridPoint(0, 1)]);
+            Assert.AreEqual(BimaruValue.WATER, game.Grid[new GridPoint(1, 1)]);
+            Assert.AreEqual(BimaruValue.SHIP_MIDDLE, game.Grid[new GridPoint(0, 2)]);
+            Assert.AreEqual(BimaruValue.SHIP_CONT_LEFT, game.Grid[new GridPoint(0, 3)]);
+            Assert.AreEqual(BimaruValue.WATER, game.Grid[new GridPoint(0, 4)]);
 
-            Assert.AreEqual(BimaruValue.WATER, game.Grid.GetFieldValue(new GridPoint(1, 2)));
-            Assert.AreEqual(BimaruValue.SHIP_CONT_UP, game.Grid.GetFieldValue(new GridPoint(2, 2)));
-            Assert.AreEqual(BimaruValue.SHIP_CONT_DOWN, game.Grid.GetFieldValue(new GridPoint(3, 2)));
-            Assert.AreEqual(BimaruValue.WATER, game.Grid.GetFieldValue(new GridPoint(4, 2)));
+            Assert.AreEqual(BimaruValue.WATER, game.Grid[new GridPoint(1, 2)]);
+            Assert.AreEqual(BimaruValue.SHIP_CONT_UP, game.Grid[new GridPoint(2, 2)]);
+            Assert.AreEqual(BimaruValue.SHIP_CONT_DOWN, game.Grid[new GridPoint(3, 2)]);
+            Assert.AreEqual(BimaruValue.WATER, game.Grid[new GridPoint(4, 2)]);
 
-            Assert.AreEqual(BimaruValue.SHIP_UNDETERMINED, game.Grid.GetFieldValue(new GridPoint(4, 0)));
+            Assert.AreEqual(BimaruValue.SHIP_UNDETERMINED, game.Grid[new GridPoint(4, 0)]);
 
-            Assert.AreEqual(BimaruValue.WATER, game.Grid.GetFieldValue(new GridPoint(2, 4)));
-            Assert.AreEqual(BimaruValue.WATER, game.Grid.GetFieldValue(new GridPoint(3, 3)));
-            Assert.AreEqual(BimaruValue.SHIP_SINGLE, game.Grid.GetFieldValue(new GridPoint(3, 4)));
-            Assert.AreEqual(BimaruValue.WATER, game.Grid.GetFieldValue(new GridPoint(4, 4)));
+            Assert.AreEqual(BimaruValue.WATER, game.Grid[new GridPoint(2, 4)]);
+            Assert.AreEqual(BimaruValue.WATER, game.Grid[new GridPoint(3, 3)]);
+            Assert.AreEqual(BimaruValue.SHIP_SINGLE, game.Grid[new GridPoint(3, 4)]);
+            Assert.AreEqual(BimaruValue.WATER, game.Grid[new GridPoint(4, 4)]);
 
-            int numUndet = game.Grid.AllPoints().Where(p => game.Grid.GetFieldValue(p) == BimaruValue.UNDETERMINED).Count();
+            int numUndet = game.Grid.AllPoints().Where(p => game.Grid[p] == BimaruValue.UNDETERMINED).Count();
 
             Assert.AreEqual(10, numUndet);
         }

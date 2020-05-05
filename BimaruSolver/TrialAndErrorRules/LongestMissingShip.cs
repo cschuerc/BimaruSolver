@@ -50,7 +50,7 @@ namespace BimaruSolver
 
             foreach (var c in changes)
             {
-                BimaruValue currentValue = game.Grid.GetFieldValue(c.Point);
+                BimaruValue currentValue = game.Grid[c.Point];
 
                 if (!currentValue.IsCompatibleChange(c.NewValue))
                 {
@@ -67,7 +67,7 @@ namespace BimaruSolver
         {
             var changes = new FieldsToChange<BimaruValue>();
 
-            foreach (GridPoint p in game.Grid.AllPoints().Where(p => !game.Grid.GetFieldValue(p).IsFullyDetermined()))
+            foreach (GridPoint p in game.Grid.AllPoints().Where(p => !game.Grid[p].IsFullyDetermined()))
             {
                 changes.Add(p, BimaruValue.WATER);
             }

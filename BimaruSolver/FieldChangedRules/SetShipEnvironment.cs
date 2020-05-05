@@ -12,19 +12,19 @@ namespace BimaruSolver
         /// <inheritdoc/>
         public void FieldValueChanged(IGame game, FieldValueChangedEventArgs<BimaruValue> e)
         {
-            BimaruValue newValue = game.Grid.GetFieldValue(e.Point);
+            BimaruValue newValue = game.Grid[e.Point];
             foreach (Direction direction in DirectionExtensions.AllDirections())
             {
                 BimaruValueConstraint constraintInDirection = newValue.GetConstraint(direction);
 
                 GridPoint pointInDirection = e.Point.GetNextPoint(direction);
-                BimaruValue valueInDirection = game.Grid.GetFieldValue(pointInDirection);
+                BimaruValue valueInDirection = game.Grid[pointInDirection];
 
                 // Skip set if constraint already satisfied
                 if (!constraintInDirection.IsSatisfiedBy(valueInDirection))
                 {
                     BimaruValue valueToSet = constraintInDirection.GetRepresentativeValue();
-                    game.Grid.SetFieldValue(pointInDirection, valueToSet);
+                    game.Grid[pointInDirection] = valueToSet;
                 }
             }
         }
