@@ -9,10 +9,7 @@
         /// If true, then the rule should only be applied once.
         /// Calling it then several times will not hurt but is useless.
         /// </summary>
-        bool ShallBeAppliedOnce
-        {
-            get;
-        }
+        bool ShallBeAppliedOnce { get; }
 
         /// <summary>
         /// Augments the solution by determining some unambiguous field values.

@@ -8,34 +8,22 @@
         /// <summary>
         /// Row tally
         /// </summary>
-        ITally RowTally
-        {
-            get;
-        }
+        ITally RowTally { get; }
 
         /// <summary>
         /// Column tally
         /// </summary>
-        ITally ColumnTally
-        {
-            get;
-        }
+        ITally ColumnTally { get; }
 
         /// <summary>
         /// Ship settings (requested number of ships)
         /// </summary>
-        IShipSettings ShipSettings
-        {
-            get;
-        }
+        IShipSettings ShipSettings { get; }
 
         /// <summary>
         /// Bimaru grid that is supposed to satisfy the tallies and ship settings
         /// </summary>
-        IRollbackGrid Grid
-        {
-            get;
-        }
+        IRollbackGrid Grid { get; }
 
         /// <summary>
         /// Number of missing ship fields in the row of given index.
@@ -58,27 +46,18 @@
         /// This means that no solution exists independently of the grid field values.
         /// False does not mean the game is solvable.
         /// </summary>
-        bool IsUnsolvable
-        {
-            get;
-        }
+        bool IsUnsolvable { get; }
 
         /// <summary>
         /// True, if the current game is valid.
         /// This means that it is not unsolvable and
         /// that all basic checks allow a solution to exist.
         /// </summary>
-        bool IsValid
-        {
-            get;
-        }
+        bool IsValid { get; }
 
         /// <summary>
         /// True, if the game is solved.
         /// </summary>
-        bool IsSolved
-        {
-            get;
-        }
+        bool IsSolved { get; }
     }
 }

@@ -99,20 +99,12 @@ namespace BimaruSolver
         /// <summary>
         /// Single rule that tries out different possibilities
         /// </summary>
-        protected ITrialAndErrorRule TrialRule
-        {
-            get;
-            private set;
-        }
+        protected ITrialAndErrorRule TrialRule { get; private set; }
 
         /// <summary>
         /// Whether the solver shall stop and return the first discovered solution.
         /// </summary>
-        protected bool ShallCountSolutions
-        {
-            get;
-            private set;
-        }
+        protected bool ShallCountSolutions { get; private set; }
         #endregion
 
         #region Run rules

@@ -24,12 +24,12 @@ namespace Utility
         /// <summary>
         /// Point of the field change
         /// </summary>
-        public GridPoint Point { get; set; }
+        public GridPoint Point { get; private set; }
 
         /// <summary>
         /// New value of the field
         /// </summary>
-        public T NewValue { get; set; }
+        public T NewValue { get; private set; }
     }
 
     /// <summary>
@@ -43,7 +43,7 @@ namespace Utility
         /// </summary>
         public FieldsToChange()
         {
-            Changes = new Dictionary<GridPoint, SingleChange<T>>();
+            _changes = new Dictionary<GridPoint, SingleChange<T>>();
         }
 
         /// <summary>
@@ -67,11 +67,7 @@ namespace Utility
             AddSegment(startPoint, direction, values);
         }
 
-        private Dictionary<GridPoint, SingleChange<T>> Changes
-        {
-            get;
-            set;
-        }
+        private readonly Dictionary<GridPoint, SingleChange<T>> _changes;
 
         /// <summary>
         /// Add a single field change. Overwrites earlier changes at the same point.
@@ -80,7 +76,7 @@ namespace Utility
         /// <param name="newValue"> New value </param>
         public void Add(GridPoint point, T newValue)
         {
-            Changes[point] = new SingleChange<T>(point, newValue);
+            _changes[point] = new SingleChange<T>(point, newValue);
         }
 
         /// <summary>
@@ -107,13 +103,13 @@ namespace Utility
         /// <inheritdoc/>
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return Changes.Values.GetEnumerator();
+            return _changes.Values.GetEnumerator();
         }
 
         /// <inheritdoc/>
         public IEnumerator<SingleChange<T>> GetEnumerator()
         {
-            return Changes.Values.GetEnumerator();
+            return _changes.Values.GetEnumerator();
         }
     }
 }

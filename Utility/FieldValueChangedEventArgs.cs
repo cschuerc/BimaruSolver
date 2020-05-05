@@ -22,19 +22,11 @@ namespace Utility
         /// <summary>
         /// Grid point whose field value was changed.
         /// </summary>
-        public GridPoint Point
-        {
-            get;
-            private set;
-        }
+        public GridPoint Point { get; private set; }
 
         /// <summary>
         /// Original value of the field before the change.
         /// </summary>
-        public T OriginalValue
-        {
-            get;
-            private set;
-        }
+        public T OriginalValue { get; private set; }
     }
 }

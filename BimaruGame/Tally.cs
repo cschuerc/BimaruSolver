@@ -76,11 +76,7 @@ namespace BimaruGame
         }
 
         /// <inheritdoc/>
-        public int Sum
-        {
-            get;
-            private set;
-        }
+        public int Sum { get; private set; }
 
         /// <inheritdoc/>
         public IEnumerator<int> GetEnumerator()

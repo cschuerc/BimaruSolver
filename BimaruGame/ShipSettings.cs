@@ -69,10 +69,6 @@ namespace BimaruGame
         }
 
         /// <inheritdoc/>
-        public int NumShipFields
-        {
-            get;
-            private set;
-        }
+        public int NumShipFields { get; private set; }
     }
 }

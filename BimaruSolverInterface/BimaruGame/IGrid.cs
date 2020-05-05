@@ -12,18 +12,12 @@ namespace BimaruInterfaces
         /// <summary>
         /// Number of rows of the grid
         /// </summary>
-        int NumRows
-        {
-            get;
-        }
+        int NumRows { get; }
 
         /// <summary>
         /// Number of columns of the grid
         /// </summary>
-        int NumColumns
-        {
-            get;
-        }
+        int NumColumns { get; }
 
         /// <summary>
         /// Grid field value at a given point.
@@ -55,64 +49,43 @@ namespace BimaruInterfaces
         /// Get the number of ship fields per row.
         /// </summary>
         /// <returns> Number of fields per row that are ship values. </returns>
-        IReadOnlyList<int> GetNumShipFieldsRow
-        {
-            get;
-        }
+        IReadOnlyList<int> GetNumShipFieldsRow { get; }
 
         /// <summary>
         /// Get the number of ship fields per column.
         /// </summary>
         /// <returns> Number of fields per column that are ship values. </returns>
-        IReadOnlyList<int> GetNumShipFieldsColumn
-        {
-            get;
-        }
+        IReadOnlyList<int> GetNumShipFieldsColumn { get; }
 
         /// <summary>
         /// Get the number of UNDETERMINED fields per row
         /// </summary>
         /// <returns> Number of fields per row that are UNDETERMINED </returns>
-        IReadOnlyList<int> GetNumUndeterminedFieldsRow
-        {
-            get;
-        }
+        IReadOnlyList<int> GetNumUndeterminedFieldsRow { get; }
 
         /// <summary>
         /// Get the number of UNDETERMINED fields per column
         /// </summary>
         /// <returns> Number of fields per column that are UNDETERMINED </returns>
-        IReadOnlyList<int> GetNumUndeterminedFieldsColumn
-        {
-            get;
-        }
+        IReadOnlyList<int> GetNumUndeterminedFieldsColumn { get; }
 
         /// <summary>
         /// Get the number of ships per length. The largest index is the length of
         /// the row or column depending on which is larger.
         /// </summary>
         /// <returns> Number of ships per length in the grid. </returns>
-        IReadOnlyList<int> GetNumShips
-        {
-            get;
-        }
+        IReadOnlyList<int> GetNumShips { get; }
 
         /// <summary>
         /// True, if the grid values are compatible to each other according to the Bimaru rules.
         /// </summary>
-        bool IsValid
-        {
-            get;
-        }
+        bool IsValid { get; }
 
 
         /// <summary>
         /// True, if all field values are fully determined.
         /// </summary>
-        bool IsFullyDetermined
-        {
-            get;
-        }
+        bool IsFullyDetermined { get; }
 
         /// <summary>
         /// Enumerable over all points of the grid. Arbitrary order.

@@ -90,23 +90,11 @@ namespace BimaruSolver
                 ShallBeAppliedOnce = shallBeAppliedOnce;
             }
 
-            public int CallCounter
-            {
-                get;
-                private set;
-            }
+            public int CallCounter { get; private set; }
 
-            public IList<FieldValueChangedEventArgs<BimaruValue>> Changes
-            {
-                get;
-                private set;
-            }
+            public IList<FieldValueChangedEventArgs<BimaruValue>> Changes { get; private set; }
 
-            public bool ShallBeAppliedOnce
-            {
-                get;
-                private set;
-            }
+            public bool ShallBeAppliedOnce { get; private set; }
 
             public void FieldValueChanged(IGame game, FieldValueChangedEventArgs<BimaruValue> e)
             {

@@ -23,21 +23,13 @@ namespace Utility
         /// Get the row index of the point
         /// </summary>
         /// <returns> Row index of the point </returns>
-        public int RowIndex
-        {
-            get;
-            set;
-        }
+        public int RowIndex { get; private set; }
 
         /// <summary>
         /// Get the column index of the point
         /// </summary>
         /// <returns> Column index of the point </returns>
-        public int ColumnIndex
-        {
-            get;
-            set;
-        }
+        public int ColumnIndex { get; private set; }
 
         private static readonly Dictionary<Direction, Tuple<int, int>> _indexOffsets =
             new Dictionary<Direction, Tuple<int, int>>()

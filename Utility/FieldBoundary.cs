@@ -52,19 +52,11 @@ namespace Utility
         /// Is unambiguous, so for example for the boundary between (0, 0)
         /// and (1, 0), the base point is always (0, 0)).
         /// </summary>
-        public GridPoint BasePoint
-        {
-            get;
-            private set;
-        }
+        public GridPoint BasePoint { get; private set; }
 
         /// <summary>
         /// Direction of the boundary relative to the base point.
         /// </summary>
-        public Direction DirectionFromBase
-        {
-            get;
-            private set;
-        }
+        public Direction DirectionFromBase { get; private set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using BimaruInterfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Utility;
 
 namespace BimaruGame
@@ -193,12 +194,9 @@ namespace BimaruGame
         /// <returns></returns>
         public IEnumerable<GridPoint> PointsOfRow(int rowIndex)
         {
-            GridPoint currentPoint = new GridPoint(rowIndex, 0);
-            while (currentPoint.ColumnIndex < NumColumns)
+            foreach (int columnIndex in Enumerable.Range(0, NumColumns))
             {
-                yield return currentPoint;
-
-                currentPoint.ColumnIndex++;
+                yield return new GridPoint(rowIndex, columnIndex);
             }
         }
 
@@ -209,12 +207,9 @@ namespace BimaruGame
         /// <returns></returns>
         public IEnumerable<GridPoint> PointsOfColumn(int columnIndex)
         {
-            GridPoint currentPoint = new GridPoint(0, columnIndex);
-            while (currentPoint.RowIndex < NumRows)
+            foreach (int rowIndex in Enumerable.Range(0, NumRows))
             {
-                yield return currentPoint;
-
-                currentPoint.RowIndex++;
+                yield return new GridPoint(rowIndex, columnIndex);
             }
         }
 
@@ -224,7 +219,7 @@ namespace BimaruGame
         /// <returns></returns>
         public IEnumerable<GridPoint> AllPoints()
         {
-            for (int rowIndex = 0; rowIndex < NumRows; rowIndex++)
+            foreach (int rowIndex in Enumerable.Range(0, NumRows))
             {
                 foreach (GridPoint p in PointsOfRow(rowIndex))
                 {
