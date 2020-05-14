@@ -1,5 +1,6 @@
 ﻿using BimaruInterfaces;
 using System.Collections.Generic;
+using Utility;
 
 namespace BimaruSolver
 {
@@ -27,21 +28,26 @@ namespace BimaruSolver
         /// <inheritdoc/>
         public ISolver GenerateSolver(bool shallCountSolutions)
         {
-            var fieldChangedRules = new List<IFieldChangedRule>()
+            var fieldChangedRules = new List<IFieldValueChangedRule>()
             {   new SetShipEnvironment(),
                 new FillRowOrColumnWithWater(),
                 new FillRowOrColumnWithShips(),
                 new DetermineShipFields()
             };
 
-            var fullGridRules = new List<IFullGridRule>()
+            var fullGridRules = new List<ISolverRule>()
             {   new FillRowOrColumnWithWater(),
                 new FillRowOrColumnWithShips()
             };
 
             var trialRule = GetTrialRule(shallCountSolutions);
 
-            return new Solver(fieldChangedRules, fullGridRules, trialRule, shallCountSolutions);
+            return new Solver(
+                fieldChangedRules,
+                fullGridRules,
+                trialRule,
+                new Backup<IBimaruGrid>(),
+                shallCountSolutions);
         }
     }
 }

@@ -21,7 +21,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\BimaruGame.xml</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
     <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -45,12 +46,10 @@
   <ItemGroup>
     <Compile Include="Game.cs" />
     <Compile Include="GameFactory.cs" />
-    <Compile Include="Grid\RollbackGrid.cs" />
-    <Compile Include="Tally.cs" />
-    <Compile Include="Grid\Grid.cs" />
-    <Compile Include="Grid\GridBase.cs" />
+    <Compile Include="GridTally.cs" />
+    <Compile Include="BimaruGrid.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ShipSettings.cs" />
+    <Compile Include="ShipTarget.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BimaruSolverInterface\BimaruInterfaces.csproj">

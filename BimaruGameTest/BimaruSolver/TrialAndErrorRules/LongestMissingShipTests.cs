@@ -12,7 +12,7 @@ namespace BimaruSolver
     {
         private static FieldsToChange<BimaruValue> GenChangesShip(GridPoint p, Direction direction, int shipLength)
         {
-            var values = BimaruValueExtensions.FieldValuesOfShip(direction, shipLength);
+            var values = BimaruValues.FieldValuesOfShip(direction, shipLength);
             return new FieldsToChange<BimaruValue>(p, direction, values);
         }
 
@@ -56,13 +56,13 @@ namespace BimaruSolver
         public void TestBasic()
         {
             var game = (new GameFactory()).GenerateEmptyGame(3, 3);
-            game.RowTally[1] = 1;
-            game.RowTally[2] = 2;
+            game.TargetNumberOfShipFieldsPerRow[1] = 1;
+            game.TargetNumberOfShipFieldsPerRow[2] = 2;
 
-            game.ColumnTally[1] = 1;
-            game.ColumnTally[2] = 2;
+            game.TargetNumberOfShipFieldsPerColumn[1] = 1;
+            game.TargetNumberOfShipFieldsPerColumn[2] = 2;
 
-            game.ShipSettings[2] = 1;
+            game.TargetNumberOfShipsPerLength[2] = 1;
 
             game.Grid[new GridPoint(0, 0)] = BimaruValue.WATER;
             game.Grid[new GridPoint(1, 0)] = BimaruValue.WATER;
@@ -99,15 +99,15 @@ namespace BimaruSolver
         public void TestEmptyGrid()
         {
             var game = (new GameFactory()).GenerateEmptyGame(3, 3);
-            game.RowTally[0] = 3;
-            game.RowTally[1] = 2;
-            game.RowTally[2] = 3;
+            game.TargetNumberOfShipFieldsPerRow[0] = 3;
+            game.TargetNumberOfShipFieldsPerRow[1] = 2;
+            game.TargetNumberOfShipFieldsPerRow[2] = 3;
 
-            game.ColumnTally[0] = 4;
-            game.ColumnTally[1] = 3;
-            game.ColumnTally[2] = 2;
+            game.TargetNumberOfShipFieldsPerColumn[0] = 4;
+            game.TargetNumberOfShipFieldsPerColumn[1] = 3;
+            game.TargetNumberOfShipFieldsPerColumn[2] = 2;
 
-            game.ShipSettings[3] = 1;
+            game.TargetNumberOfShipsPerLength[3] = 1;
 
             // 1xCRUISER
             //   432
@@ -141,13 +141,13 @@ namespace BimaruSolver
         public void TestSingleShip()
         {
             var game = (new GameFactory()).GenerateEmptyGame(2, 2);
-            game.RowTally[0] = 1;
-            game.RowTally[1] = 1;
+            game.TargetNumberOfShipFieldsPerRow[0] = 1;
+            game.TargetNumberOfShipFieldsPerRow[1] = 1;
 
-            game.ColumnTally[0] = 1;
-            game.ColumnTally[1] = 1;
+            game.TargetNumberOfShipFieldsPerColumn[0] = 1;
+            game.TargetNumberOfShipFieldsPerColumn[1] = 1;
 
-            game.ShipSettings[1] = 1;
+            game.TargetNumberOfShipsPerLength[1] = 1;
 
             // 1xSUBMARINE
             //   11
@@ -179,15 +179,15 @@ namespace BimaruSolver
         public void TestPreset()
         {
             var game = (new GameFactory()).GenerateEmptyGame(3, 3);
-            game.RowTally[0] = 2;
-            game.RowTally[1] = 1;
-            game.RowTally[2] = 2;
+            game.TargetNumberOfShipFieldsPerRow[0] = 2;
+            game.TargetNumberOfShipFieldsPerRow[1] = 1;
+            game.TargetNumberOfShipFieldsPerRow[2] = 2;
 
-            game.ColumnTally[0] = 2;
-            game.ColumnTally[1] = 1;
-            game.ColumnTally[2] = 2;
+            game.TargetNumberOfShipFieldsPerColumn[0] = 2;
+            game.TargetNumberOfShipFieldsPerColumn[1] = 1;
+            game.TargetNumberOfShipFieldsPerColumn[2] = 2;
 
-            game.ShipSettings[2] = 1;
+            game.TargetNumberOfShipsPerLength[2] = 1;
 
             game.Grid[new GridPoint(0, 0)] = BimaruValue.SHIP_CONT_UP;
             game.Grid[new GridPoint(2, 0)] = BimaruValue.SHIP_MIDDLE;
@@ -224,16 +224,16 @@ namespace BimaruSolver
         public void TestShipLength()
         {
             var game = (new GameFactory()).GenerateEmptyGame(3, 3);
-            game.RowTally[0] = 1;
-            game.RowTally[1] = 2;
-            game.RowTally[2] = 2;
+            game.TargetNumberOfShipFieldsPerRow[0] = 1;
+            game.TargetNumberOfShipFieldsPerRow[1] = 2;
+            game.TargetNumberOfShipFieldsPerRow[2] = 2;
 
-            game.ColumnTally[0] = 2;
-            game.ColumnTally[1] = 0;
-            game.ColumnTally[2] = 3;
+            game.TargetNumberOfShipFieldsPerColumn[0] = 2;
+            game.TargetNumberOfShipFieldsPerColumn[1] = 0;
+            game.TargetNumberOfShipFieldsPerColumn[2] = 3;
 
-            game.ShipSettings[2] = 1;
-            game.ShipSettings[3] = 1;
+            game.TargetNumberOfShipsPerLength[2] = 1;
+            game.TargetNumberOfShipsPerLength[3] = 1;
 
             game.Grid[new GridPoint(0, 2)] = BimaruValue.SHIP_CONT_UP;
             game.Grid[new GridPoint(1, 2)] = BimaruValue.SHIP_MIDDLE;

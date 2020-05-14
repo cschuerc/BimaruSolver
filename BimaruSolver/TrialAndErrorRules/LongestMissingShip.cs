@@ -25,10 +25,10 @@ namespace BimaruSolver
 
         private int LengthOfLongestMissingShip(IGame game)
         {
-            int length = game.ShipSettings.LongestShipLength;
+            int length = game.TargetNumberOfShipsPerLength.LongestShipLength;
             while (length > 0)
             {
-                int numShipsGap = game.ShipSettings[length] - game.Grid.GetNumShips[length];
+                int numShipsGap = game.TargetNumberOfShipsPerLength[length] - game.Grid.NumberOfShipsPerLength[length];
                 if (numShipsGap < 0)
                 {
                     throw new InvalidBimaruGame();
@@ -52,7 +52,7 @@ namespace BimaruSolver
             {
                 BimaruValue currentValue = game.Grid[c.Point];
 
-                if (!currentValue.IsCompatibleChange(c.NewValue))
+                if (!currentValue.IsCompatibleChangeTo(c.NewValue))
                 {
                     return false;
                 }
@@ -77,13 +77,13 @@ namespace BimaruSolver
 
         private IEnumerable<FieldsToChange<BimaruValue>> GetTrialsForVerticalShips(IGame game, int shipLength)
         {
-            int numStartRows = game.Grid.NumRows - shipLength + 1;
-            foreach (int columnIndex in Enumerable.Range(0, game.Grid.NumColumns).Where(i => game.ColumnTally[i] >= shipLength))
+            int numStartRows = game.Grid.NumberOfRows - shipLength + 1;
+            foreach (int columnIndex in Enumerable.Range(0, game.Grid.NumberOfColumns).Where(i => game.TargetNumberOfShipFieldsPerColumn[i] >= shipLength))
             {
                 foreach (int rowIndex in Enumerable.Range(0, numStartRows))
                 {
                     GridPoint p = new GridPoint(rowIndex, columnIndex);
-                    var shipFields = BimaruValueExtensions.FieldValuesOfShip(Direction.UP, shipLength);
+                    var shipFields = BimaruValues.FieldValuesOfShip(Direction.UP, shipLength);
                     var changes = new FieldsToChange<BimaruValue>(p, Direction.UP, shipFields);
 
                     if (IsCompatibleButNotEqual(game, changes))
@@ -96,13 +96,13 @@ namespace BimaruSolver
 
         private IEnumerable<FieldsToChange<BimaruValue>> GetTrialsForHorizontalShips(IGame game, int shipLength)
         {
-            int numStartColumns = game.Grid.NumColumns - shipLength + 1;
-            foreach (int rowIndex in Enumerable.Range(0, game.Grid.NumRows).Where(i => game.RowTally[i] >= shipLength))
+            int numStartColumns = game.Grid.NumberOfColumns - shipLength + 1;
+            foreach (int rowIndex in Enumerable.Range(0, game.Grid.NumberOfRows).Where(i => game.TargetNumberOfShipFieldsPerRow[i] >= shipLength))
             {
                 foreach (int columnIndex in Enumerable.Range(0, numStartColumns))
                 {
                     GridPoint p = new GridPoint(rowIndex, columnIndex);
-                    var shipFields = BimaruValueExtensions.FieldValuesOfShip(Direction.RIGHT, shipLength);
+                    var shipFields = BimaruValues.FieldValuesOfShip(Direction.RIGHT, shipLength);
                     var changes = new FieldsToChange<BimaruValue>(p, Direction.RIGHT, shipFields);
 
                     if (IsCompatibleButNotEqual(game, changes))

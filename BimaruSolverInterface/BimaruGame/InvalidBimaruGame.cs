@@ -7,17 +7,14 @@ namespace BimaruInterfaces
     /// </summary>
     public class InvalidBimaruGame : Exception
     {
-        /// <inheritdoc/>
         public InvalidBimaruGame() : base()
         {
         }
 
-        /// <inheritdoc/>
         public InvalidBimaruGame(string message) : base(message)
         {
         }
 
-        /// <inheritdoc/>
         public InvalidBimaruGame(string message, Exception inner) : base(message, inner)
         {
         }

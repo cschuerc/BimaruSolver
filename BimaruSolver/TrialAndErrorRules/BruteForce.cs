@@ -42,9 +42,9 @@ namespace BimaruSolver
 
             bool isDeterminedAndCompatible(BimaruValue newValue) =>
                 newValue.IsFullyDetermined() &&
-                value.IsCompatibleChange(newValue);
+                value.IsCompatibleChangeTo(newValue);
 
-            foreach (BimaruValue newValue in BimaruValueExtensions.AllBimaruValues().Where(isDeterminedAndCompatible))
+            foreach (BimaruValue newValue in BimaruValues.AllBimaruValues().Where(isDeterminedAndCompatible))
             {
                 yield return new FieldsToChange<BimaruValue>(notFullyDetPoint.Value, newValue);
             }

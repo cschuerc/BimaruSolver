@@ -6,7 +6,7 @@ namespace BimaruSolver
 {
     internal class ChangedRuleSubscriber : IDisposable
     {
-        public ChangedRuleSubscriber(IGame game, IFieldChangedRule rule)
+        public ChangedRuleSubscriber(IGame game, IFieldValueChangedRule rule)
         {
             Game = game;
             Rule = rule;
@@ -16,7 +16,7 @@ namespace BimaruSolver
 
         private IGame Game { get; set; }
 
-        private IFieldChangedRule Rule { get; set; }
+        private IFieldValueChangedRule Rule { get; set; }
 
         void OnFieldValueChanged(object sender, FieldValueChangedEventArgs<BimaruValue> e)
         {

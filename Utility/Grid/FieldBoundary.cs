@@ -4,8 +4,8 @@ namespace Utility
 {
     /// <summary>
     /// Boundaries of two neighbouring (also diagonally) fields.
-    /// Each field on the grid has eight possible boundaries.
-    /// For each possible direction one.
+    /// Each field on the grid has eight possible boundaries,
+    /// for each possible direction one.
     /// </summary>
     public struct FieldBoundary
     {
@@ -18,7 +18,7 @@ namespace Utility
         /// RIGHT and LEFT
         /// RIGHT_DOWN and LEFT_UP
         /// </summary>
-        private static readonly HashSet<Direction> _baseDirections =
+        private static readonly HashSet<Direction> baseDirections =
             new HashSet<Direction>()
             {
                 Direction.UP,
@@ -28,16 +28,16 @@ namespace Utility
             };
 
         /// <summary>
-        /// Constructs a field boundary with a unique representation. For example,
+        /// Field boundary with a unique representation. For example,
         /// if this is called once with (0, 0) UP and once with (1, 0) DOWN
-        /// then both represent the same boundary and are stored identically.
+        /// then both represent the same boundary and are equal.
         /// </summary>
         /// <param name="basePoint"> Point which has the boundary </param>
         /// <param name="directionFromBase"> Direction of the boundary relative to the base point </param>
         public FieldBoundary(GridPoint basePoint, Direction directionFromBase)
         {
             // Unique representation for the same boundary
-            if (!_baseDirections.Contains(directionFromBase))
+            if (!baseDirections.Contains(directionFromBase))
             {
                 basePoint = basePoint.GetNextPoint(directionFromBase);
                 directionFromBase = directionFromBase.GetOpposite();
@@ -48,15 +48,22 @@ namespace Utility
         }
 
         /// <summary>
-        /// One of the two possible base points of the boundary.
-        /// Is unambiguous, so for example for the boundary between (0, 0)
-        /// and (1, 0), the base point is always (0, 0)).
+        /// The base point of the boundary. Is unambiguous,
+        /// so for example for the boundary between (0, 0)
+        /// and (1, 0), the base point is always (0, 0).
         /// </summary>
-        public GridPoint BasePoint { get; private set; }
+        public GridPoint BasePoint
+        {
+            get;
+            private set;
+        }
 
         /// <summary>
         /// Direction of the boundary relative to the base point.
         /// </summary>
-        public Direction DirectionFromBase { get; private set; }
+        public Direction DirectionFromBase
+        { get;
+            private set;
+        }
     }
 }

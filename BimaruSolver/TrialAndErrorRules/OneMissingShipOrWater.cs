@@ -39,7 +39,7 @@ namespace BimaruSolver
         /// <summary>
         /// Fall-back rule
         /// </summary>
-        protected ITrialAndErrorRule FallBackRule { get; private set; }
+        private ITrialAndErrorRule FallBackRule { get; set; }
 
         /// <inheritdoc/>
         public bool AreTrialsDisjoint =>
@@ -49,7 +49,7 @@ namespace BimaruSolver
         /// Grid points whose values are UNDETERMINED and
         /// where only one is WATER or only one is a ship.
         /// </summary>
-        protected class OneMissing
+        private class OneMissing
         {
             /// <summary>
             /// Constructor
@@ -114,19 +114,19 @@ namespace BimaruSolver
         {
             OneMissing max = null;
 
-            foreach (int rowIndex in Enumerable.Range(0, game.Grid.NumRows))
+            foreach (int rowIndex in Enumerable.Range(0, game.Grid.NumberOfRows))
             {
                 var undeterminedPointsInRow = game.Grid.PointsOfRow(rowIndex).
                     Where(p => game.Grid[p] == BimaruValue.UNDETERMINED);
 
-                if (game.MissingShipFieldsRow(rowIndex) == 1)
+                if (game.NumberOfMissingShipFieldsPerRow(rowIndex) == 1)
                 {
                     var current = new OneMissing(undeterminedPointsInRow, BimaruValueConstraint.SHIP);
                     max = current > max ? current : max;
                 }
 
-                if (game.MissingShipFieldsRow(rowIndex) ==
-                    (game.Grid.GetNumUndeterminedFieldsRow[rowIndex] - 1))
+                if (game.NumberOfMissingShipFieldsPerRow(rowIndex) ==
+                    (game.Grid.NumberOfUndeterminedFieldsPerRow[rowIndex] - 1))
                 {
                     var current = new OneMissing(undeterminedPointsInRow, BimaruValueConstraint.WATER);
                     max = current > max ? current : max;
@@ -140,19 +140,19 @@ namespace BimaruSolver
         {
             OneMissing max = null;
 
-            foreach (int columnIndex in Enumerable.Range(0, game.Grid.NumColumns))
+            foreach (int columnIndex in Enumerable.Range(0, game.Grid.NumberOfColumns))
             {
                 var undeterminedPointsInColumn = game.Grid.PointsOfColumn(columnIndex).
                     Where(p => game.Grid[p] == BimaruValue.UNDETERMINED);
 
-                if (game.MissingShipFieldsColumn(columnIndex) == 1)
+                if (game.NumberOfMissingShipFieldsPerColumn(columnIndex) == 1)
                 {
                     var current = new OneMissing(undeterminedPointsInColumn, BimaruValueConstraint.SHIP);
                     max = current > max ? current : max;
                 }
 
-                if (game.MissingShipFieldsColumn(columnIndex) ==
-                    (game.Grid.GetNumUndeterminedFieldsColumn[columnIndex] - 1))
+                if (game.NumberOfMissingShipFieldsPerColumn(columnIndex) ==
+                    (game.Grid.NumberOfUndeterminedFieldsPerColumn[columnIndex] - 1))
                 {
                     var current = new OneMissing(undeterminedPointsInColumn, BimaruValueConstraint.WATER);
                     max = current > max ? current : max;

@@ -12,7 +12,7 @@ namespace BimaruSolver
         public void TestFactory()
         {
             var solverNonCounting = (new SolverFactory()).GenerateSolver(false);
-            var game = (new GameFactory()).GenerateGameTwoSolutions();
+            var game = (new MockGameFactory()).GenerateGameTwoSolutions();
 
             Assert.IsFalse(game.IsSolved);
             int numSolutions = solverNonCounting.Solve(game);
@@ -20,7 +20,7 @@ namespace BimaruSolver
             Assert.AreEqual(1, numSolutions);
 
             var solverCounting = (new SolverFactory()).GenerateSolver(true);
-            game = (new GameFactory()).GenerateGameTwoSolutions();
+            game = (new MockGameFactory()).GenerateGameTwoSolutions();
 
             Assert.IsFalse(game.IsSolved);
             numSolutions = solverCounting.Solve(game);
@@ -32,7 +32,7 @@ namespace BimaruSolver
         public void TestAllGamesNonCounting()
         {
             var solver = (new SolverFactory()).GenerateSolver(false);
-            var database = new Database(new BinaryFormatter());
+            var database = new ResourceDatabase(new BinaryFormatter());
 
             foreach (var databaseGame in database.GetAllGames(null))
             {
@@ -48,7 +48,7 @@ namespace BimaruSolver
         public void TestAllGamesCounting()
         {
             var solver = (new SolverFactory()).GenerateSolver(true);
-            var database = new Database(new BinaryFormatter());
+            var database = new ResourceDatabase(new BinaryFormatter());
 
             foreach (var databaseGame in database.GetAllGames(null))
             {

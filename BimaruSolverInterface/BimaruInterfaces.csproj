@@ -21,7 +21,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\BimaruInterfaces.xml</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
     <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -43,7 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BimaruSolver\IFieldChangedRule.cs" />
+    <Compile Include="BimaruSolver\IFieldValueChangedRule.cs" />
     <Compile Include="BimaruSolver\IFullGridRule.cs" />
     <Compile Include="BimaruSolver\ITrialAndErrorRule.cs" />
     <Compile Include="BimaruDatabase\GameDifficulty.cs" />
@@ -52,17 +53,16 @@
     <Compile Include="General\BimaruValue.cs" />
     <Compile Include="General\BimaruValueConstraint.cs" />
     <Compile Include="BimaruGame\IGame.cs" />
-    <Compile Include="BimaruGame\IGrid.cs" />
+    <Compile Include="BimaruGame\IBimaruGrid.cs" />
     <Compile Include="BimaruGame\InvalidBimaruGame.cs" />
-    <Compile Include="General\InvalidFieldChange.cs" />
-    <Compile Include="BimaruGame\IRollbackGrid.cs" />
-    <Compile Include="BimaruGame\IShipSettings.cs" />
+    <Compile Include="BimaruGame\IShipTarget.cs" />
     <Compile Include="BimaruSolver\ISolver.cs" />
-    <Compile Include="BimaruGame\ITally.cs" />
-    <Compile Include="BimaruDatabase\IDatabaseGame.cs" />
+    <Compile Include="BimaruGame\IGridTally.cs" />
+    <Compile Include="BimaruDatabase\IGameWithMetaInfo.cs" />
     <Compile Include="BimaruDatabase\IGameMetaInfo.cs" />
-    <Compile Include="BimaruDatabase\IDatabase.cs" />
+    <Compile Include="BimaruDatabase\IGameDatabase.cs" />
     <Compile Include="BimaruSolver\ISolverFactory.cs" />
+    <Compile Include="General\Satisfiability.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

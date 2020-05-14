@@ -17,15 +17,18 @@ namespace BimaruSolver
         /// <param name="fieldChangedRules"> Solving rules triggered for every field change. </param>
         /// <param name="fullGridRules"> General solving rules without guessing. </param>
         /// <param name="trialRule"> Single rule that tries out different possibilities. </param>
+        /// <param name="gridBackup"> Grid backup </param>
         /// <param name="shallCountSolutions"> True, if the solver shall count the number of solutions. </param>
-        public Solver(IEnumerable<IFieldChangedRule> fieldChangedRules,
-            IEnumerable<IFullGridRule> fullGridRules,
+        public Solver(IEnumerable<IFieldValueChangedRule> fieldChangedRules,
+            IEnumerable<ISolverRule> fullGridRules,
             ITrialAndErrorRule trialRule,
+            IBackup<IBimaruGrid> gridBackup,
             bool shallCountSolutions = false)
         {
             FieldChangedRules = fieldChangedRules;
             FullGridRules = fullGridRules;
             TrialRule = trialRule;
+            GridBackup = gridBackup;
             ShallCountSolutions = shallCountSolutions;
 
             if (ShallCountSolutions && (TrialRule == null || !TrialRule.AreTrialsDisjoint))
@@ -43,28 +46,43 @@ namespace BimaruSolver
             if (numSolutions > 0)
             {
                 // Restore the last solution from the clipboard
-                game.Grid.RestoreFromClipboard();
+                GridBackup.RestoreFromClipboardTo(game.Grid);
             }
 
             return numSolutions;
         }
 
+        private IBackup<IBimaruGrid> gridBackup;
+
+        private IBackup<IBimaruGrid> GridBackup
+        {
+            get
+            {
+                return gridBackup;
+            }
+
+            set
+            {
+                gridBackup = value ?? throw new ArgumentNullException("GridBackup is null.");
+            }
+        }
+
         #region Rules
-        private List<IFieldChangedRule> _fieldChangedRules;
+        private List<IFieldValueChangedRule> _fieldChangedRules;
 
         /// <summary>
         /// Solving rules triggered after every field change.
         /// </summary>
-        protected IEnumerable<IFieldChangedRule> FieldChangedRules
+        private IEnumerable<IFieldValueChangedRule> FieldChangedRules
         {
             get
             {
                 return _fieldChangedRules;
             }
 
-            private set
+            set
             {
-                _fieldChangedRules = new List<IFieldChangedRule>();
+                _fieldChangedRules = new List<IFieldValueChangedRule>();
 
                 if (value != null)
                 {
@@ -73,21 +91,21 @@ namespace BimaruSolver
             }
         }
 
-        private List<IFullGridRule> _fullGridRules;
+        private List<ISolverRule> _fullGridRules;
 
         /// <summary>
         /// General solving rules without guessing.
         /// </summary>
-        protected IEnumerable<IFullGridRule> FullGridRules
+        private IEnumerable<ISolverRule> FullGridRules
         {
             get
             {
                 return _fullGridRules;
             }
 
-            private set
+            set
             {
-                _fullGridRules = new List<IFullGridRule>();
+                _fullGridRules = new List<ISolverRule>();
 
                 if (value != null)
                 {
@@ -99,13 +117,13 @@ namespace BimaruSolver
         /// <summary>
         /// Single rule that tries out different possibilities
         /// </summary>
-        protected ITrialAndErrorRule TrialRule { get; private set; }
+        private ITrialAndErrorRule TrialRule { get; set; }
 
         /// <summary>
         /// Whether the solver shall count the solutions or not.
         /// If not, it stops after having found the first solution.
         /// </summary>
-        protected bool ShallCountSolutions { get; private set; }
+        private bool ShallCountSolutions { get; set; }
         #endregion
 
         #region Run rules
@@ -113,7 +131,7 @@ namespace BimaruSolver
         {
             int numSolutions = 0;
 
-            game.Grid.SetSavePoint();
+            GridBackup.SetSavePoint(game.Grid);
 
             try
             {
@@ -122,9 +140,13 @@ namespace BimaruSolver
             catch (InvalidBimaruGame)
             {
             }
+            catch (InvalidFieldValueChange)
+            {
+
+            }
             finally
             {
-                game.Grid.Rollback();
+                GridBackup.RestoreAndDeleteLastSavepoint(game.Grid);
             }
 
             return numSolutions;
@@ -169,13 +191,13 @@ namespace BimaruSolver
         private static void CheckIsChangeValid(IGame game, FieldValueChangedEventArgs<BimaruValue> e)
         {
             BimaruValue newValue = game.Grid[e.Point];
-            if (!game.IsValid || !e.OriginalValue.IsCompatibleChange(newValue))
+            if (!game.IsValid || !e.OriginalValue.IsCompatibleChangeTo(newValue))
             {
-                throw new InvalidFieldChange();
+                throw new InvalidFieldValueChange();
             }
         }
 
-        private void FireInitialFieldChangedEvents(IGrid grid, EventHandler<FieldValueChangedEventArgs<BimaruValue>> eventHandler)
+        private void FireInitialFieldChangedEvents(IBimaruGrid grid, EventHandler<FieldValueChangedEventArgs<BimaruValue>> eventHandler)
         {
             foreach (GridPoint p in grid.AllPoints().Where(p => grid[p] != BimaruValue.UNDETERMINED))
             {
@@ -207,7 +229,7 @@ namespace BimaruSolver
             while (unhandledChangedEvents.Count > 0)
             {
                 var e = unhandledChangedEvents.Dequeue();
-                foreach (IFieldChangedRule rule in FieldChangedRules)
+                foreach (IFieldValueChangedRule rule in FieldChangedRules)
                 {
                     rule.FieldValueChanged(game, e);
                 }
@@ -216,7 +238,7 @@ namespace BimaruSolver
 
         private void RunFullGridRules(IGame game, bool isFirstCall)
         {
-            foreach (IFullGridRule rule in FullGridRules.Where(rule => isFirstCall || !rule.ShallBeAppliedOnce))
+            foreach (ISolverRule rule in FullGridRules.Where(rule => isFirstCall || !rule.ShallBeAppliedOnce))
             {
                 rule.Solve(game);
             }
@@ -226,7 +248,7 @@ namespace BimaruSolver
         {
             if (game.IsSolved)
             {
-                game.Grid.CloneToClipboard();
+                GridBackup.CloneToClipboard(game.Grid);
                 return 1;
             }
 

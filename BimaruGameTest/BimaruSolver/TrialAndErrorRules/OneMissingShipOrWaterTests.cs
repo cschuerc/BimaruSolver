@@ -38,13 +38,13 @@ namespace BimaruSolver
         {
             var game = (new GameFactory()).GenerateEmptyGame(3, 4);
             game.Grid[new GridPoint(2, 3)] = BimaruValue.WATER;
-            game.RowTally[0] = 2;
-            game.RowTally[1] = 2;
-            game.RowTally[2] = 1;
-            game.ColumnTally[0] = 3;
-            game.ColumnTally[1] = 0;
-            game.ColumnTally[2] = 0;
-            game.ColumnTally[3] = 2;
+            game.TargetNumberOfShipFieldsPerRow[0] = 2;
+            game.TargetNumberOfShipFieldsPerRow[1] = 2;
+            game.TargetNumberOfShipFieldsPerRow[2] = 1;
+            game.TargetNumberOfShipFieldsPerColumn[0] = 3;
+            game.TargetNumberOfShipFieldsPerColumn[1] = 0;
+            game.TargetNumberOfShipFieldsPerColumn[2] = 0;
+            game.TargetNumberOfShipFieldsPerColumn[3] = 2;
 
             //   3002
             //   ----
@@ -71,13 +71,13 @@ namespace BimaruSolver
         {
             var game = (new GameFactory()).GenerateEmptyGame(3, 4);
             game.Grid[new GridPoint(2, 3)] = BimaruValue.SHIP_UNDETERMINED;
-            game.RowTally[0] = 2;
-            game.RowTally[1] = 2;
-            game.RowTally[2] = 3;
-            game.ColumnTally[0] = 0;
-            game.ColumnTally[1] = 3;
-            game.ColumnTally[2] = 3;
-            game.ColumnTally[3] = 1;
+            game.TargetNumberOfShipFieldsPerRow[0] = 2;
+            game.TargetNumberOfShipFieldsPerRow[1] = 2;
+            game.TargetNumberOfShipFieldsPerRow[2] = 3;
+            game.TargetNumberOfShipFieldsPerColumn[0] = 0;
+            game.TargetNumberOfShipFieldsPerColumn[1] = 3;
+            game.TargetNumberOfShipFieldsPerColumn[2] = 3;
+            game.TargetNumberOfShipFieldsPerColumn[3] = 1;
 
             //   0331
             //   ----
@@ -99,7 +99,7 @@ namespace BimaruSolver
             CheckCorrectTrialChanges(changesExpected, rule.GetCompleteChangeTrials(game));
         }
 
-        protected class CountTrialCalls : ITrialAndErrorRule
+        private class CountTrialCalls : ITrialAndErrorRule
         {
             public CountTrialCalls()
             {
@@ -121,12 +121,12 @@ namespace BimaruSolver
         public void TestNeverOneMissing()
         {
             var game = (new GameFactory()).GenerateEmptyGame(2, 4);
-            game.RowTally[0] = 2;
-            game.RowTally[1] = 2;
-            game.ColumnTally[0] = 2;
-            game.ColumnTally[1] = 0;
-            game.ColumnTally[2] = 0;
-            game.ColumnTally[3] = 2;
+            game.TargetNumberOfShipFieldsPerRow[0] = 2;
+            game.TargetNumberOfShipFieldsPerRow[1] = 2;
+            game.TargetNumberOfShipFieldsPerColumn[0] = 2;
+            game.TargetNumberOfShipFieldsPerColumn[1] = 0;
+            game.TargetNumberOfShipFieldsPerColumn[2] = 0;
+            game.TargetNumberOfShipFieldsPerColumn[3] = 2;
 
             //   2002
             //   ----

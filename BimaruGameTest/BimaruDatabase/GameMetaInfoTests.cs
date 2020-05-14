@@ -7,25 +7,47 @@ namespace BimaruDatabase
     public class GameMetaInfoTests
     {
         [TestMethod]
-        public void TestEquality()
+        public void TestEqualitySameObject()
+        {
+            var game = new GameMetaInfo(0, GameSize.LARGE, GameDifficulty.EASY);
+
+            Assert.AreEqual(game, game);
+        }
+
+        [TestMethod]
+        public void TestEqualitySameData()
         {
             var game0 = new GameMetaInfo(0, GameSize.LARGE, GameDifficulty.EASY);
             var game1 = new GameMetaInfo(0, GameSize.LARGE, GameDifficulty.EASY);
 
-            Assert.AreEqual(game0, game0);
             Assert.AreEqual(game0, game1);
+        }
 
-            var game2 = new GameMetaInfo(1, GameSize.LARGE, GameDifficulty.EASY);
+        [TestMethod]
+        public void TestEqualityDifferentId()
+        {
+            var game0 = new GameMetaInfo(0, GameSize.LARGE, GameDifficulty.EASY);
+            var game1 = new GameMetaInfo(1, GameSize.LARGE, GameDifficulty.EASY);
 
-            Assert.AreNotEqual(game0, game2);
+            Assert.AreNotEqual(game0, game1);
+        }
 
-            var game3 = new GameMetaInfo(0, GameSize.MIDDLE, GameDifficulty.EASY);
+        [TestMethod]
+        public void TestEqualityDifferentSize()
+        {
+            var game0 = new GameMetaInfo(0, GameSize.LARGE, GameDifficulty.EASY);
+            var game1 = new GameMetaInfo(0, GameSize.MIDDLE, GameDifficulty.EASY);
 
-            Assert.AreNotEqual(game0, game3);
+            Assert.AreNotEqual(game0, game1);
+        }
 
-            var game4 = new GameMetaInfo(0, GameSize.LARGE, GameDifficulty.HARD);
+        [TestMethod]
+        public void TestEqualityDifferentDifficulty()
+        {
+            var game0 = new GameMetaInfo(0, GameSize.LARGE, GameDifficulty.EASY);
+            var game1 = new GameMetaInfo(0, GameSize.LARGE, GameDifficulty.HARD);
 
-            Assert.AreNotEqual(game0, game4);
+            Assert.AreNotEqual(game0, game1);
         }
     }
 }

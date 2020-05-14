@@ -13,16 +13,16 @@ namespace BimaruSolver
     /// is much less efficient than a FieldChangedRule and hence the FullGridRule is
     /// used once and thereafter only the FieldChangedRule.
     /// </summary>
-    public class FillRowOrColumnWithWater : IFieldChangedRule, IFullGridRule
+    public class FillRowOrColumnWithWater : IFieldValueChangedRule, ISolverRule
     {
         private static bool AreAllShipsUsedInRow(IGame game, int rowIndex)
         {
-            return game.MissingShipFieldsRow(rowIndex) == 0;
+            return game.NumberOfMissingShipFieldsPerRow(rowIndex) == 0;
         }
 
         private static bool AreAllShipsUsedInColumn(IGame game, int columnIndex)
         {
-            return game.MissingShipFieldsColumn(columnIndex) == 0;
+            return game.NumberOfMissingShipFieldsPerColumn(columnIndex) == 0;
         }
 
         /// <inheritdoc/>
@@ -46,12 +46,12 @@ namespace BimaruSolver
         /// <inheritdoc/>
         public void Solve(IGame game)
         {
-            foreach (int rowIndex in Enumerable.Range(0, game.Grid.NumRows).Where(i => AreAllShipsUsedInRow(game, i)))
+            foreach (int rowIndex in Enumerable.Range(0, game.Grid.NumberOfRows).Where(i => AreAllShipsUsedInRow(game, i)))
             {
                 game.Grid.FillUndeterminedFieldsRow(rowIndex, BimaruValueConstraint.WATER);
             }
 
-            foreach (int columnIndex in Enumerable.Range(0, game.Grid.NumColumns).Where(i => AreAllShipsUsedInColumn(game, i)))
+            foreach (int columnIndex in Enumerable.Range(0, game.Grid.NumberOfColumns).Where(i => AreAllShipsUsedInColumn(game, i)))
             {
                 game.Grid.FillUndeterminedFieldsColumn(columnIndex, BimaruValueConstraint.WATER);
             }

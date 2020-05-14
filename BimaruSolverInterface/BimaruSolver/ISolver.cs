@@ -1,20 +1,17 @@
 ﻿namespace BimaruInterfaces
 {
-    /// <summary>
-    /// Bimaru solver
-    /// </summary>
     public interface ISolver
     {
         /// <summary>
-        /// Computes the number of solutions of the Bimaru game.
+        /// Tries to solve the Bimaru.
         /// 
-        /// If at least one solution is found, an arbitrary solution
-        /// is on top of the grid stack right above the pre-solved game.
+        /// Leaves the Bimaru game untouched
+        /// if no soultion could be found.
         /// 
-        /// If no solution is found, the grid is left unchanged.
+        /// The state of the Bimaru is an arbitrary solution
+        /// if at least one solution could be found.
         /// </summary>
-        /// <param name="game"> Bimaru game to solve </param>
-        /// <returns> Number of solutions. </returns>
+        /// <returns> Number of found solutions. </returns>
         int Solve(IGame game);
     }
 }

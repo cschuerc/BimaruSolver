@@ -12,10 +12,10 @@ namespace BimaruSolver
         public void TestFullGridRules()
         {
             var game = (new GameFactory()).GenerateEmptyGame(2, 3);
-            game.RowTally[0] = 2;
-            game.RowTally[1] = 1;
-            game.ColumnTally[0] = 1;
-            game.ColumnTally[2] = 2;
+            game.TargetNumberOfShipFieldsPerRow[0] = 2;
+            game.TargetNumberOfShipFieldsPerRow[1] = 1;
+            game.TargetNumberOfShipFieldsPerColumn[0] = 1;
+            game.TargetNumberOfShipFieldsPerColumn[2] = 2;
             game.Grid[new GridPoint(0, 2)] = BimaruValue.SHIP_CONT_RIGHT;
 
             //   102
@@ -50,10 +50,10 @@ namespace BimaruSolver
         public void TestFieldChangedRules()
         {
             var game = (new GameFactory()).GenerateEmptyGame(2, 3);
-            game.RowTally[0] = 2;
-            game.RowTally[1] = 1;
-            game.ColumnTally[0] = 1;
-            game.ColumnTally[2] = 2;
+            game.TargetNumberOfShipFieldsPerRow[0] = 2;
+            game.TargetNumberOfShipFieldsPerRow[1] = 1;
+            game.TargetNumberOfShipFieldsPerColumn[0] = 1;
+            game.TargetNumberOfShipFieldsPerColumn[2] = 2;
 
             //   102
             //   ---

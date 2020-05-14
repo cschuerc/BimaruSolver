@@ -34,9 +34,9 @@ namespace BimaruSolver
         public void TestSingleShip()
         {
             var game = (new GameFactory()).GenerateEmptyGame(3, 3);
-            game.RowTally[1] = 1;
-            game.ColumnTally[1] = 1;
-            game.ShipSettings[1] = 1;
+            game.TargetNumberOfShipFieldsPerRow[1] = 1;
+            game.TargetNumberOfShipFieldsPerColumn[1] = 1;
+            game.TargetNumberOfShipsPerLength[1] = 1;
 
             var p11 = new GridPoint(1, 1);
             using (var subscriber = new ChangedRuleSubscriber(game, new SetShipEnvironment()))
@@ -130,10 +130,10 @@ namespace BimaruSolver
         public void TestShipContOverwrite()
         {
             var game = (new GameFactory()).GenerateEmptyGame(3, 3);
-            game.RowTally[1] = 2;
-            game.ColumnTally[1] = 1;
-            game.ColumnTally[2] = 1;
-            game.ShipSettings[2] = 1;
+            game.TargetNumberOfShipFieldsPerRow[1] = 2;
+            game.TargetNumberOfShipFieldsPerColumn[1] = 1;
+            game.TargetNumberOfShipFieldsPerColumn[2] = 1;
+            game.TargetNumberOfShipsPerLength[2] = 1;
 
             var p11 = new GridPoint(1, 1);
             var p12 = new GridPoint(1, 2);

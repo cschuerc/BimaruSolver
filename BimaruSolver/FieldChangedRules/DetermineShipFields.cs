@@ -6,11 +6,11 @@ namespace BimaruSolver
     /// <summary>
     /// Determine SHIP_UNDETERMINED and the direction of SHIP_MIDDLE if possible
     /// </summary>
-    public class DetermineShipFields : IFieldChangedRule
+    public class DetermineShipFields : IFieldValueChangedRule
     {
         private Direction? FindNonDiagonalNeighbour(IGame game, GridPoint center, BimaruValueConstraint constraint)
         {
-            foreach (var direction in DirectionExtensions.AllNonDiagonalDirections())
+            foreach (var direction in Directions.AllNonDiagonalDirections())
             {
                 var pointInDirection = center.GetNextPoint(direction);
                 if (constraint.IsSatisfiedBy(game.Grid[pointInDirection]))
@@ -25,7 +25,7 @@ namespace BimaruSolver
         #region Ship Undetermined
         private bool AreAllNeighboursWater(IGame game, GridPoint center)
         {
-            foreach (var direction in DirectionExtensions.AllNonDiagonalDirections())
+            foreach (var direction in Directions.AllNonDiagonalDirections())
             {
                 var pointInDirection = center.GetNextPoint(direction);
                 if (game.Grid[pointInDirection] != BimaruValue.WATER)
@@ -102,7 +102,7 @@ namespace BimaruSolver
 
         private void SetShipMiddleNeighbours(IGame game, GridPoint shipMiddlePoint, DirectionType shipMiddleDirection)
         {
-            foreach (var direction in DirectionExtensions.AllNonDiagonalDirections())
+            foreach (var direction in Directions.AllNonDiagonalDirections())
             {
                 var constraint = direction.GetDirectionType() == shipMiddleDirection ?
                     BimaruValueConstraint.SHIP :
@@ -146,7 +146,7 @@ namespace BimaruSolver
         {
             DetermineShip(game, e.Point);
 
-            foreach (var direction in DirectionExtensions.AllNonDiagonalDirections())
+            foreach (var direction in Directions.AllNonDiagonalDirections())
             {
                 DetermineShip(game, e.Point.GetNextPoint(direction));
             }

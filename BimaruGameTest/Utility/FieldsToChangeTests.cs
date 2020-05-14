@@ -1,4 +1,5 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Utility
@@ -11,7 +12,17 @@ namespace Utility
         {
             var changes = new FieldsToChange<int>();
 
-            Assert.AreEqual(0, changes.Count());
+            AssertEqualFieldChanges(new List<SingleChange<int>>(), changes);
+        }
+
+        private void AssertEqualFieldChanges(List<SingleChange<int>> expectedFieldChanges, FieldsToChange<int> actualFieldChanges)
+        {
+            Assert.AreEqual(expectedFieldChanges.Count, actualFieldChanges.Count());
+
+            foreach (var actualChange in actualFieldChanges)
+            {
+                Assert.IsTrue(expectedFieldChanges.Contains(actualChange));
+            }
         }
 
         [TestMethod]
@@ -20,9 +31,12 @@ namespace Utility
             var p12 = new GridPoint(1, 2);
             var changes = new FieldsToChange<int>(p12, 7);
 
-            Assert.AreEqual(1, changes.Count());
-            Assert.AreEqual(p12, changes.ElementAt(0).Point);
-            Assert.AreEqual(7, changes.ElementAt(0).NewValue);
+            AssertEqualFieldChanges(
+                new List<SingleChange<int>>()
+                {
+                    new SingleChange<int>(p12, 7)
+                },
+                changes);
         }
 
         [TestMethod]
@@ -36,11 +50,13 @@ namespace Utility
                 { p14, 8 }
             };
 
-            Assert.AreEqual(2, changes.Count());
-            Assert.AreEqual(p12, changes.ElementAt(0).Point);
-            Assert.AreEqual(7, changes.ElementAt(0).NewValue);
-            Assert.AreEqual(p14, changes.ElementAt(1).Point);
-            Assert.AreEqual(8, changes.ElementAt(1).NewValue);
+            AssertEqualFieldChanges(
+                new List<SingleChange<int>>()
+                {
+                    new SingleChange<int>(p12, 7),
+                    new SingleChange<int>(p14, 8)
+                },
+                changes);
         }
 
         [TestMethod]
@@ -53,30 +69,13 @@ namespace Utility
                 Direction.RIGHT,
                 Enumerable.Range(7, numValues));
 
-            Assert.AreEqual(numValues, changes.Count());
-            Assert.AreEqual(p12, changes.ElementAt(0).Point);
-            Assert.AreEqual(7, changes.ElementAt(0).NewValue);
-            Assert.AreEqual(new GridPoint(1, 3), changes.ElementAt(1).Point);
-            Assert.AreEqual(8, changes.ElementAt(1).NewValue);
-        }
-
-        [TestMethod]
-        public void TestAddSegment()
-        {
-            int numValues = 2;
-            var p12 = new GridPoint(1, 2);
-            var changes = new FieldsToChange<int>();
-
-            changes.AddSegment(
-                p12,
-                Direction.RIGHT,
-                Enumerable.Range(7, numValues));
-
-            Assert.AreEqual(numValues, changes.Count());
-            Assert.AreEqual(p12, changes.ElementAt(0).Point);
-            Assert.AreEqual(7, changes.ElementAt(0).NewValue);
-            Assert.AreEqual(new GridPoint(1, 3), changes.ElementAt(1).Point);
-            Assert.AreEqual(8, changes.ElementAt(1).NewValue);
+            AssertEqualFieldChanges(
+                new List<SingleChange<int>>()
+                {
+                    new SingleChange<int>(p12, 7),
+                    new SingleChange<int>(new GridPoint(1, 3), 8)
+                },
+                changes);
         }
 
         [TestMethod]
@@ -90,9 +89,12 @@ namespace Utility
                 { p12, 1 },
             };
 
-            Assert.AreEqual(1, changes.Count());
-            Assert.AreEqual(p12, changes.ElementAt(0).Point);
-            Assert.AreEqual(1, changes.ElementAt(0).NewValue);
+            AssertEqualFieldChanges(
+                new List<SingleChange<int>>()
+                {
+                    new SingleChange<int>(p12, 1),
+                },
+                changes);
         }
     }
 }

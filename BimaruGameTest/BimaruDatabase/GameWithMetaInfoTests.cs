@@ -6,7 +6,7 @@ using System;
 namespace BimaruDatabase
 {
     [TestClass]
-    public class DatabaseGameTests
+    public class GameWithMetaInfoTests
     {
         [TestMethod]
         public void TestNullArguments()
@@ -15,12 +15,12 @@ namespace BimaruDatabase
             var game = new GameFactory().GenerateEmptyGame(1, 1);
 
             Assert.ThrowsException<ArgumentNullException>(
-                () => new DatabaseGame(null, game));
+                () => new GameWithMetaInfo(null, game));
 
             Assert.ThrowsException<ArgumentNullException>(
-                () => new DatabaseGame(metaInfo, null));
+                () => new GameWithMetaInfo(metaInfo, null));
 
-            new DatabaseGame(metaInfo, game);
+            new GameWithMetaInfo(metaInfo, game);
         }
     }
 }

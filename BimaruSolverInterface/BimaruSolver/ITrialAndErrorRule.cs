@@ -3,9 +3,6 @@ using Utility;
 
 namespace BimaruInterfaces
 {
-    /// <summary>
-    /// Trial and error rule to solve a Bimaru
-    /// </summary>
     public interface ITrialAndErrorRule
     {
         /// <summary>
@@ -30,8 +27,7 @@ namespace BimaruInterfaces
         /// solution.
         /// 
         /// </summary>
-        /// <param name="game"> Bimaru game </param>
-        /// <returns> Enumerator for a complete set of change trials. </returns>
+        /// <returns> Enumerable of a complete set of change trials. </returns>
         IEnumerable<FieldsToChange<BimaruValue>> GetCompleteChangeTrials(IGame game);
 
         /// <summary>
@@ -39,6 +35,9 @@ namespace BimaruInterfaces
         /// trial and error rule can be used to count the number of
         /// solutions.
         /// </summary>
-        bool AreTrialsDisjoint { get; }
+        bool AreTrialsDisjoint
+        {
+            get;
+        }
     }
 }
