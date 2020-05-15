@@ -81,11 +81,6 @@ namespace Utility
                 IsIndexValid(point.ColumnIndex, NumberOfColumns);
         }
 
-        protected T GetFieldValueNoCheck(GridPoint point)
-        {
-            return fieldValues[point.RowIndex, point.ColumnIndex];
-        }
-
         /// <summary>
         /// Field value at the given point.
         /// </summary>
@@ -106,11 +101,16 @@ namespace Utility
             {
                 if (!IsPointInGrid(point))
                 {
-                    throw new InvalidFieldValueChange();
+                    throw new ArgumentOutOfRangeException();
                 }
 
                 SetFieldValueNoCheck(point, value);
             }
+        }
+
+        protected T GetFieldValueNoCheck(GridPoint point)
+        {
+            return fieldValues[point.RowIndex, point.ColumnIndex];
         }
 
         protected void SetFieldValueNoCheck(GridPoint point, T newValue)
@@ -123,6 +123,17 @@ namespace Utility
                 var e = new FieldValueChangedEventArgs<T>(point, oldValue);
                 OnAfterFieldValueSet(e);
                 OnFieldValueChanged(e);
+            }
+        }
+
+        public void ApplyFieldChanges(FieldsToChange<T> changes)
+        {
+            if (changes != null)
+            {
+                foreach (var c in changes)
+                {
+                    this[c.Point] = c.NewValue;
+                }
             }
         }
 

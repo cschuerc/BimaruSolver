@@ -2,11 +2,11 @@
 using System;
 using Utility;
 
-namespace BimaruSolver
+namespace BimaruTest
 {
-    internal class ChangedRuleSubscriber : IDisposable
+    internal class FieldValueChangedRuleSubscriber : IDisposable
     {
-        public ChangedRuleSubscriber(IGame game, IFieldValueChangedRule rule)
+        public FieldValueChangedRuleSubscriber(IGame game, IFieldValueChangedRule rule)
         {
             Game = game;
             Rule = rule;
@@ -14,9 +14,17 @@ namespace BimaruSolver
             Game.Grid.FieldValueChanged += OnFieldValueChanged;
         }
 
-        private IGame Game { get; set; }
+        private IGame Game
+        {
+            get;
+            set;
+        }
 
-        private IFieldValueChangedRule Rule { get; set; }
+        private IFieldValueChangedRule Rule
+        {
+            get;
+            set;
+        }
 
         void OnFieldValueChanged(object sender, FieldValueChangedEventArgs<BimaruValue> e)
         {

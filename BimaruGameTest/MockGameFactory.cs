@@ -1,4 +1,6 @@
-﻿namespace BimaruGame
+﻿using BimaruGame;
+
+namespace BimaruTest
 {
     public class MockGameFactory
     {

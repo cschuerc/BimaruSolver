@@ -25,6 +25,8 @@ namespace BimaruInterfaces
             set;
         }
 
+        void ApplyFieldChanges(FieldsToChange<BimaruValue> changes);
+
         /// <summary>
         /// Fill all undetermined fields in a row to satisfy a given constraint.
         /// <see cref="BimaruValue.UNDETERMINED"/>

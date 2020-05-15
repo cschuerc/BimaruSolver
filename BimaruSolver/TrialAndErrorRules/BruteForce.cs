@@ -6,33 +6,26 @@ using BimaruInterfaces;
 namespace BimaruSolver
 {
     /// <summary>
-    /// Brute force trial rule. Tries for a single UNDETERMINED
-    /// or SHIP_UNDETERMINED field all possible compatible and
-    /// determined values.
-    /// 
-    /// This trial and error rule is complete and disjoint.
-    /// Hence, it can be used to count the number of solutions.
+    /// Tries for a single UNDETERMINED or SHIP_UNDETERMINED
+    /// field all possible compatible and determined values.
     /// </summary>
     public class BruteForce : ITrialAndErrorRule
     {
-        private GridPoint? GetNotFullyDeterminedGridPoint(IGame game)
-        {
-            foreach (var p in game.Grid.AllPoints().Where(p => !game.Grid[p].IsFullyDetermined()))
-            {
-                return p;
-            }
-
-            return null;
-        }
-
-        /// <inheritdoc/>
+        /// <summary>
+        /// Every trial contradicts any other trial.
+        /// Hence they are disjoint.
+        /// </summary>
         public bool AreTrialsDisjoint => true;
 
-        /// <inheritdoc/>
-        public IEnumerable<FieldsToChange<BimaruValue>> GetCompleteChangeTrials(IGame game)
-        {
-            var notFullyDetPoint = GetNotFullyDeterminedGridPoint(game);
+        /// <summary>
+        /// Every set of trials contains all possibilities
+        /// for one field. Hence, they are complete.
+        /// </summary>
+        public bool AreTrialsComplete => true;
 
+        public IEnumerable<FieldsToChange<BimaruValue>> GetChangeTrials(IGame game)
+        {
+            var notFullyDetPoint = GetNotFullyDeterminedPoint(game);
             if (notFullyDetPoint == null)
             {
                 yield break;
@@ -48,6 +41,16 @@ namespace BimaruSolver
             {
                 yield return new FieldsToChange<BimaruValue>(notFullyDetPoint.Value, newValue);
             }
+        }
+
+        private GridPoint? GetNotFullyDeterminedPoint(IGame game)
+        {
+            foreach (var p in game.Grid.AllPoints().Where(p => !game.Grid[p].IsFullyDetermined()))
+            {
+                return p;
+            }
+
+            return null;
         }
     }
 }

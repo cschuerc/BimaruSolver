@@ -17,9 +17,9 @@ namespace BimaruInterfaces
         }
 
         /// <summary>
-        /// Length of the longest requested ship. Returns 0 if no ship is requested.
+        /// Length of the longest requested ship. Null if no ship is requested.
         /// </summary>
-        int LongestShipLength
+        int? LongestShipLength
         {
             get;
         }
@@ -36,5 +36,10 @@ namespace BimaruInterfaces
         /// How the target number of ships is satisfied.
         /// </summary>
         Satisfiability GetSatisfiability(IReadOnlyList<int> numberOfShipsPerLength);
+
+        /// <summary>
+        /// Null if no ship is missing.
+        /// </summary>
+        int? LengthOfLongestMissingShip(IReadOnlyList<int> numberOfShipsPerLength);
     }
 }

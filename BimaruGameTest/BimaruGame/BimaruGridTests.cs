@@ -3,6 +3,7 @@ using System.Linq;
 using Utility;
 using BimaruInterfaces;
 using System.Collections.Generic;
+using BimaruTest;
 
 namespace BimaruGame
 {

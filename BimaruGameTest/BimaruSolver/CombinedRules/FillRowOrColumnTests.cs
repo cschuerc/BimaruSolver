@@ -1,5 +1,6 @@
 using BimaruGame;
 using BimaruInterfaces;
+using BimaruTest;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Utility;
 
@@ -9,85 +10,90 @@ namespace BimaruSolver
     public class FillRowOrColumnTests
     {
         [TestMethod]
-        public void TestFullGridRules()
+        public void TestSolverRuleWater()
+        {
+            var game = GetBasicGame();
+            game.Grid[new GridPoint(1, 2)] = BimaruValue.SHIP_UNDETERMINED;
+
+            new FillRowOrColumnWithWater().Solve(game);
+
+            game.Grid.AssertEqual(
+                new BimaruValue[2, 3]
+                {
+                    { BimaruValue.UNDETERMINED, BimaruValue.WATER, BimaruValue.UNDETERMINED },
+                    { BimaruValue.WATER, BimaruValue.WATER, BimaruValue.SHIP_UNDETERMINED }
+                });
+        }
+
+        /// <summary>
+        /// 
+        ///   102
+        ///   ---
+        /// 1|???
+        /// 2|???
+        /// 
+        /// </summary>
+        private IGame GetBasicGame()
         {
             var game = (new GameFactory()).GenerateEmptyGame(2, 3);
+
             game.TargetNumberOfShipFieldsPerRow[0] = 2;
             game.TargetNumberOfShipFieldsPerRow[1] = 1;
+
             game.TargetNumberOfShipFieldsPerColumn[0] = 1;
             game.TargetNumberOfShipFieldsPerColumn[2] = 2;
-            game.Grid[new GridPoint(0, 2)] = BimaruValue.SHIP_CONT_RIGHT;
 
-            //   102
-            //   ---
-            // 1|???
-            // 2|??S
-
-            var shipsFillRule = new FillRowOrColumnWithShips();
-            shipsFillRule.Solve(game);
-
-            Assert.AreEqual(BimaruValue.UNDETERMINED, game.Grid[new GridPoint(0, 0)]);
-            Assert.AreEqual(BimaruValue.UNDETERMINED, game.Grid[new GridPoint(0, 1)]);
-            Assert.AreEqual(BimaruValue.SHIP_CONT_RIGHT, game.Grid[new GridPoint(0, 2)]);
-
-            Assert.AreEqual(BimaruValue.UNDETERMINED, game.Grid[new GridPoint(1, 0)]);
-            Assert.AreEqual(BimaruValue.UNDETERMINED, game.Grid[new GridPoint(1, 1)]);
-            Assert.AreEqual(BimaruValue.SHIP_UNDETERMINED, game.Grid[new GridPoint(1, 2)]);
-
-            var waterFillRule = new FillRowOrColumnWithWater();
-            waterFillRule.Solve(game);
-
-            Assert.AreEqual(BimaruValue.UNDETERMINED, game.Grid[new GridPoint(0, 0)]);
-            Assert.AreEqual(BimaruValue.WATER, game.Grid[new GridPoint(0, 1)]);
-            Assert.AreEqual(BimaruValue.SHIP_CONT_RIGHT, game.Grid[new GridPoint(0, 2)]);
-
-            Assert.AreEqual(BimaruValue.WATER, game.Grid[new GridPoint(1, 0)]);
-            Assert.AreEqual(BimaruValue.WATER, game.Grid[new GridPoint(1, 1)]);
-            Assert.AreEqual(BimaruValue.SHIP_UNDETERMINED, game.Grid[new GridPoint(1, 2)]);
+            return game;
         }
 
         [TestMethod]
-        public void TestFieldChangedRules()
+        public void TestSolverRuleShip()
         {
-            var game = (new GameFactory()).GenerateEmptyGame(2, 3);
-            game.TargetNumberOfShipFieldsPerRow[0] = 2;
-            game.TargetNumberOfShipFieldsPerRow[1] = 1;
-            game.TargetNumberOfShipFieldsPerColumn[0] = 1;
-            game.TargetNumberOfShipFieldsPerColumn[2] = 2;
+            var game = GetBasicGame();
+            game.Grid[new GridPoint(0, 2)] = BimaruValue.SHIP_CONT_RIGHT;
 
-            //   102
-            //   ---
-            // 1|???
-            // 2|???
+            new FillRowOrColumnWithShips().Solve(game);
 
-            var p00 = new GridPoint(0, 0);
-            using (var subscriber = new ChangedRuleSubscriber(game, new FillRowOrColumnWithWater()))
+            game.Grid.AssertEqual(
+                new BimaruValue[2, 3]
+                {
+                    { BimaruValue.UNDETERMINED, BimaruValue.UNDETERMINED, BimaruValue.SHIP_CONT_RIGHT },
+                    { BimaruValue.UNDETERMINED, BimaruValue.UNDETERMINED, BimaruValue.SHIP_UNDETERMINED }
+                });
+        }
+
+        [TestMethod]
+        public void TestFieldValueChangedRuleWater()
+        {
+            var game = GetBasicGame();
+            using (var subscriber = new FieldValueChangedRuleSubscriber(game, new FillRowOrColumnWithWater()))
             {
-                game.Grid[p00] = BimaruValue.SHIP_UNDETERMINED;
+                game.Grid[new GridPoint(0, 0)] = BimaruValue.SHIP_UNDETERMINED;
             }
 
-            Assert.AreEqual(BimaruValue.SHIP_UNDETERMINED, game.Grid[new GridPoint(0, 0)]);
-            Assert.AreEqual(BimaruValue.UNDETERMINED, game.Grid[new GridPoint(0, 1)]);
-            Assert.AreEqual(BimaruValue.UNDETERMINED, game.Grid[new GridPoint(0, 2)]);
+            game.Grid.AssertEqual(
+                new BimaruValue[2, 3]
+                {
+                    { BimaruValue.SHIP_UNDETERMINED, BimaruValue.UNDETERMINED, BimaruValue.UNDETERMINED },
+                    { BimaruValue.WATER, BimaruValue.UNDETERMINED, BimaruValue.UNDETERMINED }
+                });
+        }
 
-            Assert.AreEqual(BimaruValue.WATER, game.Grid[new GridPoint(1, 0)]);
-            Assert.AreEqual(BimaruValue.UNDETERMINED, game.Grid[new GridPoint(1, 1)]);
-            Assert.AreEqual(BimaruValue.UNDETERMINED, game.Grid[new GridPoint(1, 2)]);
-
-
-            var p12 = new GridPoint(1, 2);
-            using (var subscriber = new ChangedRuleSubscriber(game, new FillRowOrColumnWithShips()))
+        [TestMethod]
+        public void TestFieldValueChangedRuleShip()
+        {
+            var game = GetBasicGame();
+            using (var subscriber = new FieldValueChangedRuleSubscriber(game, new FillRowOrColumnWithShips()))
             {
-                game.Grid[p12] = BimaruValue.SHIP_UNDETERMINED;
+                game.Grid[new GridPoint(1, 2)] = BimaruValue.SHIP_CONT_DOWN;
             }
 
-            Assert.AreEqual(BimaruValue.SHIP_UNDETERMINED, game.Grid[new GridPoint(0, 0)]);
-            Assert.AreEqual(BimaruValue.UNDETERMINED, game.Grid[new GridPoint(0, 1)]);
-            Assert.AreEqual(BimaruValue.SHIP_UNDETERMINED, game.Grid[new GridPoint(0, 2)]);
-
-            Assert.AreEqual(BimaruValue.WATER, game.Grid[new GridPoint(1, 0)]);
-            Assert.AreEqual(BimaruValue.UNDETERMINED, game.Grid[new GridPoint(1, 1)]);
-            Assert.AreEqual(BimaruValue.SHIP_UNDETERMINED, game.Grid[new GridPoint(1, 2)]);
+            game.Grid.AssertEqual(
+                new BimaruValue[2, 3]
+                {
+                    { BimaruValue.UNDETERMINED, BimaruValue.UNDETERMINED, BimaruValue.SHIP_UNDETERMINED },
+                    { BimaruValue.UNDETERMINED, BimaruValue.UNDETERMINED, BimaruValue.SHIP_CONT_DOWN }
+                });
         }
     }
 }

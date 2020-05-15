@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using BimaruInterfaces;
 using Utility;
 using System;
+using System.Collections;
 
 namespace BimaruSolver
 {
@@ -13,72 +14,177 @@ namespace BimaruSolver
     /// all UNDETERMINED positions of the row or column.
     /// 
     /// If no such row or column exists, then the request
-    /// is delegated to a fall-back rule that was set in
-    /// the constructor.
-    /// 
-    /// This trial and error rule itself is complete
-    /// and disjoint. In the cases when the fall-back
-    /// rule is used, then this rule inherits the
-    /// characteristics from the fall-back rule.
-    /// 
-    /// Hence, this rule can be used to count the number
-    /// of solutions if the fall-back rule is complete
-    /// and disjoint as well.
+    /// is delegated to a fall-back rule.
     /// </summary>
     public class OneMissingShipOrWater : ITrialAndErrorRule
     {
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="fallBackRule"> Fall-back rule </param>
         public OneMissingShipOrWater(ITrialAndErrorRule fallBackRule)
         {
             FallBackRule = fallBackRule;
         }
 
-        /// <summary>
-        /// Fall-back rule
-        /// </summary>
-        private ITrialAndErrorRule FallBackRule { get; set; }
+        private ITrialAndErrorRule FallBackRule
+        {
+            get;
+            set;
+        }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// This trial and error rule itself is disjoint
+        /// because different trials contradict each other.
+        /// 
+        /// In the cases when the fall-back rule is used,
+        /// then this rule inherits the characteristics
+        /// from the fall-back rule. If then no fall-back
+        /// rule exists, then no trials are produced, and
+        /// hence they are disjoint.
+        /// </summary>
         public bool AreTrialsDisjoint =>
             FallBackRule is null || FallBackRule.AreTrialsDisjoint;
 
         /// <summary>
-        /// Grid points whose values are UNDETERMINED and
-        /// where only one is WATER or only one is a ship.
+        /// This trial and error rule itself is complete
+        /// because if there is exactly one WATER or SHIP
+        /// missing in a row or column, then one of the
+        /// UNDETERMINED fields has to be it.
+        /// 
+        /// In the cases when the fall-back rule is used,
+        /// then this rule inherits the characteristics
+        /// from the fall-back rule. If then no fall-back
+        /// rule exists, then no trials are produced, and
+        /// hence it is not complete.
         /// </summary>
-        private class OneMissing
+        public bool AreTrialsComplete =>
+            !(FallBackRule is null) && FallBackRule.AreTrialsComplete;
+
+        public IEnumerable<FieldsToChange<BimaruValue>> GetChangeTrials(IGame game)
         {
-            /// <summary>
-            /// Constructor
-            /// </summary>
-            /// <param name="undetermiedPoints"> Grid points whose values are UNDETERMINED. </param>
-            /// <param name="missingType"> Type of value of which there is only one missing. </param>
-            public OneMissing(IEnumerable<GridPoint> undetermiedPoints, BimaruValueConstraint missingType)
+            OneMissingPoints mostPromisingPoints = GetMostPromisingPoints(game);
+            if (mostPromisingPoints != null)
             {
-                UndeterminedPoints = undetermiedPoints;
-                MissingType = missingType;
+                return GenerateChangeTrials(mostPromisingPoints);
+            }
+
+            if (FallBackRule == null)
+            {
+                throw new InvalidOperationException();
+            }
+
+            return FallBackRule.GetChangeTrials(game);
+        }
+
+        private OneMissingPoints GetMostPromisingPoints(IGame game)
+        {
+            return new List<OneMissingPoints>()
+                {
+                    GetOneMissingShipRow(game).Max(),
+                    GetOneMissingWaterRow(game).Max(),
+                    GetOneMissingShipColumn(game).Max(),
+                    GetOneMissingWaterColumn(game).Max()
+                }.Max();
+        }
+
+        private IEnumerable<OneMissingPoints> GetOneMissingShipRow(IGame game)
+        {
+            foreach (int rowIndex in Enumerable.Range(0, game.Grid.NumberOfRows).
+                Where(i => game.NumberOfMissingShipFieldsPerRow(i) == 1))
+            {
+                yield return OneMissingPoints.ConstructFromRow(game, rowIndex, BimaruValueConstraint.SHIP);
+            }
+        }
+
+        private IEnumerable<OneMissingPoints> GetOneMissingWaterRow(IGame game)
+        {
+            foreach (int rowIndex in Enumerable.Range(0, game.Grid.NumberOfRows).
+                Where(i => game.NumberOfMissingShipFieldsPerRow(i) ==
+                           (game.Grid.NumberOfUndeterminedFieldsPerRow[i] - 1)))
+            {
+                yield return OneMissingPoints.ConstructFromRow(game, rowIndex, BimaruValueConstraint.WATER);
+            }
+        }
+
+        private IEnumerable<OneMissingPoints> GetOneMissingShipColumn(IGame game)
+        {
+            foreach (int columnIndex in Enumerable.Range(0, game.Grid.NumberOfColumns).
+                Where(i => game.NumberOfMissingShipFieldsPerColumn(i) == 1))
+            {
+                yield return OneMissingPoints.ConstructFromColumn(game, columnIndex, BimaruValueConstraint.SHIP);
+            }
+        }
+
+        private IEnumerable<OneMissingPoints> GetOneMissingWaterColumn(IGame game)
+        {
+            foreach (int columnIndex in Enumerable.Range(0, game.Grid.NumberOfColumns).
+                Where(i => game.NumberOfMissingShipFieldsPerColumn(i) ==
+                           (game.Grid.NumberOfUndeterminedFieldsPerColumn[i] - 1)))
+            {
+                yield return OneMissingPoints.ConstructFromColumn(game, columnIndex, BimaruValueConstraint.WATER);
+            }
+        }
+
+        private IEnumerable<FieldsToChange<BimaruValue>> GenerateChangeTrials(OneMissingPoints points)
+        {
+            var valueToSet = points.ShipOrWater.GetRepresentativeValue();
+            foreach (var p in points)
+            {
+                yield return new FieldsToChange<BimaruValue>(p, valueToSet);
+            }
+        }
+
+        /// <summary>
+        /// UNDETERMINED grid points where exactly one
+        /// can be WATER or exactly one can be a ship.
+        /// </summary>
+        private class OneMissingPoints : IEnumerable<GridPoint>, IComparable<OneMissingPoints>
+        {
+            private OneMissingPoints(IEnumerable<GridPoint> points, BimaruValueConstraint shipOrWater)
+            {
+                Points = points;
+                ShipOrWater = shipOrWater;
+            }
+
+            public static OneMissingPoints ConstructFromRow(IGame game, int rowIndex, BimaruValueConstraint shipOrWater)
+            {
+                return ConstructFromPoints(game, game.Grid.PointsOfRow(rowIndex), shipOrWater);
+            }
+
+            public static OneMissingPoints ConstructFromColumn(IGame game, int columnIndex, BimaruValueConstraint shipOrWater)
+            {
+                return ConstructFromPoints(game, game.Grid.PointsOfColumn(columnIndex), shipOrWater);
+            }
+
+            private static OneMissingPoints ConstructFromPoints(IGame game, IEnumerable<GridPoint> points, BimaruValueConstraint shipOrWater)
+            {
+                OneMissingPoints result = null;
+
+                var undeterminedPoints = points.Where(p => game.Grid[p] == BimaruValue.UNDETERMINED);
+                if (undeterminedPoints.Count() > 0)
+                {
+                    result = new OneMissingPoints(
+                        undeterminedPoints,
+                        shipOrWater);
+                }
+
+                return result;
+            }
+
+            private IEnumerable<GridPoint> Points
+            {
+                get;
+                set; 
+            }
+
+            public BimaruValueConstraint ShipOrWater
+            {
+                get;
+                private set;
             }
 
             /// <summary>
-            /// UNDETERMINED grid points where only one is WATER or only one is a ship.
+            /// Most promising candidate in terms of leading to a fast solver.
+            /// Empirical heuristic.
             /// </summary>
-            public IEnumerable<GridPoint> UndeterminedPoints { get; private set; }
-
-            /// <summary>
-            /// Type of value of which there is only one missing.
-            /// </summary>
-            public BimaruValueConstraint MissingType { get; private set; }
-
-            /// <summary>
-            /// Comparison that empirically led to the fastest solver.
-            /// </summary>
-            /// <param name="left"></param>
-            /// <param name="right"></param>
-            /// <returns></returns>
-            public static bool operator>(OneMissing left, OneMissing right)
+            public static bool operator>(OneMissingPoints left, OneMissingPoints right)
             {
                 if (left is null || right is null)
                 {
@@ -88,112 +194,35 @@ namespace BimaruSolver
                 // Rules of thumb to support this order:
                 //
                 // 1. The more ships set, the faster.
-                //    More ships set if one WATER is missing.
+                //    More ships are set if one WATER is missing.
                 //
                 // 2. The more fields set, the faster.
                 // 
-                return (left.MissingType == BimaruValueConstraint.WATER &&
-                        right.MissingType == BimaruValueConstraint.SHIP) ||
-                       (left.MissingType == right.MissingType &&
-                        left.UndeterminedPoints.Count() > right.UndeterminedPoints.Count());
+                return (left.ShipOrWater == BimaruValueConstraint.WATER &&
+                        right.ShipOrWater == BimaruValueConstraint.SHIP) ||
+                       (left.ShipOrWater == right.ShipOrWater &&
+                        left.Points.Count() > right.Points.Count());
             }
 
-            /// <summary>
-            /// See >.
-            /// </summary>
-            /// <param name="left"></param>
-            /// <param name="right"></param>
-            /// <returns></returns>
-            public static bool operator<(OneMissing left, OneMissing right)
+            public static bool operator<(OneMissingPoints left, OneMissingPoints right)
             {
                 return right > left;
             }
-        }
 
-        private OneMissing GetOneMissingRow(IGame game)
-        {
-            OneMissing max = null;
-
-            foreach (int rowIndex in Enumerable.Range(0, game.Grid.NumberOfRows))
+            public IEnumerator<GridPoint> GetEnumerator()
             {
-                var undeterminedPointsInRow = game.Grid.PointsOfRow(rowIndex).
-                    Where(p => game.Grid[p] == BimaruValue.UNDETERMINED);
-
-                if (game.NumberOfMissingShipFieldsPerRow(rowIndex) == 1)
-                {
-                    var current = new OneMissing(undeterminedPointsInRow, BimaruValueConstraint.SHIP);
-                    max = current > max ? current : max;
-                }
-
-                if (game.NumberOfMissingShipFieldsPerRow(rowIndex) ==
-                    (game.Grid.NumberOfUndeterminedFieldsPerRow[rowIndex] - 1))
-                {
-                    var current = new OneMissing(undeterminedPointsInRow, BimaruValueConstraint.WATER);
-                    max = current > max ? current : max;
-                }
+                return Points.GetEnumerator();
             }
 
-            return max;
-        }
-
-        private OneMissing GetOneMissingColumn(IGame game)
-        {
-            OneMissing max = null;
-
-            foreach (int columnIndex in Enumerable.Range(0, game.Grid.NumberOfColumns))
+            IEnumerator IEnumerable.GetEnumerator()
             {
-                var undeterminedPointsInColumn = game.Grid.PointsOfColumn(columnIndex).
-                    Where(p => game.Grid[p] == BimaruValue.UNDETERMINED);
-
-                if (game.NumberOfMissingShipFieldsPerColumn(columnIndex) == 1)
-                {
-                    var current = new OneMissing(undeterminedPointsInColumn, BimaruValueConstraint.SHIP);
-                    max = current > max ? current : max;
-                }
-
-                if (game.NumberOfMissingShipFieldsPerColumn(columnIndex) ==
-                    (game.Grid.NumberOfUndeterminedFieldsPerColumn[columnIndex] - 1))
-                {
-                    var current = new OneMissing(undeterminedPointsInColumn, BimaruValueConstraint.WATER);
-                    max = current > max ? current : max;
-                }
+                return Points.GetEnumerator();
             }
 
-            return max;
-        }
-
-        private OneMissing GetOneMissing(IGame game)
-        {
-            OneMissing oneMissingRow = GetOneMissingRow(game);
-            OneMissing oneMissingColumn = GetOneMissingColumn(game);
-
-            return oneMissingRow > oneMissingColumn ? oneMissingRow : oneMissingColumn;
-        }
-
-        private IEnumerable<FieldsToChange<BimaruValue>> GenerateOneMissingChanges(OneMissing oneMissing)
-        {
-            var valueToSet = oneMissing.MissingType.GetRepresentativeValue();
-            foreach (var p in oneMissing.UndeterminedPoints)
+            public int CompareTo(OneMissingPoints other)
             {
-                yield return new FieldsToChange<BimaruValue>(p, valueToSet);
+                return this > other ? 1 : -1;
             }
-        }
-
-        /// <inheritdoc/>
-        public IEnumerable<FieldsToChange<BimaruValue>> GetCompleteChangeTrials(IGame game)
-        {
-            OneMissing oneMissing = GetOneMissing(game);
-            if (oneMissing != null)
-            {
-                return GenerateOneMissingChanges(oneMissing);
-            }
-
-            if (FallBackRule == null)
-            {
-                throw new InvalidOperationException();
-            }
-
-            return FallBackRule.GetCompleteChangeTrials(game);
         }
     }
 }

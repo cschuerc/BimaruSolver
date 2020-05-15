@@ -51,7 +51,6 @@
     <Compile Include="Grid\FieldsToChange.cs" />
     <Compile Include="Grid\Grid.cs" />
     <Compile Include="Grid\GridPoint.cs" />
-    <Compile Include="Grid\InvalidFieldValueChange.cs" />
     <Compile Include="IOverwritable.cs" />
     <Compile Include="IBackup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

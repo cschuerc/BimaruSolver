@@ -4,9 +4,6 @@ using Utility;
 
 namespace BimaruSolver
 {
-    /// <summary>
-    /// Creates efficient Bimaru solvers
-    /// </summary>
     public class SolverFactory : ISolverFactory
     {
         private ITrialAndErrorRule GetTrialRule(bool shallCountSolutions)
@@ -25,14 +22,14 @@ namespace BimaruSolver
             return trialRule;
         }
 
-        /// <inheritdoc/>
         public ISolver GenerateSolver(bool shallCountSolutions)
         {
             var fieldChangedRules = new List<IFieldValueChangedRule>()
             {   new SetShipEnvironment(),
                 new FillRowOrColumnWithWater(),
                 new FillRowOrColumnWithShips(),
-                new DetermineShipFields()
+                new DetermineShipUndetermined(),
+                new DetermineShipMiddleNeighbours()
             };
 
             var fullGridRules = new List<ISolverRule>()

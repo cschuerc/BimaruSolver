@@ -29,7 +29,7 @@ namespace BimaruGame
         {
             var game = new GameFactory().GenerateEmptyGame(3, 4);
 
-            Assert.AreEqual(0, game.TargetNumberOfShipsPerLength.LongestShipLength);
+            Assert.IsNull(game.TargetNumberOfShipsPerLength.LongestShipLength);
         }
 
         [TestMethod]

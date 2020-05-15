@@ -101,17 +101,17 @@ namespace Utility
         {
             var grid = new Grid<int>(3, 4);
 
-            Assert.ThrowsException<InvalidFieldValueChange>(() => grid[new GridPoint(-10, 0)] = 0);
-            Assert.ThrowsException<InvalidFieldValueChange>(() => grid[new GridPoint(-2, 0)] = 0);
-            Assert.ThrowsException<InvalidFieldValueChange>(() => grid[new GridPoint(-1, 0)] = 0);
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => grid[new GridPoint(-10, 0)] = 0);
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => grid[new GridPoint(-2, 0)] = 0);
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => grid[new GridPoint(-1, 0)] = 0);
 
             grid[new GridPoint(0, 0)] = 0;
             grid[new GridPoint(1, 0)] = 0;
             grid[new GridPoint(2, 0)] = 0;
 
-            Assert.ThrowsException<InvalidFieldValueChange>(() => grid[new GridPoint(3, 0)] = 0);
-            Assert.ThrowsException<InvalidFieldValueChange>(() => grid[new GridPoint(4, 0)] = 0);
-            Assert.ThrowsException<InvalidFieldValueChange>(() => grid[new GridPoint(10, 0)] = 0);
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => grid[new GridPoint(3, 0)] = 0);
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => grid[new GridPoint(4, 0)] = 0);
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => grid[new GridPoint(10, 0)] = 0);
         }
 
         [TestMethod]
@@ -119,17 +119,17 @@ namespace Utility
         {
             var grid = new Grid<int>(4, 3);
 
-            Assert.ThrowsException<InvalidFieldValueChange>(() => grid[new GridPoint(0, -10)] = 0);
-            Assert.ThrowsException<InvalidFieldValueChange>(() => grid[new GridPoint(0, -2)] = 0);
-            Assert.ThrowsException<InvalidFieldValueChange>(() => grid[new GridPoint(0, -1)] = 0);
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => grid[new GridPoint(0, -10)] = 0);
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => grid[new GridPoint(0, -2)] = 0);
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => grid[new GridPoint(0, -1)] = 0);
 
             grid[new GridPoint(0, 0)] = 0;
             grid[new GridPoint(0, 1)] = 0;
             grid[new GridPoint(0, 2)] = 0;
 
-            Assert.ThrowsException<InvalidFieldValueChange>(() => grid[new GridPoint(0, 3)] = 0);
-            Assert.ThrowsException<InvalidFieldValueChange>(() => grid[new GridPoint(0, 4)] = 0);
-            Assert.ThrowsException<InvalidFieldValueChange>(() => grid[new GridPoint(0, 10)] = 0);
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => grid[new GridPoint(0, 3)] = 0);
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => grid[new GridPoint(0, 4)] = 0);
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => grid[new GridPoint(0, 10)] = 0);
         }
 
         [TestMethod]

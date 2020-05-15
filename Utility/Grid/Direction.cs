@@ -9,19 +9,12 @@ namespace Utility
     public enum Direction
     {
         LEFT,
-
         RIGHT,
-
         UP,
-
         DOWN,
-
         LEFT_UP,
-
         LEFT_DOWN,
-
         RIGHT_UP,
-
         RIGHT_DOWN
     }
 
@@ -42,54 +35,6 @@ namespace Utility
 
     public static class Directions
     {
-        /// <summary>
-        /// Arbitrary order.
-        /// </summary>
-        public static IEnumerable<Direction> AllDirections()
-        {
-            return (IEnumerable<Direction>)Enum.GetValues(typeof(Direction));
-        }
-
-        /// <summary>
-        /// Arbitrary order.
-        /// </summary>
-        public static IEnumerable<Direction> AllDiagonalDirections()
-        {
-            yield return Direction.LEFT_UP;
-            yield return Direction.RIGHT_UP;
-            yield return Direction.RIGHT_DOWN;
-            yield return Direction.LEFT_DOWN;
-        }
-
-        /// <summary>
-        /// Arbitrary order.
-        /// </summary>
-        public static IEnumerable<Direction> AllNonDiagonalDirections()
-        {
-            yield return Direction.LEFT;
-            yield return Direction.UP;
-            yield return Direction.RIGHT;
-            yield return Direction.DOWN;
-        }
-
-        /// <summary>
-        /// Arbitrary order.
-        /// </summary>
-        public static IEnumerable<Direction> AllHorizontalDirections()
-        {
-            yield return Direction.LEFT;
-            yield return Direction.RIGHT;
-        }
-
-        /// <summary>
-        /// Arbitrary order.
-        /// </summary>
-        public static IEnumerable<Direction> AllVerticalDirections()
-        {
-            yield return Direction.DOWN;
-            yield return Direction.UP;
-        }
-
         private static readonly Dictionary<Direction, Direction> opposite =
             new Dictionary<Direction, Direction>()
             {
@@ -108,6 +53,69 @@ namespace Utility
             return opposite[direction];
         }
 
+        /// <summary>
+        /// Arbitrary order.
+        /// </summary>
+        public static IEnumerable<Direction> GetAllDirections()
+        {
+            return (IEnumerable<Direction>)Enum.GetValues(typeof(Direction));
+        }
+
+        /// <summary>
+        /// Arbitrary order.
+        /// </summary>
+        public static IEnumerable<Direction> GetDirections(DirectionType type)
+        {
+            return directionsOfType[type];
+        }
+
+        private static readonly Dictionary<DirectionType, List<Direction>> directionsOfType =
+            new Dictionary<DirectionType, List<Direction>>()
+            {
+                {
+                    DirectionType.ROW,
+                    new List<Direction>()
+                    {
+                        Direction.LEFT,
+                        Direction.RIGHT
+                    }
+                },
+                {
+                    DirectionType.COLUMN,
+                    new List<Direction>()
+                    {
+                        Direction.UP,
+                        Direction.DOWN
+                    }
+                },
+                {
+                    DirectionType.DIAGONAL,
+                    new List<Direction>()
+                    {
+                        Direction.LEFT_DOWN,
+                        Direction.LEFT_UP,
+                        Direction.RIGHT_DOWN,
+                        Direction.RIGHT_UP
+                    }
+                }
+            };
+
+        /// <summary>
+        /// Arbitrary order.
+        /// </summary>
+        public static IEnumerable<Direction> GetNonDiagonalDirections()
+        {
+            yield return Direction.LEFT;
+            yield return Direction.RIGHT;
+
+            yield return Direction.UP;
+            yield return Direction.DOWN;
+        }
+
+        public static DirectionType GetDirectionType(this Direction direction)
+        {
+            return directionType[direction];
+        }
 
         private static readonly Dictionary<Direction, DirectionType> directionType =
             new Dictionary<Direction, DirectionType>()
@@ -121,10 +129,5 @@ namespace Utility
                 { Direction.RIGHT_DOWN, DirectionType.DIAGONAL },
                 { Direction.RIGHT_UP, DirectionType.DIAGONAL },
             };
-
-        public static DirectionType GetDirectionType(this Direction direction)
-        {
-            return directionType[direction];
-        }
     }
 }

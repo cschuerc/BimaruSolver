@@ -44,10 +44,15 @@ namespace BimaruGame
 
             set
             {
-                if (!IsPointInGrid(point) && value == BimaruValue.WATER)
+                if (!IsPointInGrid(point))
                 {
-                    // No contradiction as the world around the grid is water.
-                    return;
+                    if (value == BimaruValue.WATER)
+                    {
+                        // No contradiction as the world around the grid is water.
+                        return;
+                    }
+
+                    throw new InvalidFieldValueChange("Off-grid value set to not-water.");
                 }
 
                 base[point] = value;
@@ -155,7 +160,7 @@ namespace BimaruGame
         private void UpdateInvalidFieldBoundaries(GridPoint center)
         {
             BimaruValue centerValue = GetFieldValueNoCheck(center);
-            foreach (Direction direction in Directions.AllDirections())
+            foreach (Direction direction in Directions.GetAllDirections())
             {
                 BimaruValue neighbourValue = this[center.GetNextPoint(direction)];
                 FieldBoundary boundary = center.GetBoundary(direction);

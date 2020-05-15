@@ -1,5 +1,5 @@
 using BimaruDatabase;
-using BimaruGame;
+using BimaruTest;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Runtime.Serialization.Formatters.Binary;
 
@@ -9,7 +9,7 @@ namespace BimaruSolver
     public class SolverFactoryTests
     {
         [TestMethod]
-        public void TestFactory()
+        public void TestTwoSolutionGameNonCounting()
         {
             var solverNonCounting = (new SolverFactory()).GenerateSolver(false);
             var game = (new MockGameFactory()).GenerateGameTwoSolutions();
@@ -18,12 +18,16 @@ namespace BimaruSolver
             int numSolutions = solverNonCounting.Solve(game);
             Assert.IsTrue(game.IsSolved);
             Assert.AreEqual(1, numSolutions);
+        }
 
+        [TestMethod]
+        public void TestTwoSolutionGameCounting()
+        {
             var solverCounting = (new SolverFactory()).GenerateSolver(true);
-            game = (new MockGameFactory()).GenerateGameTwoSolutions();
+            var game = (new MockGameFactory()).GenerateGameTwoSolutions();
 
             Assert.IsFalse(game.IsSolved);
-            numSolutions = solverCounting.Solve(game);
+            int numSolutions = solverCounting.Solve(game);
             Assert.IsTrue(game.IsSolved);
             Assert.AreEqual(2, numSolutions);
         }
@@ -38,9 +42,10 @@ namespace BimaruSolver
             {
                 Assert.IsFalse(databaseGame.Game.IsSolved);
 
-                solver.Solve(databaseGame.Game);
+                int numSolutions = solver.Solve(databaseGame.Game);
 
                 Assert.IsTrue(databaseGame.Game.IsSolved);
+                Assert.AreEqual(1, numSolutions);
             }
         }
 

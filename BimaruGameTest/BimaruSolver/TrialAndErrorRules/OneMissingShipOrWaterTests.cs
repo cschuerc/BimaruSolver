@@ -11,26 +11,24 @@ namespace BimaruSolver
     [TestClass]
     public class OneMissingShipOrWaterTests
     {
-        private static void CheckCorrectTrialChanges(
-            IEnumerable<SingleChange<BimaruValue>> expected,
-            IEnumerable<FieldsToChange<BimaruValue>> actual)
-        {
-            Assert.AreEqual(expected.Count(), actual.Count());
-
-            foreach (var changeExp in expected)
-            {
-                var changeActual = actual.FirstOrDefault(a => a.Count() == 1 && a.Contains(changeExp));
-                Assert.IsNotNull(changeActual);
-            }
-        }
-
         [TestMethod]
-        public void TestFullyDetermined()
+        public void TestFullyDeterminedWithoutFallback()
         {
             var game = (new GameFactory()).GenerateEmptyGame(1, 1);
             game.Grid[new GridPoint(0, 0)] = BimaruValue.SHIP_MIDDLE;
             var rule = new OneMissingShipOrWater(null);
-            Assert.AreEqual(0, rule.GetCompleteChangeTrials(game).Count());
+
+            Assert.ThrowsException<InvalidOperationException>(() => rule.GetChangeTrials(game).Count());
+        }
+
+        [TestMethod]
+        public void TestFullyDeterminedWithFallback()
+        {
+            var game = (new GameFactory()).GenerateEmptyGame(1, 1);
+            game.Grid[new GridPoint(0, 0)] = BimaruValue.SHIP_MIDDLE;
+            var rule = new OneMissingShipOrWater(new BruteForce());
+
+            Assert.AreEqual(0, rule.GetChangeTrials(game).Count());
         }
 
         [TestMethod]
@@ -63,7 +61,20 @@ namespace BimaruSolver
                 { new GridPoint(2, 2), BimaruValue.SHIP_UNDETERMINED },
             };
 
-            CheckCorrectTrialChanges(changesExpected, rule.GetCompleteChangeTrials(game));
+            AssertEqualTrialChanges(changesExpected, rule.GetChangeTrials(game));
+        }
+
+        private static void AssertEqualTrialChanges(
+            IEnumerable<SingleChange<BimaruValue>> expected,
+            IEnumerable<FieldsToChange<BimaruValue>> actual)
+        {
+            Assert.AreEqual(expected.Count(), actual.Count());
+
+            foreach (var changeExp in expected)
+            {
+                var changeActual = actual.FirstOrDefault(a => a.Count() == 1 && a.Contains(changeExp));
+                Assert.IsNotNull(changeActual);
+            }
         }
 
         [TestMethod]
@@ -96,25 +107,7 @@ namespace BimaruSolver
                 { new GridPoint(2, 2), BimaruValue.WATER },
             };
 
-            CheckCorrectTrialChanges(changesExpected, rule.GetCompleteChangeTrials(game));
-        }
-
-        private class CountTrialCalls : ITrialAndErrorRule
-        {
-            public CountTrialCalls()
-            {
-                Count = 0;
-            }
-
-            public int Count { get; private set; }
-
-            public bool AreTrialsDisjoint => false;
-
-            public IEnumerable<FieldsToChange<BimaruValue>> GetCompleteChangeTrials(IGame game)
-            {
-                Count++;
-                yield return null;
-            }
+            AssertEqualTrialChanges(changesExpected, rule.GetChangeTrials(game));
         }
 
         [TestMethod]
@@ -137,21 +130,45 @@ namespace BimaruSolver
             var rule = new OneMissingShipOrWater(null);
 
             // No fall-back rule but fall-back rule is needed.
-            Assert.ThrowsException<InvalidOperationException>(() => rule.GetCompleteChangeTrials(game));
+            Assert.ThrowsException<InvalidOperationException>(() => rule.GetChangeTrials(game));
 
             // Check fall-back rule is called
             var counter = new CountTrialCalls();
             rule = new OneMissingShipOrWater(counter);
 
             int numTrials = 0;
-            foreach (var changes in rule.GetCompleteChangeTrials(game))
+            foreach (var changes in rule.GetChangeTrials(game))
             {
                 Assert.IsNull(changes);
                 numTrials++;
             }
 
             Assert.AreEqual(1, numTrials);
-            Assert.AreEqual(1, counter.Count);
+            Assert.AreEqual(1, counter.NumberOfTrialCalls);
+        }
+
+        private class CountTrialCalls : ITrialAndErrorRule
+        {
+            public CountTrialCalls()
+            {
+                NumberOfTrialCalls = 0;
+            }
+
+            public int NumberOfTrialCalls
+            {
+                get;
+                private set;
+            }
+
+            public bool AreTrialsDisjoint => true;
+
+            public bool AreTrialsComplete => false;
+
+            public IEnumerable<FieldsToChange<BimaruValue>> GetChangeTrials(IGame game)
+            {
+                NumberOfTrialCalls++;
+                yield return null;
+            }
         }
     }
 }

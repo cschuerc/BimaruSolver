@@ -1,4 +1,5 @@
 using BimaruInterfaces;
+using BimaruTest;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using Utility;

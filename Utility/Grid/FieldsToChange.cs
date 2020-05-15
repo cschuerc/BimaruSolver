@@ -8,7 +8,7 @@ namespace Utility
     /// Single change of a field value
     /// </summary>
     /// <typeparam name="T"> Type of field value </typeparam>
-    public struct SingleChange<T> where T : struct
+    public struct SingleChange<T>
     {
         public SingleChange(GridPoint point, T newValue)
         {
@@ -33,7 +33,7 @@ namespace Utility
     /// Container for an arbitrary number of field changes. Only one change per field.
     /// </summary>
     /// <typeparam name="T"> Type of field value </typeparam>
-    public class FieldsToChange<T> : IEnumerable<SingleChange<T>> where T : struct
+    public class FieldsToChange<T> : IEnumerable<SingleChange<T>>
     {
         public FieldsToChange()
         {

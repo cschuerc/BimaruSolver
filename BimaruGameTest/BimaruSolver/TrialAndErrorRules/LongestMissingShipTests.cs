@@ -10,46 +10,14 @@ namespace BimaruSolver
     [TestClass]
     public class LongestMissingShipTests
     {
-        private static FieldsToChange<BimaruValue> GenChangesShip(GridPoint p, Direction direction, int shipLength)
-        {
-            var values = BimaruValues.FieldValuesOfShip(direction, shipLength);
-            return new FieldsToChange<BimaruValue>(p, direction, values);
-        }
-
-        private static void CheckEqualChanges(FieldsToChange<BimaruValue> first, FieldsToChange<BimaruValue> second)
-        {
-            Assert.AreEqual(first.Count(), second.Count());
-
-            // FieldsToChange contains by design no duplicate SingleChange
-            // => Same count and first contained in second is enough for equality
-            foreach (var c in first)
-            {
-                Assert.IsTrue(second.Contains(c));
-            }
-        }
-
-        private static void CheckCorrectTrialChanges(
-            Dictionary<SingleChange<BimaruValue>, FieldsToChange<BimaruValue>> expected,
-            IEnumerable<FieldsToChange<BimaruValue>> actual)
-        {
-            Assert.AreEqual(expected.Count(), actual.Count());
-
-            foreach (var changesExp in expected)
-            {
-                var changesActual = actual.FirstOrDefault(a => a.Contains(changesExp.Key));
-
-                Assert.IsNotNull(changesActual);
-                CheckEqualChanges(changesActual, changesExp.Value);
-            }
-        }
-
         [TestMethod]
         public void TestFullyDetermined()
         {
             var game = (new GameFactory()).GenerateEmptyGame(1, 1);
             game.Grid[new GridPoint(0, 0)] = BimaruValue.SHIP_MIDDLE;
+
             var rule = new LongestMissingShip();
-            Assert.AreEqual(0, rule.GetCompleteChangeTrials(game).Count());
+            Assert.AreEqual(0, rule.GetChangeTrials(game).Count());
         }
 
         [TestMethod]
@@ -79,7 +47,6 @@ namespace BimaruSolver
             // 0|WWW
 
             var rule = new LongestMissingShip();
-
             
             int shipLength = 2;
             var startChange0 = new SingleChange<BimaruValue>(new GridPoint(2, 1), BimaruValue.SHIP_CONT_RIGHT);
@@ -88,11 +55,38 @@ namespace BimaruSolver
             // Key is a representative SingleChange that is only present in one FieldsToChange
             var expectedChanges = new Dictionary<SingleChange<BimaruValue>, FieldsToChange<BimaruValue>>
             {
-                {startChange0, GenChangesShip(startChange0.Point, Direction.RIGHT, shipLength) },
-                {startChange1, GenChangesShip(startChange1.Point, Direction.UP, shipLength) }
+                {startChange0, new ShipLocation(startChange0.Point, Direction.RIGHT, shipLength).Changes },
+                {startChange1, new ShipLocation(startChange1.Point, Direction.UP, shipLength).Changes }
             };
 
-            CheckCorrectTrialChanges(expectedChanges, rule.GetCompleteChangeTrials(game));
+            AssertEqualTrialChanges(expectedChanges, rule.GetChangeTrials(game));
+        }
+
+        private static void AssertEqualTrialChanges(
+            Dictionary<SingleChange<BimaruValue>, FieldsToChange<BimaruValue>> expected,
+            IEnumerable<FieldsToChange<BimaruValue>> actual)
+        {
+            Assert.AreEqual(expected.Count(), actual.Count());
+
+            foreach (var expectedChanges in expected)
+            {
+                var actualChanges = actual.FirstOrDefault(a => a.Contains(expectedChanges.Key));
+
+                Assert.IsNotNull(actualChanges);
+                AssertEqualChanges(actualChanges, expectedChanges.Value);
+            }
+        }
+
+        private static void AssertEqualChanges(FieldsToChange<BimaruValue> first, FieldsToChange<BimaruValue> second)
+        {
+            Assert.AreEqual(first.Count(), second.Count());
+
+            // FieldsToChange contains by design no duplicate field
+            // => Same count + first contained in second is enough for equality
+            foreach (var c in first)
+            {
+                Assert.IsTrue(second.Contains(c));
+            }
         }
 
         [TestMethod]
@@ -128,13 +122,13 @@ namespace BimaruSolver
             // Key is a representative SingleChange that is only present in one FieldsToChange
             var expectedChanges = new Dictionary<SingleChange<BimaruValue>, FieldsToChange<BimaruValue>>
             {
-                {startChange0, GenChangesShip(startChange0.Point, Direction.LEFT, shipLength) },
-                {startChange1, GenChangesShip(startChange1.Point, Direction.LEFT, shipLength) },
-                {startChange2, GenChangesShip(new GridPoint(0, 0), Direction.UP, shipLength) },
-                {startChange3, GenChangesShip(new GridPoint(0, 1), Direction.UP, shipLength) }
+                {startChange0, new ShipLocation(startChange0.Point, Direction.LEFT, shipLength).Changes },
+                {startChange1, new ShipLocation(startChange1.Point, Direction.LEFT, shipLength).Changes },
+                {startChange2, new ShipLocation(new GridPoint(0, 0), Direction.UP, shipLength).Changes },
+                {startChange3, new ShipLocation(new GridPoint(0, 1), Direction.UP, shipLength).Changes }
             };
 
-            CheckCorrectTrialChanges(expectedChanges, rule.GetCompleteChangeTrials(game));
+            AssertEqualTrialChanges(expectedChanges, rule.GetChangeTrials(game));
         }
 
         [TestMethod]
@@ -172,11 +166,11 @@ namespace BimaruSolver
                 {startChange3, new FieldsToChange<BimaruValue>(startChange3.Point, BimaruValue.SHIP_SINGLE) },
             };
 
-            CheckCorrectTrialChanges(expectedChanges, rule.GetCompleteChangeTrials(game));
+            AssertEqualTrialChanges(expectedChanges, rule.GetChangeTrials(game));
         }
 
         [TestMethod]
-        public void TestPreset()
+        public void TestPresetShipFields()
         {
             var game = (new GameFactory()).GenerateEmptyGame(3, 3);
             game.TargetNumberOfShipFieldsPerRow[0] = 2;
@@ -203,7 +197,6 @@ namespace BimaruSolver
 
             var rule = new LongestMissingShip();
 
-
             int shipLength = 2;
             var startChange0 = new SingleChange<BimaruValue>(new GridPoint(0, 0), BimaruValue.SHIP_CONT_UP);
             var startChange1 = new SingleChange<BimaruValue>(new GridPoint(2, 1), BimaruValue.SHIP_CONT_RIGHT);
@@ -212,12 +205,12 @@ namespace BimaruSolver
             // Key is a representative SingleChange that is only present in one FieldsToChange
             var expectedChanges = new Dictionary<SingleChange<BimaruValue>, FieldsToChange<BimaruValue>>
             {
-                {startChange0, GenChangesShip(startChange0.Point, Direction.UP, shipLength) },
-                {startChange1, GenChangesShip(startChange1.Point, Direction.RIGHT, shipLength) },
-                {startChange2, GenChangesShip(startChange2.Point, Direction.UP, shipLength) }
+                {startChange0, new ShipLocation(startChange0.Point, Direction.UP, shipLength).Changes },
+                {startChange1, new ShipLocation(startChange1.Point, Direction.RIGHT, shipLength).Changes },
+                {startChange2, new ShipLocation(startChange2.Point, Direction.UP, shipLength).Changes }
             };
 
-            CheckCorrectTrialChanges(expectedChanges, rule.GetCompleteChangeTrials(game));
+            AssertEqualTrialChanges(expectedChanges, rule.GetChangeTrials(game));
         }
 
         [TestMethod]
@@ -248,25 +241,25 @@ namespace BimaruSolver
 
             var rule = new LongestMissingShip();
 
-
             int shipLength = 2;
-            var startChange0 = new SingleChange<BimaruValue>(new GridPoint(0, 0), BimaruValue.SHIP_CONT_UP);
-            var startChange1 = new SingleChange<BimaruValue>(new GridPoint(2, 0), BimaruValue.SHIP_CONT_DOWN);
+            
+            var startChange0 = new SingleChange<BimaruValue>(new GridPoint(2, 0), BimaruValue.SHIP_CONT_DOWN);
 
-            // Could be avoided in a more efficient implementation
+            // The following three could be avoided in a more efficient implementation
+            var startChange1 = new SingleChange<BimaruValue>(new GridPoint(0, 0), BimaruValue.SHIP_CONT_UP);
             var startChange2 = new SingleChange<BimaruValue>(new GridPoint(1, 1), BimaruValue.SHIP_CONT_LEFT);
             var startChange3 = new SingleChange<BimaruValue>(new GridPoint(2, 1), BimaruValue.SHIP_CONT_LEFT);
 
             // Key is a representative SingleChange that is only present in one FieldsToChange
             var expectedChanges = new Dictionary<SingleChange<BimaruValue>, FieldsToChange<BimaruValue>>
             {
-                {startChange0, GenChangesShip(startChange0.Point, Direction.UP, shipLength) },
-                {startChange1, GenChangesShip(startChange1.Point, Direction.DOWN, shipLength) },
-                {startChange2, GenChangesShip(startChange2.Point, Direction.LEFT, shipLength) },
-                {startChange3, GenChangesShip(startChange3.Point, Direction.LEFT, shipLength) }
+                {startChange0, new ShipLocation(startChange0.Point, Direction.DOWN, shipLength).Changes },
+                {startChange1, new ShipLocation(startChange1.Point, Direction.UP, shipLength).Changes },
+                {startChange2, new ShipLocation(startChange2.Point, Direction.LEFT, shipLength).Changes },
+                {startChange3, new ShipLocation(startChange3.Point, Direction.LEFT, shipLength).Changes }
             };
 
-            CheckCorrectTrialChanges(expectedChanges, rule.GetCompleteChangeTrials(game));
+            AssertEqualTrialChanges(expectedChanges, rule.GetChangeTrials(game));
         }
     }
 }

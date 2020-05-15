@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 
-namespace BimaruGame
+namespace BimaruTest
 {
     public static class ExtensionsForTesting
     {
@@ -27,9 +27,12 @@ namespace BimaruGame
 
             Assert.AreEqual(expectedGame.TargetNumberOfShipsPerLength.LongestShipLength, actualGame.TargetNumberOfShipsPerLength.LongestShipLength);
 
-            foreach (int shipLength in Enumerable.Range(0, expectedGame.TargetNumberOfShipsPerLength.LongestShipLength))
+            if (expectedGame.TargetNumberOfShipsPerLength.LongestShipLength.HasValue)
             {
-                Assert.AreEqual(expectedGame.TargetNumberOfShipsPerLength[shipLength], actualGame.TargetNumberOfShipsPerLength[shipLength]);
+                foreach (int shipLength in Enumerable.Range(0, expectedGame.TargetNumberOfShipsPerLength.LongestShipLength.Value))
+                {
+                    Assert.AreEqual(expectedGame.TargetNumberOfShipsPerLength[shipLength], actualGame.TargetNumberOfShipsPerLength[shipLength]);
+                }
             }
 
             expectedGame.Grid.AssertEqual(actualGame.Grid);

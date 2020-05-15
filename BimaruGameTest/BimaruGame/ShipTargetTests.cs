@@ -94,7 +94,7 @@ namespace BimaruGame
         {
             var shipTarget = new ShipTarget();
 
-            Assert.AreEqual(0, shipTarget.LongestShipLength);
+            Assert.IsNull(shipTarget.LongestShipLength);
 
             shipTarget[1] = 3;
 
@@ -110,7 +110,17 @@ namespace BimaruGame
 
             shipTarget[3] = 0;
 
-            Assert.AreEqual(0, shipTarget.LongestShipLength);
+            Assert.IsNull(shipTarget.LongestShipLength);
+        }
+
+        [TestMethod]
+        public void TestSatisfiabilityNoShips()
+        {
+            var shipTarget = new ShipTarget();
+
+            Assert.AreEqual(Satisfiability.SATISFIED, shipTarget.GetSatisfiability(new int[2] { 0, 0 }));
+            Assert.AreEqual(Satisfiability.VIOLATED, shipTarget.GetSatisfiability(new int[2] { 0, 1 }));
+            Assert.AreEqual(Satisfiability.VIOLATED, shipTarget.GetSatisfiability(new int[2] { 0, 2 }));
         }
 
         [TestMethod]
@@ -140,6 +150,31 @@ namespace BimaruGame
             Assert.AreEqual(Satisfiability.SATISFIED, shipTarget.GetSatisfiability(new int[3] { 0, 2, 1 }));
             Assert.AreEqual(Satisfiability.VIOLATED, shipTarget.GetSatisfiability(new int[3] { 0, 3, 1 }));
             Assert.AreEqual(Satisfiability.VIOLATED, shipTarget.GetSatisfiability(new int[3] { 0, 3, 2 }));
+        }
+
+        [TestMethod]
+        public void TestLengthOfLongestMissingShipNoShips()
+        {
+            var shipTarget = new ShipTarget();
+
+            Assert.IsNull(shipTarget.LengthOfLongestMissingShip(new int[2] { 0, 0 }));
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => shipTarget.LengthOfLongestMissingShip(new int[2] { 0, 1}));
+        }
+
+        [TestMethod]
+        public void TestLengthOfLongestMissingShip()
+        {
+            var shipTarget = new ShipTarget();
+            shipTarget[1] = 2;
+            shipTarget[2] = 1;
+
+            Assert.AreEqual(2, shipTarget.LengthOfLongestMissingShip(new int[3] { 0, 0, 0 }));
+            Assert.AreEqual(1, shipTarget.LengthOfLongestMissingShip(new int[3] { 0, 0, 1 }));
+            
+            Assert.IsNull(shipTarget.LengthOfLongestMissingShip(new int[3] { 0, 2, 1 }));
+
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => shipTarget.LengthOfLongestMissingShip(new int[3] { 0, 0, 2 }));
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => shipTarget.LengthOfLongestMissingShip(new int[3] { 0, 3, 1 }));
         }
     }
 }

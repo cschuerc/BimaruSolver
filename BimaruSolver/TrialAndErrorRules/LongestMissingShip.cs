@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using BimaruInterfaces;
 using Utility;
@@ -7,63 +8,108 @@ namespace BimaruSolver
 {
     /// <summary>
     /// Try all possible locations for the longest, still missing ship.
-    /// 
-    /// Note that this rule does not produce disjoint trials and hence
-    /// it cannot be used to count the number of solutions in a Bimaru
-    /// game. To see this, suppose that two battleships are missing in
-    /// a game with a unique solution. Then this rule will produce at
-    /// least two trials for battleships, one for each correct location
-    /// of a battleship. However, each of those two trials will lead to
-    /// a solution (which is the same in both cases). A solver that just
-    /// counts the number of trial paths with solutions will count both
-    /// paths separately.
     /// </summary>
     public class LongestMissingShip : ITrialAndErrorRule
     {
-        /// <inheritdoc/>
+        /// <summary>
+        /// To see why this rule does not produce disjoint trials, in general,
+        /// suppose that two battleships are missing in a game with a unique
+        /// solution. Then this rule will produce at least two trials for
+        /// battleships, one for each correct location of a battleship.
+        /// However, each of those two trials will lead to a solution
+        /// (which is the same in both cases).
+        /// </summary>
         public bool AreTrialsDisjoint => false;
 
-        private int LengthOfLongestMissingShip(IGame game)
-        {
-            int length = game.TargetNumberOfShipsPerLength.LongestShipLength;
-            while (length > 0)
-            {
-                int numShipsGap = game.TargetNumberOfShipsPerLength[length] - game.Grid.NumberOfShipsPerLength[length];
-                if (numShipsGap < 0)
-                {
-                    throw new InvalidBimaruGame();
-                }
-                else if (numShipsGap > 0)
-                {
-                    break;
-                }
+        /// <summary>
+        /// The set of trials contains all possible locations for the longest
+        /// missing ship. If there is no missing ship, it produces a trial to
+        /// set all UNDETERMINED fields to water. Hence, it is complete.
+        /// </summary>
+        public bool AreTrialsComplete => true;
 
-                length--;
+        /// <inheritdoc/>
+        public IEnumerable<FieldsToChange<BimaruValue>> GetChangeTrials(IGame game)
+        {
+            int? shipLength;
+
+            try
+            {
+                shipLength = game.TargetNumberOfShipsPerLength.LengthOfLongestMissingShip(game.Grid.NumberOfShipsPerLength);
+            }
+            catch (ArgumentOutOfRangeException e)
+            {
+                throw new InvalidBimaruGame("", e);
             }
 
-            return length;
+            if (shipLength.HasValue)
+            {
+                return GetCompatibleButNotEqualShipTrials(game, shipLength.Value);
+            }
+            else
+            {
+                // All ships are set => Only water missing
+                return UndeterminedToWaterTrials(game);
+            }
         }
 
-        private bool IsCompatibleButNotEqual(IGame game, FieldsToChange<BimaruValue> changes)
+        private IEnumerable<FieldsToChange<BimaruValue>> GetCompatibleButNotEqualShipTrials(IGame game, int shipLength)
         {
-            bool isEqual = true;
-
-            foreach (var c in changes)
+            foreach (var ship in GetVerticalShipLocations(game, shipLength).Where(s => s.IsCompatibleButNotEqualIn(game)))
             {
-                BimaruValue currentValue = game.Grid[c.Point];
-
-                if (!currentValue.IsCompatibleChangeTo(c.NewValue))
-                {
-                    return false;
-                }
-
-                isEqual = isEqual && (currentValue == c.NewValue);
+                yield return ship.Changes;
             }
 
-            return !isEqual;
+            if (shipLength == 1)
+            {
+                // Single ships are already considered vetically
+                yield break;
+            }
+
+            foreach (var ship in GetHorizontalShipLocations(game, shipLength).Where(s => s.IsCompatibleButNotEqualIn(game)))
+            {
+                yield return ship.Changes;
+            }
         }
 
-        private FieldsToChange<BimaruValue> UndeterminedToWaterChanges(IGame game)
+        private IEnumerable<ShipLocation> GetVerticalShipLocations(IGame game, int shipLength)
+        {
+            var rowIndexes = Enumerable.Range(0, game.Grid.NumberOfRows - shipLength + 1);
+
+            var columnIndexes = Enumerable.Range(0, game.Grid.NumberOfColumns).
+                Where(i => game.TargetNumberOfShipFieldsPerColumn[i] >= shipLength);
+
+            foreach (var p in GetGridPoints(rowIndexes, columnIndexes))
+            {
+                yield return new ShipLocation(p, Direction.UP, shipLength);
+            }
+        }
+
+        private IEnumerable<GridPoint> GetGridPoints(IEnumerable<int> rowIndexes, IEnumerable<int> columnIndexes)
+        {
+            foreach (int rowIndex in rowIndexes)
+            {
+                foreach (int columnIndex in columnIndexes)
+                {
+                    yield return new GridPoint(rowIndex, columnIndex);
+                }
+            }
+        }
+
+        private IEnumerable<ShipLocation> GetHorizontalShipLocations(IGame game, int shipLength)
+        {
+            var rowIndexes = Enumerable.Range(0, game.Grid.NumberOfRows).
+                Where(i => game.TargetNumberOfShipFieldsPerRow[i] >= shipLength);
+
+            var columnIndexes = Enumerable.Range(0, game.Grid.NumberOfColumns - shipLength + 1);
+
+            foreach (var p in GetGridPoints(rowIndexes, columnIndexes))
+            {
+                yield return new ShipLocation(p, Direction.RIGHT, shipLength);
+            }
+        }
+
+        private IEnumerable<FieldsToChange<BimaruValue>> UndeterminedToWaterTrials(IGame game)
         {
             var changes = new FieldsToChange<BimaruValue>();
 
@@ -72,79 +118,9 @@ namespace BimaruSolver
                 changes.Add(p, BimaruValue.WATER);
             }
 
-            return changes.Count() > 0 ? changes: null;
-        }
-
-        private IEnumerable<FieldsToChange<BimaruValue>> GetTrialsForVerticalShips(IGame game, int shipLength)
-        {
-            int numStartRows = game.Grid.NumberOfRows - shipLength + 1;
-            foreach (int columnIndex in Enumerable.Range(0, game.Grid.NumberOfColumns).Where(i => game.TargetNumberOfShipFieldsPerColumn[i] >= shipLength))
+            if (changes.Count() > 0)
             {
-                foreach (int rowIndex in Enumerable.Range(0, numStartRows))
-                {
-                    GridPoint p = new GridPoint(rowIndex, columnIndex);
-                    var shipFields = BimaruValues.FieldValuesOfShip(Direction.UP, shipLength);
-                    var changes = new FieldsToChange<BimaruValue>(p, Direction.UP, shipFields);
-
-                    if (IsCompatibleButNotEqual(game, changes))
-                    {
-                        yield return changes;
-                    }
-                }
-            }
-        }
-
-        private IEnumerable<FieldsToChange<BimaruValue>> GetTrialsForHorizontalShips(IGame game, int shipLength)
-        {
-            int numStartColumns = game.Grid.NumberOfColumns - shipLength + 1;
-            foreach (int rowIndex in Enumerable.Range(0, game.Grid.NumberOfRows).Where(i => game.TargetNumberOfShipFieldsPerRow[i] >= shipLength))
-            {
-                foreach (int columnIndex in Enumerable.Range(0, numStartColumns))
-                {
-                    GridPoint p = new GridPoint(rowIndex, columnIndex);
-                    var shipFields = BimaruValues.FieldValuesOfShip(Direction.RIGHT, shipLength);
-                    var changes = new FieldsToChange<BimaruValue>(p, Direction.RIGHT, shipFields);
-
-                    if (IsCompatibleButNotEqual(game, changes))
-                    {
-                        yield return changes;
-                    }
-                }
-            }
-        }
-
-        /// <inheritdoc/>
-        public IEnumerable<FieldsToChange<BimaruValue>> GetCompleteChangeTrials(IGame game)
-        {
-            int shipLength = LengthOfLongestMissingShip(game);
-            
-            if (shipLength <= 0)
-            {
-                // All ships are set => Set the non-determined fields to water
-                var trial = UndeterminedToWaterChanges(game);
-
-                if (trial != null)
-                {
-                    yield return trial;
-                }
-
-                yield break;
-            }
-
-            foreach (var trial in GetTrialsForVerticalShips(game, shipLength))
-            {
-                yield return trial;
-            }
-
-            if (shipLength == 1)
-            {
-                // Single ships are already considered
-                yield break;
-            }
-
-            foreach (var trial in GetTrialsForHorizontalShips(game, shipLength))
-            {
-                yield return trial;
+                yield return changes;
             }
         }
     }

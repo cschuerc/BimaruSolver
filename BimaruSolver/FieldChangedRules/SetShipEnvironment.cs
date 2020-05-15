@@ -4,16 +4,15 @@ using Utility;
 namespace BimaruSolver
 {
     /// <summary>
-    /// Sets the surrounding of a changed field if possible.
+    /// Sets the surroundings of a ship field.
     /// For example, a SHIP_SINGLE is surrounded by WATER.
     /// </summary>
     public class SetShipEnvironment : IFieldValueChangedRule
     {
-        /// <inheritdoc/>
         public void FieldValueChanged(IGame game, FieldValueChangedEventArgs<BimaruValue> e)
         {
             BimaruValue newValue = game.Grid[e.Point];
-            foreach (Direction direction in Directions.AllDirections())
+            foreach (Direction direction in Directions.GetAllDirections())
             {
                 BimaruValueConstraint constraintInDirection = newValue.GetConstraint(direction);
 

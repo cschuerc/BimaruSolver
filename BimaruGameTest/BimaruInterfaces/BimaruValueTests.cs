@@ -12,7 +12,7 @@ namespace BimaruInterfaces
         [TestMethod]
         public void TestCompatibilitySingleShip()
         {
-            foreach (Direction direction in Directions.AllDirections())
+            foreach (Direction direction in Directions.GetAllDirections())
             {
                 foreach (BimaruValue value in BimaruValues.AllBimaruValues())
                 {
@@ -27,7 +27,7 @@ namespace BimaruInterfaces
         [TestMethod]
         public void TestCompatibilityDiagonal()
         {
-            foreach (Direction direction in Directions.AllDiagonalDirections())
+            foreach (Direction direction in Directions.GetDirections(DirectionType.DIAGONAL))
             {
                 foreach (BimaruValue value in BimaruValues.AllBimaruValues())
                 {
@@ -54,7 +54,7 @@ namespace BimaruInterfaces
                     BimaruValue.SHIP_CONT_UP
                 };
 
-            foreach (Direction direction in Directions.AllNonDiagonalDirections())
+            foreach (Direction direction in Directions.GetNonDiagonalDirections())
             {
                 foreach (BimaruValue value in startEndShipFields)
                 {
@@ -89,7 +89,7 @@ namespace BimaruInterfaces
                     BimaruValue.SHIP_MIDDLE
                 };
 
-            foreach (Direction direction in Directions.AllNonDiagonalDirections())
+            foreach (Direction direction in Directions.GetNonDiagonalDirections())
             {
                 foreach (BimaruValue value in remainingShipFields)
                 {

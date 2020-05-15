@@ -21,8 +21,10 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\BimaruSolver.xml</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
     <RunCodeAnalysis>true</RunCodeAnalysis>
+    <CodeAnalysisRuleSet>MixedMinimumRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -45,8 +47,10 @@
   <ItemGroup>
     <Compile Include="CombinedRules\FillRowOrColumnWithWater.cs" />
     <Compile Include="CombinedRules\FillRowOrColumnWithShips.cs" />
-    <Compile Include="FieldChangedRules\DetermineShipFields.cs" />
+    <Compile Include="FieldChangedRules\DetermineShipMiddleNeighbours.cs" />
+    <Compile Include="FieldChangedRules\DetermineShipUndetermined.cs" />
     <Compile Include="FieldChangedRules\SetShipEnvironment.cs" />
+    <Compile Include="ShipLocation.cs" />
     <Compile Include="SolverFactory.cs" />
     <Compile Include="TrialAndErrorRules\BruteForce.cs" />
     <Compile Include="TrialAndErrorRules\OneMissingShipOrWater.cs" />

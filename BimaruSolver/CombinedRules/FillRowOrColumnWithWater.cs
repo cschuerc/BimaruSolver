@@ -15,43 +15,40 @@ namespace BimaruSolver
     /// </summary>
     public class FillRowOrColumnWithWater : IFieldValueChangedRule, ISolverRule
     {
-        private static bool AreAllShipsUsedInRow(IGame game, int rowIndex)
+        private static bool AreTargetShipFieldsSetInRow(IGame game, int rowIndex)
         {
             return game.NumberOfMissingShipFieldsPerRow(rowIndex) == 0;
         }
 
-        private static bool AreAllShipsUsedInColumn(IGame game, int columnIndex)
+        private static bool AreTargetShipFieldsSetInColumn(IGame game, int columnIndex)
         {
             return game.NumberOfMissingShipFieldsPerColumn(columnIndex) == 0;
         }
 
-        /// <inheritdoc/>
         public void FieldValueChanged(IGame game, FieldValueChangedEventArgs<BimaruValue> e)
         {
-            if (AreAllShipsUsedInRow(game, e.Point.RowIndex))
+            if (AreTargetShipFieldsSetInRow(game, e.Point.RowIndex))
             {
                 game.Grid.FillUndeterminedFieldsRow(e.Point.RowIndex, BimaruValueConstraint.WATER);
             }
 
-            if (AreAllShipsUsedInColumn(game, e.Point.ColumnIndex))
+            if (AreTargetShipFieldsSetInColumn(game, e.Point.ColumnIndex))
             {
                 game.Grid.FillUndeterminedFieldsColumn(e.Point.ColumnIndex, BimaruValueConstraint.WATER);
             }
         }
 
         #region Full grid rule
-        /// <inheritdoc/>
         public bool ShallBeAppliedOnce => true;
 
-        /// <inheritdoc/>
         public void Solve(IGame game)
         {
-            foreach (int rowIndex in Enumerable.Range(0, game.Grid.NumberOfRows).Where(i => AreAllShipsUsedInRow(game, i)))
+            foreach (int rowIndex in Enumerable.Range(0, game.Grid.NumberOfRows).Where(i => AreTargetShipFieldsSetInRow(game, i)))
             {
                 game.Grid.FillUndeterminedFieldsRow(rowIndex, BimaruValueConstraint.WATER);
             }
 
-            foreach (int columnIndex in Enumerable.Range(0, game.Grid.NumberOfColumns).Where(i => AreAllShipsUsedInColumn(game, i)))
+            foreach (int columnIndex in Enumerable.Range(0, game.Grid.NumberOfColumns).Where(i => AreTargetShipFieldsSetInColumn(game, i)))
             {
                 game.Grid.FillUndeterminedFieldsColumn(columnIndex, BimaruValueConstraint.WATER);
             }

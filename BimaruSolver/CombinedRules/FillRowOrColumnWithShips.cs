@@ -15,43 +15,40 @@ namespace BimaruSolver
     /// </summary>
     public class FillRowOrColumnWithShips : IFieldValueChangedRule, ISolverRule
     {
-        private static bool AreOnlyShipsMissingRow(IGame game, int rowIndex)
+        private static bool AreOnlyShipFieldsMissingRow(IGame game, int rowIndex)
         {
             return game.Grid.NumberOfUndeterminedFieldsPerRow[rowIndex] == game.NumberOfMissingShipFieldsPerRow(rowIndex);
         }
 
-        private static bool AreOnlyShipsMissingColumn(IGame game, int columnIndex)
+        private static bool AreOnlyShipFieldsMissingColumn(IGame game, int columnIndex)
         {
             return game.Grid.NumberOfUndeterminedFieldsPerColumn[columnIndex] == game.NumberOfMissingShipFieldsPerColumn(columnIndex);
         }
 
-        /// <inheritdoc/>
         public void FieldValueChanged(IGame game, FieldValueChangedEventArgs<BimaruValue> e)
         {
-            if (AreOnlyShipsMissingRow(game, e.Point.RowIndex))
+            if (AreOnlyShipFieldsMissingRow(game, e.Point.RowIndex))
             {
                 game.Grid.FillUndeterminedFieldsRow(e.Point.RowIndex, BimaruValueConstraint.SHIP);
             }
 
-            if (AreOnlyShipsMissingColumn(game, e.Point.ColumnIndex))
+            if (AreOnlyShipFieldsMissingColumn(game, e.Point.ColumnIndex))
             {
                 game.Grid.FillUndeterminedFieldsColumn(e.Point.ColumnIndex, BimaruValueConstraint.SHIP);
             }
         }
 
         #region Full grid rule
-        /// <inheritdoc/>
         public bool ShallBeAppliedOnce => true;
 
-        /// <inheritdoc/>
         public void Solve(IGame game)
         {
-            foreach (int rowIndex in Enumerable.Range(0, game.Grid.NumberOfRows).Where(i => AreOnlyShipsMissingRow(game, i)))
+            foreach (int rowIndex in Enumerable.Range(0, game.Grid.NumberOfRows).Where(i => AreOnlyShipFieldsMissingRow(game, i)))
             {
                 game.Grid.FillUndeterminedFieldsRow(rowIndex, BimaruValueConstraint.SHIP);
             }
 
-            foreach (int columnIndex in Enumerable.Range(0, game.Grid.NumberOfColumns).Where(i => AreOnlyShipsMissingColumn(game, i)))
+            foreach (int columnIndex in Enumerable.Range(0, game.Grid.NumberOfColumns).Where(i => AreOnlyShipFieldsMissingColumn(game, i)))
             {
                 game.Grid.FillUndeterminedFieldsColumn(columnIndex, BimaruValueConstraint.SHIP);
             }

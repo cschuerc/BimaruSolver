@@ -53,10 +53,10 @@ namespace BimaruGame
             TotalShipFields += (newNumberOfShips - oldNumberOfShips) * shipLength;
         }
 
-        public int LongestShipLength {
+        public int? LongestShipLength {
             get
             {
-                int longestLength = 0;
+                int? longestLength = null;
                 if (targetNumberOfShipsPerLength.Count > 0)
                 {
                     longestLength = targetNumberOfShipsPerLength.Last().Key;
@@ -77,20 +77,35 @@ namespace BimaruGame
             bool isSatisfied = true;
             for (int shipLength = 0; shipLength < numberOfShipsPerLength.Count; shipLength++)
             {
-                int gap = this[shipLength] - numberOfShipsPerLength[shipLength];
-                if (gap < 0)
+                int numberOfShipsGap = this[shipLength] - numberOfShipsPerLength[shipLength];
+                if (numberOfShipsGap < 0)
                 {
                     return Satisfiability.VIOLATED;
                 }
-                else if (gap != 0)
+                else if (numberOfShipsGap != 0)
                 {
                     isSatisfied = false;
                 }
             }
 
-            isSatisfied = isSatisfied && LongestShipLength < numberOfShipsPerLength.Count;
+            isSatisfied = isSatisfied && (LongestShipLength ?? 0) < numberOfShipsPerLength.Count;
 
             return isSatisfied ? Satisfiability.SATISFIED : Satisfiability.SATISFIABLE;
+        }
+
+        public int? LengthOfLongestMissingShip(IReadOnlyList<int> numberOfShipsPerLength)
+        {
+            var satisfiability = GetSatisfiability(numberOfShipsPerLength);
+            if (satisfiability == Satisfiability.VIOLATED)
+            {
+                throw new ArgumentOutOfRangeException("Ship target is violated.");
+            }
+            else if (satisfiability == Satisfiability.SATISFIED)
+            {
+                return null;
+            }
+
+            return targetNumberOfShipsPerLength.Last(p => p.Value > numberOfShipsPerLength[p.Key]).Key;
         }
     }
 }

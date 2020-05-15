@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace Utility
+namespace BimaruInterfaces
 {
     /// <summary>
     /// A field value is changed to an invalid value.
     /// </summary>
-    public class InvalidFieldValueChange : Exception
+    public class InvalidFieldValueChange : InvalidBimaruGame
     {
         public InvalidFieldValueChange() : base()
         {
