@@ -1,4 +1,4 @@
-﻿using BimaruInterfaces;
+﻿using Bimaru.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
 
-namespace BimaruDatabase
+namespace Bimaru.DatabaseUtil
 {
     /// <summary>
     /// Bimaru game database containing the embedded resources

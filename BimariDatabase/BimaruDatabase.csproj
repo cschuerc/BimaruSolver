@@ -7,7 +7,7 @@
     <ProjectGuid>{263B8B66-DCC4-4295-9183-FFBF5E84D0EF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BimaruDatabase</RootNamespace>
+    <RootNamespace>Bimaru.DatabaseUtil</RootNamespace>
     <AssemblyName>BimaruDatabase</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

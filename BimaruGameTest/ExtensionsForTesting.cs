@@ -1,8 +1,8 @@
-﻿using BimaruInterfaces;
+﻿using Bimaru.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 
-namespace BimaruTest
+namespace Bimaru.Test
 {
     public static class ExtensionsForTesting
     {

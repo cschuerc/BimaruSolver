@@ -1,11 +1,11 @@
-﻿using BimaruDatabase;
-using BimaruGame;
-using BimaruInterfaces;
+﻿using Bimaru.DatabaseUtil;
+using Bimaru.GameUtil;
+using Bimaru.Interfaces;
 using System;
 using System.Collections.Generic;
 using Utility;
 
-namespace BimaruDatabaseGenerator
+namespace Bimaru.DatabaseUtilGeneratorUtil
 {
     public static class DatabaseGenerator
     {

@@ -1,8 +1,8 @@
-﻿using BimaruInterfaces;
+﻿using Bimaru.Interfaces;
 using System.Collections.Generic;
 using Utility;
 
-namespace BimaruSolver
+namespace Bimaru.SolverUtil
 {
     public class SolverFactory : ISolverFactory
     {

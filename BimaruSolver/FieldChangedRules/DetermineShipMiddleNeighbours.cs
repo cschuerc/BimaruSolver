@@ -1,7 +1,7 @@
-﻿using BimaruInterfaces;
+﻿using Bimaru.Interfaces;
 using Utility;
 
-namespace BimaruSolver
+namespace Bimaru.SolverUtil
 {
     /// <summary>
     /// Determines all neighbours of SHIP_MIDDLE if possible.

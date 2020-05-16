@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace BimaruInterfaces
+namespace Bimaru.Interfaces
 {
     /// <summary>
     /// Target number of fields per row/column to satisfy a condition.

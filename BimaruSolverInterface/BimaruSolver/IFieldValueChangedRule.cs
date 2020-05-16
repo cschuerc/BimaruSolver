@@ -1,6 +1,6 @@
 ﻿using Utility;
 
-namespace BimaruInterfaces
+namespace Bimaru.Interfaces
 {
     /// <summary>
     /// Solver rule that is supposed to be run after every field value change (e.g. UNDETERMINED to SHIP_SINGLE).

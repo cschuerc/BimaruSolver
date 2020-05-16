@@ -2,9 +2,9 @@
 using System.Linq;
 using System.Collections.Generic;
 using Utility;
-using BimaruInterfaces;
+using Bimaru.Interfaces;
 
-namespace BimaruSolver
+namespace Bimaru.SolverUtil
 {
     public class Solver : ISolver
     {

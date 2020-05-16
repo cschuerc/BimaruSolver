@@ -1,8 +1,8 @@
-﻿using BimaruInterfaces;
+﻿using Bimaru.Interfaces;
 using System;
 using System.Linq;
 
-namespace BimaruGame
+namespace Bimaru.GameUtil
 {
     [Serializable]
     public class Game : IGame

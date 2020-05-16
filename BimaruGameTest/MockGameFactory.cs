@@ -1,6 +1,6 @@
-﻿using BimaruGame;
+﻿using Bimaru.GameUtil;
 
-namespace BimaruTest
+namespace Bimaru.Test
 {
     public class MockGameFactory
     {

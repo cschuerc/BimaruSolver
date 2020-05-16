@@ -1,7 +1,7 @@
-﻿using BimaruInterfaces;
+﻿using Bimaru.Interfaces;
 using Utility;
 
-namespace BimaruSolver
+namespace Bimaru.SolverUtil
 {
     /// <summary>
     /// Sets the surroundings of a ship field.

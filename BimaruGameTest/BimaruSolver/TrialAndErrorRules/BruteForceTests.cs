@@ -1,11 +1,11 @@
-using BimaruGame;
-using BimaruInterfaces;
+using Bimaru.GameUtil;
+using Bimaru.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Linq;
 using Utility;
 
-namespace BimaruSolver
+namespace Bimaru.SolverUtil
 {
     [TestClass]
     public class BruteForceTests

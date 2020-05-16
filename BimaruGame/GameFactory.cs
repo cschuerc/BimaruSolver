@@ -1,6 +1,6 @@
-﻿using BimaruInterfaces;
+﻿using Bimaru.Interfaces;
 
-namespace BimaruGame
+namespace Bimaru.GameUtil
 {
     public class GameFactory : IGameFactory
     {

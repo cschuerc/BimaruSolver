@@ -1,8 +1,8 @@
-﻿using BimaruInterfaces;
+﻿using Bimaru.Interfaces;
 using System.Linq;
 using Utility;
 
-namespace BimaruSolver
+namespace Bimaru.SolverUtil
 {
     /// <summary>
     /// Fills all UNDETERMINED fields of a row or a column with WATER

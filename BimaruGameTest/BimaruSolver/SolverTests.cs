@@ -1,6 +1,6 @@
-using BimaruGame;
-using BimaruInterfaces;
-using BimaruTest;
+using Bimaru.GameUtil;
+using Bimaru.Interfaces;
+using Bimaru.Test;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections;
@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Utility;
 
-namespace BimaruSolver
+namespace Bimaru.SolverUtil
 {
     [TestClass]
     public class SolverTests

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Utility;
 
-namespace BimaruInterfaces
+namespace Bimaru.Interfaces
 {
     [TestClass]
     public class BimaruValueTests

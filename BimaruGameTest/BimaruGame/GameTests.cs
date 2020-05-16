@@ -1,10 +1,10 @@
-using BimaruInterfaces;
-using BimaruTest;
+using Bimaru.Interfaces;
+using Bimaru.Test;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using Utility;
 
-namespace BimaruGame
+namespace Bimaru.GameUtil
 {
     [TestClass]
     public class GameTests

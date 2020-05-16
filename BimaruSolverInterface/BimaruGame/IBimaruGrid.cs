@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Utility;
 
-namespace BimaruInterfaces
+namespace Bimaru.Interfaces
 {
     public interface IBimaruGrid: ICloneable, IOverwritable
     {

@@ -1,7 +1,7 @@
-using BimaruInterfaces;
+using Bimaru.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace BimaruDatabase
+namespace Bimaru.DatabaseUtil
 {
     [TestClass]
     public class GameMetaInfoTests

@@ -1,4 +1,4 @@
-﻿namespace BimaruInterfaces
+﻿namespace Bimaru.Interfaces
 {
     /// <summary>
     /// Subjective Bimaru game difficulty

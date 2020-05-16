@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BimaruInterfaces
+namespace Bimaru.Interfaces
 {
     public interface IGameMetaInfo : IEquatable<IGameMetaInfo>
     {

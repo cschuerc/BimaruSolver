@@ -1,9 +1,9 @@
-using BimaruDatabase;
-using BimaruTest;
+using Bimaru.DatabaseUtil;
+using Bimaru.Test;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Runtime.Serialization.Formatters.Binary;
 
-namespace BimaruSolver
+namespace Bimaru.SolverUtil
 {
     [TestClass]
     public class SolverFactoryTests

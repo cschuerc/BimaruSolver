@@ -6,7 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{45C9866F-916A-4B60-A255-C1AB48E33E10}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>BimaruDatabaseGenerator</RootNamespace>
+    <RootNamespace>Bimaru.DatabaseGeneratorUtil</RootNamespace>
     <AssemblyName>BimaruDatabaseGenerator</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -44,7 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DatabaseGenerator.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="GamesToFiles.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

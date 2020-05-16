@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using Utility;
 using System.Linq;
-using BimaruInterfaces;
+using Bimaru.Interfaces;
 
-namespace BimaruSolver
+namespace Bimaru.SolverUtil
 {
     /// <summary>
     /// Tries for a single UNDETERMINED or SHIP_UNDETERMINED

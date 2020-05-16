@@ -1,8 +1,8 @@
-﻿using BimaruInterfaces;
+﻿using Bimaru.Interfaces;
 using System;
 using Utility;
 
-namespace BimaruTest
+namespace Bimaru.Test
 {
     internal class FieldValueChangedRuleSubscriber : IDisposable
     {

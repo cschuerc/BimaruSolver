@@ -1,4 +1,4 @@
-﻿namespace BimaruInterfaces
+﻿namespace Bimaru.Interfaces
 {
     public interface ISolver
     {

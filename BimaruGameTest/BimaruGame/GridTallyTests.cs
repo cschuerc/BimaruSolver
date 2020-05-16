@@ -1,9 +1,9 @@
-using BimaruInterfaces;
+using Bimaru.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
 
-namespace BimaruGame
+namespace Bimaru.GameUtil
 {
     [TestClass]
     public class GridTallyTests

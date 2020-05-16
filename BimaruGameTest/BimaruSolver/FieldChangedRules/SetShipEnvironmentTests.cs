@@ -1,10 +1,10 @@
-using BimaruGame;
-using BimaruInterfaces;
-using BimaruTest;
+using Bimaru.GameUtil;
+using Bimaru.Interfaces;
+using Bimaru.Test;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Utility;
 
-namespace BimaruSolver
+namespace Bimaru.SolverUtil
 {
     [TestClass]
     public class SetShipEnvironmentTests

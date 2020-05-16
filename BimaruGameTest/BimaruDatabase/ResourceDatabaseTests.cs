@@ -1,6 +1,5 @@
-using BimaruGame;
-using BimaruInterfaces;
-using BimaruTest;
+using Bimaru.Interfaces;
+using Bimaru.Test;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
@@ -10,7 +9,7 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 
-namespace BimaruDatabase
+namespace Bimaru.DatabaseUtil
 {
     [TestClass]
     public class ResourceDatabaseTests

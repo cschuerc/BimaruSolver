@@ -1,10 +1,10 @@
-﻿using BimaruInterfaces;
+﻿using Bimaru.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Utility;
 
-namespace BimaruGame
+namespace Bimaru.GameUtil
 {
     [Serializable]
     public class BimaruGrid : Grid<BimaruValue>, IBimaruGrid, ICloneable

@@ -7,7 +7,7 @@
     <ProjectGuid>{0C0BA203-55FF-4EFC-A0E9-AF1FA30D4699}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BimaruSolver</RootNamespace>
+    <RootNamespace>Bimaru.SolverUtil</RootNamespace>
     <AssemblyName>BimaruSolver</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

@@ -1,11 +1,11 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 using Utility;
-using BimaruInterfaces;
+using Bimaru.Interfaces;
 using System.Collections.Generic;
-using BimaruTest;
+using Bimaru.Test;
 
-namespace BimaruGame
+namespace Bimaru.GameUtil
 {
     [TestClass]
     public class BimaruGridTests
