@@ -77,7 +77,7 @@ namespace Bimaru.GameUtil
             game.TargetNumberOfShipsPerLength[2] = 1;
 
             game.Grid[new GridPoint(0, 0)] = BimaruValue.SHIP_CONT_UP;
-            game.Grid[new GridPoint(0, 2)] = BimaruValue.SHIP_UNDETERMINED;
+            game.Grid[new GridPoint(0, 2)] = BimaruValue.SHIP_SINGLE;
             game.Grid[new GridPoint(3, 0)] = BimaruValue.WATER;
 
             // 1xDESTROYER, 1xSUBMARINE
@@ -96,6 +96,12 @@ namespace Bimaru.GameUtil
             Assert.AreEqual(2, game.NumberOfMissingShipFieldsPerColumn(0));
             Assert.AreEqual(0, game.NumberOfMissingShipFieldsPerColumn(1));
             Assert.AreEqual(-1, game.NumberOfMissingShipFieldsPerColumn(2));
+
+            Assert.AreEqual(2, game.LengthOfLongestMissingShip);
+
+            game.Grid[new GridPoint(1, 0)] = BimaruValue.SHIP_CONT_DOWN;
+
+            Assert.IsNull(game.LengthOfLongestMissingShip);
         }
 
         [TestMethod]

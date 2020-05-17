@@ -35,7 +35,7 @@ namespace Bimaru.SolverUtil
 
             try
             {
-                shipLength = game.TargetNumberOfShipsPerLength.LengthOfLongestMissingShip(game.Grid.NumberOfShipsPerLength);
+                shipLength = game.LengthOfLongestMissingShip;
             }
             catch (ArgumentOutOfRangeException e)
             {
@@ -49,7 +49,7 @@ namespace Bimaru.SolverUtil
             else
             {
                 // All ships are set => Only water missing
-                return UndeterminedToWaterTrials(game);
+                return GetUndeterminedToWaterTrial(game);
             }
         }
 
@@ -109,7 +109,7 @@ namespace Bimaru.SolverUtil
             }
         }
 
-        private IEnumerable<FieldsToChange<BimaruValue>> UndeterminedToWaterTrials(IGame game)
+        private IEnumerable<FieldsToChange<BimaruValue>> GetUndeterminedToWaterTrial(IGame game)
         {
             var changes = new FieldsToChange<BimaruValue>();
 

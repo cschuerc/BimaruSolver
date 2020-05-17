@@ -127,6 +127,14 @@ namespace Bimaru.GameUtil
         {
             return targetNumberOfShipFieldsPerColumn[index] - grid.NumberOfShipFieldsPerColumn[index];
         }
+
+        public int? LengthOfLongestMissingShip
+        {
+            get
+            {
+                return TargetNumberOfShipsPerLength.LengthOfLongestMissingShip(Grid.NumberOfShipsPerLength);
+            }
+        }
         #endregion
 
         #region Game properties

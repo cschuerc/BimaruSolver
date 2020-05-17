@@ -27,6 +27,14 @@
         int NumberOfMissingShipFieldsPerColumn(int columnIndex);
 
         /// <summary>
+        /// Null if no ship is missing.
+        /// </summary>
+        int? LengthOfLongestMissingShip
+        {
+            get;
+        }
+
+        /// <summary>
         /// True, if the current Bimaru game is unsolvable.
         /// This means that no solution exists independently of the grid field values.
         /// False does not mean that the game is solvable.
