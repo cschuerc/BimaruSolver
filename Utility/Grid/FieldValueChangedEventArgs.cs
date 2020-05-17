@@ -3,7 +3,7 @@
 namespace Utility
 {
     /// <typeparam name="T"> Type of field value </typeparam>
-    public class FieldValueChangedEventArgs<T>: EventArgs
+    public class FieldValueChangedEventArgs<T> : EventArgs
     {
         public FieldValueChangedEventArgs(GridPoint point, T originalValue)
         {

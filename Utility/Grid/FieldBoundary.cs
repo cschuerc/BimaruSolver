@@ -62,7 +62,8 @@ namespace Utility
         /// Direction of the boundary relative to the base point.
         /// </summary>
         public Direction DirectionFromBase
-        { get;
+        {
+            get;
             private set;
         }
     }

@@ -1,9 +1,9 @@
+using Bimaru.Interfaces;
+using Bimaru.Test;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 using System.Linq;
 using Utility;
-using Bimaru.Interfaces;
-using System.Collections.Generic;
-using Bimaru.Test;
 
 namespace Bimaru.GameUtil
 {

@@ -226,7 +226,7 @@ namespace Utility
         public void TestPointsOfRow()
         {
             Grid<int> grid;
-            
+
             grid = new Grid<int>(3, 1);
 
             TestPointsOfRow(grid, 0);

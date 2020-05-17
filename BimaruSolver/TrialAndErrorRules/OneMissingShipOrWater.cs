@@ -1,9 +1,9 @@
-﻿using System.Linq;
-using System.Collections.Generic;
-using Bimaru.Interfaces;
-using Utility;
+﻿using Bimaru.Interfaces;
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using Utility;
 
 namespace Bimaru.SolverUtil
 {
@@ -171,7 +171,7 @@ namespace Bimaru.SolverUtil
             private IEnumerable<GridPoint> Points
             {
                 get;
-                set; 
+                set;
             }
 
             public BimaruValueConstraint ShipOrWater
@@ -184,7 +184,7 @@ namespace Bimaru.SolverUtil
             /// Most promising candidate in terms of leading to a fast solver.
             /// Empirical heuristic.
             /// </summary>
-            public static bool operator>(OneMissingPoints left, OneMissingPoints right)
+            public static bool operator >(OneMissingPoints left, OneMissingPoints right)
             {
                 if (left is null || right is null)
                 {
@@ -204,7 +204,7 @@ namespace Bimaru.SolverUtil
                         left.Points.Count() > right.Points.Count());
             }
 
-            public static bool operator<(OneMissingPoints left, OneMissingPoints right)
+            public static bool operator <(OneMissingPoints left, OneMissingPoints right)
             {
                 return right > left;
             }

@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using Utility;
+﻿using Bimaru.Interfaces;
+using System.Collections.Generic;
 using System.Linq;
-using Bimaru.Interfaces;
+using Utility;
 
 namespace Bimaru.SolverUtil
 {

@@ -1,7 +1,6 @@
 using Bimaru.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Collections.Generic;
 
 namespace Bimaru.GameUtil
 {
@@ -78,15 +77,15 @@ namespace Bimaru.GameUtil
 
             shipTarget[1] = 3;
 
-            Assert.AreEqual(3*1, shipTarget.TotalShipFields);
+            Assert.AreEqual(3 * 1, shipTarget.TotalShipFields);
 
             shipTarget[2] = 4;
 
-            Assert.AreEqual(3*1 + 4*2, shipTarget.TotalShipFields);
+            Assert.AreEqual(3 * 1 + 4 * 2, shipTarget.TotalShipFields);
 
             shipTarget[2] = 0;
 
-            Assert.AreEqual(3*1, shipTarget.TotalShipFields);
+            Assert.AreEqual(3 * 1, shipTarget.TotalShipFields);
         }
 
         [TestMethod]
@@ -158,7 +157,7 @@ namespace Bimaru.GameUtil
             var shipTarget = new ShipTarget();
 
             Assert.IsNull(shipTarget.LengthOfLongestMissingShip(new int[2] { 0, 0 }));
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => shipTarget.LengthOfLongestMissingShip(new int[2] { 0, 1}));
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => shipTarget.LengthOfLongestMissingShip(new int[2] { 0, 1 }));
         }
 
         [TestMethod]
@@ -170,7 +169,7 @@ namespace Bimaru.GameUtil
 
             Assert.AreEqual(2, shipTarget.LengthOfLongestMissingShip(new int[3] { 0, 0, 0 }));
             Assert.AreEqual(1, shipTarget.LengthOfLongestMissingShip(new int[3] { 0, 0, 1 }));
-            
+
             Assert.IsNull(shipTarget.LengthOfLongestMissingShip(new int[3] { 0, 2, 1 }));
 
             Assert.ThrowsException<ArgumentOutOfRangeException>(() => shipTarget.LengthOfLongestMissingShip(new int[3] { 0, 0, 2 }));

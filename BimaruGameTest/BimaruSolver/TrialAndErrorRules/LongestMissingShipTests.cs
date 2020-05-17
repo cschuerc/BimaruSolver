@@ -47,7 +47,7 @@ namespace Bimaru.SolverUtil
             // 0|WWW
 
             var rule = new LongestMissingShip();
-            
+
             int shipLength = 2;
             var startChange0 = new SingleChange<BimaruValue>(new GridPoint(2, 1), BimaruValue.SHIP_CONT_RIGHT);
             var startChange1 = new SingleChange<BimaruValue>(new GridPoint(1, 2), BimaruValue.SHIP_CONT_UP);
@@ -242,7 +242,7 @@ namespace Bimaru.SolverUtil
             var rule = new LongestMissingShip();
 
             int shipLength = 2;
-            
+
             var startChange0 = new SingleChange<BimaruValue>(new GridPoint(2, 0), BimaruValue.SHIP_CONT_DOWN);
 
             // The following three could be avoided in a more efficient implementation

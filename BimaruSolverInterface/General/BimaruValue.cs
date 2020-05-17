@@ -62,7 +62,7 @@ namespace Bimaru.Interfaces
 
         private static readonly HashSet<BimaruValue> isNotFullyDetermined =
             new HashSet<BimaruValue>()
-            {   
+            {
                 BimaruValue.UNDETERMINED,
                 BimaruValue.SHIP_UNDETERMINED
             };
@@ -73,7 +73,7 @@ namespace Bimaru.Interfaces
         /// </summary>
         public static bool IsFullyDetermined(this BimaruValue value)
         {
-            return !isNotFullyDetermined.Contains(value); 
+            return !isNotFullyDetermined.Contains(value);
         }
 
         private static readonly Dictionary<Direction, BimaruValue> startBimaruValue =

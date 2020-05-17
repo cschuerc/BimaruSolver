@@ -16,7 +16,8 @@ namespace Bimaru.GameUtil
 
         private readonly SortedDictionary<int, int> targetNumberOfShipsPerLength;
 
-        public int this[int shipLength] {
+        public int this[int shipLength]
+        {
             get
             {
                 targetNumberOfShipsPerLength.TryGetValue(shipLength, out int numShips);
@@ -53,7 +54,8 @@ namespace Bimaru.GameUtil
             TotalShipFields += (newNumberOfShips - oldNumberOfShips) * shipLength;
         }
 
-        public int? LongestShipLength {
+        public int? LongestShipLength
+        {
             get
             {
                 int? longestLength = null;

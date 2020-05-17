@@ -5,7 +5,7 @@ namespace Bimaru.Interfaces
     /// <summary>
     /// Target number of fields per row/column to satisfy a condition.
     /// </summary>
-    public interface IGridTally: IEnumerable<int>
+    public interface IGridTally : IEnumerable<int>
     {
         /// <summary>
         /// Number of rows/columns

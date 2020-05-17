@@ -168,7 +168,7 @@ namespace Bimaru.GameUtil
             {
                 return !IsUnsolvable &&
                     Grid.IsValid &&
-                    Grid.IsFullyDetermined && 
+                    Grid.IsFullyDetermined &&
                     TargetShipFieldsRowSatisfiability == Satisfiability.SATISFIED &&
                     TargetShipFieldsColumnSatisfiability == Satisfiability.SATISFIED &&
                     TargetNumberOfShipsSatisfiability == Satisfiability.SATISFIED;

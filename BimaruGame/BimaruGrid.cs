@@ -68,7 +68,7 @@ namespace Bimaru.GameUtil
                 return;
             }
 
-            foreach (GridPoint p in PointsOfRow(rowIndex).Where( p => GetFieldValueNoCheck(p) == BimaruValue.UNDETERMINED))
+            foreach (GridPoint p in PointsOfRow(rowIndex).Where(p => GetFieldValueNoCheck(p) == BimaruValue.UNDETERMINED))
             {
                 this[p] = valueToSet;
             }
@@ -83,7 +83,7 @@ namespace Bimaru.GameUtil
                 return;
             }
 
-            foreach (GridPoint p in PointsOfColumn(columnIndex).Where( p => GetFieldValueNoCheck(p) == BimaruValue.UNDETERMINED))
+            foreach (GridPoint p in PointsOfColumn(columnIndex).Where(p => GetFieldValueNoCheck(p) == BimaruValue.UNDETERMINED))
             {
                 this[p] = valueToSet;
             }
@@ -184,7 +184,7 @@ namespace Bimaru.GameUtil
 
         private void UpdateNumberOfShipsPerLength(FieldValueChangedEventArgs<BimaruValue> e)
         {
-            foreach(int shipLength in DetectShips(e.Point, e.OriginalValue))
+            foreach (int shipLength in DetectShips(e.Point, e.OriginalValue))
             {
                 numberOfShipsPerLength[shipLength]--;
             }

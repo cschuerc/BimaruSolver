@@ -4,7 +4,7 @@ using Utility;
 
 namespace Bimaru.Interfaces
 {
-    public interface IBimaruGrid: ICloneable, IOverwritable
+    public interface IBimaruGrid : ICloneable, IOverwritable
     {
         int NumberOfRows
         {
