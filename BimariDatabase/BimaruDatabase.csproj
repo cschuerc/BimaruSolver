@@ -46,7 +46,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ResourceDatabase.cs" />
+    <Compile Include="Database.cs" />
+    <Compile Include="DatabaseFactory.cs" />
+    <Compile Include="GameSourceFromResources.cs" />
     <Compile Include="GameWithMetaInfo.cs" />
     <Compile Include="GameMetaInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

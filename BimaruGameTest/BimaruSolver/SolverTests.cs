@@ -22,7 +22,7 @@ namespace Bimaru.SolverUtil
         [TestMethod]
         public void TestNoTrialRule()
         {
-            var game = (new MockGameFactory()).GenerateGameOneSolution();
+            var game = (new GameFactoryForTesting()).GenerateGameOneSolution();
             var gridBackup = new Backup<IBimaruGrid>();
 
             new Solver(null, null, null, gridBackup, false);
@@ -33,7 +33,7 @@ namespace Bimaru.SolverUtil
         [TestMethod]
         public void TestIncompleteTrialRule()
         {
-            var game = (new MockGameFactory()).GenerateGameOneSolution();
+            var game = (new GameFactoryForTesting()).GenerateGameOneSolution();
             var gridBackup = new Backup<IBimaruGrid>();
             var trialRule = new MockTrialRule(true, false);
 
@@ -45,7 +45,7 @@ namespace Bimaru.SolverUtil
         [TestMethod]
         public void TestNotDisjointTrialRule()
         {
-            var game = (new MockGameFactory()).GenerateGameOneSolution();
+            var game = (new GameFactoryForTesting()).GenerateGameOneSolution();
             var gridBackup = new Backup<IBimaruGrid>();
             var trialRule = new MockTrialRule(false, true);
 
@@ -86,7 +86,7 @@ namespace Bimaru.SolverUtil
         [TestMethod]
         public void TestNoRules()
         {
-            var game = (new MockGameFactory()).GenerateGameOneSolution();
+            var game = (new GameFactoryForTesting()).GenerateGameOneSolution();
             var solver = new Solver(null, null, null, new Backup<IBimaruGrid>());
             int numberOfSolutions = solver.Solve(game);
 
@@ -97,7 +97,7 @@ namespace Bimaru.SolverUtil
         [TestMethod]
         public void TestNoSolution()
         {
-            var game = (new MockGameFactory()).GenerateGameNoSolution();
+            var game = (new GameFactoryForTesting()).GenerateGameNoSolution();
             var solver = new Solver(null, null, new BruteForce(), new Backup<IBimaruGrid>(), true);
             int numberOfSolutions = solver.Solve(game);
 
@@ -108,18 +108,18 @@ namespace Bimaru.SolverUtil
         [TestMethod]
         public void TestNoSolutionNoGridOverwrite()
         {
-            var game = (new MockGameFactory()).GenerateGameNoSolution();
+            var game = (new GameFactoryForTesting()).GenerateGameNoSolution();
             var solver = new Solver(null, null, new BruteForce(), new Backup<IBimaruGrid>(), true);
             solver.Solve(game);
 
-            var expectedGrid = (new MockGameFactory()).GenerateGameNoSolution().Grid;
+            var expectedGrid = (new GameFactoryForTesting()).GenerateGameNoSolution().Grid;
             expectedGrid.AssertEqual(game.Grid);
         }
 
         [TestMethod]
         public void TestOneSolution()
         {
-            var game = (new MockGameFactory()).GenerateGameOneSolution();
+            var game = (new GameFactoryForTesting()).GenerateGameOneSolution();
             var solver = new Solver(null, null, new BruteForce(), new Backup<IBimaruGrid>(), true);
             int numberOfSolutions = solver.Solve(game);
 
@@ -130,7 +130,7 @@ namespace Bimaru.SolverUtil
         [TestMethod]
         public void TestTwoSolutionsCounting()
         {
-            var game = (new MockGameFactory()).GenerateGameTwoSolutions();
+            var game = (new GameFactoryForTesting()).GenerateGameTwoSolutions();
             var solver = new Solver(null, null, new BruteForce(), new Backup<IBimaruGrid>(), true);
             int numberOfSolutions = solver.Solve(game);
 
@@ -141,7 +141,7 @@ namespace Bimaru.SolverUtil
         [TestMethod]
         public void TestTwoSolutionsNonCounting()
         {
-            var game = (new MockGameFactory()).GenerateGameTwoSolutions();
+            var game = (new GameFactoryForTesting()).GenerateGameTwoSolutions();
             var solver = new Solver(null, null, new BruteForce(), new Backup<IBimaruGrid>(), false);
             int numberOfSolutions = solver.Solve(game);
 
@@ -236,7 +236,7 @@ namespace Bimaru.SolverUtil
         [TestMethod]
         public void TestCorrectUnsubscription()
         {
-            var game = (new MockGameFactory()).GenerateGameOneSolution();
+            var game = (new GameFactoryForTesting()).GenerateGameOneSolution();
             var solver = new Solver(null, null, null, new Backup<IBimaruGrid>());
             solver.Solve(game);
 
@@ -301,7 +301,7 @@ namespace Bimaru.SolverUtil
         [TestMethod]
         public void TestSolverRuleOnce()
         {
-            var game = (new MockGameFactory()).GenerateGameOneSolution();
+            var game = (new GameFactoryForTesting()).GenerateGameOneSolution();
 
             var changesOnce = new ChangeLogger(true);
             var changesUnlimited = new ChangeLogger(false);
@@ -321,7 +321,7 @@ namespace Bimaru.SolverUtil
         [TestMethod]
         public void TestOnlyTrivialChangeRule()
         {
-            var game = (new MockGameFactory()).GenerateGameOneSolution();
+            var game = (new GameFactoryForTesting()).GenerateGameOneSolution();
             var solver = new Solver(null, null, new MockTrialRule(true, true), new Backup<IBimaruGrid>());
 
             // A non-changing trial and error rule could lead to an infinite recursion

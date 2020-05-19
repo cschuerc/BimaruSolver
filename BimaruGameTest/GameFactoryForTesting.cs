@@ -2,7 +2,7 @@
 
 namespace Bimaru.Test
 {
-    public class MockGameFactory
+    public class GameFactoryForTesting
     {
         public Game GenerateGameNoSolution()
         {

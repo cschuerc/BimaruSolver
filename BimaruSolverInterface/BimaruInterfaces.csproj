@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BimaruDatabase\IGameSource.cs" />
     <Compile Include="BimaruGame\InvalidFieldValueChange.cs" />
     <Compile Include="BimaruSolver\IFieldValueChangedRule.cs" />
     <Compile Include="BimaruSolver\IFullGridRule.cs" />

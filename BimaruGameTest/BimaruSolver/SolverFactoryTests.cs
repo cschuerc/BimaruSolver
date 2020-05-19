@@ -1,7 +1,6 @@
 using Bimaru.DatabaseUtil;
 using Bimaru.Test;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Bimaru.SolverUtil
 {
@@ -11,8 +10,8 @@ namespace Bimaru.SolverUtil
         [TestMethod]
         public void TestTwoSolutionGameNonCounting()
         {
-            var solverNonCounting = (new SolverFactory()).GenerateSolver(false);
-            var game = (new MockGameFactory()).GenerateGameTwoSolutions();
+            var solverNonCounting = new SolverFactory().GenerateSolver(false);
+            var game = new GameFactoryForTesting().GenerateGameTwoSolutions();
 
             Assert.IsFalse(game.IsSolved);
             int numSolutions = solverNonCounting.Solve(game);
@@ -23,8 +22,8 @@ namespace Bimaru.SolverUtil
         [TestMethod]
         public void TestTwoSolutionGameCounting()
         {
-            var solverCounting = (new SolverFactory()).GenerateSolver(true);
-            var game = (new MockGameFactory()).GenerateGameTwoSolutions();
+            var solverCounting = new SolverFactory().GenerateSolver(true);
+            var game = new GameFactoryForTesting().GenerateGameTwoSolutions();
 
             Assert.IsFalse(game.IsSolved);
             int numSolutions = solverCounting.Solve(game);
@@ -35,8 +34,8 @@ namespace Bimaru.SolverUtil
         [TestMethod]
         public void TestAllGamesNonCounting()
         {
-            var solver = (new SolverFactory()).GenerateSolver(false);
-            var database = new ResourceDatabase(new BinaryFormatter());
+            var solver = new SolverFactory().GenerateSolver(false);
+            var database = new DatabaseFactory().GetDatabase();
 
             foreach (var databaseGame in database.GetAllGames(null))
             {
@@ -52,8 +51,8 @@ namespace Bimaru.SolverUtil
         [TestMethod]
         public void TestAllGamesCounting()
         {
-            var solver = (new SolverFactory()).GenerateSolver(true);
-            var database = new ResourceDatabase(new BinaryFormatter());
+            var solver = new SolverFactory().GenerateSolver(true);
+            var database = new DatabaseFactory().GetDatabase();
 
             foreach (var databaseGame in database.GetAllGames(null))
             {
