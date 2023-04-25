@@ -1,5 +1,4 @@
 ﻿using Bimaru.Interfaces;
-using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Bimaru.DatabaseUtil
 {
@@ -7,8 +6,7 @@ namespace Bimaru.DatabaseUtil
     {
         public IGameDatabase GetDatabase()
         {
-            var serializer = new BinaryFormatter();
-            var gameSource = new GameSourceFromResources(serializer);
+            var gameSource = new GameSourceFromResources();
             return new Database(gameSource);
         }
     }

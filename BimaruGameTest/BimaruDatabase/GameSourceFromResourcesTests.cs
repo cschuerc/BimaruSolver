@@ -6,8 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
+using System.Text.Json;
 
 namespace Bimaru.DatabaseUtil
 {
@@ -15,19 +14,11 @@ namespace Bimaru.DatabaseUtil
     public class GameSourceFromResourcesTests
     {
         [TestMethod]
-        public void TestNoSerializer()
-        {
-            Assert.ThrowsException<ArgumentNullException>(
-                () => new GameSourceFromResources(null));
-        }
-
-        [TestMethod]
         public void TestCorrectMetaInfo()
         {
-            var serializer = new BinaryFormatter();
-            var gameSource = new GameSourceFromResources(serializer);
+            var gameSource = new GameSourceFromResources();
 
-            var expectedGames = GetAllGames(serializer);
+            var expectedGames = GetAllGames();
 
             Assert.AreEqual(expectedGames.Count(), gameSource.GetMetaInfoOfAllGames().Count());
 
@@ -40,7 +31,7 @@ namespace Bimaru.DatabaseUtil
             }
         }
 
-        private static IEnumerable<IGameWithMetaInfo> GetAllGames(IFormatter serializer)
+        private static IEnumerable<IGameWithMetaInfo> GetAllGames()
         {
             var games = new Dictionary<int, IGameWithMetaInfo>();
 
@@ -49,7 +40,7 @@ namespace Bimaru.DatabaseUtil
             {
                 using (Stream s = databaseAssembly.GetManifestResourceStream(resourceName))
                 {
-                    var game = (IGameWithMetaInfo)serializer.Deserialize(s);
+                    var game = JsonSerializer.Deserialize<IGameWithMetaInfo>(s);
                     games.Add(game.MetaInfo.ID, game); // Check no duplicate IDs
                 }
             }
@@ -60,10 +51,9 @@ namespace Bimaru.DatabaseUtil
         [TestMethod]
         public void TestLoadGameIdInRange()
         {
-            var serializer = new BinaryFormatter();
-            var gameSource = new GameSourceFromResources(serializer);
+            var gameSource = new GameSourceFromResources();
 
-            foreach (var expectedGame in GetAllGames(serializer))
+            foreach (var expectedGame in GetAllGames())
             {
                 var game = gameSource.GetGame(expectedGame.MetaInfo.ID);
                 game.AssertEqual(expectedGame);
@@ -73,7 +63,7 @@ namespace Bimaru.DatabaseUtil
         [TestMethod]
         public void TestLoadGameIdOutOfRange()
         {
-            var gameSource = new GameSourceFromResources(new BinaryFormatter());
+            var gameSource = new GameSourceFromResources();
 
             int maxId = gameSource.GetMetaInfoOfAllGames().Select(m => m.ID).Max();
 

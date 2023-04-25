@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
+using System.Text.Json;
 
 namespace Bimaru.DatabaseUtil
 {
@@ -13,26 +14,9 @@ namespace Bimaru.DatabaseUtil
     /// </summary>
     public class GameSourceFromResources : IGameSource
     {
-        /// <param name="serializer"> Serializer used to deserialize the resources </param>
-        public GameSourceFromResources(IFormatter serializer)
+        public GameSourceFromResources()
         {
-            Serializer = serializer;
             ResourceNamesPerId = GetResourceNamesPerId();
-        }
-
-        private IFormatter serializer;
-
-        private IFormatter Serializer
-        {
-            get
-            {
-                return serializer;
-            }
-
-            set
-            {
-                serializer = value ?? throw new ArgumentNullException();
-            }
         }
 
         private Dictionary<int, string> ResourceNamesPerId
@@ -48,7 +32,7 @@ namespace Bimaru.DatabaseUtil
             var assembly = Assembly.GetExecutingAssembly();
             foreach (string resourceName in assembly.GetManifestResourceNames())
             {
-                var game = (IGameWithMetaInfo)LoadResource(resourceName);
+                var game = LoadResource(resourceName);
 
                 resourceNamesPerId[game.MetaInfo.ID] = resourceName;
             }
@@ -56,14 +40,14 @@ namespace Bimaru.DatabaseUtil
             return resourceNamesPerId;
         }
 
-        private object LoadResource(string resourceName)
+        private IGameWithMetaInfo LoadResource(string resourceName)
         {
-            object resource = null;
+            IGameWithMetaInfo resource = null;
 
             var assembly = Assembly.GetExecutingAssembly();
             using (Stream stream = assembly.GetManifestResourceStream(resourceName))
             {
-                resource = Serializer.Deserialize(stream);
+                resource = JsonSerializer.Deserialize<GameWithMetaInfo>(stream);
             }
 
             return resource;
@@ -81,7 +65,7 @@ namespace Bimaru.DatabaseUtil
                 throw new ArgumentOutOfRangeException("No game with given ID.");
             }
 
-            return (IGameWithMetaInfo)LoadResource(ResourceNamesPerId[ID]);
+            return LoadResource(ResourceNamesPerId[ID]);
         }
     }
 }

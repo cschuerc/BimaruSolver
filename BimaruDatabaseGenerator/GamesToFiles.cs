@@ -1,8 +1,7 @@
 ﻿using Bimaru.Interfaces;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
+using System.Text.Json;
 
 namespace Bimaru.DatabaseUtilGeneratorUtil
 {
@@ -17,21 +16,19 @@ namespace Bimaru.DatabaseUtilGeneratorUtil
 
             string filenameFormat = args[0];
             var games = DatabaseGenerator.GenerateGames();
-            BinaryFormatter serializer = new BinaryFormatter();
 
-            SerializeGamesToFile(filenameFormat, games, serializer);
+            SerializeGamesToFile(filenameFormat, games);
         }
 
         private static void SerializeGamesToFile(
             string databaseNameFormat,
-            IEnumerable<IGameWithMetaInfo> games,
-            IFormatter serializer)
+            IEnumerable<IGameWithMetaInfo> games)
         {
             foreach (var game in games)
             {
                 using (Stream fileStream = File.Create(string.Format(databaseNameFormat, game.MetaInfo.ID)))
                 {
-                    serializer.Serialize(fileStream, game);
+                    JsonSerializer.Serialize(fileStream, game);
                 }
             }
         }

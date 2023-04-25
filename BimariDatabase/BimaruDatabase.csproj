@@ -1,93 +1,95 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{263B8B66-DCC4-4295-9183-FFBF5E84D0EF}</ProjectGuid>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Bimaru.DatabaseUtil</RootNamespace>
-    <AssemblyName>BimaruDatabase</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <Deterministic>true</Deterministic>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
     <DocumentationFile>
     </DocumentationFile>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
   <PropertyGroup>
     <StartupObject />
+    <EnableNETAnalyzers>True</EnableNETAnalyzers>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
+    <EmbeddedResource Remove="Properties\Resources.resx" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Database.cs" />
-    <Compile Include="DatabaseFactory.cs" />
-    <Compile Include="GameSourceFromResources.cs" />
-    <Compile Include="GameWithMetaInfo.cs" />
-    <Compile Include="GameMetaInfo.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <None Remove="Games\bimaru01.json" />
+    <None Remove="Games\bimaru02.json" />
+    <None Remove="Games\bimaru03.json" />
+    <None Remove="Games\bimaru04.json" />
+    <None Remove="Games\bimaru05.json" />
+    <None Remove="Games\bimaru06.json" />
+    <None Remove="Games\bimaru07.json" />
+    <None Remove="Games\bimaru08.json" />
+    <None Remove="Games\bimaru09.json" />
+    <None Remove="Games\bimaru10.json" />
+    <None Remove="Games\bimaru11.json" />
+    <None Remove="Games\bimaru12.json" />
+    <None Remove="Games\bimaru13.json" />
+    <None Remove="Games\bimaru14.json" />
+    <None Remove="Games\bimaru15.json" />
+    <None Remove="Games\bimaru16.json" />
+    <None Remove="Games\bimaru17.json" />
+    <None Remove="Games\bimaru18.json" />
+    <None Remove="Games\bimaru19.json" />
+    <None Remove="Games\bimaru20.json" />
+    <None Remove="Games\bimaru21.json" />
+    <None Remove="Games\bimaru22.json" />
+    <None Remove="Games\bimaru23.json" />
+    <None Remove="Games\bimaru24.json" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BimaruSolverInterface\BimaruInterfaces.csproj">
-      <Project>{b8baa0b3-7981-4d88-a12a-66fdbe6e7ffa}</Project>
-      <Name>BimaruInterfaces</Name>
-    </ProjectReference>
+    <EmbeddedResource Include="Games\bimaru01.json" />
+    <EmbeddedResource Include="Games\bimaru02.json" />
+    <EmbeddedResource Include="Games\bimaru03.json" />
+    <EmbeddedResource Include="Games\bimaru04.json" />
+    <EmbeddedResource Include="Games\bimaru05.json" />
+    <EmbeddedResource Include="Games\bimaru06.json" />
+    <EmbeddedResource Include="Games\bimaru07.json" />
+    <EmbeddedResource Include="Games\bimaru08.json" />
+    <EmbeddedResource Include="Games\bimaru09.json" />
+    <EmbeddedResource Include="Games\bimaru10.json" />
+    <EmbeddedResource Include="Games\bimaru11.json" />
+    <EmbeddedResource Include="Games\bimaru12.json" />
+    <EmbeddedResource Include="Games\bimaru13.json" />
+    <EmbeddedResource Include="Games\bimaru14.json" />
+    <EmbeddedResource Include="Games\bimaru15.json" />
+    <EmbeddedResource Include="Games\bimaru16.json" />
+    <EmbeddedResource Include="Games\bimaru17.json" />
+    <EmbeddedResource Include="Games\bimaru18.json" />
+    <EmbeddedResource Include="Games\bimaru19.json" />
+    <EmbeddedResource Include="Games\bimaru20.json" />
+    <EmbeddedResource Include="Games\bimaru21.json" />
+    <EmbeddedResource Include="Games\bimaru22.json" />
+    <EmbeddedResource Include="Games\bimaru23.json" />
+    <EmbeddedResource Include="Games\bimaru24.json" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Games\bimaru1.bin" />
-    <EmbeddedResource Include="Games\bimaru2.bin" />
+    <ProjectReference Include="..\BimaruSolverInterface\BimaruInterfaces.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Games\bimaru24.bin" />
-    <EmbeddedResource Include="Games\bimaru3.bin" />
-    <EmbeddedResource Include="Games\bimaru4.bin" />
-    <EmbeddedResource Include="Games\bimaru5.bin" />
-    <EmbeddedResource Include="Games\bimaru6.bin" />
-    <EmbeddedResource Include="Games\bimaru7.bin" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
+    <PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.4.421302">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="System.Text.Json" Version="7.0.2" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Games\bimaru10.bin" />
-    <EmbeddedResource Include="Games\bimaru11.bin" />
-    <EmbeddedResource Include="Games\bimaru12.bin" />
-    <EmbeddedResource Include="Games\bimaru13.bin" />
-    <EmbeddedResource Include="Games\bimaru14.bin" />
-    <EmbeddedResource Include="Games\bimaru15.bin" />
-    <EmbeddedResource Include="Games\bimaru16.bin" />
-    <EmbeddedResource Include="Games\bimaru17.bin" />
-    <EmbeddedResource Include="Games\bimaru18.bin" />
-    <EmbeddedResource Include="Games\bimaru19.bin" />
-    <EmbeddedResource Include="Games\bimaru20.bin" />
-    <EmbeddedResource Include="Games\bimaru21.bin" />
-    <EmbeddedResource Include="Games\bimaru22.bin" />
-    <EmbeddedResource Include="Games\bimaru23.bin" />
-    <EmbeddedResource Include="Games\bimaru8.bin" />
-    <EmbeddedResource Include="Games\bimaru9.bin" />
+    <Resource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </Resource>
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
 </Project>
