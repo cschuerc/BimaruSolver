@@ -6,7 +6,7 @@ namespace Utility
     /// <summary>
     /// A point on a two-dimensional integer grid
     /// </summary>
-    public struct GridPoint
+    public readonly struct GridPoint
     {
         public GridPoint(int rowIndex, int columnIndex)
         {
@@ -17,13 +17,11 @@ namespace Utility
         public int RowIndex
         {
             get;
-            private set;
         }
 
         public int ColumnIndex
         {
             get;
-            private set;
         }
 
         private static readonly Dictionary<Direction, Tuple<int, int>> indexOffsets =
@@ -41,6 +39,9 @@ namespace Utility
 
         /// <summary>
         /// Next integer grid point in the specified direction
+        /// </summary>
+        /// <param name="direction"></param>
+        /// <returns></returns>
         public GridPoint GetNextPoint(Direction direction)
         {
             var offsets = indexOffsets[direction];

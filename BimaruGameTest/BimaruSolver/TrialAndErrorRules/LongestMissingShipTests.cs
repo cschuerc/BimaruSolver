@@ -1,11 +1,12 @@
-using Bimaru.GameUtil;
-using Bimaru.Interfaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Linq;
+using Bimaru.GameUtil;
+using Bimaru.Interfaces;
+using Bimaru.SolverUtil;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Utility;
 
-namespace Bimaru.SolverUtil
+namespace Bimaru.Test
 {
     [TestClass]
     public class LongestMissingShipTests
@@ -48,7 +49,7 @@ namespace Bimaru.SolverUtil
 
             var rule = new LongestMissingShip();
 
-            int shipLength = 2;
+            const int shipLength = 2;
             var startChange0 = new SingleChange<BimaruValue>(new GridPoint(2, 1), BimaruValue.SHIP_CONT_RIGHT);
             var startChange1 = new SingleChange<BimaruValue>(new GridPoint(1, 2), BimaruValue.SHIP_CONT_UP);
 
@@ -66,11 +67,12 @@ namespace Bimaru.SolverUtil
             Dictionary<SingleChange<BimaruValue>, FieldsToChange<BimaruValue>> expected,
             IEnumerable<FieldsToChange<BimaruValue>> actual)
         {
-            Assert.AreEqual(expected.Count(), actual.Count());
+            var actualAsList = actual.ToList();
+            Assert.AreEqual(expected.Count, actualAsList.Count);
 
             foreach (var expectedChanges in expected)
             {
-                var actualChanges = actual.FirstOrDefault(a => a.Contains(expectedChanges.Key));
+                var actualChanges = actualAsList.FirstOrDefault(a => a.Contains(expectedChanges.Key));
 
                 Assert.IsNotNull(actualChanges);
                 AssertEqualChanges(actualChanges, expectedChanges.Value);
@@ -113,7 +115,7 @@ namespace Bimaru.SolverUtil
             var rule = new LongestMissingShip();
 
 
-            int shipLength = 3;
+            var shipLength = 3;
             var startChange0 = new SingleChange<BimaruValue>(new GridPoint(2, 2), BimaruValue.SHIP_CONT_LEFT);
             var startChange1 = new SingleChange<BimaruValue>(new GridPoint(0, 2), BimaruValue.SHIP_CONT_LEFT);
             var startChange2 = new SingleChange<BimaruValue>(new GridPoint(1, 0), BimaruValue.SHIP_MIDDLE);
@@ -197,7 +199,7 @@ namespace Bimaru.SolverUtil
 
             var rule = new LongestMissingShip();
 
-            int shipLength = 2;
+            var shipLength = 2;
             var startChange0 = new SingleChange<BimaruValue>(new GridPoint(0, 0), BimaruValue.SHIP_CONT_UP);
             var startChange1 = new SingleChange<BimaruValue>(new GridPoint(2, 1), BimaruValue.SHIP_CONT_RIGHT);
             var startChange2 = new SingleChange<BimaruValue>(new GridPoint(1, 2), BimaruValue.SHIP_CONT_UP);
@@ -241,7 +243,7 @@ namespace Bimaru.SolverUtil
 
             var rule = new LongestMissingShip();
 
-            int shipLength = 2;
+            var shipLength = 2;
 
             var startChange0 = new SingleChange<BimaruValue>(new GridPoint(2, 0), BimaruValue.SHIP_CONT_DOWN);
 

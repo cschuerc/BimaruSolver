@@ -1,9 +1,9 @@
+using System.Linq;
+using Bimaru.GameUtil;
 using Bimaru.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Linq;
 
-namespace Bimaru.GameUtil
+namespace Bimaru.Test
 {
     [TestClass]
     public class GameFactoryTests
@@ -13,7 +13,7 @@ namespace Bimaru.GameUtil
         {
             var game = new GameFactory().GenerateEmptyGame(3, 4);
 
-            Assert.IsTrue(game.TargetNumberOfShipFieldsPerRow.SequenceEqual(new int[3] { 0, 0, 0 }));
+            Assert.IsTrue(game.TargetNumberOfShipFieldsPerRow.SequenceEqual(new[] { 0, 0, 0 }));
         }
 
         [TestMethod]
@@ -21,7 +21,7 @@ namespace Bimaru.GameUtil
         {
             var game = new GameFactory().GenerateEmptyGame(3, 4);
 
-            Assert.IsTrue(game.TargetNumberOfShipFieldsPerColumn.SequenceEqual(new int[4] { 0, 0, 0, 0 }));
+            Assert.IsTrue(game.TargetNumberOfShipFieldsPerColumn.SequenceEqual(new[] { 0, 0, 0, 0 }));
         }
 
         [TestMethod]

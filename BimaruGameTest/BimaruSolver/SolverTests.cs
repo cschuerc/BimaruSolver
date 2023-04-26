@@ -1,14 +1,13 @@
-using Bimaru.GameUtil;
-using Bimaru.Interfaces;
-using Bimaru.Test;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Bimaru.GameUtil;
+using Bimaru.Interfaces;
+using Bimaru.SolverUtil;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Utility;
 
-namespace Bimaru.SolverUtil
+namespace Bimaru.Test
 {
     [TestClass]
     public class SolverTests
@@ -22,10 +21,9 @@ namespace Bimaru.SolverUtil
         [TestMethod]
         public void TestNoTrialRule()
         {
-            var game = (new GameFactoryForTesting()).GenerateGameOneSolution();
             var gridBackup = new Backup<IBimaruGrid>();
 
-            new Solver(null, null, null, gridBackup, false);
+            var _ = new Solver(null, null, null, gridBackup);
 
             Assert.ThrowsException<ArgumentException>(() => new Solver(null, null, null, gridBackup, true));
         }
@@ -33,11 +31,10 @@ namespace Bimaru.SolverUtil
         [TestMethod]
         public void TestIncompleteTrialRule()
         {
-            var game = (new GameFactoryForTesting()).GenerateGameOneSolution();
             var gridBackup = new Backup<IBimaruGrid>();
             var trialRule = new MockTrialRule(true, false);
 
-            new Solver(null, null, trialRule, gridBackup, false);
+            var _ = new Solver(null, null, trialRule, gridBackup);
 
             Assert.ThrowsException<ArgumentException>(() => new Solver(null, null, trialRule, gridBackup, true));
         }
@@ -45,11 +42,10 @@ namespace Bimaru.SolverUtil
         [TestMethod]
         public void TestNotDisjointTrialRule()
         {
-            var game = (new GameFactoryForTesting()).GenerateGameOneSolution();
             var gridBackup = new Backup<IBimaruGrid>();
             var trialRule = new MockTrialRule(false, true);
 
-            new Solver(null, null, trialRule, gridBackup, false);
+            var _ = new Solver(null, null, trialRule, gridBackup);
 
             Assert.ThrowsException<ArgumentException>(() => new Solver(null, null, trialRule, gridBackup, true));
         }
@@ -67,13 +63,11 @@ namespace Bimaru.SolverUtil
             public bool AreTrialsDisjoint
             {
                 get;
-                set;
             }
 
             public bool AreTrialsComplete
             {
                 get;
-                set;
             }
 
             public IEnumerable<FieldsToChange<BimaruValue>> GetChangeTrials(IGame game)
@@ -88,7 +82,7 @@ namespace Bimaru.SolverUtil
         {
             var game = (new GameFactoryForTesting()).GenerateGameOneSolution();
             var solver = new Solver(null, null, null, new Backup<IBimaruGrid>());
-            int numberOfSolutions = solver.Solve(game);
+            var numberOfSolutions = solver.Solve(game);
 
             Assert.AreEqual(0, numberOfSolutions);
             Assert.IsFalse(game.IsSolved);
@@ -99,7 +93,7 @@ namespace Bimaru.SolverUtil
         {
             var game = (new GameFactoryForTesting()).GenerateGameNoSolution();
             var solver = new Solver(null, null, new BruteForce(), new Backup<IBimaruGrid>(), true);
-            int numberOfSolutions = solver.Solve(game);
+            var numberOfSolutions = solver.Solve(game);
 
             Assert.AreEqual(0, numberOfSolutions);
             Assert.IsFalse(game.IsSolved);
@@ -121,7 +115,7 @@ namespace Bimaru.SolverUtil
         {
             var game = (new GameFactoryForTesting()).GenerateGameOneSolution();
             var solver = new Solver(null, null, new BruteForce(), new Backup<IBimaruGrid>(), true);
-            int numberOfSolutions = solver.Solve(game);
+            var numberOfSolutions = solver.Solve(game);
 
             Assert.AreEqual(1, numberOfSolutions);
             Assert.IsTrue(game.IsSolved);
@@ -132,7 +126,7 @@ namespace Bimaru.SolverUtil
         {
             var game = (new GameFactoryForTesting()).GenerateGameTwoSolutions();
             var solver = new Solver(null, null, new BruteForce(), new Backup<IBimaruGrid>(), true);
-            int numberOfSolutions = solver.Solve(game);
+            var numberOfSolutions = solver.Solve(game);
 
             Assert.AreEqual(2, numberOfSolutions);
             Assert.IsTrue(game.IsSolved);
@@ -142,8 +136,8 @@ namespace Bimaru.SolverUtil
         public void TestTwoSolutionsNonCounting()
         {
             var game = (new GameFactoryForTesting()).GenerateGameTwoSolutions();
-            var solver = new Solver(null, null, new BruteForce(), new Backup<IBimaruGrid>(), false);
-            int numberOfSolutions = solver.Solve(game);
+            var solver = new Solver(null, null, new BruteForce(), new Backup<IBimaruGrid>());
+            var numberOfSolutions = solver.Solve(game);
 
             Assert.AreEqual(1, numberOfSolutions);
             Assert.IsTrue(game.IsSolved);
@@ -163,19 +157,19 @@ namespace Bimaru.SolverUtil
             AssertEqualChangedEventArgs(
                 new List<FieldValueChangedEventArgs<BimaruValue>>()
                 {
-                    new FieldValueChangedEventArgs<BimaruValue>(new GridPoint(0, 0), BimaruValue.UNDETERMINED),
-                    new FieldValueChangedEventArgs<BimaruValue>(new GridPoint(0, 1), BimaruValue.UNDETERMINED),
+                    new(new GridPoint(0, 0), BimaruValue.UNDETERMINED),
+                    new(new GridPoint(0, 1), BimaruValue.UNDETERMINED),
                 },
-                changeLogger);
+                changeLogger.Changes);
         }
 
-        private void AssertEqualChangedEventArgs(
-            IEnumerable<FieldValueChangedEventArgs<BimaruValue>> expected,
-            IEnumerable<FieldValueChangedEventArgs<BimaruValue>> actual)
+        private static void AssertEqualChangedEventArgs(
+            IReadOnlyCollection<FieldValueChangedEventArgs<BimaruValue>> expected,
+            IReadOnlyCollection<FieldValueChangedEventArgs<BimaruValue>> actual)
         {
-            Assert.AreEqual(expected.Count(), actual.Count());
+            Assert.AreEqual(expected.Count, actual.Count);
 
-            int index = 0;
+            var index = 0;
             foreach (var e in expected)
             {
                 Assert.AreEqual(e.Point, actual.ElementAt(index).Point);
@@ -184,7 +178,7 @@ namespace Bimaru.SolverUtil
             }
         }
 
-        private class ChangeLogger : IFieldValueChangedRule, ISolverRule, IEnumerable<FieldValueChangedEventArgs<BimaruValue>>
+        private class ChangeLogger : IFieldValueChangedRule, ISolverRule
         {
             public ChangeLogger(bool shallBeAppliedOnce = false)
             {
@@ -194,10 +188,9 @@ namespace Bimaru.SolverUtil
                 ShallBeAppliedOnce = shallBeAppliedOnce;
             }
 
-            private IList<FieldValueChangedEventArgs<BimaruValue>> ChangedEventArgs
+            private List<FieldValueChangedEventArgs<BimaruValue>> ChangedEventArgs
             {
                 get;
-                set;
             }
 
             public int NumberOfSolverRuleCalls
@@ -209,7 +202,6 @@ namespace Bimaru.SolverUtil
             public bool ShallBeAppliedOnce
             {
                 get;
-                private set;
             }
 
             public void FieldValueChanged(IGame game, FieldValueChangedEventArgs<BimaruValue> e)
@@ -222,15 +214,7 @@ namespace Bimaru.SolverUtil
                 NumberOfSolverRuleCalls++;
             }
 
-            public IEnumerator<FieldValueChangedEventArgs<BimaruValue>> GetEnumerator()
-            {
-                return ChangedEventArgs.GetEnumerator();
-            }
-
-            IEnumerator IEnumerable.GetEnumerator()
-            {
-                return ChangedEventArgs.GetEnumerator();
-            }
+            public IReadOnlyCollection<FieldValueChangedEventArgs<BimaruValue>> Changes => ChangedEventArgs;
         }
 
         [TestMethod]
@@ -271,7 +255,7 @@ namespace Bimaru.SolverUtil
         /// 1|S?
         /// 
         /// </summary>
-        private IGame GenerateEasyGame()
+        private static IGame GenerateEasyGame()
         {
             var game = (new GameFactory()).GenerateEmptyGame(2, 2);
             game.TargetNumberOfShipFieldsPerRow[0] = 1;
@@ -304,7 +288,7 @@ namespace Bimaru.SolverUtil
             var game = (new GameFactoryForTesting()).GenerateGameOneSolution();
 
             var changesOnce = new ChangeLogger(true);
-            var changesUnlimited = new ChangeLogger(false);
+            var changesUnlimited = new ChangeLogger(shallBeAppliedOnce: false);
             var fullGridRules = new List<ISolverRule>()
             {
                 changesOnce,

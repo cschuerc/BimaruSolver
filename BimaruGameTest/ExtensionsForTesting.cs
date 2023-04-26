@@ -20,7 +20,7 @@ namespace Bimaru.Test
             expectedGame.Game.AssertEqual(actualGame.Game);
         }
 
-        public static void AssertEqual(this IGame expectedGame, IGame actualGame)
+        private static void AssertEqual(this IGame expectedGame, IGame actualGame)
         {
             Assert.IsTrue(expectedGame.TargetNumberOfShipFieldsPerRow.SequenceEqual(actualGame.TargetNumberOfShipFieldsPerRow));
             Assert.IsTrue(expectedGame.TargetNumberOfShipFieldsPerColumn.SequenceEqual(actualGame.TargetNumberOfShipFieldsPerColumn));
@@ -29,7 +29,7 @@ namespace Bimaru.Test
 
             if (expectedGame.TargetNumberOfShipsPerLength.LongestShipLength.HasValue)
             {
-                foreach (int shipLength in Enumerable.Range(0, expectedGame.TargetNumberOfShipsPerLength.LongestShipLength.Value))
+                foreach (var shipLength in Enumerable.Range(0, expectedGame.TargetNumberOfShipsPerLength.LongestShipLength.Value))
                 {
                     Assert.AreEqual(expectedGame.TargetNumberOfShipsPerLength[shipLength], actualGame.TargetNumberOfShipsPerLength[shipLength]);
                 }

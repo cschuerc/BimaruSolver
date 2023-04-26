@@ -14,16 +14,15 @@ namespace Bimaru.SolverUtil
         public FieldsToChange<BimaruValue> Changes
         {
             get;
-            private set;
         }
 
         public bool IsCompatibleButNotEqualIn(IGame game)
         {
-            bool isEqual = true;
+            var isEqual = true;
 
             foreach (var c in Changes)
             {
-                BimaruValue currentValue = game.Grid[c.Point];
+                var currentValue = game.Grid[c.Point];
 
                 if (!currentValue.IsCompatibleChangeTo(c.NewValue))
                 {

@@ -1,10 +1,8 @@
 ﻿using Bimaru.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.Serialization;
 using System.Text.Json;
 
 namespace Bimaru.DatabaseUtil
@@ -22,7 +20,6 @@ namespace Bimaru.DatabaseUtil
         private Dictionary<int, string> ResourceNamesPerId
         {
             get;
-            set;
         }
 
         private Dictionary<int, string> GetResourceNamesPerId()
@@ -30,24 +27,24 @@ namespace Bimaru.DatabaseUtil
             var resourceNamesPerId = new Dictionary<int, string>();
 
             var assembly = Assembly.GetExecutingAssembly();
-            foreach (string resourceName in assembly.GetManifestResourceNames())
+            foreach (var resourceName in assembly.GetManifestResourceNames())
             {
                 var game = LoadResource(resourceName);
 
-                resourceNamesPerId[game.MetaInfo.ID] = resourceName;
+                resourceNamesPerId[game.MetaInfo.Id] = resourceName;
             }
 
             return resourceNamesPerId;
         }
 
-        private IGameWithMetaInfo LoadResource(string resourceName)
+        private static IGameWithMetaInfo LoadResource(string resourceName)
         {
-            IGameWithMetaInfo resource = null;
+            IGameWithMetaInfo resource;
 
             var assembly = Assembly.GetExecutingAssembly();
-            using (Stream stream = assembly.GetManifestResourceStream(resourceName))
+            using (var stream = assembly.GetManifestResourceStream(resourceName))
             {
-                resource = JsonSerializer.Deserialize<GameWithMetaInfo>(stream);
+                resource = JsonSerializer.Deserialize<GameWithMetaInfo>(stream ?? throw new InvalidOperationException());
             }
 
             return resource;
@@ -58,14 +55,14 @@ namespace Bimaru.DatabaseUtil
             return ResourceNamesPerId.Keys.Select(id => GetGame(id).MetaInfo);
         }
 
-        public IGameWithMetaInfo GetGame(int ID)
+        public IGameWithMetaInfo GetGame(int id)
         {
-            if (!ResourceNamesPerId.ContainsKey(ID))
+            if (!ResourceNamesPerId.ContainsKey(id))
             {
-                throw new ArgumentOutOfRangeException("No game with given ID.");
+                throw new ArgumentOutOfRangeException(nameof(id));
             }
 
-            return LoadResource(ResourceNamesPerId[ID]);
+            return LoadResource(ResourceNamesPerId[id]);
         }
     }
 }

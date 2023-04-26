@@ -12,44 +12,24 @@ namespace Bimaru.DatabaseUtil
     {
         public GameMetaInfo(int id, GameSize size, GameDifficulty difficulty)
         {
-            ID = id;
+            Id = id;
             Size = size;
             Difficulty = difficulty;
         }
 
-        public int ID
+        public int Id
         {
             get;
-            private set;
         }
 
         public GameSize Size
         {
             get;
-            private set;
         }
 
         public GameDifficulty Difficulty
         {
             get;
-            private set;
-        }
-
-        public static bool Equals(GameMetaInfo objLeft, IGameMetaInfo objRight)
-        {
-            if (objLeft == null && objRight == null)
-            {
-                return true;
-            }
-
-            if (objLeft == null)
-            {
-                return objRight.Equals(objLeft);
-            }
-            else
-            {
-                return objLeft.Equals(objRight);
-            }
         }
 
         public override bool Equals(object other)
@@ -69,22 +49,12 @@ namespace Bimaru.DatabaseUtil
                 return true;
             }
 
-            return ID == other.ID && Size == other.Size && Difficulty == other.Difficulty;
+            return Id == other.Id && Size == other.Size && Difficulty == other.Difficulty;
         }
 
         public override int GetHashCode()
         {
-            return (ID.GetHashCode() * 23 + Size.GetHashCode()) * 23 + Difficulty.GetHashCode();
-        }
-
-        public static bool operator ==(GameMetaInfo objLeft, IGameMetaInfo objRight)
-        {
-            return Equals(objLeft, objRight);
-        }
-
-        public static bool operator !=(GameMetaInfo objLeft, IGameMetaInfo objRight)
-        {
-            return !Equals(objLeft, objRight);
+            return (Id.GetHashCode() * 23 + Size.GetHashCode()) * 23 + Difficulty.GetHashCode();
         }
     }
 }

@@ -6,6 +6,6 @@ namespace Bimaru.Interfaces
     {
         IEnumerable<IGameMetaInfo> GetMetaInfoOfAllGames();
 
-        IGameWithMetaInfo GetGame(int ID);
+        IGameWithMetaInfo GetGame(int id);
     }
 }

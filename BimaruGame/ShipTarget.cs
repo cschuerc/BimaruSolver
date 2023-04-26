@@ -20,19 +20,19 @@ namespace Bimaru.GameUtil
         {
             get
             {
-                targetNumberOfShipsPerLength.TryGetValue(shipLength, out int numShips);
+                targetNumberOfShipsPerLength.TryGetValue(shipLength, out var numShips);
                 return numShips;
             }
             set
             {
                 if (shipLength <= 0)
                 {
-                    throw new ArgumentOutOfRangeException("Ship lengths must be positive.");
+                    throw new ArgumentOutOfRangeException(nameof(shipLength), shipLength, "Ship lengths must be positive.");
                 }
 
                 if (value < 0)
                 {
-                    throw new ArgumentOutOfRangeException("Number of ships must be non-negative.");
+                    throw new ArgumentOutOfRangeException(nameof(value), value, "Number of ships must be non-negative.");
                 }
 
                 SetShipTarget(shipLength, value);
@@ -41,7 +41,7 @@ namespace Bimaru.GameUtil
 
         private void SetShipTarget(int shipLength, int newNumberOfShips)
         {
-            targetNumberOfShipsPerLength.TryGetValue(shipLength, out int oldNumberOfShips);
+            targetNumberOfShipsPerLength.TryGetValue(shipLength, out var oldNumberOfShips);
             if (newNumberOfShips == 0)
             {
                 targetNumberOfShipsPerLength.Remove(shipLength);
@@ -76,10 +76,10 @@ namespace Bimaru.GameUtil
 
         public Satisfiability GetSatisfiability(IReadOnlyList<int> numberOfShipsPerLength)
         {
-            bool isSatisfied = true;
-            for (int shipLength = 0; shipLength < numberOfShipsPerLength.Count; shipLength++)
+            var isSatisfied = true;
+            for (var shipLength = 0; shipLength < numberOfShipsPerLength.Count; shipLength++)
             {
-                int numberOfShipsGap = this[shipLength] - numberOfShipsPerLength[shipLength];
+                var numberOfShipsGap = this[shipLength] - numberOfShipsPerLength[shipLength];
                 if (numberOfShipsGap < 0)
                 {
                     return Satisfiability.VIOLATED;
@@ -98,16 +98,16 @@ namespace Bimaru.GameUtil
         public int? LengthOfLongestMissingShip(IReadOnlyList<int> numberOfShipsPerLength)
         {
             var satisfiability = GetSatisfiability(numberOfShipsPerLength);
-            if (satisfiability == Satisfiability.VIOLATED)
+            switch (satisfiability)
             {
-                throw new ArgumentOutOfRangeException("Ship target is violated.");
+                case Satisfiability.VIOLATED:
+                    throw new ArgumentOutOfRangeException(nameof(numberOfShipsPerLength), numberOfShipsPerLength, "Ship target is violated.");
+                case Satisfiability.SATISFIED:
+                    return null;
+                case Satisfiability.SATISFIABLE:
+                default:
+                    return targetNumberOfShipsPerLength.Last(p => p.Value > numberOfShipsPerLength[p.Key]).Key;
             }
-            else if (satisfiability == Satisfiability.SATISFIED)
-            {
-                return null;
-            }
-
-            return targetNumberOfShipsPerLength.Last(p => p.Value > numberOfShipsPerLength[p.Key]).Key;
         }
     }
 }

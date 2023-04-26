@@ -39,7 +39,7 @@ namespace Bimaru.SolverUtil
             }
             catch (ArgumentOutOfRangeException e)
             {
-                throw new InvalidBimaruGame("", e);
+                throw new InvalidBimaruGameException("", e);
             }
 
             if (shipLength.HasValue)
@@ -62,7 +62,7 @@ namespace Bimaru.SolverUtil
 
             if (shipLength == 1)
             {
-                // Single ships are already considered vetically
+                // Single ships are already considered vertically
                 yield break;
             }
 
@@ -85,18 +85,14 @@ namespace Bimaru.SolverUtil
             }
         }
 
-        private IEnumerable<GridPoint> GetGridPoints(IEnumerable<int> rowIndexes, IEnumerable<int> columnIndexes)
+        private static IEnumerable<GridPoint> GetGridPoints(IEnumerable<int> rowIndexes, IEnumerable<int> columnIndexes)
         {
-            foreach (int rowIndex in rowIndexes)
-            {
-                foreach (int columnIndex in columnIndexes)
-                {
-                    yield return new GridPoint(rowIndex, columnIndex);
-                }
-            }
+            return from rowIndex in rowIndexes
+                from columnIndex in columnIndexes
+                select new GridPoint(rowIndex, columnIndex);
         }
 
-        private IEnumerable<ShipLocation> GetHorizontalShipLocations(IGame game, int shipLength)
+        private static IEnumerable<ShipLocation> GetHorizontalShipLocations(IGame game, int shipLength)
         {
             var rowIndexes = Enumerable.Range(0, game.Grid.NumberOfRows).
                 Where(i => game.TargetNumberOfShipFieldsPerRow[i] >= shipLength);
@@ -109,16 +105,16 @@ namespace Bimaru.SolverUtil
             }
         }
 
-        private IEnumerable<FieldsToChange<BimaruValue>> GetUndeterminedToWaterTrial(IGame game)
+        private static IEnumerable<FieldsToChange<BimaruValue>> GetUndeterminedToWaterTrial(IGame game)
         {
             var changes = new FieldsToChange<BimaruValue>();
 
-            foreach (GridPoint p in game.Grid.AllPoints().Where(p => !game.Grid[p].IsFullyDetermined()))
+            foreach (var p in game.Grid.AllPoints().Where(p => !game.Grid[p].IsFullyDetermined()))
             {
                 changes.Add(p, BimaruValue.WATER);
             }
 
-            if (changes.Count() > 0)
+            if (changes.Any())
             {
                 yield return changes;
             }

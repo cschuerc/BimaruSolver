@@ -1,8 +1,9 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Utility;
 
-namespace Utility
+namespace Bimaru.Test
 {
     [TestClass]
     public class FieldsToChangeTests
@@ -15,7 +16,7 @@ namespace Utility
             AssertEqualFieldChanges(new List<SingleChange<int>>(), changes);
         }
 
-        private void AssertEqualFieldChanges(List<SingleChange<int>> expectedFieldChanges, FieldsToChange<int> actualFieldChanges)
+        private static void AssertEqualFieldChanges(IReadOnlyCollection<SingleChange<int>> expectedFieldChanges, FieldsToChange<int> actualFieldChanges)
         {
             Assert.AreEqual(expectedFieldChanges.Count, actualFieldChanges.Count());
 
@@ -34,7 +35,7 @@ namespace Utility
             AssertEqualFieldChanges(
                 new List<SingleChange<int>>()
                 {
-                    new SingleChange<int>(p12, 7)
+                    new(p12, 7)
                 },
                 changes);
         }
@@ -53,8 +54,8 @@ namespace Utility
             AssertEqualFieldChanges(
                 new List<SingleChange<int>>()
                 {
-                    new SingleChange<int>(p12, 7),
-                    new SingleChange<int>(p14, 8)
+                    new(p12, 7),
+                    new(p14, 8)
                 },
                 changes);
         }
@@ -62,7 +63,7 @@ namespace Utility
         [TestMethod]
         public void TestSeveralChanges()
         {
-            int numValues = 2;
+            const int numValues = 2;
             var p12 = new GridPoint(1, 2);
             var changes = new FieldsToChange<int>(
                 p12,
@@ -72,8 +73,8 @@ namespace Utility
             AssertEqualFieldChanges(
                 new List<SingleChange<int>>()
                 {
-                    new SingleChange<int>(p12, 7),
-                    new SingleChange<int>(new GridPoint(1, 3), 8)
+                    new(p12, 7),
+                    new(new GridPoint(1, 3), 8)
                 },
                 changes);
         }
@@ -92,7 +93,7 @@ namespace Utility
             AssertEqualFieldChanges(
                 new List<SingleChange<int>>()
                 {
-                    new SingleChange<int>(p12, 1),
+                    new(p12, 1),
                 },
                 changes);
         }

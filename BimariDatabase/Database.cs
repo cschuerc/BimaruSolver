@@ -18,15 +18,9 @@ namespace Bimaru.DatabaseUtil
 
         private IGameSource GameSource
         {
-            get
-            {
-                return gameSource;
-            }
+            get => gameSource;
 
-            set
-            {
-                gameSource = value ?? throw new ArgumentNullException("No game source.");
-            }
+            set => gameSource = value ?? throw new ArgumentNullException(nameof(value));
         }
 
         /// <summary>
@@ -35,40 +29,35 @@ namespace Bimaru.DatabaseUtil
         private List<IGameMetaInfo> Thumbnails
         {
             get;
-            set;
         }
 
         private Random RandomNumberGenerator
         {
             get;
-            set;
         }
 
         public IEnumerable<IGameWithMetaInfo> GetAllGames(Func<IGameMetaInfo, bool> filter)
         {
-            foreach (var t in Thumbnails.Where(t => filter == null || filter(t)))
-            {
-                yield return GameSource.GetGame(t.ID);
-            }
+            return Thumbnails.Where(t => filter == null || filter(t)).Select(t => GameSource.GetGame(t.Id));
         }
 
         public IGameWithMetaInfo GetRandomGame(Func<IGameMetaInfo, bool> filter)
         {
-            var filteredGames = Thumbnails.Where(t => filter == null || filter(t));
+            var filteredGames = Thumbnails.Where(t => filter == null || filter(t)).ToList();
 
-            if (filteredGames.Count() == 0)
+            if (!filteredGames.Any())
             {
                 return null;
             }
 
-            var thumbnail = filteredGames.ElementAt(RandomNumberGenerator.Next(filteredGames.Count()));
+            var thumbnail = filteredGames.ElementAt(RandomNumberGenerator.Next(filteredGames.Count));
 
-            return GameSource.GetGame(thumbnail.ID);
+            return GameSource.GetGame(thumbnail.Id);
         }
 
-        public IGameWithMetaInfo GetSpecificGame(int ID)
+        public IGameWithMetaInfo GetSpecificGame(int id)
         {
-            return GameSource.GetGame(ID);
+            return GameSource.GetGame(id);
         }
     }
 }

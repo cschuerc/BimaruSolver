@@ -1,6 +1,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Utility;
 
-namespace Utility
+namespace Bimaru.Test
 {
     [TestClass]
     public class FieldBoundaryTests

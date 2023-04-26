@@ -6,7 +6,7 @@ namespace Bimaru.SolverUtil
 {
     public class SolverFactory : ISolverFactory
     {
-        private ITrialAndErrorRule GetTrialRule(bool shallCountSolutions)
+        private static ITrialAndErrorRule GetTrialRule(bool shallCountSolutions)
         {
             ITrialAndErrorRule trialRule;
 
@@ -29,7 +29,7 @@ namespace Bimaru.SolverUtil
                 new FillRowOrColumnWithWater(),
                 new FillRowOrColumnWithShips(),
                 new DetermineShipUndetermined(),
-                new DetermineShipMiddleNeighbours()
+                new DetermineShipMiddleNeighbors()
             };
 
             var fullGridRules = new List<ISolverRule>()

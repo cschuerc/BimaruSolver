@@ -1,6 +1,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Utility;
 
-namespace Utility
+namespace Bimaru.Test
 {
     [TestClass]
     public class GridPointTests
@@ -8,10 +9,10 @@ namespace Utility
         [TestMethod]
         public void TestRowColumnIndex()
         {
-            int rowIndex = 0;
-            int columnIndex = 3;
+            const int rowIndex = 0;
+            const int columnIndex = 3;
 
-            GridPoint p = new GridPoint(rowIndex, columnIndex);
+            var p = new GridPoint(rowIndex, columnIndex);
 
             Assert.AreEqual(rowIndex, p.RowIndex);
             Assert.AreEqual(columnIndex, p.ColumnIndex);
@@ -20,7 +21,7 @@ namespace Utility
         [TestMethod]
         public void TestGetNextPoint()
         {
-            GridPoint point = new GridPoint(2, 3);
+            var point = new GridPoint(2, 3);
             GridPoint nextPoint;
 
             nextPoint = point.GetNextPoint(Direction.DOWN);

@@ -18,7 +18,7 @@ namespace Utility
         {
             if (source == null)
             {
-                throw new ArgumentNullException("Source of save point.");
+                throw new ArgumentNullException(nameof(source));
             }
 
             savePointStack.Push((T)source.Clone());
@@ -28,7 +28,7 @@ namespace Utility
         {
             if (destination == null)
             {
-                throw new ArgumentNullException("Destination of save point.");
+                throw new ArgumentNullException(nameof(destination));
             }
 
             destination.OverwriteWith(savePointStack.Pop());
@@ -46,7 +46,7 @@ namespace Utility
         {
             if (source == null)
             {
-                throw new ArgumentNullException("Source for clipboard.");
+                throw new ArgumentNullException(nameof(source));
             }
 
             Clipboard = (T)source.Clone();
@@ -61,7 +61,7 @@ namespace Utility
 
             if (destination == null)
             {
-                throw new ArgumentNullException("Destination for clipboard restore.");
+                throw new ArgumentNullException(nameof(destination));
             }
 
             destination.OverwriteWith(Clipboard);

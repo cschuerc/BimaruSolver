@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 
 namespace Utility
 {
     /// <summary>
-    /// Boundaries of two neighbouring (also diagonally) fields.
+    /// Boundaries of two neighboring (also diagonally) fields.
     /// Each field on the grid has eight possible boundaries,
     /// for each possible direction one.
     /// </summary>

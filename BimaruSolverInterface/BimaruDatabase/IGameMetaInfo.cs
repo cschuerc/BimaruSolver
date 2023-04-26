@@ -7,7 +7,7 @@ namespace Bimaru.Interfaces
         /// <summary>
         /// Unique identity
         /// </summary>
-        int ID { get; }
+        int Id { get; }
 
         GameSize Size { get; }
 

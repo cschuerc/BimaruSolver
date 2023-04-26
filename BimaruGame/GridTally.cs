@@ -22,23 +22,20 @@ namespace Bimaru.GameUtil
         }
 
 
-        private int _length;
+        private int length;
 
         public int Length
         {
-            get
-            {
-                return _length;
-            }
+            get => length;
 
             private set
             {
                 if (value <= 0)
                 {
-                    throw new ArgumentOutOfRangeException("Tally length has to be > 0.");
+                    throw new ArgumentOutOfRangeException(nameof(value));
                 }
 
-                _length = value;
+                length = value;
             }
         }
 
@@ -47,16 +44,13 @@ namespace Bimaru.GameUtil
 
         public int this[int index]
         {
-            get
-            {
-                return targetNumberPerRowOrColumn[index];
-            }
+            get => targetNumberPerRowOrColumn[index];
 
             set
             {
                 if (value < 0)
                 {
-                    throw new ArgumentOutOfRangeException("Negative tally entries are not allowed.");
+                    throw new ArgumentOutOfRangeException(nameof(value));
                 }
 
                 Total += value - targetNumberPerRowOrColumn[index];
@@ -71,25 +65,32 @@ namespace Bimaru.GameUtil
         }
 
         public Satisfiability GetSatisfiability(
-            IReadOnlyList<int> numberOfFields,
-            IReadOnlyList<int> additionalNumberOfFields)
+            IReadOnlyList<int> numberOfShipFields,
+            IReadOnlyList<int> numberOfUndeterminedFields)
         {
-            if (Length != numberOfFields.Count ||
-                Length != additionalNumberOfFields.Count)
+            if (Length != numberOfShipFields.Count)
             {
-                throw new ArgumentOutOfRangeException("Grid tally satisfiability has to be derived from the same number of rows/columns.");
+                throw new ArgumentOutOfRangeException(nameof(numberOfShipFields), numberOfShipFields,
+                    "Grid tally satisfiability has to be derived from the same number of rows/columns.");
             }
 
-            bool isSatisfied = true;
-            for (int index = 0; index < Length; index++)
+            if (Length != numberOfUndeterminedFields.Count)
             {
-                int numberOfMissingFields = this[index] - numberOfFields[index];
-                if (numberOfMissingFields < 0 ||
-                    numberOfMissingFields > additionalNumberOfFields[index])
+                throw new ArgumentOutOfRangeException(nameof(numberOfUndeterminedFields), numberOfUndeterminedFields,
+                    "Grid tally satisfiability has to be derived from the same number of rows/columns.");
+            }
+
+            var isSatisfied = true;
+            for (var index = 0; index < Length; index++)
+            {
+                var numberOfMissingShipField = this[index] - numberOfShipFields[index];
+                if (numberOfMissingShipField < 0 ||
+                    numberOfMissingShipField > numberOfUndeterminedFields[index])
                 {
                     return Satisfiability.VIOLATED;
                 }
-                else if (numberOfMissingFields != 0)
+
+                if (numberOfMissingShipField != 0)
                 {
                     isSatisfied = false;
                 }

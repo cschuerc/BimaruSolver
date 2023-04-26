@@ -30,7 +30,7 @@ namespace Utility
             {
                 if (value <= 0)
                 {
-                    throw new ArgumentOutOfRangeException("Number of rows has to be > 0.");
+                    throw new ArgumentOutOfRangeException(nameof(value));
                 }
 
                 numberOfRows = value;
@@ -48,7 +48,7 @@ namespace Utility
             {
                 if (value <= 0)
                 {
-                    throw new ArgumentOutOfRangeException("Number of columns has to be > 0.");
+                    throw new ArgumentOutOfRangeException(nameof(value));
                 }
 
                 numberOfColumns = value;
@@ -62,7 +62,7 @@ namespace Utility
         {
             fieldValues = new T[NumberOfRows, NumberOfColumns];
 
-            foreach (GridPoint p in AllPoints())
+            foreach (var p in AllPoints())
             {
                 fieldValues[p.RowIndex, p.ColumnIndex] = defaultValue;
             }
@@ -91,7 +91,7 @@ namespace Utility
             {
                 if (!IsPointInGrid(point))
                 {
-                    throw new ArgumentOutOfRangeException();
+                    throw new ArgumentOutOfRangeException(nameof(point));
                 }
 
                 return GetFieldValueNoCheck(point);
@@ -101,7 +101,7 @@ namespace Utility
             {
                 if (!IsPointInGrid(point))
                 {
-                    throw new ArgumentOutOfRangeException();
+                    throw new ArgumentOutOfRangeException(nameof(point));
                 }
 
                 SetFieldValueNoCheck(point, value);
@@ -115,25 +115,29 @@ namespace Utility
 
         protected void SetFieldValueNoCheck(GridPoint point, T newValue)
         {
-            T oldValue = GetFieldValueNoCheck(point);
-            if (!oldValue.Equals(newValue))
+            var oldValue = GetFieldValueNoCheck(point);
+            if (oldValue.Equals(newValue))
             {
-                fieldValues[point.RowIndex, point.ColumnIndex] = newValue;
-
-                var e = new FieldValueChangedEventArgs<T>(point, oldValue);
-                OnAfterFieldValueSet(e);
-                OnFieldValueChanged(e);
+                return;
             }
+
+            fieldValues[point.RowIndex, point.ColumnIndex] = newValue;
+
+            var e = new FieldValueChangedEventArgs<T>(point, oldValue);
+            OnAfterFieldValueSet(e);
+            OnFieldValueChanged(e);
         }
 
         public void ApplyFieldChanges(FieldsToChange<T> changes)
         {
-            if (changes != null)
+            if (changes == null)
             {
-                foreach (var c in changes)
-                {
-                    this[c.Point] = c.NewValue;
-                }
+                return;
+            }
+
+            foreach (var c in changes)
+            {
+                this[c.Point] = c.NewValue;
             }
         }
 
@@ -167,7 +171,7 @@ namespace Utility
         {
             if (!IsIndexValid(rowIndex, NumberOfRows))
             {
-                throw new ArgumentOutOfRangeException("Invalid row index.");
+                throw new ArgumentOutOfRangeException(nameof(rowIndex));
             }
 
             return PointsOfRowNoCheck(rowIndex);
@@ -175,10 +179,7 @@ namespace Utility
 
         private IEnumerable<GridPoint> PointsOfRowNoCheck(int rowIndex)
         {
-            foreach (int columnIndex in Enumerable.Range(0, NumberOfColumns))
-            {
-                yield return new GridPoint(rowIndex, columnIndex);
-            }
+            return Enumerable.Range(0, NumberOfColumns).Select(columnIndex => new GridPoint(rowIndex, columnIndex));
         }
 
         /// <summary>
@@ -188,7 +189,7 @@ namespace Utility
         {
             if (!IsIndexValid(columnIndex, NumberOfColumns))
             {
-                throw new ArgumentOutOfRangeException("Invalid column index.");
+                throw new ArgumentOutOfRangeException(nameof(columnIndex));
             }
 
             return PointsOfColumnNoCheck(columnIndex);
@@ -196,10 +197,7 @@ namespace Utility
 
         private IEnumerable<GridPoint> PointsOfColumnNoCheck(int columnIndex)
         {
-            foreach (int rowIndex in Enumerable.Range(0, NumberOfRows))
-            {
-                yield return new GridPoint(rowIndex, columnIndex);
-            }
+            return Enumerable.Range(0, NumberOfRows).Select(rowIndex => new GridPoint(rowIndex, columnIndex));
         }
 
         /// <summary>
@@ -207,13 +205,7 @@ namespace Utility
         /// </summary>
         public IEnumerable<GridPoint> AllPoints()
         {
-            foreach (int rowIndex in Enumerable.Range(0, NumberOfRows))
-            {
-                foreach (GridPoint p in PointsOfRow(rowIndex))
-                {
-                    yield return p;
-                }
-            }
+            return Enumerable.Range(0, NumberOfRows).SelectMany(PointsOfRow);
         }
         #endregion
 
@@ -225,7 +217,7 @@ namespace Utility
         {
             if (source == null)
             {
-                throw new ArgumentNullException("Cannot copy from null.");
+                throw new ArgumentNullException(nameof(source));
             }
 
             numberOfRows = source.numberOfRows;

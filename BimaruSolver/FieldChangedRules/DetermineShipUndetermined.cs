@@ -1,4 +1,5 @@
-﻿using Bimaru.Interfaces;
+﻿using System.Linq;
+using Bimaru.Interfaces;
 using Utility;
 
 namespace Bimaru.SolverUtil
@@ -19,7 +20,7 @@ namespace Bimaru.SolverUtil
         {
             if (game.Grid[point] == BimaruValue.SHIP_UNDETERMINED)
             {
-                BimaruValue? newValue = GetShipUndeterminedFieldValue(game, point);
+                var newValue = GetShipUndeterminedFieldValue(game, point);
                 if (newValue.HasValue)
                 {
                     game.Grid[point] = newValue.Value;
@@ -31,7 +32,7 @@ namespace Bimaru.SolverUtil
         {
             BimaruValue? newValue = null;
 
-            Direction? shipDirection = FindNonDiagonalNeighbour(game, pointShipUndetermined, BimaruValueConstraint.SHIP);
+            var shipDirection = FindNonDiagonalNeighbor(game, pointShipUndetermined, BimaruValueConstraint.SHIP);
             if (shipDirection.HasValue)
             {
                 var oppositePoint = pointShipUndetermined.GetNextPoint(shipDirection.Value.GetOpposite());
@@ -46,7 +47,7 @@ namespace Bimaru.SolverUtil
                     newValue = BimaruValue.SHIP_MIDDLE;
                 }
             }
-            else if (AreAllNonDiagonalNeighboursWater(game, pointShipUndetermined))
+            else if (AreAllNonDiagonalNeighborsWater(game, pointShipUndetermined))
             {
                 newValue = BimaruValue.SHIP_SINGLE;
             }
@@ -54,7 +55,7 @@ namespace Bimaru.SolverUtil
             return newValue;
         }
 
-        private Direction? FindNonDiagonalNeighbour(IGame game, GridPoint center, BimaruValueConstraint constraint)
+        private static Direction? FindNonDiagonalNeighbor(IGame game, GridPoint center, BimaruValueConstraint constraint)
         {
             foreach (var direction in Directions.GetNonDiagonalDirections())
             {
@@ -68,18 +69,9 @@ namespace Bimaru.SolverUtil
             return null;
         }
 
-        private bool AreAllNonDiagonalNeighboursWater(IGame game, GridPoint center)
+        private static bool AreAllNonDiagonalNeighborsWater(IGame game, GridPoint center)
         {
-            foreach (var direction in Directions.GetNonDiagonalDirections())
-            {
-                var pointInDirection = center.GetNextPoint(direction);
-                if (game.Grid[pointInDirection] != BimaruValue.WATER)
-                {
-                    return false;
-                }
-            }
-
-            return true;
+            return Directions.GetNonDiagonalDirections().Select(center.GetNextPoint).All(pointInDirection => game.Grid[pointInDirection] == BimaruValue.WATER);
         }
     }
 }

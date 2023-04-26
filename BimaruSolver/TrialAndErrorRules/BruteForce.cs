@@ -33,17 +33,17 @@ namespace Bimaru.SolverUtil
 
             var value = game.Grid[notFullyDetPoint.Value];
 
-            bool isDeterminedAndCompatible(BimaruValue newValue) =>
+            bool IsDeterminedAndCompatible(BimaruValue newValue) =>
                 newValue.IsFullyDetermined() &&
                 value.IsCompatibleChangeTo(newValue);
 
-            foreach (BimaruValue newValue in BimaruValues.AllBimaruValues().Where(isDeterminedAndCompatible))
+            foreach (var newValue in BimaruValues.AllBimaruValues().Where(IsDeterminedAndCompatible))
             {
                 yield return new FieldsToChange<BimaruValue>(notFullyDetPoint.Value, newValue);
             }
         }
 
-        private GridPoint? GetNotFullyDeterminedPoint(IGame game)
+        private static GridPoint? GetNotFullyDeterminedPoint(IGame game)
         {
             foreach (var p in game.Grid.AllPoints().Where(p => !game.Grid[p].IsFullyDetermined()))
             {

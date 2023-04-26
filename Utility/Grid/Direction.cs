@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Utility
 {
@@ -58,7 +59,7 @@ namespace Utility
         /// </summary>
         public static IEnumerable<Direction> GetAllDirections()
         {
-            return (IEnumerable<Direction>)Enum.GetValues(typeof(Direction));
+            return Enum.GetValues(typeof(Direction)).Cast<Direction>();
         }
 
         /// <summary>

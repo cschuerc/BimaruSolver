@@ -1,7 +1,8 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
+using Bimaru.DatabaseUtil;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Bimaru.DatabaseUtil
+namespace Bimaru.Test
 {
     [TestClass]
     public class DatabaseFactoryTests
@@ -9,18 +10,15 @@ namespace Bimaru.DatabaseUtil
         [TestMethod]
         public void TestDatabaseIsNotNull()
         {
-            var factory = new DatabaseFactory();
-
-            Assert.IsNotNull(factory.GetDatabase());
+            Assert.IsNotNull(DatabaseFactory.GetDatabase());
         }
 
         [TestMethod]
         public void TestGamesInDatabase()
         {
-            var factory = new DatabaseFactory();
-            var database = factory.GetDatabase();
+            var database = DatabaseFactory.GetDatabase();
 
-            Assert.IsTrue(database.GetAllGames(null).Count() > 0);
+            Assert.IsTrue(database.GetAllGames(null).Any());
         }
     }
 }

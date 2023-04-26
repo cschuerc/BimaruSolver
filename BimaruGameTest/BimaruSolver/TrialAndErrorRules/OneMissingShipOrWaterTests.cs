@@ -1,12 +1,14 @@
-using Bimaru.GameUtil;
-using Bimaru.Interfaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Bimaru.GameUtil;
+using Bimaru.Interfaces;
+using Bimaru.SolverUtil;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Utility;
+// ReSharper disable AccessToModifiedClosure
 
-namespace Bimaru.SolverUtil
+namespace Bimaru.Test
 {
     [TestClass]
     public class OneMissingShipOrWaterTests
@@ -65,14 +67,16 @@ namespace Bimaru.SolverUtil
         }
 
         private static void AssertEqualTrialChanges(
-            IEnumerable<SingleChange<BimaruValue>> expected,
+            IReadOnlyCollection<SingleChange<BimaruValue>> expected,
             IEnumerable<FieldsToChange<BimaruValue>> actual)
         {
-            Assert.AreEqual(expected.Count(), actual.Count());
+            var actualAsList = actual.ToList();
+
+            Assert.AreEqual(expected.Count, actualAsList.Count);
 
             foreach (var changeExp in expected)
             {
-                var changeActual = actual.FirstOrDefault(a => a.Count() == 1 && a.Contains(changeExp));
+                var changeActual = actualAsList.FirstOrDefault(a => a.Count == 1 && a.Contains(changeExp));
                 Assert.IsNotNull(changeActual);
             }
         }
@@ -136,7 +140,7 @@ namespace Bimaru.SolverUtil
             var counter = new CountTrialCalls();
             rule = new OneMissingShipOrWater(counter);
 
-            int numTrials = 0;
+            var numTrials = 0;
             foreach (var changes in rule.GetChangeTrials(game))
             {
                 Assert.IsNull(changes);

@@ -1,10 +1,10 @@
+using System;
 using Bimaru.GameUtil;
 using Bimaru.Interfaces;
-using Bimaru.Test;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+using Utility;
 
-namespace Utility
+namespace Bimaru.Test
 {
     [TestClass]
     public class BackupTests
@@ -44,7 +44,7 @@ namespace Utility
 
             backup.RestoreAndDeleteLastSavepoint(grid);
 
-            BimaruValue[,] expectedFieldValues = new BimaruValue[1, 2]
+            var expectedFieldValues = new[,]
             {
                 { BimaruValue.SHIP_SINGLE, BimaruValue.WATER }
             };
@@ -105,9 +105,7 @@ namespace Utility
 
             backup.RestoreFromClipboardTo(grid);
 
-            BimaruValue[,] expectedFieldValues;
-
-            expectedFieldValues = new BimaruValue[1, 2]
+            var expectedFieldValues = new[,]
             {
                 { BimaruValue.SHIP_CONT_UP, BimaruValue.SHIP_CONT_DOWN }
             };

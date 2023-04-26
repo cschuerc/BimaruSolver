@@ -2,7 +2,7 @@
 
 namespace Utility
 {
-    public interface IBackup<T> where T : ICloneable, IOverwritable
+    public interface IBackup<in T> where T : ICloneable, IOverwritable
     {
         /// <summary>
         /// Sets a save point with a clone of the source.

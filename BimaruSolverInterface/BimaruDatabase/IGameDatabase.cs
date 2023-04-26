@@ -5,13 +5,6 @@ namespace Bimaru.Interfaces
 {
     public interface IGameDatabase
     {
-        IGameWithMetaInfo GetSpecificGame(int ID);
-
-        /// <summary>
-        /// Get a random game among all games satisfying the given filter.
-        /// </summary>
-        IGameWithMetaInfo GetRandomGame(Func<IGameMetaInfo, bool> filter);
-
         /// <summary>
         /// Get all games satisfying the given filter
         /// </summary>

@@ -1,9 +1,10 @@
+using System;
+using Bimaru.DatabaseUtil;
 using Bimaru.GameUtil;
 using Bimaru.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 
-namespace Bimaru.DatabaseUtil
+namespace Bimaru.Test
 {
     [TestClass]
     public class GameWithMetaInfoTests
@@ -20,7 +21,7 @@ namespace Bimaru.DatabaseUtil
             Assert.ThrowsException<ArgumentNullException>(
                 () => new GameWithMetaInfo(metaInfo, null));
 
-            new GameWithMetaInfo(metaInfo, game);
+            var _ = new GameWithMetaInfo(metaInfo, game);
         }
     }
 }

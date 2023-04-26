@@ -1,8 +1,9 @@
+using System;
+using Bimaru.GameUtil;
 using Bimaru.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 
-namespace Bimaru.GameUtil
+namespace Bimaru.Test
 {
     [TestClass]
     public class ShipTargetTests
@@ -10,7 +11,7 @@ namespace Bimaru.GameUtil
         [TestMethod]
         public void TestCreation()
         {
-            new ShipTarget();
+            var _ = new ShipTarget();
         }
 
         [TestMethod]
@@ -27,6 +28,7 @@ namespace Bimaru.GameUtil
             shipTarget[10] = 1;
         }
 
+        [TestMethod]
         public void TestNumberOfShipsRange()
         {
             var shipTarget = new ShipTarget();
@@ -56,11 +58,12 @@ namespace Bimaru.GameUtil
         [TestMethod]
         public void TestSetTarget()
         {
-            var shipTarget = new ShipTarget();
-
-            shipTarget[1] = 3;
-            shipTarget[2] = 3;
-            shipTarget[3] = 6;
+            var shipTarget = new ShipTarget
+            {
+                [1] = 3,
+                [2] = 3,
+                [3] = 6
+            };
 
             Assert.AreEqual(3, shipTarget[1]);
             Assert.AreEqual(3, shipTarget[2]);
@@ -117,38 +120,42 @@ namespace Bimaru.GameUtil
         {
             var shipTarget = new ShipTarget();
 
-            Assert.AreEqual(Satisfiability.SATISFIED, shipTarget.GetSatisfiability(new int[2] { 0, 0 }));
-            Assert.AreEqual(Satisfiability.VIOLATED, shipTarget.GetSatisfiability(new int[2] { 0, 1 }));
-            Assert.AreEqual(Satisfiability.VIOLATED, shipTarget.GetSatisfiability(new int[2] { 0, 2 }));
+            Assert.AreEqual(Satisfiability.SATISFIED, shipTarget.GetSatisfiability(new[] { 0, 0 }));
+            Assert.AreEqual(Satisfiability.VIOLATED, shipTarget.GetSatisfiability(new[] { 0, 1 }));
+            Assert.AreEqual(Satisfiability.VIOLATED, shipTarget.GetSatisfiability(new[] { 0, 2 }));
         }
 
         [TestMethod]
         public void TestSatisfiabilitySingleLength()
         {
-            var shipTarget = new ShipTarget();
-            shipTarget[1] = 3;
+            var shipTarget = new ShipTarget
+            {
+                [1] = 3
+            };
 
-            Assert.AreEqual(Satisfiability.SATISFIABLE, shipTarget.GetSatisfiability(new int[2] { 0, 0 }));
-            Assert.AreEqual(Satisfiability.SATISFIABLE, shipTarget.GetSatisfiability(new int[2] { 0, 1 }));
-            Assert.AreEqual(Satisfiability.SATISFIABLE, shipTarget.GetSatisfiability(new int[2] { 0, 2 }));
-            Assert.AreEqual(Satisfiability.SATISFIED, shipTarget.GetSatisfiability(new int[2] { 0, 3 }));
-            Assert.AreEqual(Satisfiability.VIOLATED, shipTarget.GetSatisfiability(new int[2] { 0, 4 }));
-            Assert.AreEqual(Satisfiability.VIOLATED, shipTarget.GetSatisfiability(new int[2] { 0, 5 }));
+            Assert.AreEqual(Satisfiability.SATISFIABLE, shipTarget.GetSatisfiability(new[] { 0, 0 }));
+            Assert.AreEqual(Satisfiability.SATISFIABLE, shipTarget.GetSatisfiability(new[] { 0, 1 }));
+            Assert.AreEqual(Satisfiability.SATISFIABLE, shipTarget.GetSatisfiability(new[] { 0, 2 }));
+            Assert.AreEqual(Satisfiability.SATISFIED, shipTarget.GetSatisfiability(new[] { 0, 3 }));
+            Assert.AreEqual(Satisfiability.VIOLATED, shipTarget.GetSatisfiability(new[] { 0, 4 }));
+            Assert.AreEqual(Satisfiability.VIOLATED, shipTarget.GetSatisfiability(new[] { 0, 5 }));
         }
 
         [TestMethod]
         public void TestSatisfiabilitySeveralLength()
         {
-            var shipTarget = new ShipTarget();
-            shipTarget[1] = 2;
-            shipTarget[2] = 1;
+            var shipTarget = new ShipTarget
+            {
+                [1] = 2,
+                [2] = 1
+            };
 
-            Assert.AreEqual(Satisfiability.SATISFIABLE, shipTarget.GetSatisfiability(new int[3] { 0, 0, 0 }));
-            Assert.AreEqual(Satisfiability.SATISFIABLE, shipTarget.GetSatisfiability(new int[3] { 0, 0, 1 }));
-            Assert.AreEqual(Satisfiability.VIOLATED, shipTarget.GetSatisfiability(new int[3] { 0, 0, 2 }));
-            Assert.AreEqual(Satisfiability.SATISFIED, shipTarget.GetSatisfiability(new int[3] { 0, 2, 1 }));
-            Assert.AreEqual(Satisfiability.VIOLATED, shipTarget.GetSatisfiability(new int[3] { 0, 3, 1 }));
-            Assert.AreEqual(Satisfiability.VIOLATED, shipTarget.GetSatisfiability(new int[3] { 0, 3, 2 }));
+            Assert.AreEqual(Satisfiability.SATISFIABLE, shipTarget.GetSatisfiability(new[] { 0, 0, 0 }));
+            Assert.AreEqual(Satisfiability.SATISFIABLE, shipTarget.GetSatisfiability(new[] { 0, 0, 1 }));
+            Assert.AreEqual(Satisfiability.VIOLATED, shipTarget.GetSatisfiability(new[] { 0, 0, 2 }));
+            Assert.AreEqual(Satisfiability.SATISFIED, shipTarget.GetSatisfiability(new[] { 0, 2, 1 }));
+            Assert.AreEqual(Satisfiability.VIOLATED, shipTarget.GetSatisfiability(new[] { 0, 3, 1 }));
+            Assert.AreEqual(Satisfiability.VIOLATED, shipTarget.GetSatisfiability(new[] { 0, 3, 2 }));
         }
 
         [TestMethod]
@@ -156,24 +163,26 @@ namespace Bimaru.GameUtil
         {
             var shipTarget = new ShipTarget();
 
-            Assert.IsNull(shipTarget.LengthOfLongestMissingShip(new int[2] { 0, 0 }));
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => shipTarget.LengthOfLongestMissingShip(new int[2] { 0, 1 }));
+            Assert.IsNull(shipTarget.LengthOfLongestMissingShip(new[] { 0, 0 }));
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => shipTarget.LengthOfLongestMissingShip(new[] { 0, 1 }));
         }
 
         [TestMethod]
         public void TestLengthOfLongestMissingShip()
         {
-            var shipTarget = new ShipTarget();
-            shipTarget[1] = 2;
-            shipTarget[2] = 1;
+            var shipTarget = new ShipTarget
+            {
+                [1] = 2,
+                [2] = 1
+            };
 
-            Assert.AreEqual(2, shipTarget.LengthOfLongestMissingShip(new int[3] { 0, 0, 0 }));
-            Assert.AreEqual(1, shipTarget.LengthOfLongestMissingShip(new int[3] { 0, 0, 1 }));
+            Assert.AreEqual(2, shipTarget.LengthOfLongestMissingShip(new[] { 0, 0, 0 }));
+            Assert.AreEqual(1, shipTarget.LengthOfLongestMissingShip(new[] { 0, 0, 1 }));
 
-            Assert.IsNull(shipTarget.LengthOfLongestMissingShip(new int[3] { 0, 2, 1 }));
+            Assert.IsNull(shipTarget.LengthOfLongestMissingShip(new[] { 0, 2, 1 }));
 
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => shipTarget.LengthOfLongestMissingShip(new int[3] { 0, 0, 2 }));
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => shipTarget.LengthOfLongestMissingShip(new int[3] { 0, 3, 1 }));
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => shipTarget.LengthOfLongestMissingShip(new[] { 0, 0, 2 }));
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => shipTarget.LengthOfLongestMissingShip(new[] { 0, 3, 1 }));
         }
     }
 }

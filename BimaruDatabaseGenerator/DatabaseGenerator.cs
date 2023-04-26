@@ -1,15 +1,15 @@
-﻿using Bimaru.DatabaseUtil;
+﻿using System;
+using System.Collections.Generic;
+using Bimaru.DatabaseUtil;
 using Bimaru.GameUtil;
 using Bimaru.Interfaces;
-using System;
-using System.Collections.Generic;
 using Utility;
 
-namespace Bimaru.DatabaseUtilGeneratorUtil
+namespace Bimaru.DatabaseGeneratorUtil
 {
     public static class DatabaseGenerator
     {
-        public static List<IGameWithMetaInfo> GenerateGames()
+        public static IEnumerable<IGameWithMetaInfo> GenerateGames()
         {
             return new List<IGameWithMetaInfo>()
             {
@@ -17,9 +17,9 @@ namespace Bimaru.DatabaseUtilGeneratorUtil
                     1,
                     GameSize.SMALL,
                     GameDifficulty.EASY,
-                    new int[6] { 2, 1, 3, 1, 1, 2 },
-                    new int[6] { 2, 1, 2, 2, 0, 3 },
-                    new int[4] { 0, 3, 2, 1 },
+                    new[] { 2, 1, 3, 1, 1, 2 },
+                    new[] { 2, 1, 2, 2, 0, 3 },
+                    new[] { 0, 3, 2, 1 },
                     new TupleList<GridPoint, BimaruValue>()
                     {
                         { new GridPoint(0, 1), BimaruValue.SHIP_CONT_RIGHT },
@@ -32,9 +32,9 @@ namespace Bimaru.DatabaseUtilGeneratorUtil
                     2,
                     GameSize.SMALL,
                     GameDifficulty.EASY,
-                    new int[6] { 1, 2, 2, 1, 1, 3 },
-                    new int[6] { 2, 2, 0, 2, 1, 3 },
-                    new int[4] { 0, 3, 2, 1 },
+                    new[] { 1, 2, 2, 1, 1, 3 },
+                    new[] { 2, 2, 0, 2, 1, 3 },
+                    new[] { 0, 3, 2, 1 },
                     new TupleList<GridPoint, BimaruValue>()
                     {
                         { new GridPoint(2, 4), BimaruValue.WATER },
@@ -45,9 +45,9 @@ namespace Bimaru.DatabaseUtilGeneratorUtil
                     3,
                     GameSize.MIDDLE,
                     GameDifficulty.EASY,
-                    new int[8] { 4, 0, 4, 1, 1, 4, 1, 5 },
-                    new int[8] { 5, 2, 2, 2, 2, 2, 2, 3 },
-                    new int[5] { 0, 4, 3, 2, 1 },
+                    new[] { 4, 0, 4, 1, 1, 4, 1, 5 },
+                    new[] { 5, 2, 2, 2, 2, 2, 2, 3 },
+                    new[] { 0, 4, 3, 2, 1 },
                     new TupleList<GridPoint, BimaruValue>()
                     {
                         { new GridPoint(0, 2), BimaruValue.SHIP_MIDDLE },
@@ -61,9 +61,9 @@ namespace Bimaru.DatabaseUtilGeneratorUtil
                     4,
                     GameSize.MIDDLE,
                     GameDifficulty.EASY,
-                    new int[8] { 4, 2, 0, 3, 2, 3, 2, 4 },
-                    new int[8] { 5, 0, 3, 4, 3, 1, 1, 3 },
-                    new int[5] { 0, 4, 3, 2, 1 },
+                    new[] { 4, 2, 0, 3, 2, 3, 2, 4 },
+                    new[] { 5, 0, 3, 4, 3, 1, 1, 3 },
+                    new[] { 0, 4, 3, 2, 1 },
                     new TupleList<GridPoint, BimaruValue>()
                     {
                         { new GridPoint(5, 0), BimaruValue.WATER },
@@ -74,9 +74,9 @@ namespace Bimaru.DatabaseUtilGeneratorUtil
                     5,
                     GameSize.LARGE,
                     GameDifficulty.EASY,
-                    new int[10] { 1, 2, 1, 2, 3, 2, 2, 3, 1, 3 },
-                    new int[10] { 2, 5, 2, 1, 0, 2, 1, 0, 4, 3 },
-                    new int[5] { 0, 4, 3, 2, 1 },
+                    new[] { 1, 2, 1, 2, 3, 2, 2, 3, 1, 3 },
+                    new[] { 2, 5, 2, 1, 0, 2, 1, 0, 4, 3 },
+                    new[] { 0, 4, 3, 2, 1 },
                     new TupleList<GridPoint, BimaruValue>()
                     {
                         { new GridPoint(0, 0), BimaruValue.SHIP_SINGLE },
@@ -89,9 +89,9 @@ namespace Bimaru.DatabaseUtilGeneratorUtil
                     6,
                     GameSize.LARGE,
                     GameDifficulty.EASY,
-                    new int[10] { 1, 3, 2, 2, 3, 1, 1, 1, 5, 1 },
-                    new int[10] { 2, 3, 2, 0, 1, 2, 5, 0, 2, 3 },
-                    new int[5] { 0, 4, 3, 2, 1 },
+                    new[] { 1, 3, 2, 2, 3, 1, 1, 1, 5, 1 },
+                    new[] { 2, 3, 2, 0, 1, 2, 5, 0, 2, 3 },
+                    new[] { 0, 4, 3, 2, 1 },
                     new TupleList<GridPoint, BimaruValue>()
                     {
                         { new GridPoint(1, 6), BimaruValue.WATER },
@@ -103,9 +103,9 @@ namespace Bimaru.DatabaseUtilGeneratorUtil
                     7,
                     GameSize.LARGE,
                     GameDifficulty.EASY,
-                    new int[10] { 3, 1, 3, 0, 3, 2, 4, 1, 2, 1 },
-                    new int[10] { 2, 0, 4, 1, 2, 2, 2, 4, 1, 2 },
-                    new int[5] { 0, 4, 3, 2, 1 },
+                    new[] { 3, 1, 3, 0, 3, 2, 4, 1, 2, 1 },
+                    new[] { 2, 0, 4, 1, 2, 2, 2, 4, 1, 2 },
+                    new[] { 0, 4, 3, 2, 1 },
                     new TupleList<GridPoint, BimaruValue>()
                     {
                         { new GridPoint(0, 7), BimaruValue.SHIP_MIDDLE },
@@ -119,9 +119,9 @@ namespace Bimaru.DatabaseUtilGeneratorUtil
                     8,
                     GameSize.LARGE,
                     GameDifficulty.EASY,
-                    new int[10] { 1, 1, 2, 2, 1, 3, 1, 2, 5, 2 },
-                    new int[10] { 2, 3, 1, 0, 1, 5, 0, 5, 2, 1 },
-                    new int[5] { 0, 4, 3, 2, 1 },
+                    new[] { 1, 1, 2, 2, 1, 3, 1, 2, 5, 2 },
+                    new[] { 2, 3, 1, 0, 1, 5, 0, 5, 2, 1 },
+                    new[] { 0, 4, 3, 2, 1 },
                     new TupleList<GridPoint, BimaruValue>()
                     {
                         { new GridPoint(1, 8), BimaruValue.SHIP_CONT_UP },
@@ -133,9 +133,9 @@ namespace Bimaru.DatabaseUtilGeneratorUtil
                     9,
                     GameSize.MIDDLE,
                     GameDifficulty.MIDDLE,
-                    new int[8] { 4, 1, 3, 2, 2, 3, 1, 4 },
-                    new int[8] { 6, 1, 3, 2, 3, 0, 2, 3 },
-                    new int[5] { 0, 4, 3, 2, 1 },
+                    new[] { 4, 1, 3, 2, 2, 3, 1, 4 },
+                    new[] { 6, 1, 3, 2, 3, 0, 2, 3 },
+                    new[] { 0, 4, 3, 2, 1 },
                     new TupleList<GridPoint, BimaruValue>()
                     {
                         { new GridPoint(0, 1), BimaruValue.SHIP_CONT_LEFT },
@@ -148,9 +148,9 @@ namespace Bimaru.DatabaseUtilGeneratorUtil
                     10,
                     GameSize.MIDDLE,
                     GameDifficulty.MIDDLE,
-                    new int[8] { 2, 1, 4, 3, 2, 4, 1, 3 },
-                    new int[8] { 4, 2, 1, 4, 1, 5, 1, 2 },
-                    new int[5] { 0, 4, 3, 2, 1 },
+                    new[] { 2, 1, 4, 3, 2, 4, 1, 3 },
+                    new[] { 4, 2, 1, 4, 1, 5, 1, 2 },
+                    new[] { 0, 4, 3, 2, 1 },
                     new TupleList<GridPoint, BimaruValue>()
                     {
                         { new GridPoint(1, 1), BimaruValue.WATER },
@@ -164,9 +164,9 @@ namespace Bimaru.DatabaseUtilGeneratorUtil
                     11,
                     GameSize.LARGE,
                     GameDifficulty.MIDDLE,
-                    new int[10] { 2, 1, 2, 1, 3, 3, 1, 3, 1, 3 },
-                    new int[10] { 3, 2, 3, 1, 0, 4, 1, 2, 1, 3 },
-                    new int[5] { 0, 4, 3, 2, 1 },
+                    new[] { 2, 1, 2, 1, 3, 3, 1, 3, 1, 3 },
+                    new[] { 3, 2, 3, 1, 0, 4, 1, 2, 1, 3 },
+                    new[] { 0, 4, 3, 2, 1 },
                     new TupleList<GridPoint, BimaruValue>()
                     {
                         { new GridPoint(1, 9), BimaruValue.SHIP_CONT_UP },
@@ -180,9 +180,9 @@ namespace Bimaru.DatabaseUtilGeneratorUtil
                     12,
                     GameSize.LARGE,
                     GameDifficulty.MIDDLE,
-                    new int[10] { 2, 2, 2, 1, 3, 3, 1, 4, 1, 1 },
-                    new int[10] { 2, 2, 2, 3, 2, 3, 1, 1, 1, 3 },
-                    new int[5] { 0, 4, 3, 2, 1 },
+                    new[] { 2, 2, 2, 1, 3, 3, 1, 4, 1, 1 },
+                    new[] { 2, 2, 2, 3, 2, 3, 1, 1, 1, 3 },
+                    new[] { 0, 4, 3, 2, 1 },
                     new TupleList<GridPoint, BimaruValue>()
                     {
                         { new GridPoint(0, 5), BimaruValue.SHIP_CONT_LEFT },
@@ -195,9 +195,9 @@ namespace Bimaru.DatabaseUtilGeneratorUtil
                     13,
                     GameSize.LARGE,
                     GameDifficulty.MIDDLE,
-                    new int[10] { 2, 4, 0, 2, 4, 1, 1, 2, 2, 2 },
-                    new int[10] { 1, 4, 1, 1, 3, 2, 3, 1, 3, 1 },
-                    new int[5] { 0, 4, 3, 2, 1 },
+                    new[] { 2, 4, 0, 2, 4, 1, 1, 2, 2, 2 },
+                    new[] { 1, 4, 1, 1, 3, 2, 3, 1, 3, 1 },
+                    new[] { 0, 4, 3, 2, 1 },
                     new TupleList<GridPoint, BimaruValue>()
                     {
                         { new GridPoint(0, 6), BimaruValue.SHIP_CONT_LEFT },
@@ -211,9 +211,9 @@ namespace Bimaru.DatabaseUtilGeneratorUtil
                     14,
                     GameSize.LARGE,
                     GameDifficulty.MIDDLE,
-                    new int[10] { 1, 1, 3, 1, 2, 5, 1, 2, 1, 3 },
-                    new int[10] { 1, 5, 1, 2, 2, 3, 1, 1, 2, 2 },
-                    new int[5] { 0, 4, 3, 2, 1 },
+                    new[] { 1, 1, 3, 1, 2, 5, 1, 2, 1, 3 },
+                    new[] { 1, 5, 1, 2, 2, 3, 1, 1, 2, 2 },
+                    new[] { 0, 4, 3, 2, 1 },
                     new TupleList<GridPoint, BimaruValue>()
                     {
                         { new GridPoint(0, 1), BimaruValue.SHIP_SINGLE },
@@ -225,9 +225,9 @@ namespace Bimaru.DatabaseUtilGeneratorUtil
                     15,
                     GameSize.LARGE,
                     GameDifficulty.MIDDLE,
-                    new int[10] { 4, 3, 1, 1, 1, 1, 3, 2, 3, 1 },
-                    new int[10] { 1, 1, 1, 5, 1, 3, 2, 3, 1, 2 },
-                    new int[5] { 0, 4, 3, 2, 1 },
+                    new[] { 4, 3, 1, 1, 1, 1, 3, 2, 3, 1 },
+                    new[] { 1, 1, 1, 5, 1, 3, 2, 3, 1, 2 },
+                    new[] { 0, 4, 3, 2, 1 },
                     new TupleList<GridPoint, BimaruValue>()
                     {
                         { new GridPoint(0, 2), BimaruValue.SHIP_CONT_RIGHT },
@@ -240,9 +240,9 @@ namespace Bimaru.DatabaseUtilGeneratorUtil
                     16,
                     GameSize.LARGE,
                     GameDifficulty.MIDDLE,
-                    new int[10] { 3, 2, 1, 4, 2, 2, 1, 2, 1, 2 },
-                    new int[10] { 1, 4, 2, 2, 1, 2, 1, 5, 1, 1 },
-                    new int[5] { 0, 4, 3, 2, 1 },
+                    new[] { 3, 2, 1, 4, 2, 2, 1, 2, 1, 2 },
+                    new[] { 1, 4, 2, 2, 1, 2, 1, 5, 1, 1 },
+                    new[] { 0, 4, 3, 2, 1 },
                     new TupleList<GridPoint, BimaruValue>()
                     {
                         { new GridPoint(3, 6), BimaruValue.SHIP_MIDDLE },
@@ -254,9 +254,9 @@ namespace Bimaru.DatabaseUtilGeneratorUtil
                     17,
                     GameSize.LARGE,
                     GameDifficulty.HARD,
-                    new int[10] { 1, 4, 1, 2, 2, 1, 5, 1, 2, 1 },
-                    new int[10] { 1, 1, 1, 2, 3, 4, 1, 1, 4, 2 },
-                    new int[5] { 0, 4, 3, 2, 1 },
+                    new[] { 1, 4, 1, 2, 2, 1, 5, 1, 2, 1 },
+                    new[] { 1, 1, 1, 2, 3, 4, 1, 1, 4, 2 },
+                    new[] { 0, 4, 3, 2, 1 },
                     new TupleList<GridPoint, BimaruValue>()
                     {
                         { new GridPoint(0, 1), BimaruValue.SHIP_SINGLE },
@@ -268,9 +268,9 @@ namespace Bimaru.DatabaseUtilGeneratorUtil
                     18,
                     GameSize.LARGE,
                     GameDifficulty.HARD,
-                    new int[10] { 1, 4, 1, 1, 6, 1, 2, 1, 1, 2 },
-                    new int[10] { 1, 2, 3, 1, 2, 2, 4, 1, 3, 1 },
-                    new int[5] { 0, 4, 3, 2, 1 },
+                    new[] { 1, 4, 1, 1, 6, 1, 2, 1, 1, 2 },
+                    new[] { 1, 2, 3, 1, 2, 2, 4, 1, 3, 1 },
+                    new[] { 0, 4, 3, 2, 1 },
                     new TupleList<GridPoint, BimaruValue>()
                     {
                         { new GridPoint(1, 2), BimaruValue.SHIP_CONT_UP },
@@ -284,9 +284,9 @@ namespace Bimaru.DatabaseUtilGeneratorUtil
                     19,
                     GameSize.LARGE,
                     GameDifficulty.HARD,
-                    new int[10] { 2, 1, 1, 5, 2, 1, 3, 1, 2, 2 },
-                    new int[10] { 2, 2, 3, 1, 1, 1, 2, 4, 2, 2 },
-                    new int[5] { 0, 4, 3, 2, 1 },
+                    new[] { 2, 1, 1, 5, 2, 1, 3, 1, 2, 2 },
+                    new[] { 2, 2, 3, 1, 1, 1, 2, 4, 2, 2 },
+                    new[] { 0, 4, 3, 2, 1 },
                     new TupleList<GridPoint, BimaruValue>()
                     {
                         { new GridPoint(0, 5), BimaruValue.SHIP_SINGLE },
@@ -300,9 +300,9 @@ namespace Bimaru.DatabaseUtilGeneratorUtil
                     20,
                     GameSize.LARGE,
                     GameDifficulty.HARD,
-                    new int[10] { 2, 2, 5, 1, 3, 1, 3, 1, 1, 1 },
-                    new int[10] { 4, 1, 2, 3, 1, 3, 1, 1, 1, 3 },
-                    new int[5] { 0, 4, 3, 2, 1 },
+                    new[] { 2, 2, 5, 1, 3, 1, 3, 1, 1, 1 },
+                    new[] { 4, 1, 2, 3, 1, 3, 1, 1, 1, 3 },
+                    new[] { 0, 4, 3, 2, 1 },
                     new TupleList<GridPoint, BimaruValue>()
                     {
                         { new GridPoint(1, 8), BimaruValue.SHIP_SINGLE },
@@ -316,9 +316,9 @@ namespace Bimaru.DatabaseUtilGeneratorUtil
                     21,
                     GameSize.LARGE,
                     GameDifficulty.HARD,
-                    new int[10] { 3, 1, 3, 2, 2, 1, 1, 1, 5, 1 },
-                    new int[10] { 1, 2, 3, 3, 1, 2, 3, 2, 1, 2 },
-                    new int[5] { 0, 4, 3, 2, 1 },
+                    new[] { 3, 1, 3, 2, 2, 1, 1, 1, 5, 1 },
+                    new[] { 1, 2, 3, 3, 1, 2, 3, 2, 1, 2 },
+                    new[] { 0, 4, 3, 2, 1 },
                     new TupleList<GridPoint, BimaruValue>()
                     {
                         { new GridPoint(1, 5), BimaruValue.SHIP_SINGLE },
@@ -330,9 +330,9 @@ namespace Bimaru.DatabaseUtilGeneratorUtil
                     22,
                     GameSize.LARGE,
                     GameDifficulty.HARD,
-                    new int[10] { 4, 1, 1, 3, 1, 3, 1, 1, 3, 2 },
-                    new int[10] { 1, 1, 3, 4, 2, 1, 1, 4, 1, 2 },
-                    new int[5] { 0, 4, 3, 2, 1 },
+                    new[] { 4, 1, 1, 3, 1, 3, 1, 1, 3, 2 },
+                    new[] { 1, 1, 3, 4, 2, 1, 1, 4, 1, 2 },
+                    new[] { 0, 4, 3, 2, 1 },
                     new TupleList<GridPoint, BimaruValue>()
                     {
                         { new GridPoint(3, 2), BimaruValue.WATER },
@@ -346,9 +346,9 @@ namespace Bimaru.DatabaseUtilGeneratorUtil
                     23,
                     GameSize.LARGE,
                     GameDifficulty.HARD,
-                    new int[10] { 3, 1, 1, 5, 1, 2, 1, 3, 2, 1 },
-                    new int[10] { 1, 4, 1, 1, 1, 1, 3, 1, 3, 4 },
-                    new int[5] { 0, 4, 3, 2, 1 },
+                    new[] { 3, 1, 1, 5, 1, 2, 1, 3, 2, 1 },
+                    new[] { 1, 4, 1, 1, 1, 1, 3, 1, 3, 4 },
+                    new[] { 0, 4, 3, 2, 1 },
                     new TupleList<GridPoint, BimaruValue>()
                     {
                         { new GridPoint(0, 5), BimaruValue.SHIP_SINGLE },
@@ -362,9 +362,9 @@ namespace Bimaru.DatabaseUtilGeneratorUtil
                     24,
                     GameSize.LARGE,
                     GameDifficulty.HARD,
-                    new int[10] { 2, 1, 4, 2, 1, 2, 2, 1, 4, 1 },
-                    new int[10] { 3, 2, 2, 2, 2, 1, 1, 3, 3, 1 },
-                    new int[5] { 0, 4, 3, 2, 1 },
+                    new[] { 2, 1, 4, 2, 1, 2, 2, 1, 4, 1 },
+                    new[] { 3, 2, 2, 2, 2, 1, 1, 3, 3, 1 },
+                    new[] { 0, 4, 3, 2, 1 },
                     new TupleList<GridPoint, BimaruValue>()
                     {
                         { new GridPoint(0, 3), BimaruValue.SHIP_CONT_RIGHT },
@@ -377,28 +377,28 @@ namespace Bimaru.DatabaseUtilGeneratorUtil
         }
 
         private static IGameWithMetaInfo GenerateDatabaseGame(
-            int ID,
+            int id,
             GameSize size,
             GameDifficulty difficulty,
-            int[] rowTallyData,
-            int[] columnTallyData,
-            int[] shipSettingsData,
+            IReadOnlyList<int> rowTallyData,
+            IReadOnlyList<int> columnTallyData,
+            IReadOnlyList<int> shipSettingsData,
             IEnumerable<Tuple<GridPoint, BimaruValue>> initialFieldValues
             )
         {
-            var metaInfo = new GameMetaInfo(ID, size, difficulty);
+            var metaInfo = new GameMetaInfo(id, size, difficulty);
             var game = GenerateGame(rowTallyData, columnTallyData, shipSettingsData, initialFieldValues);
 
             return new GameWithMetaInfo(metaInfo, game);
         }
 
         private static IGame GenerateGame(
-            int[] rowTallyData,
-            int[] columnTallyData,
-            int[] shipSettingsData,
+            IReadOnlyList<int> rowTallyData,
+            IReadOnlyList<int> columnTallyData,
+            IReadOnlyList<int> shipSettingsData,
             IEnumerable<Tuple<GridPoint, BimaruValue>> initialFieldValues)
         {
-            var game = (new GameFactory()).GenerateEmptyGame(rowTallyData.Length, columnTallyData.Length);
+            var game = (new GameFactory()).GenerateEmptyGame(rowTallyData.Count, columnTallyData.Count);
 
             CopyToTally(game.TargetNumberOfShipFieldsPerRow, rowTallyData);
             CopyToTally(game.TargetNumberOfShipFieldsPerColumn, columnTallyData);
@@ -408,18 +408,18 @@ namespace Bimaru.DatabaseUtilGeneratorUtil
             return game;
         }
 
-        private static void CopyToTally(IGridTally tally, int[] tallyData)
+        private static void CopyToTally(IGridTally tally, IReadOnlyList<int> tallyData)
         {
-            for (int i = 0; i < tallyData.Length; i++)
+            for (var i = 0; i < tallyData.Count; i++)
             {
                 tally[i] = tallyData[i];
             }
         }
 
-        private static void CopyToShipSettings(IShipTarget settings, int[] shipSettingsData)
+        private static void CopyToShipSettings(IShipTarget settings, IReadOnlyList<int> shipSettingsData)
         {
             // Ignore shipSettingsData[0], as 0-length ships do not exist
-            for (int i = 1; i < shipSettingsData.Length; i++)
+            for (var i = 1; i < shipSettingsData.Count; i++)
             {
                 settings[i] = shipSettingsData[i];
             }
@@ -433,7 +433,7 @@ namespace Bimaru.DatabaseUtilGeneratorUtil
             }
         }
 
-        public class TupleList<T1, T2> : List<Tuple<T1, T2>>
+        private class TupleList<T1, T2> : List<Tuple<T1, T2>>
         {
             public void Add(T1 item, T2 item2)
             {

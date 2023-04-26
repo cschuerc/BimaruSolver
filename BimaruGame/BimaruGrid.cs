@@ -7,10 +7,10 @@ using Utility;
 namespace Bimaru.GameUtil
 {
     [Serializable]
-    public class BimaruGrid : Grid<BimaruValue>, IBimaruGrid, ICloneable
+    public class BimaruGrid : Grid<BimaruValue>, IBimaruGrid
     {
         public BimaruGrid(int numberOfRows, int numberOfColumns)
-            : base(numberOfRows, numberOfColumns, BimaruValue.UNDETERMINED)
+            : base(numberOfRows, numberOfColumns)
         {
             numberOfUndeterminedFieldsPerRow = new int[numberOfRows].InitValues(numberOfColumns);
             numberOfShipFieldsPerRow = new int[numberOfRows].InitValues(0);
@@ -18,7 +18,7 @@ namespace Bimaru.GameUtil
             numberOfUndeterminedFieldsPerColumn = new int[numberOfColumns].InitValues(numberOfRows);
             numberOfShipFieldsPerColumn = new int[numberOfColumns].InitValues(0);
 
-            int maximumShipLength = Math.Max(numberOfRows, numberOfColumns);
+            var maximumShipLength = Math.Max(numberOfRows, numberOfColumns);
             numberOfShipsPerLength = new int[maximumShipLength + 1].InitValues(0); // +1 due to ship length of zero
 
             numberOfNotFullyDeterminedFields = numberOfRows * numberOfColumns;
@@ -52,7 +52,7 @@ namespace Bimaru.GameUtil
                         return;
                     }
 
-                    throw new InvalidFieldValueChange("Off-grid value set to not-water.");
+                    throw new InvalidFieldValueChangeException("Off-grid value set to not-water.");
                 }
 
                 base[point] = value;
@@ -61,14 +61,14 @@ namespace Bimaru.GameUtil
 
         public void FillUndeterminedFieldsRow(int rowIndex, BimaruValueConstraint constraint)
         {
-            BimaruValue valueToSet = constraint.GetRepresentativeValue();
+            var valueToSet = constraint.GetRepresentativeValue();
             if (valueToSet == BimaruValue.UNDETERMINED ||
                 numberOfUndeterminedFieldsPerRow[rowIndex] == 0)
             {
                 return;
             }
 
-            foreach (GridPoint p in PointsOfRow(rowIndex).Where(p => GetFieldValueNoCheck(p) == BimaruValue.UNDETERMINED))
+            foreach (var p in PointsOfRow(rowIndex).Where(p => GetFieldValueNoCheck(p) == BimaruValue.UNDETERMINED))
             {
                 this[p] = valueToSet;
             }
@@ -76,14 +76,14 @@ namespace Bimaru.GameUtil
 
         public void FillUndeterminedFieldsColumn(int columnIndex, BimaruValueConstraint constraint)
         {
-            BimaruValue valueToSet = constraint.GetRepresentativeValue();
+            var valueToSet = constraint.GetRepresentativeValue();
             if (valueToSet == BimaruValue.UNDETERMINED ||
                 numberOfUndeterminedFieldsPerColumn[columnIndex] == 0)
             {
                 return;
             }
 
-            foreach (GridPoint p in PointsOfColumn(columnIndex).Where(p => GetFieldValueNoCheck(p) == BimaruValue.UNDETERMINED))
+            foreach (var p in PointsOfColumn(columnIndex).Where(p => GetFieldValueNoCheck(p) == BimaruValue.UNDETERMINED))
             {
                 this[p] = valueToSet;
             }
@@ -159,11 +159,11 @@ namespace Bimaru.GameUtil
 
         private void UpdateInvalidFieldBoundaries(GridPoint center)
         {
-            BimaruValue centerValue = GetFieldValueNoCheck(center);
-            foreach (Direction direction in Directions.GetAllDirections())
+            var centerValue = GetFieldValueNoCheck(center);
+            foreach (var direction in Directions.GetAllDirections())
             {
-                BimaruValue neighbourValue = this[center.GetNextPoint(direction)];
-                FieldBoundary boundary = center.GetBoundary(direction);
+                var neighbourValue = this[center.GetNextPoint(direction)];
+                var boundary = center.GetBoundary(direction);
                 if (centerValue.IsCompatibleWith(direction, neighbourValue))
                 {
                     invalidFieldBoundaries.Remove(boundary);
@@ -184,13 +184,13 @@ namespace Bimaru.GameUtil
 
         private void UpdateNumberOfShipsPerLength(FieldValueChangedEventArgs<BimaruValue> e)
         {
-            foreach (int shipLength in DetectShips(e.Point, e.OriginalValue))
+            foreach (var shipLength in DetectShips(e.Point, e.OriginalValue))
             {
                 numberOfShipsPerLength[shipLength]--;
             }
 
-            BimaruValue newValue = GetFieldValueNoCheck(e.Point);
-            foreach (int shipLength in DetectShips(e.Point, newValue))
+            var newValue = GetFieldValueNoCheck(e.Point);
+            foreach (var shipLength in DetectShips(e.Point, newValue))
             {
                 numberOfShipsPerLength[shipLength]++;
             }
@@ -225,10 +225,10 @@ namespace Bimaru.GameUtil
 
         private int? GetShipPartLength(GridPoint startPoint, BimaruValue startValue, Direction direction)
         {
-            int shipLength = 0;
+            var shipLength = 0;
 
-            GridPoint currentPoint = startPoint;
-            BimaruValue currentValue = startValue;
+            var currentPoint = startPoint;
+            var currentValue = startValue;
             if (currentValue == direction.GetFirstShipValue())
             {
                 shipLength++;
@@ -276,7 +276,7 @@ namespace Bimaru.GameUtil
 
         public virtual object Clone()
         {
-            BimaruGrid clonedGrid = new BimaruGrid(NumberOfRows, NumberOfColumns);
+            var clonedGrid = new BimaruGrid(NumberOfRows, NumberOfColumns);
 
             clonedGrid.OverwriteWith(this);
 

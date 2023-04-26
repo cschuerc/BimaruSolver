@@ -11,20 +11,22 @@ namespace Bimaru.SolverUtil
     {
         public void FieldValueChanged(IGame game, FieldValueChangedEventArgs<BimaruValue> e)
         {
-            BimaruValue newValue = game.Grid[e.Point];
-            foreach (Direction direction in Directions.GetAllDirections())
+            var newValue = game.Grid[e.Point];
+            foreach (var direction in Directions.GetAllDirections())
             {
-                BimaruValueConstraint constraintInDirection = newValue.GetConstraint(direction);
+                var constraintInDirection = newValue.GetConstraint(direction);
 
-                GridPoint pointInDirection = e.Point.GetNextPoint(direction);
-                BimaruValue valueInDirection = game.Grid[pointInDirection];
+                var pointInDirection = e.Point.GetNextPoint(direction);
+                var valueInDirection = game.Grid[pointInDirection];
 
                 // Skip set if constraint already satisfied
-                if (!constraintInDirection.IsSatisfiedBy(valueInDirection))
+                if (constraintInDirection.IsSatisfiedBy(valueInDirection))
                 {
-                    BimaruValue valueToSet = constraintInDirection.GetRepresentativeValue();
-                    game.Grid[pointInDirection] = valueToSet;
+                    continue;
                 }
+
+                var valueToSet = constraintInDirection.GetRepresentativeValue();
+                game.Grid[pointInDirection] = valueToSet;
             }
         }
     }

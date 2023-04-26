@@ -13,19 +13,13 @@ namespace Bimaru.DatabaseUtil
         }
 
 
-        private IGameMetaInfo _metaInfo;
+        private IGameMetaInfo metaInfo;
 
         public IGameMetaInfo MetaInfo
         {
-            get
-            {
-                return _metaInfo;
-            }
+            get => metaInfo;
 
-            private set
-            {
-                _metaInfo = value ?? throw new ArgumentNullException("MetaInfo");
-            }
+            private set => metaInfo = value ?? throw new ArgumentNullException(nameof(value));
         }
 
 
@@ -33,15 +27,9 @@ namespace Bimaru.DatabaseUtil
 
         public IGame Game
         {
-            get
-            {
-                return game;
-            }
+            get => game;
 
-            private set
-            {
-                game = value ?? throw new ArgumentNullException("Game");
-            }
+            private set => game = value ?? throw new ArgumentNullException(nameof(value));
         }
     }
 }

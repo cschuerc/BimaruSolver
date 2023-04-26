@@ -1,14 +1,13 @@
-using Bimaru.Interfaces;
-using Bimaru.Test;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.Json;
+using Bimaru.DatabaseUtil;
+using Bimaru.Interfaces;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Bimaru.DatabaseUtil
+namespace Bimaru.Test
 {
     [TestClass]
     public class GameSourceFromResourcesTests
@@ -20,29 +19,37 @@ namespace Bimaru.DatabaseUtil
 
             var expectedGames = GetAllGames();
 
-            Assert.AreEqual(expectedGames.Count(), gameSource.GetMetaInfoOfAllGames().Count());
+            Assert.AreEqual(expectedGames.Count, gameSource.GetMetaInfoOfAllGames().Count());
 
             foreach (var actualMetaInfo in gameSource.GetMetaInfoOfAllGames())
             {
-                var expectedGame = expectedGames.FirstOrDefault(g => g.MetaInfo.ID == actualMetaInfo.ID);
+                var expectedGame = expectedGames.FirstOrDefault(g => g.MetaInfo.Id == actualMetaInfo.Id);
 
                 Assert.IsNotNull(expectedGame);
                 Assert.AreEqual(expectedGame.MetaInfo, actualMetaInfo);
             }
         }
 
-        private static IEnumerable<IGameWithMetaInfo> GetAllGames()
+        private static IReadOnlyCollection<IGameWithMetaInfo> GetAllGames()
         {
+            var databaseAssembly = Assembly.GetAssembly(typeof(GameSourceFromResources));
+            if (databaseAssembly == null)
+            {
+                return Array.Empty<IGameWithMetaInfo>();
+            }
+
             var games = new Dictionary<int, IGameWithMetaInfo>();
 
-            var databaseAssembly = Assembly.GetAssembly(typeof(GameSourceFromResources));
-            foreach (string resourceName in databaseAssembly.GetManifestResourceNames())
+            foreach (var resourceName in databaseAssembly.GetManifestResourceNames())
             {
-                using (Stream s = databaseAssembly.GetManifestResourceStream(resourceName))
+                using var s = databaseAssembly.GetManifestResourceStream(resourceName);
+                if (s == null)
                 {
-                    var game = JsonSerializer.Deserialize<IGameWithMetaInfo>(s);
-                    games.Add(game.MetaInfo.ID, game); // Check no duplicate IDs
+                    continue;
                 }
+
+                var game = JsonSerializer.Deserialize<IGameWithMetaInfo>(s);
+                games.Add(game.MetaInfo.Id, game); // Check no duplicate IDs
             }
 
             return games.Values;
@@ -55,7 +62,7 @@ namespace Bimaru.DatabaseUtil
 
             foreach (var expectedGame in GetAllGames())
             {
-                var game = gameSource.GetGame(expectedGame.MetaInfo.ID);
+                var game = gameSource.GetGame(expectedGame.MetaInfo.Id);
                 game.AssertEqual(expectedGame);
             }
         }
@@ -65,7 +72,7 @@ namespace Bimaru.DatabaseUtil
         {
             var gameSource = new GameSourceFromResources();
 
-            int maxId = gameSource.GetMetaInfoOfAllGames().Select(m => m.ID).Max();
+            var maxId = gameSource.GetMetaInfoOfAllGames().Select(m => m.Id).Max();
 
             Assert.ThrowsException<ArgumentOutOfRangeException>(() => gameSource.GetGame(maxId + 1));
         }

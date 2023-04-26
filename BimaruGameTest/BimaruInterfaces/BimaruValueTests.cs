@@ -1,10 +1,11 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Bimaru.Interfaces;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Utility;
 
-namespace Bimaru.Interfaces
+namespace Bimaru.Test
 {
     [TestClass]
     public class BimaruValueTests
@@ -12,12 +13,12 @@ namespace Bimaru.Interfaces
         [TestMethod]
         public void TestCompatibilitySingleShip()
         {
-            foreach (Direction direction in Directions.GetAllDirections())
+            foreach (var direction in Directions.GetAllDirections())
             {
-                foreach (BimaruValue value in BimaruValues.AllBimaruValues())
+                foreach (var value in BimaruValues.AllBimaruValues())
                 {
-                    // Single ships are incompatible with any ship neighbours
-                    bool shouldBeCompatible = !value.IsShip();
+                    // Single ships are incompatible with any ship neighbors
+                    var shouldBeCompatible = !value.IsShip();
                     Assert.AreEqual(shouldBeCompatible, BimaruValue.SHIP_SINGLE.IsCompatibleWith(direction, value));
                     Assert.AreEqual(shouldBeCompatible, value.IsCompatibleWith(direction, BimaruValue.SHIP_SINGLE));
                 }
@@ -27,16 +28,16 @@ namespace Bimaru.Interfaces
         [TestMethod]
         public void TestCompatibilityDiagonal()
         {
-            foreach (Direction direction in Directions.GetDirections(DirectionType.DIAGONAL))
+            foreach (var direction in Directions.GetDirections(DirectionType.DIAGONAL))
             {
-                foreach (BimaruValue value in BimaruValues.AllBimaruValues())
+                foreach (var value in BimaruValues.AllBimaruValues())
                 {
-                    foreach (BimaruValue neighbourValue in BimaruValues.AllBimaruValues())
+                    foreach (var neighborValue in BimaruValues.AllBimaruValues())
                     {
-                        // Ship fields are incompatible with neighbour ship fields at the diagonal
-                        bool shouldBeCompatible = !value.IsShip() || !neighbourValue.IsShip();
-                        Assert.AreEqual(shouldBeCompatible, value.IsCompatibleWith(direction, neighbourValue));
-                        Assert.AreEqual(shouldBeCompatible, neighbourValue.IsCompatibleWith(direction, value));
+                        // Ship fields are incompatible with neighbor ship fields at the diagonal
+                        var shouldBeCompatible = !value.IsShip() || !neighborValue.IsShip();
+                        Assert.AreEqual(shouldBeCompatible, value.IsCompatibleWith(direction, neighborValue));
+                        Assert.AreEqual(shouldBeCompatible, neighborValue.IsCompatibleWith(direction, value));
                     }
                 }
             }
@@ -46,7 +47,7 @@ namespace Bimaru.Interfaces
         public void TestCompatibilityStartEnd()
         {
             var startEndShipFields =
-                new BimaruValue[]
+                new[]
                 {
                     BimaruValue.SHIP_CONT_DOWN,
                     BimaruValue.SHIP_CONT_LEFT,
@@ -54,24 +55,24 @@ namespace Bimaru.Interfaces
                     BimaruValue.SHIP_CONT_UP
                 };
 
-            foreach (Direction direction in Directions.GetNonDiagonalDirections())
+            foreach (var direction in Directions.GetNonDiagonalDirections())
             {
-                foreach (BimaruValue value in startEndShipFields)
+                foreach (var value in startEndShipFields)
                 {
-                    foreach (BimaruValue neighbourValue in BimaruValues.AllBimaruValues())
+                    foreach (var neighborValue in BimaruValues.AllBimaruValues())
                     {
-                        bool isValidShipContinuation =
-                            neighbourValue == BimaruValue.SHIP_MIDDLE ||
-                            neighbourValue == BimaruValue.SHIP_UNDETERMINED ||
-                            neighbourValue == BimaruValue.UNDETERMINED ||
-                            neighbourValue == direction.GetLastShipValue();
+                        var isValidShipContinuation =
+                            neighborValue == BimaruValue.SHIP_MIDDLE ||
+                            neighborValue == BimaruValue.SHIP_UNDETERMINED ||
+                            neighborValue == BimaruValue.UNDETERMINED ||
+                            neighborValue == direction.GetLastShipValue();
 
-                        bool shouldBeCompatible =
-                            (value != direction.GetFirstShipValue() && !neighbourValue.IsShip()) ||
+                        var shouldBeCompatible =
+                            (value != direction.GetFirstShipValue() && !neighborValue.IsShip()) ||
                             (value == direction.GetFirstShipValue() && isValidShipContinuation);
 
-                        Assert.AreEqual(shouldBeCompatible, value.IsCompatibleWith(direction, neighbourValue));
-                        Assert.AreEqual(shouldBeCompatible, neighbourValue.IsCompatibleWith(direction.GetOpposite(), value));
+                        Assert.AreEqual(shouldBeCompatible, value.IsCompatibleWith(direction, neighborValue));
+                        Assert.AreEqual(shouldBeCompatible, neighborValue.IsCompatibleWith(direction.GetOpposite(), value));
                     }
                 }
             }
@@ -81,7 +82,7 @@ namespace Bimaru.Interfaces
         public void TestCompatibilityRemaining()
         {
             var remainingShipFields =
-                new BimaruValue[]
+                new[]
                 {
                     BimaruValue.UNDETERMINED,
                     BimaruValue.WATER,
@@ -89,14 +90,14 @@ namespace Bimaru.Interfaces
                     BimaruValue.SHIP_MIDDLE
                 };
 
-            foreach (Direction direction in Directions.GetNonDiagonalDirections())
+            foreach (var direction in Directions.GetNonDiagonalDirections())
             {
-                foreach (BimaruValue value in remainingShipFields)
+                foreach (var value in remainingShipFields)
                 {
-                    foreach (BimaruValue neighbourValue in remainingShipFields)
+                    foreach (var neighborValue in remainingShipFields)
                     {
-                        Assert.IsTrue(value.IsCompatibleWith(direction, neighbourValue));
-                        Assert.IsTrue(neighbourValue.IsCompatibleWith(direction, value));
+                        Assert.IsTrue(value.IsCompatibleWith(direction, neighborValue));
+                        Assert.IsTrue(neighborValue.IsCompatibleWith(direction, value));
                     }
                 }
             }

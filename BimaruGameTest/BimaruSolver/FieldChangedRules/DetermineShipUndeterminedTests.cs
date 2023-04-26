@@ -1,10 +1,10 @@
 using Bimaru.GameUtil;
 using Bimaru.Interfaces;
-using Bimaru.Test;
+using Bimaru.SolverUtil;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Utility;
 
-namespace Bimaru.SolverUtil
+namespace Bimaru.Test
 {
     [TestClass]
     public class DetermineShipUndeterminedTests
@@ -13,7 +13,7 @@ namespace Bimaru.SolverUtil
         public void TestShipSingle()
         {
             var game = (new GameFactory()).GenerateEmptyGame(3, 3);
-            using (var subscriber = new FieldValueChangedRuleSubscriber(game, new DetermineShipUndetermined()))
+            using (new FieldValueChangedRuleSubscriber(game, new DetermineShipUndetermined()))
             {
                 game.Grid[new GridPoint(1, 1)] = BimaruValue.SHIP_UNDETERMINED;
 
@@ -24,7 +24,7 @@ namespace Bimaru.SolverUtil
             }
 
             game.Grid.AssertEqual(
-                new BimaruValue[3, 3]
+                new[,]
                 {
                     { BimaruValue.UNDETERMINED, BimaruValue.WATER, BimaruValue.UNDETERMINED },
                     { BimaruValue.WATER, BimaruValue.SHIP_SINGLE, BimaruValue.WATER },
@@ -36,7 +36,7 @@ namespace Bimaru.SolverUtil
         public void TestShipSingleOrderReversed()
         {
             var game = (new GameFactory()).GenerateEmptyGame(3, 3);
-            using (var subscriber = new FieldValueChangedRuleSubscriber(game, new DetermineShipUndetermined()))
+            using (new FieldValueChangedRuleSubscriber(game, new DetermineShipUndetermined()))
             {
                 game.Grid[new GridPoint(0, 1)] = BimaruValue.WATER;
                 game.Grid[new GridPoint(1, 0)] = BimaruValue.WATER;
@@ -47,7 +47,7 @@ namespace Bimaru.SolverUtil
             }
 
             game.Grid.AssertEqual(
-                new BimaruValue[3, 3]
+                new[,]
                 {
                     { BimaruValue.UNDETERMINED, BimaruValue.WATER, BimaruValue.UNDETERMINED },
                     { BimaruValue.WATER, BimaruValue.SHIP_SINGLE, BimaruValue.WATER },
@@ -59,7 +59,7 @@ namespace Bimaru.SolverUtil
         public void TestShipMiddleHorizontal()
         {
             var game = (new GameFactory()).GenerateEmptyGame(3, 3);
-            using (var subscriber = new FieldValueChangedRuleSubscriber(game, new DetermineShipUndetermined()))
+            using (new FieldValueChangedRuleSubscriber(game, new DetermineShipUndetermined()))
             {
                 game.Grid[new GridPoint(1, 0)] = BimaruValue.SHIP_UNDETERMINED;
                 game.Grid[new GridPoint(1, 1)] = BimaruValue.SHIP_UNDETERMINED;
@@ -67,7 +67,7 @@ namespace Bimaru.SolverUtil
             }
 
             game.Grid.AssertEqual(
-                new BimaruValue[3, 3]
+                new[,]
                 {
                     { BimaruValue.UNDETERMINED, BimaruValue.UNDETERMINED, BimaruValue.UNDETERMINED },
                     { BimaruValue.SHIP_CONT_RIGHT, BimaruValue.SHIP_MIDDLE, BimaruValue.SHIP_CONT_LEFT },
@@ -79,7 +79,7 @@ namespace Bimaru.SolverUtil
         public void TestShipMiddleVertical()
         {
             var game = (new GameFactory()).GenerateEmptyGame(3, 3);
-            using (var subscriber = new FieldValueChangedRuleSubscriber(game, new DetermineShipUndetermined()))
+            using (new FieldValueChangedRuleSubscriber(game, new DetermineShipUndetermined()))
             {
                 game.Grid[new GridPoint(0, 1)] = BimaruValue.SHIP_UNDETERMINED;
                 game.Grid[new GridPoint(1, 1)] = BimaruValue.SHIP_UNDETERMINED;
@@ -87,7 +87,7 @@ namespace Bimaru.SolverUtil
             }
 
             game.Grid.AssertEqual(
-                new BimaruValue[3, 3]
+                new[,]
                 {
                     { BimaruValue.UNDETERMINED, BimaruValue.SHIP_CONT_UP, BimaruValue.UNDETERMINED },
                     { BimaruValue.UNDETERMINED, BimaruValue.SHIP_MIDDLE, BimaruValue.UNDETERMINED },
@@ -99,7 +99,7 @@ namespace Bimaru.SolverUtil
         public void TestShipContRight()
         {
             var game = (new GameFactory()).GenerateEmptyGame(3, 3);
-            using (var subscriber = new FieldValueChangedRuleSubscriber(game, new DetermineShipUndetermined()))
+            using (new FieldValueChangedRuleSubscriber(game, new DetermineShipUndetermined()))
             {
                 game.Grid[new GridPoint(1, 0)] = BimaruValue.WATER;
                 game.Grid[new GridPoint(1, 1)] = BimaruValue.SHIP_UNDETERMINED;
@@ -107,17 +107,19 @@ namespace Bimaru.SolverUtil
             }
 
             game.Grid.AssertEqual(
-                new BimaruValue[3, 3]
+                new[,]
                 {
                     { BimaruValue.UNDETERMINED, BimaruValue.UNDETERMINED, BimaruValue.UNDETERMINED },
                     { BimaruValue.WATER, BimaruValue.SHIP_CONT_RIGHT, BimaruValue.SHIP_CONT_LEFT },
                     { BimaruValue.UNDETERMINED, BimaruValue.UNDETERMINED, BimaruValue.UNDETERMINED }
                 });
         }
+
+        [TestMethod]
         public void TestShipContLeft()
         {
             var game = (new GameFactory()).GenerateEmptyGame(3, 3);
-            using (var subscriber = new FieldValueChangedRuleSubscriber(game, new DetermineShipUndetermined()))
+            using (new FieldValueChangedRuleSubscriber(game, new DetermineShipUndetermined()))
             {
                 game.Grid[new GridPoint(1, 0)] = BimaruValue.SHIP_UNDETERMINED;
                 game.Grid[new GridPoint(1, 1)] = BimaruValue.SHIP_UNDETERMINED;
@@ -125,7 +127,7 @@ namespace Bimaru.SolverUtil
             }
 
             game.Grid.AssertEqual(
-                new BimaruValue[3, 3]
+                new[,]
                 {
                     { BimaruValue.UNDETERMINED, BimaruValue.UNDETERMINED, BimaruValue.UNDETERMINED },
                     { BimaruValue.SHIP_CONT_RIGHT, BimaruValue.SHIP_CONT_LEFT, BimaruValue.WATER },
@@ -133,10 +135,11 @@ namespace Bimaru.SolverUtil
                 });
         }
 
+        [TestMethod]
         public void TestShipContUp()
         {
             var game = (new GameFactory()).GenerateEmptyGame(3, 3);
-            using (var subscriber = new FieldValueChangedRuleSubscriber(game, new DetermineShipUndetermined()))
+            using (new FieldValueChangedRuleSubscriber(game, new DetermineShipUndetermined()))
             {
                 game.Grid[new GridPoint(0, 1)] = BimaruValue.WATER;
                 game.Grid[new GridPoint(1, 1)] = BimaruValue.SHIP_UNDETERMINED;
@@ -144,7 +147,7 @@ namespace Bimaru.SolverUtil
             }
 
             game.Grid.AssertEqual(
-                new BimaruValue[3, 3]
+                new[,]
                 {
                     { BimaruValue.UNDETERMINED, BimaruValue.WATER, BimaruValue.UNDETERMINED },
                     { BimaruValue.UNDETERMINED, BimaruValue.SHIP_CONT_UP, BimaruValue.UNDETERMINED },
@@ -152,10 +155,11 @@ namespace Bimaru.SolverUtil
                 });
         }
 
+        [TestMethod]
         public void TestShipContDown()
         {
             var game = (new GameFactory()).GenerateEmptyGame(3, 3);
-            using (var subscriber = new FieldValueChangedRuleSubscriber(game, new DetermineShipUndetermined()))
+            using (new FieldValueChangedRuleSubscriber(game, new DetermineShipUndetermined()))
             {
                 game.Grid[new GridPoint(0, 1)] = BimaruValue.SHIP_UNDETERMINED;
                 game.Grid[new GridPoint(1, 1)] = BimaruValue.SHIP_UNDETERMINED;
@@ -163,7 +167,7 @@ namespace Bimaru.SolverUtil
             }
 
             game.Grid.AssertEqual(
-                new BimaruValue[3, 3]
+                new[,]
                 {
                     { BimaruValue.UNDETERMINED, BimaruValue.SHIP_CONT_UP, BimaruValue.UNDETERMINED },
                     { BimaruValue.UNDETERMINED, BimaruValue.SHIP_CONT_DOWN, BimaruValue.UNDETERMINED },
@@ -176,7 +180,7 @@ namespace Bimaru.SolverUtil
         {
             var game = (new GameFactory()).GenerateEmptyGame(5, 5);
 
-            using (var subscriber = new FieldValueChangedRuleSubscriber(game, new DetermineShipUndetermined()))
+            using (new FieldValueChangedRuleSubscriber(game, new DetermineShipUndetermined()))
             {
                 game.Grid[new GridPoint(0, 0)] = BimaruValue.SHIP_UNDETERMINED;
                 game.Grid[new GridPoint(0, 1)] = BimaruValue.SHIP_MIDDLE;
@@ -204,7 +208,7 @@ namespace Bimaru.SolverUtil
             // S? SM S? S? WW
 
             game.Grid.AssertEqual(
-                new BimaruValue[5, 5]
+                new[,]
                 {
                     { BimaruValue.SHIP_CONT_RIGHT  , BimaruValue.SHIP_MIDDLE , BimaruValue.SHIP_MIDDLE   , BimaruValue.SHIP_CONT_LEFT, BimaruValue.WATER        },
                     { BimaruValue.UNDETERMINED     , BimaruValue.UNDETERMINED, BimaruValue.WATER         , BimaruValue.UNDETERMINED  , BimaruValue.UNDETERMINED },

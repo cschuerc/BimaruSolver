@@ -17,16 +17,14 @@ namespace Bimaru.Test
         private IGame Game
         {
             get;
-            set;
         }
 
         private IFieldValueChangedRule Rule
         {
             get;
-            set;
         }
 
-        void OnFieldValueChanged(object sender, FieldValueChangedEventArgs<BimaruValue> e)
+        private void OnFieldValueChanged(object sender, FieldValueChangedEventArgs<BimaruValue> e)
         {
             Rule.FieldValueChanged(Game, e);
         }

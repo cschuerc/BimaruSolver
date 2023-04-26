@@ -17,10 +17,18 @@ namespace Bimaru.GameUtil
             TargetNumberOfShipsPerLength = targetNumberOfShipsPerLength;
             Grid = grid;
 
-            if (targetNumberOfShipFieldsPerRow.Length != grid.NumberOfRows ||
-                targetNumberOfShipFieldsPerColumn.Length != grid.NumberOfColumns)
+            if (targetNumberOfShipFieldsPerRow.Length != grid.NumberOfRows)
             {
-                throw new ArgumentOutOfRangeException("The number of rows/columns does not agree between tallies and grid.");
+                throw new ArgumentOutOfRangeException(nameof(targetNumberOfShipFieldsPerRow),
+                    targetNumberOfShipFieldsPerRow,
+                    "The number of rows does not agree between tallies and grid.");
+            }
+
+            if (targetNumberOfShipFieldsPerColumn.Length != grid.NumberOfColumns)
+            {
+                throw new ArgumentOutOfRangeException(nameof(targetNumberOfShipFieldsPerColumn),
+                    targetNumberOfShipFieldsPerColumn,
+                    "The number of columns does not agree between tallies and grid.");
             }
         }
 
@@ -29,52 +37,31 @@ namespace Bimaru.GameUtil
 
         public IGridTally TargetNumberOfShipFieldsPerRow
         {
-            get
-            {
-                return targetNumberOfShipFieldsPerRow;
-            }
+            get => targetNumberOfShipFieldsPerRow;
 
-            private set
-            {
-                targetNumberOfShipFieldsPerRow = value ?? throw new ArgumentNullException("TargetNumberOfShipFieldsRow");
-            }
+            private set => targetNumberOfShipFieldsPerRow = value ?? throw new ArgumentNullException(nameof(value));
         }
 
-        private Satisfiability TargetShipFieldsRowSatisfiability
-        {
-            get
-            {
-                return TargetNumberOfShipFieldsPerRow.GetSatisfiability(
-                    Grid.NumberOfShipFieldsPerRow,
-                    Grid.NumberOfUndeterminedFieldsPerRow);
-            }
-        }
+        private Satisfiability TargetShipFieldsRowSatisfiability =>
+            TargetNumberOfShipFieldsPerRow.GetSatisfiability(
+                Grid.NumberOfShipFieldsPerRow,
+                Grid.NumberOfUndeterminedFieldsPerRow);
 
 
         private IGridTally targetNumberOfShipFieldsPerColumn;
 
         public IGridTally TargetNumberOfShipFieldsPerColumn
         {
-            get
-            {
-                return targetNumberOfShipFieldsPerColumn;
-            }
+            get => targetNumberOfShipFieldsPerColumn;
 
-            private set
-            {
-                targetNumberOfShipFieldsPerColumn = value ?? throw new ArgumentNullException("TargetNumberOfShipFieldsColumn");
-            }
+            private set => targetNumberOfShipFieldsPerColumn = value ?? throw new ArgumentNullException(nameof(value));
         }
 
-        private Satisfiability TargetShipFieldsColumnSatisfiability
-        {
-            get
-            {
-                return TargetNumberOfShipFieldsPerColumn.GetSatisfiability(
-                    Grid.NumberOfShipFieldsPerColumn,
-                    Grid.NumberOfUndeterminedFieldsPerColumn);
-            }
-        }
+        private Satisfiability TargetShipFieldsColumnSatisfiability =>
+            TargetNumberOfShipFieldsPerColumn.GetSatisfiability(
+                Grid.NumberOfShipFieldsPerColumn,
+                Grid.NumberOfUndeterminedFieldsPerColumn);
+
         #endregion
 
         #region Target number of ships
@@ -82,24 +69,13 @@ namespace Bimaru.GameUtil
 
         public IShipTarget TargetNumberOfShipsPerLength
         {
-            get
-            {
-                return targetNumberOfShipsPerLength;
-            }
-
-            private set
-            {
-                targetNumberOfShipsPerLength = value ?? throw new ArgumentNullException("TargetNumberOfShips");
-            }
+            get => targetNumberOfShipsPerLength;
+            
+            private set => targetNumberOfShipsPerLength = value ?? throw new ArgumentNullException(nameof(value));
         }
 
-        private Satisfiability TargetNumberOfShipsSatisfiability
-        {
-            get
-            {
-                return TargetNumberOfShipsPerLength.GetSatisfiability(Grid.NumberOfShipsPerLength);
-            }
-        }
+        private Satisfiability TargetNumberOfShipsSatisfiability => TargetNumberOfShipsPerLength.GetSatisfiability(Grid.NumberOfShipsPerLength);
+
         #endregion
 
         #region Grid
@@ -107,15 +83,9 @@ namespace Bimaru.GameUtil
 
         public IBimaruGrid Grid
         {
-            get
-            {
-                return grid;
-            }
+            get => grid;
 
-            private set
-            {
-                grid = value ?? throw new ArgumentNullException("Grid");
-            }
+            private set => grid = value ?? throw new ArgumentNullException(nameof(value));
         }
 
         public int NumberOfMissingShipFieldsPerRow(int index)
@@ -128,13 +98,8 @@ namespace Bimaru.GameUtil
             return targetNumberOfShipFieldsPerColumn[index] - grid.NumberOfShipFieldsPerColumn[index];
         }
 
-        public int? LengthOfLongestMissingShip
-        {
-            get
-            {
-                return TargetNumberOfShipsPerLength.LengthOfLongestMissingShip(Grid.NumberOfShipsPerLength);
-            }
-        }
+        public int? LengthOfLongestMissingShip => TargetNumberOfShipsPerLength.LengthOfLongestMissingShip(Grid.NumberOfShipsPerLength);
+
         #endregion
 
         #region Game properties
@@ -150,30 +115,21 @@ namespace Bimaru.GameUtil
             }
         }
 
-        public bool IsValid
-        {
-            get
-            {
-                return !IsUnsolvable &&
-                    Grid.IsValid &&
-                    TargetShipFieldsRowSatisfiability != Satisfiability.VIOLATED &&
-                    TargetShipFieldsColumnSatisfiability != Satisfiability.VIOLATED &&
-                    TargetNumberOfShipsSatisfiability != Satisfiability.VIOLATED;
-            }
-        }
+        public bool IsValid =>
+            !IsUnsolvable &&
+            Grid.IsValid &&
+            TargetShipFieldsRowSatisfiability != Satisfiability.VIOLATED &&
+            TargetShipFieldsColumnSatisfiability != Satisfiability.VIOLATED &&
+            TargetNumberOfShipsSatisfiability != Satisfiability.VIOLATED;
 
-        public bool IsSolved
-        {
-            get
-            {
-                return !IsUnsolvable &&
-                    Grid.IsValid &&
-                    Grid.IsFullyDetermined &&
-                    TargetShipFieldsRowSatisfiability == Satisfiability.SATISFIED &&
-                    TargetShipFieldsColumnSatisfiability == Satisfiability.SATISFIED &&
-                    TargetNumberOfShipsSatisfiability == Satisfiability.SATISFIED;
-            }
-        }
+        public bool IsSolved =>
+            !IsUnsolvable &&
+            Grid.IsValid &&
+            Grid.IsFullyDetermined &&
+            TargetShipFieldsRowSatisfiability == Satisfiability.SATISFIED &&
+            TargetShipFieldsColumnSatisfiability == Satisfiability.SATISFIED &&
+            TargetNumberOfShipsSatisfiability == Satisfiability.SATISFIED;
+
         #endregion
     }
 }

@@ -37,10 +37,10 @@ namespace Bimaru.Interfaces
         /// <summary>
         /// How the target number of ship fields is satisfied.
         /// </summary>
-        /// <param name="numberOfFields"> Real number of fields per row/column that satisfy the condition. </param>
-        /// <param name="additionalNumberOfFields"> Additional number of fields per row/column that don't satisfy the condition but could </param>
+        /// <param name="numberOfShipFields"> Real number of fields per row/column that satisfy the condition. </param>
+        /// <param name="numberOfUndeterminedFields"> Additional number of fields per row/column that don't satisfy the condition but could </param>
         Satisfiability GetSatisfiability(
-            IReadOnlyList<int> numberOfFields,
-            IReadOnlyList<int> additionalNumberOfFields);
+            IReadOnlyList<int> numberOfShipFields,
+            IReadOnlyList<int> numberOfUndeterminedFields);
     }
 }

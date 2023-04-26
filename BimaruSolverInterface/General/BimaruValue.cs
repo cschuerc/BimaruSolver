@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Utility;
 
 namespace Bimaru.Interfaces
@@ -11,6 +12,9 @@ namespace Bimaru.Interfaces
         /// </summary>
         UNDETERMINED,
 
+        /// <summary>
+        /// Water fields
+        /// </summary>
         WATER,
 
         /// <summary>
@@ -56,7 +60,7 @@ namespace Bimaru.Interfaces
         /// </summary>
         public static IEnumerable<BimaruValue> AllBimaruValues()
         {
-            return (IEnumerable<BimaruValue>)Enum.GetValues(typeof(BimaruValue));
+            return Enum.GetValues(typeof(BimaruValue)).Cast<BimaruValue>();
         }
 
 
@@ -173,11 +177,11 @@ namespace Bimaru.Interfaces
         }
 
         /// <summary>
-        /// Constraint that a field value gives to the neighbour field in the given direction.
+        /// Constraint that a field value gives to the neighbor field in the given direction.
         /// </summary>
         public static BimaruValueConstraint GetConstraint(this BimaruValue value, Direction direction)
         {
-            BimaruValueConstraint constraint = BimaruValueConstraint.NO;
+            var constraint = BimaruValueConstraint.NO;
 
             if (value.IsShip())
             {
@@ -200,13 +204,13 @@ namespace Bimaru.Interfaces
         }
 
         /// <summary>
-        /// True, if the given value and its neighbour value in the given direction are compatible.
+        /// True, if the given value and its neighbor value in the given direction are compatible.
         /// </summary>
-        public static bool IsCompatibleWith(this BimaruValue value, Direction direction, BimaruValue neighbourValue)
+        public static bool IsCompatibleWith(this BimaruValue value, Direction direction, BimaruValue neighborValue)
         {
-            BimaruValueConstraint constraintToNeighbour = value.GetConstraint(direction);
-            BimaruValueConstraint constraintToThis = neighbourValue.GetConstraint(direction.GetOpposite());
-            return constraintToNeighbour.DoesAllow(neighbourValue) && constraintToThis.DoesAllow(value);
+            var constraintToNeighbor = value.GetConstraint(direction);
+            var constraintToThis = neighborValue.GetConstraint(direction.GetOpposite());
+            return constraintToNeighbor.DoesAllow(neighborValue) && constraintToThis.DoesAllow(value);
         }
     }
 }

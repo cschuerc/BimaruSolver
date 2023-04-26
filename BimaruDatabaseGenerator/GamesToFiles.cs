@@ -1,20 +1,20 @@
-﻿using Bimaru.Interfaces;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
+using Bimaru.Interfaces;
 
-namespace Bimaru.DatabaseUtilGeneratorUtil
+namespace Bimaru.DatabaseGeneratorUtil
 {
-    class GamesToFiles
+    internal static class GamesToFiles
     {
-        static void Main(string[] args)
+        internal static void Main(string[] args)
         {
             if (args.Length < 1)
             {
                 return;
             }
 
-            string filenameFormat = args[0];
+            var filenameFormat = args[0];
             var games = DatabaseGenerator.GenerateGames();
 
             SerializeGamesToFile(filenameFormat, games);
@@ -26,10 +26,8 @@ namespace Bimaru.DatabaseUtilGeneratorUtil
         {
             foreach (var game in games)
             {
-                using (Stream fileStream = File.Create(string.Format(databaseNameFormat, game.MetaInfo.ID)))
-                {
-                    JsonSerializer.Serialize(fileStream, game);
-                }
+                using var fileStream = File.Create(string.Format(databaseNameFormat, game.MetaInfo.Id));
+                JsonSerializer.Serialize(fileStream, game);
             }
         }
     }

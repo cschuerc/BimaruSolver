@@ -1,10 +1,11 @@
-using Bimaru.Interfaces;
-using Bimaru.Test;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using Bimaru.GameUtil;
+using Bimaru.Interfaces;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Utility;
+// ReSharper disable AccessToModifiedClosure
 
-namespace Bimaru.GameUtil
+namespace Bimaru.Test
 {
     [TestClass]
     public class GameTests
@@ -12,8 +13,8 @@ namespace Bimaru.GameUtil
         [TestMethod]
         public void TestNullArguments()
         {
-            int numRows = 4;
-            int numColumns = 3;
+            const int numRows = 4;
+            const int numColumns = 3;
 
             var rowTally = new GridTally(numRows);
             var columnTally = new GridTally(numColumns);
@@ -29,16 +30,15 @@ namespace Bimaru.GameUtil
         [TestMethod]
         public void TestRowTallyGridMismatch()
         {
-            GridTally rowTally;
             var columnTally = new GridTally(3);
             var shipTarget = new ShipTarget();
             var grid = new BimaruGrid(4, 3);
 
-            rowTally = new GridTally(3);
+            var rowTally = new GridTally(3);
             Assert.ThrowsException<ArgumentOutOfRangeException>(() => new Game(rowTally, columnTally, shipTarget, grid));
 
             rowTally = new GridTally(4);
-            new Game(rowTally, columnTally, shipTarget, grid);
+            var _ = new Game(rowTally, columnTally, shipTarget, grid);
 
             rowTally = new GridTally(5);
             Assert.ThrowsException<ArgumentOutOfRangeException>(() => new Game(rowTally, columnTally, shipTarget, grid));
@@ -47,16 +47,15 @@ namespace Bimaru.GameUtil
         [TestMethod]
         public void TestColumnTallyGridMismatch()
         {
-            GridTally rowTally = new GridTally(4);
-            GridTally columnTally;
+            var rowTally = new GridTally(4);
             var shipTarget = new ShipTarget();
             var grid = new BimaruGrid(4, 3);
 
-            columnTally = new GridTally(2);
+            var columnTally = new GridTally(2);
             Assert.ThrowsException<ArgumentOutOfRangeException>(() => new Game(rowTally, columnTally, shipTarget, grid));
 
             columnTally = new GridTally(3);
-            new Game(rowTally, columnTally, shipTarget, grid);
+            var _ = new Game(rowTally, columnTally, shipTarget, grid);
 
             columnTally = new GridTally(4);
             Assert.ThrowsException<ArgumentOutOfRangeException>(() => new Game(rowTally, columnTally, shipTarget, grid));
@@ -65,7 +64,7 @@ namespace Bimaru.GameUtil
         [TestMethod]
         public void TestNumberOfMissingShipFields()
         {
-            Game game = (new GameFactoryForTesting()).GenerateEmptyGame(4, 3);
+            var game = (new GameFactoryForTesting()).GenerateEmptyGame(4, 3);
 
             game.TargetNumberOfShipFieldsPerRow[0] = 1;
             game.TargetNumberOfShipFieldsPerRow[1] = 1;
@@ -107,21 +106,22 @@ namespace Bimaru.GameUtil
         [TestMethod]
         public void TestUnsolvabilityEmptyGame()
         {
-            Game game = (new GameFactoryForTesting()).GenerateEmptyGame(4, 3);
+            var game = (new GameFactoryForTesting()).GenerateEmptyGame(4, 3);
 
             Assert.IsFalse(game.IsUnsolvable);
         }
 
+        [TestMethod]
         public void TestUnsolvability()
         {
-            Game game = GetNotUnsolvableGame();
+            var game = GetNotUnsolvableGame();
 
             Assert.IsFalse(game.IsUnsolvable);
         }
 
         /// <summary>
         /// 
-        /// 1xDESTROYER, 1XCRUISER
+        /// 1xDESTROYER, 1xCRUISER
         ///   403
         ///   ---
         /// 3|???
@@ -130,9 +130,9 @@ namespace Bimaru.GameUtil
         /// 3|???
         /// 
         /// </summary>
-        private Game GetNotUnsolvableGame()
+        private static Game GetNotUnsolvableGame()
         {
-            Game game = (new GameFactoryForTesting()).GenerateEmptyGame(4, 3);
+            var game = (new GameFactoryForTesting()).GenerateEmptyGame(4, 3);
 
             game.TargetNumberOfShipFieldsPerRow[0] = 3;
             game.TargetNumberOfShipFieldsPerRow[1] = 1;
@@ -150,7 +150,7 @@ namespace Bimaru.GameUtil
         [TestMethod]
         public void TestUnsolvabilityTallyTotal()
         {
-            Game game = GetNotUnsolvableGame();
+            var game = GetNotUnsolvableGame();
 
             game.TargetNumberOfShipFieldsPerRow[2] = 1;
 
@@ -162,7 +162,7 @@ namespace Bimaru.GameUtil
         [TestMethod]
         public void TestUnsolvabilityTargetShips()
         {
-            Game game = GetNotUnsolvableGame();
+            var game = GetNotUnsolvableGame();
 
             game.TargetNumberOfShipsPerLength[1] = 1;
 
@@ -174,7 +174,7 @@ namespace Bimaru.GameUtil
         [TestMethod]
         public void TestUnsolvabilityMoreShipFieldsThanRows()
         {
-            Game game = GetNotUnsolvableGame();
+            var game = GetNotUnsolvableGame();
 
             game.TargetNumberOfShipFieldsPerRow[2]++;
             game.TargetNumberOfShipFieldsPerColumn[0]++;
@@ -187,7 +187,7 @@ namespace Bimaru.GameUtil
         [TestMethod]
         public void TestUnsolvabilityMoreShipFieldsThanColumns()
         {
-            Game game = GetNotUnsolvableGame();
+            var game = GetNotUnsolvableGame();
 
             game.TargetNumberOfShipFieldsPerRow[0]++;
             game.TargetNumberOfShipFieldsPerColumn[1]++;
@@ -200,7 +200,7 @@ namespace Bimaru.GameUtil
         [TestMethod]
         public void TestUnsolvabilityTooLongShipTarget()
         {
-            Game game = GetNotUnsolvableGame();
+            var game = GetNotUnsolvableGame();
 
             game.TargetNumberOfShipsPerLength[2]--;
             game.TargetNumberOfShipsPerLength[3]--;
@@ -213,7 +213,7 @@ namespace Bimaru.GameUtil
         [TestMethod]
         public void TestValidityEmptyGame()
         {
-            Game game = (new GameFactoryForTesting()).GenerateEmptyGame(2, 3);
+            var game = (new GameFactoryForTesting()).GenerateEmptyGame(2, 3);
 
             Assert.IsTrue(game.IsValid);
         }
@@ -221,7 +221,7 @@ namespace Bimaru.GameUtil
         [TestMethod]
         public void TestValidityOfValidGame()
         {
-            Game game = GetValidGame();
+            var game = GetValidGame();
 
             Assert.IsTrue(game.IsValid);
         }
@@ -237,7 +237,7 @@ namespace Bimaru.GameUtil
         /// </summary>
         private Game GetValidGame()
         {
-            Game game = (new GameFactoryForTesting()).GenerateEmptyGame(2, 3);
+            var game = (new GameFactoryForTesting()).GenerateEmptyGame(2, 3);
 
             game.TargetNumberOfShipFieldsPerRow[0] = 2;
 
@@ -252,7 +252,7 @@ namespace Bimaru.GameUtil
         [TestMethod]
         public void TestValidityWhenUnsolvable()
         {
-            Game game = GetValidGame();
+            var game = GetValidGame();
 
             game.TargetNumberOfShipFieldsPerRow[0] = 3;
 
@@ -263,7 +263,7 @@ namespace Bimaru.GameUtil
         [TestMethod]
         public void TestValidityTooManyShipFieldsColumn()
         {
-            Game game = GetValidGame();
+            var game = GetValidGame();
 
             game.Grid[new GridPoint(0, 1)] = BimaruValue.SHIP_CONT_RIGHT;
 
@@ -274,7 +274,7 @@ namespace Bimaru.GameUtil
         [TestMethod]
         public void TestValidityTooManyShipFieldsRow()
         {
-            Game game = GetValidGame();
+            var game = GetValidGame();
 
             game.Grid[new GridPoint(0, 1)] = BimaruValue.WATER;
             game.Grid[new GridPoint(0, 2)] = BimaruValue.WATER;
@@ -286,7 +286,7 @@ namespace Bimaru.GameUtil
         [TestMethod]
         public void TestValidityWrongShipLengths()
         {
-            Game game = GetValidGame();
+            var game = GetValidGame();
 
             game.Grid[new GridPoint(0, 0)] = BimaruValue.SHIP_SINGLE;
             game.Grid[new GridPoint(0, 2)] = BimaruValue.SHIP_SINGLE;
@@ -298,7 +298,7 @@ namespace Bimaru.GameUtil
         [TestMethod]
         public void TestValidityGridInvalid()
         {
-            Game game = GetValidGame();
+            var game = GetValidGame();
 
             game.Grid[new GridPoint(0, 0)] = BimaruValue.SHIP_CONT_RIGHT;
             game.Grid[new GridPoint(0, 1)] = BimaruValue.WATER;
@@ -311,7 +311,7 @@ namespace Bimaru.GameUtil
         [TestMethod]
         public void TestIsSolvedEmptyGame()
         {
-            Game game = (new GameFactoryForTesting()).GenerateEmptyGame(4, 3);
+            var game = (new GameFactoryForTesting()).GenerateEmptyGame(4, 3);
 
             Assert.IsFalse(game.IsSolved);
         }
@@ -319,7 +319,7 @@ namespace Bimaru.GameUtil
         [TestMethod]
         public void TestIsSolvedWhenSolved()
         {
-            Game game = GetSolvedGame();
+            var game = GetSolvedGame();
 
             Assert.IsTrue(game.IsSolved);
         }
@@ -337,7 +337,7 @@ namespace Bimaru.GameUtil
         /// </summary>
         private Game GetSolvedGame()
         {
-            Game game = (new GameFactoryForTesting()).GenerateEmptyGame(4, 3);
+            var game = (new GameFactoryForTesting()).GenerateEmptyGame(4, 3);
 
             game.TargetNumberOfShipFieldsPerRow[0] = 2;
             game.TargetNumberOfShipFieldsPerRow[1] = 2;
@@ -372,7 +372,7 @@ namespace Bimaru.GameUtil
         [TestMethod]
         public void TestIsSolvedNotFullyDetermined()
         {
-            Game game = GetSolvedGame();
+            var game = GetSolvedGame();
 
             game.Grid[new GridPoint(0, 1)] = BimaruValue.UNDETERMINED;
 
@@ -383,7 +383,7 @@ namespace Bimaru.GameUtil
         [TestMethod]
         public void TestIsSolvedTallyViolated()
         {
-            Game game = GetSolvedGame();
+            var game = GetSolvedGame();
 
             game.Grid[new GridPoint(3, 0)] = BimaruValue.SHIP_CONT_DOWN;
             game.Grid[new GridPoint(2, 0)] = BimaruValue.SHIP_CONT_UP;
@@ -397,7 +397,7 @@ namespace Bimaru.GameUtil
         [TestMethod]
         public void TestIsSolvedWrongShips()
         {
-            Game game = GetSolvedGame();
+            var game = GetSolvedGame();
 
             game.TargetNumberOfShipsPerLength[1] = 3;
             game.TargetNumberOfShipsPerLength[2] = 0;
@@ -409,7 +409,7 @@ namespace Bimaru.GameUtil
         [TestMethod]
         public void TestIsSolvedGridInvalid()
         {
-            Game game = GetSolvedGame();
+            var game = GetSolvedGame();
 
             game.TargetNumberOfShipsPerLength[1] = 3;
             game.TargetNumberOfShipsPerLength[2] = 0;

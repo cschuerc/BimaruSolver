@@ -1,10 +1,10 @@
 using Bimaru.GameUtil;
 using Bimaru.Interfaces;
-using Bimaru.Test;
+using Bimaru.SolverUtil;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Utility;
 
-namespace Bimaru.SolverUtil
+namespace Bimaru.Test
 {
     [TestClass]
     public class FillRowOrColumnTests
@@ -18,7 +18,7 @@ namespace Bimaru.SolverUtil
             new FillRowOrColumnWithWater().Solve(game);
 
             game.Grid.AssertEqual(
-                new BimaruValue[2, 3]
+                new[,]
                 {
                     { BimaruValue.UNDETERMINED, BimaruValue.WATER, BimaruValue.UNDETERMINED },
                     { BimaruValue.WATER, BimaruValue.WATER, BimaruValue.SHIP_UNDETERMINED }
@@ -55,7 +55,7 @@ namespace Bimaru.SolverUtil
             new FillRowOrColumnWithShips().Solve(game);
 
             game.Grid.AssertEqual(
-                new BimaruValue[2, 3]
+                new[,]
                 {
                     { BimaruValue.UNDETERMINED, BimaruValue.UNDETERMINED, BimaruValue.SHIP_CONT_RIGHT },
                     { BimaruValue.UNDETERMINED, BimaruValue.UNDETERMINED, BimaruValue.SHIP_UNDETERMINED }
@@ -66,13 +66,13 @@ namespace Bimaru.SolverUtil
         public void TestFieldValueChangedRuleWater()
         {
             var game = GetBasicGame();
-            using (var subscriber = new FieldValueChangedRuleSubscriber(game, new FillRowOrColumnWithWater()))
+            using (new FieldValueChangedRuleSubscriber(game, new FillRowOrColumnWithWater()))
             {
                 game.Grid[new GridPoint(0, 0)] = BimaruValue.SHIP_UNDETERMINED;
             }
 
             game.Grid.AssertEqual(
-                new BimaruValue[2, 3]
+                new[,]
                 {
                     { BimaruValue.SHIP_UNDETERMINED, BimaruValue.UNDETERMINED, BimaruValue.UNDETERMINED },
                     { BimaruValue.WATER, BimaruValue.UNDETERMINED, BimaruValue.UNDETERMINED }
@@ -83,13 +83,13 @@ namespace Bimaru.SolverUtil
         public void TestFieldValueChangedRuleShip()
         {
             var game = GetBasicGame();
-            using (var subscriber = new FieldValueChangedRuleSubscriber(game, new FillRowOrColumnWithShips()))
+            using (new FieldValueChangedRuleSubscriber(game, new FillRowOrColumnWithShips()))
             {
                 game.Grid[new GridPoint(1, 2)] = BimaruValue.SHIP_CONT_DOWN;
             }
 
             game.Grid.AssertEqual(
-                new BimaruValue[2, 3]
+                new[,]
                 {
                     { BimaruValue.UNDETERMINED, BimaruValue.UNDETERMINED, BimaruValue.SHIP_UNDETERMINED },
                     { BimaruValue.UNDETERMINED, BimaruValue.UNDETERMINED, BimaruValue.SHIP_CONT_DOWN }

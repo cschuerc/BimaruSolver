@@ -33,7 +33,7 @@ namespace Utility
     /// Container for an arbitrary number of field changes. Only one change per field.
     /// </summary>
     /// <typeparam name="T"> Type of field value </typeparam>
-    public class FieldsToChange<T> : IEnumerable<SingleChange<T>>
+    public class FieldsToChange<T> : IReadOnlyCollection<SingleChange<T>>
     {
         public FieldsToChange()
         {
@@ -58,11 +58,11 @@ namespace Utility
         {
             if (values == null)
             {
-                throw new ArgumentNullException();
+                throw new ArgumentNullException(nameof(values));
             }
 
-            GridPoint currentPoint = startPoint;
-            foreach (T v in values)
+            var currentPoint = startPoint;
+            foreach (var v in values)
             {
                 Add(currentPoint, v);
                 currentPoint = currentPoint.GetNextPoint(direction);
@@ -88,5 +88,7 @@ namespace Utility
         {
             return fieldChanges.Values.GetEnumerator();
         }
+
+        public int Count => fieldChanges.Values.Count;
     }
 }

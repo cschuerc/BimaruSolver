@@ -26,7 +26,7 @@ namespace Bimaru.Interfaces
 
         /// <summary>
         /// Get a representative value of the constraint.
-        /// The value fullfills the constraint without assuming more.
+        /// The value fulfills the constraint without assuming more.
         /// </summary>
         public static BimaruValue GetRepresentativeValue(this BimaruValueConstraint constraint)
         {
@@ -44,7 +44,7 @@ namespace Bimaru.Interfaces
         /// <summary>
         /// Whether the constraint allows the Bimaru value. Note that all
         /// constraints allow the value UNDETERMINED as the constraint
-        /// can still be fullfilled in the future.
+        /// can still be fulfilled in the future.
         /// </summary>
         public static bool DoesAllow(this BimaruValueConstraint constraint, BimaruValue value)
         {

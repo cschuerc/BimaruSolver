@@ -43,12 +43,12 @@ namespace Bimaru.SolverUtil
 
         public void Solve(IGame game)
         {
-            foreach (int rowIndex in Enumerable.Range(0, game.Grid.NumberOfRows).Where(i => AreTargetShipFieldsSetInRow(game, i)))
+            foreach (var rowIndex in Enumerable.Range(0, game.Grid.NumberOfRows).Where(i => AreTargetShipFieldsSetInRow(game, i)))
             {
                 game.Grid.FillUndeterminedFieldsRow(rowIndex, BimaruValueConstraint.WATER);
             }
 
-            foreach (int columnIndex in Enumerable.Range(0, game.Grid.NumberOfColumns).Where(i => AreTargetShipFieldsSetInColumn(game, i)))
+            foreach (var columnIndex in Enumerable.Range(0, game.Grid.NumberOfColumns).Where(i => AreTargetShipFieldsSetInColumn(game, i)))
             {
                 game.Grid.FillUndeterminedFieldsColumn(columnIndex, BimaruValueConstraint.WATER);
             }
