@@ -8,7 +8,7 @@ namespace Bimaru.DatabaseUtil
     /// Equality based on all data fields.
     /// </summary>
     [Serializable]
-    public class GameMetaInfo : IGameMetaInfo
+    public sealed class GameMetaInfo : IGameMetaInfo
     {
         public GameMetaInfo(int id, GameSize size, GameDifficulty difficulty)
         {
@@ -32,9 +32,9 @@ namespace Bimaru.DatabaseUtil
             get;
         }
 
-        public override bool Equals(object other)
+        public override bool Equals(object obj)
         {
-            return Equals(other as IGameMetaInfo);
+            return Equals(obj as IGameMetaInfo);
         }
 
         public bool Equals(IGameMetaInfo other)

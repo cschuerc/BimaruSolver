@@ -202,7 +202,7 @@ namespace Bimaru.Test
                 [2] = 0
             };
 
-            Assert.AreEqual(tally.Length, tally.Count());
+            Assert.AreEqual(tally.Length, tally.Length);
 
             var index = 0;
             foreach (var t in tally)

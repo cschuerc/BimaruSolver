@@ -12,6 +12,7 @@
   <PropertyGroup>
     <StartupObject />
     <EnableNETAnalyzers>True</EnableNETAnalyzers>
+    <NeutralLanguage>en</NeutralLanguage>
   </PropertyGroup>
   <ItemGroup>
     <EmbeddedResource Remove="Properties\Resources.resx" />

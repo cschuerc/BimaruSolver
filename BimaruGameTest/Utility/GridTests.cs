@@ -211,7 +211,7 @@ namespace Bimaru.Test
             Assert.ThrowsException<ArgumentOutOfRangeException>(() => grid.PointsOfRow(10));
         }
 
-        private void TestPointsOfRow<T>(Grid<T> grid, int rowIndex)
+        private static void TestPointsOfRow<T>(Grid<T> grid, int rowIndex)
         {
             var columnIndex = 0;
             foreach (var p in grid.PointsOfRow(rowIndex))
@@ -256,7 +256,7 @@ namespace Bimaru.Test
             Assert.ThrowsException<ArgumentOutOfRangeException>(() => grid.PointsOfColumn(10));
         }
 
-        private void TestPointsOfColumn<T>(Grid<T> grid, int columnIndex)
+        private static void TestPointsOfColumn<T>(Grid<T> grid, int columnIndex)
         {
             var rowIndex = 0;
             foreach (var p in grid.PointsOfColumn(columnIndex))

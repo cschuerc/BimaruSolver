@@ -53,7 +53,7 @@ namespace Bimaru.SolverUtil
             }
         }
 
-        private IEnumerable<FieldsToChange<BimaruValue>> GetCompatibleButNotEqualShipTrials(IGame game, int shipLength)
+        private static IEnumerable<FieldsToChange<BimaruValue>> GetCompatibleButNotEqualShipTrials(IGame game, int shipLength)
         {
             foreach (var ship in GetVerticalShipLocations(game, shipLength).Where(s => s.IsCompatibleButNotEqualIn(game)))
             {
@@ -72,7 +72,7 @@ namespace Bimaru.SolverUtil
             }
         }
 
-        private IEnumerable<ShipLocation> GetVerticalShipLocations(IGame game, int shipLength)
+        private static IEnumerable<ShipLocation> GetVerticalShipLocations(IGame game, int shipLength)
         {
             var rowIndexes = Enumerable.Range(0, game.Grid.NumberOfRows - shipLength + 1);
 

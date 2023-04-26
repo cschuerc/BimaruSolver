@@ -244,7 +244,7 @@ namespace Bimaru.Test
                 BimaruValues.FieldValuesOfShip(Direction.DOWN, 4));
         }
 
-        private void AssertEqualFieldValues(IEnumerable<BimaruValue> expectedFieldValues, IEnumerable<BimaruValue> actualFieldValues)
+        private static void AssertEqualFieldValues(IEnumerable<BimaruValue> expectedFieldValues, IEnumerable<BimaruValue> actualFieldValues)
         {
             Assert.IsTrue(expectedFieldValues.SequenceEqual(actualFieldValues));
         }

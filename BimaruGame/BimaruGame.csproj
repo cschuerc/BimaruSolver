@@ -12,6 +12,9 @@
     <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\BimaruSolverInterface\BimaruInterfaces.csproj" />
     <ProjectReference Include="..\Utility\Utility.csproj" />
   </ItemGroup>

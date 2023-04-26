@@ -125,9 +125,14 @@ namespace Bimaru.Interfaces
         {
             if (shipLength < 1)
             {
-                throw new ArgumentOutOfRangeException();
+                throw new ArgumentOutOfRangeException(nameof(shipLength));
             }
 
+            return FieldValuesOfShipNoCheck(shipDirection, shipLength);
+        }
+
+        private static IEnumerable<BimaruValue> FieldValuesOfShipNoCheck(Direction shipDirection, int shipLength)
+        {
             if (shipLength == 1)
             {
                 yield return BimaruValue.SHIP_SINGLE;
@@ -161,19 +166,19 @@ namespace Bimaru.Interfaces
             };
 
         /// <summary>
-        /// Most specific constraint that the field value satisfies.
-        /// </summary>
-        public static BimaruValueConstraint GetConstraint(this BimaruValue value)
-        {
-            return constraintOfValue[value];
-        }
-
-        /// <summary>
         /// True, if the field is any kind of ship.
         /// </summary>
         public static bool IsShip(this BimaruValue value)
         {
             return value.GetConstraint() == BimaruValueConstraint.SHIP;
+        }
+
+        /// <summary>
+        /// Most specific constraint that the field value satisfies.
+        /// </summary>
+        public static BimaruValueConstraint GetConstraint(this BimaruValue value)
+        {
+            return constraintOfValue[value];
         }
 
         /// <summary>

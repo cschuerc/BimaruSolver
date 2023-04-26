@@ -22,7 +22,7 @@ namespace Bimaru.DatabaseUtil
             get;
         }
 
-        private Dictionary<int, string> GetResourceNamesPerId()
+        private static Dictionary<int, string> GetResourceNamesPerId()
         {
             var resourceNamesPerId = new Dictionary<int, string>();
 

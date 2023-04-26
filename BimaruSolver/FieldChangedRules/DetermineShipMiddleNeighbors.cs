@@ -32,7 +32,7 @@ namespace Bimaru.SolverUtil
             }
         }
 
-        private DirectionType? GetShipMiddleDirection(IGame game, GridPoint pointShipMiddle)
+        private static DirectionType? GetShipMiddleDirection(IGame game, GridPoint pointShipMiddle)
         {
             var shipDirection = FindNonDiagonalNeighbor(game, pointShipMiddle, BimaruValueConstraint.SHIP);
             if (shipDirection.HasValue)

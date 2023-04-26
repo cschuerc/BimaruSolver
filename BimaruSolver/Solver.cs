@@ -121,6 +121,8 @@ namespace Bimaru.SolverUtil
             }
             catch (InvalidBimaruGameException)
             {
+                // Some rules might violate the Bimaru constraints
+                // => This cannot be a solution and we can ignore it.
             }
             finally
             {

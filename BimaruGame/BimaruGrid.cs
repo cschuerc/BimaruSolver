@@ -145,7 +145,7 @@ namespace Bimaru.GameUtil
             numberOfNotFullyDeterminedFields += change;
         }
 
-        private int GetChangeInNumberOfFields(bool wasBefore, bool isAfter)
+        private static int GetChangeInNumberOfFields(bool wasBefore, bool isAfter)
         {
             return (isAfter ? 1 : 0) - (wasBefore ? 1 : 0);
         }
@@ -254,7 +254,7 @@ namespace Bimaru.GameUtil
         #endregion
 
         #region Cloning
-        public void OverwriteWith(object source)
+        public override void OverwriteWith(object source)
         {
             if (!(source is BimaruGrid sourceAsGrid))
             {

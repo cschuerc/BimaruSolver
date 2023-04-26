@@ -45,12 +45,12 @@ namespace Bimaru.SolverUtil
 
         private static GridPoint? GetNotFullyDeterminedPoint(IGame game)
         {
-            foreach (var p in game.Grid.AllPoints().Where(p => !game.Grid[p].IsFullyDetermined()))
-            {
-                return p;
-            }
-
-            return null;
+            return game
+                .Grid
+                .AllPoints()
+                .Where(p => !game.Grid[p].IsFullyDetermined())
+                .Cast<GridPoint?>()
+                .FirstOrDefault();
         }
     }
 }

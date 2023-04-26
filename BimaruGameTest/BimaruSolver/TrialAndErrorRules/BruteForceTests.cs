@@ -50,7 +50,7 @@ namespace Bimaru.Test
 
             foreach (var expectedChange in expectedTrials)
             {
-                var actualChange = actualTrials.FirstOrDefault(a => a.Count() == 1 && a.Contains(expectedChange));
+                var actualChange = actualTrials.FirstOrDefault(a => a.Count == 1 && a.Contains(expectedChange));
                 Assert.IsNotNull(actualChange);
             }
         }

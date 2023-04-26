@@ -126,7 +126,7 @@ namespace Bimaru.SolverUtil
         /// UNDETERMINED grid points where exactly one
         /// can be WATER or exactly one can be a ship.
         /// </summary>
-        private class OneMissingPoints : IEnumerable<GridPoint>, IComparable<OneMissingPoints>
+        private sealed class OneMissingPoints : IEnumerable<GridPoint>, IComparable<OneMissingPoints>
         {
             private OneMissingPoints(IEnumerable<GridPoint> points, BimaruValueConstraint shipOrWater)
             {

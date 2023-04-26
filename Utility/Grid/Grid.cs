@@ -213,16 +213,16 @@ namespace Utility
         /// <summary>
         /// Keeps subscribers to events from this.
         /// </summary>
-        protected void OverwriteWith(Grid<T> source)
+        public virtual void OverwriteWith(object source)
         {
-            if (source == null)
+            if (!(source is Grid<T> sourceAsGrid))
             {
-                throw new ArgumentNullException(nameof(source));
+                throw new ArgumentException("Source is not a Grid.");
             }
 
-            numberOfRows = source.numberOfRows;
-            numberOfColumns = source.numberOfColumns;
-            fieldValues = (T[,])source.fieldValues.Clone();
+            numberOfRows = sourceAsGrid.numberOfRows;
+            numberOfColumns = sourceAsGrid.numberOfColumns;
+            fieldValues = (T[,])sourceAsGrid.fieldValues.Clone();
         }
         #endregion
     }

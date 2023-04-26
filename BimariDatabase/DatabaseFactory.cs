@@ -2,7 +2,7 @@
 
 namespace Bimaru.DatabaseUtil
 {
-    public class DatabaseFactory
+    public static class DatabaseFactory
     {
         public static IGameDatabase GetDatabase()
         {

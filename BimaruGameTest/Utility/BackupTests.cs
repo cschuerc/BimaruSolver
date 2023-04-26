@@ -54,7 +54,7 @@ namespace Bimaru.Test
             AssertEmptyStack(backup);
         }
 
-        private void AssertEmptyStack(Backup<BimaruGrid> backup)
+        private static void AssertEmptyStack(IBackup<BimaruGrid> backup)
         {
             var destination = new BimaruGrid(1, 1);
             Assert.ThrowsException<InvalidOperationException>(() => backup.RestoreAndDeleteLastSavepoint(destination));

@@ -1,0 +1,11 @@
+﻿[*.cs]
+
+##
+## SonarAnalyzers.CSharp
+##
+    
+# Update this implementation of 'ISerializable' to conform to the recommended serialization pattern
+dotnet_diagnostic.S3925.severity = None
+
+# "Equals" and the comparison operators should be overridden when implementing "IComparable"
+dotnet_diagnostic.S1210.severity = None

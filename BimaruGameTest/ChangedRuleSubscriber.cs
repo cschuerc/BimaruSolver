@@ -4,7 +4,7 @@ using Utility;
 
 namespace Bimaru.Test
 {
-    internal class FieldValueChangedRuleSubscriber : IDisposable
+    internal sealed class FieldValueChangedRuleSubscriber : IDisposable
     {
         public FieldValueChangedRuleSubscriber(IGame game, IFieldValueChangedRule rule)
         {

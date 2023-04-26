@@ -16,7 +16,7 @@ namespace Bimaru.SolverUtil
             }
         }
 
-        private void DetermineFieldValue(IGame game, GridPoint point)
+        private static void DetermineFieldValue(IGame game, GridPoint point)
         {
             if (game.Grid[point] == BimaruValue.SHIP_UNDETERMINED)
             {
@@ -28,7 +28,7 @@ namespace Bimaru.SolverUtil
             }
         }
 
-        private BimaruValue? GetShipUndeterminedFieldValue(IGame game, GridPoint pointShipUndetermined)
+        private static BimaruValue? GetShipUndeterminedFieldValue(IGame game, GridPoint pointShipUndetermined)
         {
             BimaruValue? newValue = null;
 

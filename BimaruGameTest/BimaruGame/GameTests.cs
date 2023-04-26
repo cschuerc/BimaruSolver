@@ -64,7 +64,7 @@ namespace Bimaru.Test
         [TestMethod]
         public void TestNumberOfMissingShipFields()
         {
-            var game = (new GameFactoryForTesting()).GenerateEmptyGame(4, 3);
+            var game = GameFactoryForTesting.GenerateEmptyGame(4, 3);
 
             game.TargetNumberOfShipFieldsPerRow[0] = 1;
             game.TargetNumberOfShipFieldsPerRow[1] = 1;
@@ -106,7 +106,7 @@ namespace Bimaru.Test
         [TestMethod]
         public void TestUnsolvabilityEmptyGame()
         {
-            var game = (new GameFactoryForTesting()).GenerateEmptyGame(4, 3);
+            var game = GameFactoryForTesting.GenerateEmptyGame(4, 3);
 
             Assert.IsFalse(game.IsUnsolvable);
         }
@@ -132,7 +132,7 @@ namespace Bimaru.Test
         /// </summary>
         private static Game GetNotUnsolvableGame()
         {
-            var game = (new GameFactoryForTesting()).GenerateEmptyGame(4, 3);
+            var game = GameFactoryForTesting.GenerateEmptyGame(4, 3);
 
             game.TargetNumberOfShipFieldsPerRow[0] = 3;
             game.TargetNumberOfShipFieldsPerRow[1] = 1;
@@ -213,7 +213,7 @@ namespace Bimaru.Test
         [TestMethod]
         public void TestValidityEmptyGame()
         {
-            var game = (new GameFactoryForTesting()).GenerateEmptyGame(2, 3);
+            var game = GameFactoryForTesting.GenerateEmptyGame(2, 3);
 
             Assert.IsTrue(game.IsValid);
         }
@@ -235,9 +235,9 @@ namespace Bimaru.Test
         /// 2|???
         /// 
         /// </summary>
-        private Game GetValidGame()
+        private static Game GetValidGame()
         {
-            var game = (new GameFactoryForTesting()).GenerateEmptyGame(2, 3);
+            var game = GameFactoryForTesting.GenerateEmptyGame(2, 3);
 
             game.TargetNumberOfShipFieldsPerRow[0] = 2;
 
@@ -311,7 +311,7 @@ namespace Bimaru.Test
         [TestMethod]
         public void TestIsSolvedEmptyGame()
         {
-            var game = (new GameFactoryForTesting()).GenerateEmptyGame(4, 3);
+            var game = GameFactoryForTesting.GenerateEmptyGame(4, 3);
 
             Assert.IsFalse(game.IsSolved);
         }
@@ -335,9 +335,9 @@ namespace Bimaru.Test
         /// 2|SWS
         /// 
         /// </summary>
-        private Game GetSolvedGame()
+        private static Game GetSolvedGame()
         {
-            var game = (new GameFactoryForTesting()).GenerateEmptyGame(4, 3);
+            var game = GameFactoryForTesting.GenerateEmptyGame(4, 3);
 
             game.TargetNumberOfShipFieldsPerRow[0] = 2;
             game.TargetNumberOfShipFieldsPerRow[1] = 2;

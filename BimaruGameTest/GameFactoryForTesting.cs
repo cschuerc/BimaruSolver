@@ -67,7 +67,7 @@ namespace Bimaru.Test
             return game;
         }
 
-        public Game GenerateEmptyGame(int numRows, int numColumns)
+        public static Game GenerateEmptyGame(int numRows, int numColumns)
         {
             var rowTally = new GridTally(numRows);
             var columnTally = new GridTally(numColumns);

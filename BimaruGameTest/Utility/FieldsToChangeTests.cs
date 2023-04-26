@@ -18,7 +18,7 @@ namespace Bimaru.Test
 
         private static void AssertEqualFieldChanges(IReadOnlyCollection<SingleChange<int>> expectedFieldChanges, FieldsToChange<int> actualFieldChanges)
         {
-            Assert.AreEqual(expectedFieldChanges.Count, actualFieldChanges.Count());
+            Assert.AreEqual(expectedFieldChanges.Count, actualFieldChanges.Count);
 
             foreach (var actualChange in actualFieldChanges)
             {

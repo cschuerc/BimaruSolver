@@ -81,7 +81,7 @@ namespace Bimaru.Test
 
         private static void AssertEqualChanges(FieldsToChange<BimaruValue> first, FieldsToChange<BimaruValue> second)
         {
-            Assert.AreEqual(first.Count(), second.Count());
+            Assert.AreEqual(first.Count, second.Count);
 
             // FieldsToChange contains by design no duplicate field
             // => Same count + first contained in second is enough for equality

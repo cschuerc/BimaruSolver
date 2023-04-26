@@ -88,14 +88,14 @@ namespace Bimaru.GameUtil
             private set => grid = value ?? throw new ArgumentNullException(nameof(value));
         }
 
-        public int NumberOfMissingShipFieldsPerRow(int index)
+        public int NumberOfMissingShipFieldsPerRow(int rowIndex)
         {
-            return targetNumberOfShipFieldsPerRow[index] - grid.NumberOfShipFieldsPerRow[index];
+            return targetNumberOfShipFieldsPerRow[rowIndex] - grid.NumberOfShipFieldsPerRow[rowIndex];
         }
 
-        public int NumberOfMissingShipFieldsPerColumn(int index)
+        public int NumberOfMissingShipFieldsPerColumn(int columnIndex)
         {
-            return targetNumberOfShipFieldsPerColumn[index] - grid.NumberOfShipFieldsPerColumn[index];
+            return targetNumberOfShipFieldsPerColumn[columnIndex] - grid.NumberOfShipFieldsPerColumn[columnIndex];
         }
 
         public int? LengthOfLongestMissingShip => TargetNumberOfShipsPerLength.LengthOfLongestMissingShip(Grid.NumberOfShipsPerLength);
