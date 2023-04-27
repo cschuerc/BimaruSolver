@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using Bimaru.Database;
 using Bimaru.GameUtil;
 using Bimaru.Interfaces;
 using Utility;
 
-namespace Bimaru.DatabaseGeneratorUtil
+namespace Bimaru.Database.Generator
 {
-    public static class DatabaseGenerator
+    public static class GameDatabaseGenerator
     {
         public static IEnumerable<IGameWithMetaInfo> GenerateGames()
         {

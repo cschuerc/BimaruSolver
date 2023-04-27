@@ -3,7 +3,7 @@ using System.IO;
 using System.Text.Json;
 using Bimaru.Interfaces;
 
-namespace Bimaru.DatabaseGeneratorUtil
+namespace Bimaru.Database.Generator
 {
     internal static class GamesToFiles
     {
@@ -15,7 +15,7 @@ namespace Bimaru.DatabaseGeneratorUtil
             }
 
             var filenameFormat = args[0];
-            var games = DatabaseGenerator.GenerateGames();
+            var games = GameDatabaseGenerator.GenerateGames();
 
             SerializeGamesToFile(filenameFormat, games);
         }
