@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using Bimaru.Interface.Game;
 
-namespace Utility
+namespace Bimaru.Utility
 {
     [Serializable]
     public class Backup<T> : IBackup<T> where T : ICloneable, IOverwritable

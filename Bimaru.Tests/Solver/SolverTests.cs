@@ -9,7 +9,7 @@ using Bimaru.Solver;
 using Bimaru.Solver.CombinedRules;
 using Bimaru.Solver.FieldChangedRules;
 using Bimaru.Solver.TrialAndErrorRules;
-using Utility;
+using Bimaru.Utility;
 using Xunit;
 
 namespace Bimaru.Tests.Solver

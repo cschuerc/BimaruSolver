@@ -3,7 +3,6 @@ using System.Linq;
 using Bimaru.Interface;
 using Bimaru.Interface.Game;
 using Bimaru.Interface.Solver;
-using Utility;
 
 namespace Bimaru.Solver.TrialAndErrorRules
 {

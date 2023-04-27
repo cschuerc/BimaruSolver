@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Bimaru.Game;
 using Bimaru.Interface;
 using Bimaru.Interface.Game;
-using Utility;
 using Xunit;
 
 // ReSharper disable AccessToModifiedClosure

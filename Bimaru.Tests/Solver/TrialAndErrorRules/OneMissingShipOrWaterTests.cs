@@ -5,7 +5,6 @@ using Bimaru.Interface;
 using Bimaru.Interface.Game;
 using Bimaru.Interface.Solver;
 using Bimaru.Solver.TrialAndErrorRules;
-using Utility;
 using Xunit;
 
 // ReSharper disable AccessToModifiedClosure

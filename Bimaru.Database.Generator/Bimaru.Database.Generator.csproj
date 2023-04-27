@@ -2,14 +2,14 @@
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Bimaru.Database.Generator</RootNamespace>
+    <RootNamespace>$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Bimaru.Database\Bimaru.Database.csproj" />
     <ProjectReference Include="..\Bimaru.Game\Bimaru.Game.csproj" />
     <ProjectReference Include="..\Bimaru.Interface\Bimaru.Interface.csproj" />
-    <ProjectReference Include="..\Utility\Utility.csproj" />
+    <ProjectReference Include="..\Bimaru.Utility\Bimaru.Utility.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />

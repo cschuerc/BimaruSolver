@@ -30,22 +30,22 @@ namespace Bimaru.Tests.Database
 
             var metaInfo = new GameMetaInfo(0, GameSize.SMALL, GameDifficulty.EASY);
             var game = new GameFactory().GenerateEmptyGame(1, 1);
-            game.Grid[new global::Utility.GridPoint(0, 0)] = BimaruValue.SHIP_CONT_DOWN;
+            game.Grid[new global::Bimaru.Interface.Game.GridPoint(0, 0)] = BimaruValue.SHIP_CONT_DOWN;
             stubGames.Add(new GameWithMetaInfo(metaInfo, game));
 
             metaInfo = new GameMetaInfo(1, GameSize.SMALL, GameDifficulty.MIDDLE);
             game = new GameFactory().GenerateEmptyGame(1, 1);
-            game.Grid[new global::Utility.GridPoint(0, 0)] = BimaruValue.SHIP_CONT_LEFT;
+            game.Grid[new global::Bimaru.Interface.Game.GridPoint(0, 0)] = BimaruValue.SHIP_CONT_LEFT;
             stubGames.Add(new GameWithMetaInfo(metaInfo, game));
 
             metaInfo = new GameMetaInfo(2, GameSize.MIDDLE, GameDifficulty.EASY);
             game = new GameFactory().GenerateEmptyGame(1, 1);
-            game.Grid[new global::Utility.GridPoint(0, 0)] = BimaruValue.SHIP_CONT_LEFT;
+            game.Grid[new global::Bimaru.Interface.Game.GridPoint(0, 0)] = BimaruValue.SHIP_CONT_LEFT;
             stubGames.Add(new GameWithMetaInfo(metaInfo, game));
 
             metaInfo = new GameMetaInfo(3, GameSize.MIDDLE, GameDifficulty.HARD);
             game = new GameFactory().GenerateEmptyGame(1, 1);
-            game.Grid[new global::Utility.GridPoint(0, 0)] = BimaruValue.SHIP_CONT_LEFT;
+            game.Grid[new global::Bimaru.Interface.Game.GridPoint(0, 0)] = BimaruValue.SHIP_CONT_LEFT;
             stubGames.Add(new GameWithMetaInfo(metaInfo, game));
 
             return stubGames;

@@ -4,7 +4,7 @@ using Bimaru.Interface.Solver;
 using Bimaru.Solver.CombinedRules;
 using Bimaru.Solver.FieldChangedRules;
 using Bimaru.Solver.TrialAndErrorRules;
-using Utility;
+using Bimaru.Utility;
 
 namespace Bimaru.Solver
 {

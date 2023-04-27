@@ -1,4 +1,4 @@
-﻿namespace Utility
+﻿namespace Bimaru.Utility
 {
     public static class GeneralExtensions
     {

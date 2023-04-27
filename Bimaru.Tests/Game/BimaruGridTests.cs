@@ -3,7 +3,7 @@ using System.Linq;
 using Bimaru.Game;
 using Bimaru.Interface;
 using Bimaru.Interface.Game;
-using Utility;
+using Bimaru.Utility;
 using Xunit;
 
 namespace Bimaru.Tests.Game

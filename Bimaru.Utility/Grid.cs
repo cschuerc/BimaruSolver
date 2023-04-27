@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Bimaru.Interface.Game;
 
-namespace Utility
+namespace Bimaru.Utility
 {
     /// <summary>
     /// Implementation of a two-dimensional grid of fixed size

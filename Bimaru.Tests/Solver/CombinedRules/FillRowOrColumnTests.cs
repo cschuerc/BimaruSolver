@@ -2,7 +2,6 @@ using Bimaru.Game;
 using Bimaru.Interface;
 using Bimaru.Interface.Game;
 using Bimaru.Solver.CombinedRules;
-using Utility;
 using Xunit;
 
 namespace Bimaru.Tests.Solver.CombinedRules

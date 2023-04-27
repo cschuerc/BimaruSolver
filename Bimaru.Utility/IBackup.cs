@@ -1,6 +1,7 @@
 ﻿using System;
+using Bimaru.Interface.Game;
 
-namespace Utility
+namespace Bimaru.Utility
 {
     public interface IBackup<in T> where T : ICloneable, IOverwritable
     {

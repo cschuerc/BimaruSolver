@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Bimaru.Interface.Game;
-using Utility;
 
 namespace Bimaru.Interface.Solver
 {

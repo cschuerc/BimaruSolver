@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Bimaru.Interface;
-using Utility;
 using Xunit;
 
 namespace Bimaru.Tests.Interface

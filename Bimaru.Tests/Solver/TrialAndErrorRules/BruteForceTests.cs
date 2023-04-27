@@ -2,8 +2,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Bimaru.Game;
 using Bimaru.Interface;
+using Bimaru.Interface.Game;
 using Bimaru.Solver.TrialAndErrorRules;
-using Utility;
 using Xunit;
 
 namespace Bimaru.Tests.Solver.TrialAndErrorRules

@@ -13,4 +13,7 @@
     </DocumentationFile>
     <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Bimaru.Interface\Bimaru.Interface.csproj" />
+  </ItemGroup>
 </Project>

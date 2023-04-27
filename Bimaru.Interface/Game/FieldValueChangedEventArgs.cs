@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Utility
+namespace Bimaru.Interface.Game
 {
     /// <typeparam name="T"> Type of field value </typeparam>
     public class FieldValueChangedEventArgs<T> : EventArgs

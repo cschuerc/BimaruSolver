@@ -1,7 +1,8 @@
 using System;
 using Bimaru.Game;
 using Bimaru.Interface;
-using Utility;
+using Bimaru.Interface.Game;
+using Bimaru.Utility;
 using Xunit;
 
 namespace Bimaru.Tests.Utility

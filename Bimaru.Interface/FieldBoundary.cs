@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using Bimaru.Interface.Game;
+
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 
-namespace Utility
+namespace Bimaru.Interface
 {
     /// <summary>
     /// Boundaries of two neighboring (also diagonally) fields.

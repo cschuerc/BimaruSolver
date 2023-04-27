@@ -1,7 +1,7 @@
 using Bimaru.Game;
 using Bimaru.Interface;
+using Bimaru.Interface.Game;
 using Bimaru.Solver.FieldChangedRules;
-using Utility;
 using Xunit;
 
 namespace Bimaru.Tests.Solver.FieldChangedRules
