@@ -1,13 +1,13 @@
 ﻿using Bimaru.Interfaces;
 
-namespace Bimaru.DatabaseUtil
+namespace Bimaru.Database
 {
-    public static class DatabaseFactory
+    public static class GameDatabaseFactory
     {
         public static IGameDatabase GetDatabase()
         {
             var gameSource = new GameSourceFromResources();
-            return new Database(gameSource);
+            return new GameDatabase(gameSource);
         }
     }
 }

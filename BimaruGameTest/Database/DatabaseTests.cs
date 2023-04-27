@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Bimaru.DatabaseUtil;
+using Bimaru.Database;
 using Bimaru.GameUtil;
 using Bimaru.Interfaces;
 using Xunit;
@@ -15,7 +15,7 @@ namespace Bimaru.Test
         {
             var stubGames = GetStubGames();
             var gameSource = new GameSourceStub(stubGames);
-            var db = new Database(gameSource);
+            var db = new GameDatabase(gameSource);
 
             foreach (var filter in filtersToTest)
             {
@@ -100,7 +100,7 @@ namespace Bimaru.Test
             const int numTrials = 100;
             var stubGames = GetStubGames();
             var gameSource = new GameSourceStub(stubGames);
-            var db = new Database(gameSource);
+            var db = new GameDatabase(gameSource);
 
             foreach (var filter in filtersToTest)
             {
@@ -130,7 +130,7 @@ namespace Bimaru.Test
         {
             var stubGames = GetStubGames();
             var gameSource = new GameSourceStub(stubGames);
-            var db = new Database(gameSource);
+            var db = new GameDatabase(gameSource);
 
             var maxId = 0;
             foreach (var game in stubGames)

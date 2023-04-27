@@ -1,4 +1,4 @@
-using Bimaru.DatabaseUtil;
+using Bimaru.Database;
 using Bimaru.Interfaces;
 using Xunit;
 

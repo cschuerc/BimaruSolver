@@ -1,11 +1,11 @@
-﻿using Bimaru.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text.Json;
+using Bimaru.Interfaces;
 
-namespace Bimaru.DatabaseUtil
+namespace Bimaru.Database
 {
     /// <summary>
     /// Bimaru games from embedded resources

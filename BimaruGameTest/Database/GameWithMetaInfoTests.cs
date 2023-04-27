@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Bimaru.DatabaseUtil;
+using Bimaru.Database;
 using Bimaru.GameUtil;
 using Bimaru.Interfaces;
 using Xunit;

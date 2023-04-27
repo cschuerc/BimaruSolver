@@ -1,7 +1,7 @@
-﻿using Bimaru.Interfaces;
-using System;
+﻿using System;
+using Bimaru.Interfaces;
 
-namespace Bimaru.DatabaseUtil
+namespace Bimaru.Database
 {
     [Serializable]
     public class GameWithMetaInfo : IGameWithMetaInfo

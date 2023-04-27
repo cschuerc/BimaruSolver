@@ -1,4 +1,4 @@
-using Bimaru.DatabaseUtil;
+using Bimaru.Database;
 using Bimaru.SolverUtil;
 using Xunit;
 
@@ -34,7 +34,7 @@ namespace Bimaru.Test
         public void TestAllGamesNonCounting()
         {
             var solver = new SolverFactory().GenerateSolver(false);
-            var database = DatabaseFactory.GetDatabase();
+            var database = GameDatabaseFactory.GetDatabase();
 
             foreach (var databaseGame in database.GetAllGames(null))
             {
@@ -51,7 +51,7 @@ namespace Bimaru.Test
         public void TestAllGamesCounting()
         {
             var solver = new SolverFactory().GenerateSolver(true);
-            var database = DatabaseFactory.GetDatabase();
+            var database = GameDatabaseFactory.GetDatabase();
 
             foreach (var databaseGame in database.GetAllGames(null))
             {

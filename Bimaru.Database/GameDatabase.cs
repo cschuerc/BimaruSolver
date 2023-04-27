@@ -1,13 +1,13 @@
-﻿using Bimaru.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Bimaru.Interfaces;
 
-namespace Bimaru.DatabaseUtil
+namespace Bimaru.Database
 {
-    public class Database : IGameDatabase
+    public class GameDatabase : IGameDatabase
     {
-        public Database(IGameSource gameSource)
+        public GameDatabase(IGameSource gameSource)
         {
             GameSource = gameSource;
             Thumbnails = new List<IGameMetaInfo>(GameSource.GetMetaInfoOfAllGames());

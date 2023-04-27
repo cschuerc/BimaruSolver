@@ -6,7 +6,7 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BimariDatabase\BimaruDatabase.csproj" />
+    <ProjectReference Include="..\Bimaru.Database\Bimaru.Database.csproj" />
     <ProjectReference Include="..\BimaruGame\BimaruGame.csproj" />
     <ProjectReference Include="..\BimaruSolverInterface\BimaruInterfaces.csproj" />
     <ProjectReference Include="..\Utility\Utility.csproj" />
