@@ -1,5 +1,5 @@
 ﻿using Bimaru.Interfaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 
 namespace Bimaru.Test
@@ -13,61 +13,61 @@ namespace Bimaru.Test
                 return;
             }
 
-            Assert.IsTrue(expectedGame != null && actualGame != null);
+            Assert.True(expectedGame != null && actualGame != null);
 
-            Assert.AreEqual(expectedGame.MetaInfo, actualGame.MetaInfo);
+            Assert.Equal(expectedGame.MetaInfo, actualGame.MetaInfo);
 
             expectedGame.Game.AssertEqual(actualGame.Game);
         }
 
         private static void AssertEqual(this IGame expectedGame, IGame actualGame)
         {
-            Assert.IsTrue(expectedGame.TargetNumberOfShipFieldsPerRow.SequenceEqual(actualGame.TargetNumberOfShipFieldsPerRow));
-            Assert.IsTrue(expectedGame.TargetNumberOfShipFieldsPerColumn.SequenceEqual(actualGame.TargetNumberOfShipFieldsPerColumn));
+            Assert.True(expectedGame.TargetNumberOfShipFieldsPerRow.SequenceEqual(actualGame.TargetNumberOfShipFieldsPerRow));
+            Assert.True(expectedGame.TargetNumberOfShipFieldsPerColumn.SequenceEqual(actualGame.TargetNumberOfShipFieldsPerColumn));
 
-            Assert.AreEqual(expectedGame.TargetNumberOfShipsPerLength.LongestShipLength, actualGame.TargetNumberOfShipsPerLength.LongestShipLength);
+            Assert.Equal(expectedGame.TargetNumberOfShipsPerLength.LongestShipLength, actualGame.TargetNumberOfShipsPerLength.LongestShipLength);
 
             if (expectedGame.TargetNumberOfShipsPerLength.LongestShipLength.HasValue)
             {
                 foreach (var shipLength in Enumerable.Range(0, expectedGame.TargetNumberOfShipsPerLength.LongestShipLength.Value))
                 {
-                    Assert.AreEqual(expectedGame.TargetNumberOfShipsPerLength[shipLength], actualGame.TargetNumberOfShipsPerLength[shipLength]);
+                    Assert.Equal(expectedGame.TargetNumberOfShipsPerLength[shipLength], actualGame.TargetNumberOfShipsPerLength[shipLength]);
                 }
             }
 
             expectedGame.Grid.AssertEqual(actualGame.Grid);
 
-            Assert.AreEqual(expectedGame.IsSolved, actualGame.IsSolved);
-            Assert.AreEqual(expectedGame.IsUnsolvable, actualGame.IsUnsolvable);
-            Assert.AreEqual(expectedGame.IsValid, actualGame.IsValid);
+            Assert.Equal(expectedGame.IsSolved, actualGame.IsSolved);
+            Assert.Equal(expectedGame.IsUnsolvable, actualGame.IsUnsolvable);
+            Assert.Equal(expectedGame.IsValid, actualGame.IsValid);
         }
 
         public static void AssertEqual(this IBimaruGrid expectedGrid, IBimaruGrid actualGrid)
         {
-            Assert.AreEqual(expectedGrid.NumberOfRows, actualGrid.NumberOfRows);
-            Assert.AreEqual(expectedGrid.NumberOfColumns, actualGrid.NumberOfColumns);
+            Assert.Equal(expectedGrid.NumberOfRows, actualGrid.NumberOfRows);
+            Assert.Equal(expectedGrid.NumberOfColumns, actualGrid.NumberOfColumns);
 
             foreach (var p in expectedGrid.AllPoints())
             {
-                Assert.AreEqual(expectedGrid[p], actualGrid[p]);
+                Assert.Equal(expectedGrid[p], actualGrid[p]);
             }
 
-            Assert.IsTrue(expectedGrid.NumberOfUndeterminedFieldsPerColumn.SequenceEqual(actualGrid.NumberOfUndeterminedFieldsPerColumn));
-            Assert.IsTrue(expectedGrid.NumberOfUndeterminedFieldsPerRow.SequenceEqual(actualGrid.NumberOfUndeterminedFieldsPerRow));
-            Assert.IsTrue(expectedGrid.NumberOfShipFieldsPerColumn.SequenceEqual(actualGrid.NumberOfShipFieldsPerColumn));
-            Assert.IsTrue(expectedGrid.NumberOfShipFieldsPerRow.SequenceEqual(actualGrid.NumberOfShipFieldsPerRow));
+            Assert.True(expectedGrid.NumberOfUndeterminedFieldsPerColumn.SequenceEqual(actualGrid.NumberOfUndeterminedFieldsPerColumn));
+            Assert.True(expectedGrid.NumberOfUndeterminedFieldsPerRow.SequenceEqual(actualGrid.NumberOfUndeterminedFieldsPerRow));
+            Assert.True(expectedGrid.NumberOfShipFieldsPerColumn.SequenceEqual(actualGrid.NumberOfShipFieldsPerColumn));
+            Assert.True(expectedGrid.NumberOfShipFieldsPerRow.SequenceEqual(actualGrid.NumberOfShipFieldsPerRow));
 
-            Assert.IsTrue(expectedGrid.NumberOfShipsPerLength.SequenceEqual(actualGrid.NumberOfShipsPerLength));
+            Assert.True(expectedGrid.NumberOfShipsPerLength.SequenceEqual(actualGrid.NumberOfShipsPerLength));
 
-            Assert.AreEqual(expectedGrid.IsValid, actualGrid.IsValid);
-            Assert.AreEqual(expectedGrid.IsFullyDetermined, actualGrid.IsFullyDetermined);
+            Assert.Equal(expectedGrid.IsValid, actualGrid.IsValid);
+            Assert.Equal(expectedGrid.IsFullyDetermined, actualGrid.IsFullyDetermined);
         }
 
         public static void AssertEqual(this IBimaruGrid actualGrid, BimaruValue[,] expectedFieldValues)
         {
             foreach (var p in actualGrid.AllPoints())
             {
-                Assert.AreEqual(expectedFieldValues[p.RowIndex, p.ColumnIndex], actualGrid[p]);
+                Assert.Equal(expectedFieldValues[p.RowIndex, p.ColumnIndex], actualGrid[p]);
             }
         }
     }

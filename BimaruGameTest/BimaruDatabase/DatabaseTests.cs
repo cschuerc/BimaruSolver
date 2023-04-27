@@ -4,14 +4,13 @@ using System.Linq;
 using Bimaru.DatabaseUtil;
 using Bimaru.GameUtil;
 using Bimaru.Interfaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace Bimaru.Test
 {
-    [TestClass]
     public class DatabaseTests
     {
-        [TestMethod]
+        [Fact]
         public void TestGetAllGames()
         {
             var stubGames = GetStubGames();
@@ -85,7 +84,7 @@ namespace Bimaru.Test
 
         private static void AssertEqualGames(IReadOnlyCollection<IGameWithMetaInfo> expectedGames, IReadOnlyCollection<IGameWithMetaInfo> actualGames)
         {
-            Assert.AreEqual(expectedGames.Count, actualGames.Count);
+            Assert.Equal(expectedGames.Count, actualGames.Count);
 
             foreach (var expectedGame in expectedGames)
             {
@@ -95,7 +94,7 @@ namespace Bimaru.Test
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void TestGetRandomGame()
         {
             const int numTrials = 100;
@@ -119,14 +118,14 @@ namespace Bimaru.Test
                 return;
             }
 
-            Assert.IsNotNull(actualGame);
+            Assert.NotNull(actualGame);
 
             var expectedGame = expectedGames.First(g => g.MetaInfo.Id == actualGame.MetaInfo.Id);
 
             expectedGame.AssertEqual(actualGame);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestGetSpecificGame()
         {
             var stubGames = GetStubGames();

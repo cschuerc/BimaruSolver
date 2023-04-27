@@ -4,50 +4,35 @@ using System.Linq;
 using Bimaru.GameUtil;
 using Bimaru.Interfaces;
 using Bimaru.SolverUtil;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Utility;
+using Xunit;
 
 namespace Bimaru.Test
 {
-    [TestClass]
     public class SolverTests
     {
-        [TestMethod]
-        public void TestNoGridBackup()
+        [Theory]
+        [MemberData(nameof(CreateDataToTestCreation))]
+        public void TestCreation(ITrialAndErrorRule trialRule, IBackup<IBimaruGrid> gridBackup, bool shallCountSolutions, Type expectedExceptionType)
         {
-            Assert.ThrowsException<ArgumentNullException>(() => new Solver(null, null, null, null));
+            var caughtException = Record.Exception(() => new Solver(null, null, trialRule, gridBackup, shallCountSolutions));
+
+            Assert.Equal(expectedExceptionType, caughtException?.GetType());
         }
 
-        [TestMethod]
-        public void TestNoTrialRule()
+        public static IEnumerable<object[]> CreateDataToTestCreation()
         {
-            var gridBackup = new Backup<IBimaruGrid>();
+            // No grid Backup
+            yield return new object[] { null, null, false, typeof(ArgumentNullException) };
 
-            var _ = new Solver(null, null, null, gridBackup);
+            // Cannot count without trial rule
+            yield return new object[] { null, new Backup<IBimaruGrid>(), true, typeof(ArgumentException) };
 
-            Assert.ThrowsException<ArgumentException>(() => new Solver(null, null, null, gridBackup, true));
-        }
+            // Cannot count with incomplete trial rule
+            yield return new object[] { new MockTrialRule(true, false), new Backup<IBimaruGrid>(), true, typeof(ArgumentException) };
 
-        [TestMethod]
-        public void TestIncompleteTrialRule()
-        {
-            var gridBackup = new Backup<IBimaruGrid>();
-            var trialRule = new MockTrialRule(true, false);
-
-            var _ = new Solver(null, null, trialRule, gridBackup);
-
-            Assert.ThrowsException<ArgumentException>(() => new Solver(null, null, trialRule, gridBackup, true));
-        }
-
-        [TestMethod]
-        public void TestNotDisjointTrialRule()
-        {
-            var gridBackup = new Backup<IBimaruGrid>();
-            var trialRule = new MockTrialRule(false, true);
-
-            var _ = new Solver(null, null, trialRule, gridBackup);
-
-            Assert.ThrowsException<ArgumentException>(() => new Solver(null, null, trialRule, gridBackup, true));
+            // Cannot count with not disjoint trial rule
+            yield return new object[] { new MockTrialRule(false, true), new Backup<IBimaruGrid>(), true, typeof(ArgumentException) };
         }
 
         /// <summary>
@@ -77,73 +62,73 @@ namespace Bimaru.Test
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void TestNoRules()
         {
-            var game = (new GameFactoryForTesting()).GenerateGameOneSolution();
+            var game = GameFactoryForTesting.GenerateGameOneSolution();
             var solver = new Solver(null, null, null, new Backup<IBimaruGrid>());
             var numberOfSolutions = solver.Solve(game);
 
-            Assert.AreEqual(0, numberOfSolutions);
-            Assert.IsFalse(game.IsSolved);
+            Assert.Equal(0, numberOfSolutions);
+            Assert.False(game.IsSolved);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestNoSolution()
         {
-            var game = (new GameFactoryForTesting()).GenerateGameNoSolution();
+            var game = GameFactoryForTesting.GenerateGameNoSolution();
             var solver = new Solver(null, null, new BruteForce(), new Backup<IBimaruGrid>(), true);
             var numberOfSolutions = solver.Solve(game);
 
-            Assert.AreEqual(0, numberOfSolutions);
-            Assert.IsFalse(game.IsSolved);
+            Assert.Equal(0, numberOfSolutions);
+            Assert.False(game.IsSolved);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestNoSolutionNoGridOverwrite()
         {
-            var game = (new GameFactoryForTesting()).GenerateGameNoSolution();
+            var game = GameFactoryForTesting.GenerateGameNoSolution();
             var solver = new Solver(null, null, new BruteForce(), new Backup<IBimaruGrid>(), true);
             solver.Solve(game);
 
-            var expectedGrid = (new GameFactoryForTesting()).GenerateGameNoSolution().Grid;
+            var expectedGrid = GameFactoryForTesting.GenerateGameNoSolution().Grid;
             expectedGrid.AssertEqual(game.Grid);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestOneSolution()
         {
-            var game = (new GameFactoryForTesting()).GenerateGameOneSolution();
+            var game = GameFactoryForTesting.GenerateGameOneSolution();
             var solver = new Solver(null, null, new BruteForce(), new Backup<IBimaruGrid>(), true);
             var numberOfSolutions = solver.Solve(game);
 
-            Assert.AreEqual(1, numberOfSolutions);
-            Assert.IsTrue(game.IsSolved);
+            Assert.Equal(1, numberOfSolutions);
+            Assert.True(game.IsSolved);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestTwoSolutionsCounting()
         {
-            var game = (new GameFactoryForTesting()).GenerateGameTwoSolutions();
+            var game = GameFactoryForTesting.GenerateGameTwoSolutions();
             var solver = new Solver(null, null, new BruteForce(), new Backup<IBimaruGrid>(), true);
             var numberOfSolutions = solver.Solve(game);
 
-            Assert.AreEqual(2, numberOfSolutions);
-            Assert.IsTrue(game.IsSolved);
+            Assert.Equal(2, numberOfSolutions);
+            Assert.True(game.IsSolved);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestTwoSolutionsNonCounting()
         {
-            var game = (new GameFactoryForTesting()).GenerateGameTwoSolutions();
+            var game = GameFactoryForTesting.GenerateGameTwoSolutions();
             var solver = new Solver(null, null, new BruteForce(), new Backup<IBimaruGrid>());
             var numberOfSolutions = solver.Solve(game);
 
-            Assert.AreEqual(1, numberOfSolutions);
-            Assert.IsTrue(game.IsSolved);
+            Assert.Equal(1, numberOfSolutions);
+            Assert.True(game.IsSolved);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestInitialFieldChanges()
         {
             var game = (new GameFactory()).GenerateEmptyGame(2, 2);
@@ -167,13 +152,13 @@ namespace Bimaru.Test
             IReadOnlyCollection<FieldValueChangedEventArgs<BimaruValue>> expected,
             IReadOnlyCollection<FieldValueChangedEventArgs<BimaruValue>> actual)
         {
-            Assert.AreEqual(expected.Count, actual.Count);
+            Assert.Equal(expected.Count, actual.Count);
 
             var index = 0;
             foreach (var e in expected)
             {
-                Assert.AreEqual(e.Point, actual.ElementAt(index).Point);
-                Assert.AreEqual(e.OriginalValue, actual.ElementAt(index).OriginalValue);
+                Assert.Equal(e.Point, actual.ElementAt(index).Point);
+                Assert.Equal(e.OriginalValue, actual.ElementAt(index).OriginalValue);
                 index++;
             }
         }
@@ -217,19 +202,18 @@ namespace Bimaru.Test
             public IReadOnlyCollection<FieldValueChangedEventArgs<BimaruValue>> Changes => ChangedEventArgs;
         }
 
-        [TestMethod]
+        [Fact]
         public void TestCorrectUnsubscription()
         {
-            var game = (new GameFactoryForTesting()).GenerateGameOneSolution();
+            var game = GameFactoryForTesting.GenerateGameOneSolution();
             var solver = new Solver(null, null, null, new Backup<IBimaruGrid>());
             solver.Solve(game);
 
             // No InvalidFieldChange exception here, although we change a field value back
-            game.Grid[new GridPoint(0, 0)] = BimaruValue.SHIP_SINGLE;
-            game.Grid[new GridPoint(0, 0)] = BimaruValue.UNDETERMINED;
+            Assert.Null(Record.Exception(() => game.Grid[new GridPoint(0, 0)] = BimaruValue.UNDETERMINED));
         }
 
-        [TestMethod]
+        [Fact]
         public void TestFieldChangedRules()
         {
             var game = GenerateEasyGame();
@@ -243,7 +227,7 @@ namespace Bimaru.Test
             var solver = new Solver(fieldChangedRule, null, null, new Backup<IBimaruGrid>());
             solver.Solve(game);
 
-            Assert.IsTrue(game.IsSolved);
+            Assert.True(game.IsSolved);
         }
 
         /// <summary>
@@ -266,7 +250,7 @@ namespace Bimaru.Test
             return game;
         }
 
-        [TestMethod]
+        [Fact]
         public void TestSolverRules()
         {
             var game = GenerateEasyGame();
@@ -279,13 +263,13 @@ namespace Bimaru.Test
             var solver = new Solver(null, fullGridRules, null, new Backup<IBimaruGrid>());
             solver.Solve(game);
 
-            Assert.IsTrue(game.IsSolved);
+            Assert.True(game.IsSolved);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestSolverRuleOnce()
         {
-            var game = (new GameFactoryForTesting()).GenerateGameOneSolution();
+            var game = GameFactoryForTesting.GenerateGameOneSolution();
 
             var changesOnce = new ChangeLogger(true);
             var changesUnlimited = new ChangeLogger(shallBeAppliedOnce: false);
@@ -298,19 +282,19 @@ namespace Bimaru.Test
             var solver = new Solver(null, fullGridRules, new BruteForce(), new Backup<IBimaruGrid>());
             solver.Solve(game);
 
-            Assert.IsTrue(changesOnce.NumberOfSolverRuleCalls == 1);
-            Assert.IsTrue(changesUnlimited.NumberOfSolverRuleCalls > 1);
+            Assert.True(changesOnce.NumberOfSolverRuleCalls == 1);
+            Assert.True(changesUnlimited.NumberOfSolverRuleCalls > 1);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestOnlyTrivialChangeRule()
         {
-            var game = (new GameFactoryForTesting()).GenerateGameOneSolution();
+            var game = GameFactoryForTesting.GenerateGameOneSolution();
             var solver = new Solver(null, null, new MockTrialRule(true, true), new Backup<IBimaruGrid>());
 
             // A non-changing trial and error rule could lead to an infinite recursion
             // => check if instead correct exception
-            Assert.ThrowsException<InvalidOperationException>(() => solver.Solve(game));
+            Assert.Throws<InvalidOperationException>(() => solver.Solve(game));
         }
     }
 }

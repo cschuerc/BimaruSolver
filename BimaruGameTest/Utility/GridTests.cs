@@ -1,159 +1,97 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Utility;
+using Xunit;
+
 // ReSharper disable RedundantAssignment
 
 namespace Bimaru.Test
 {
-    [TestClass]
     public class GridTests
     {
-        [TestMethod]
-        public void TestNumberOfRowsRange()
+        [Theory]
+        [InlineData(-10, 1, typeof(ArgumentOutOfRangeException))]
+        [InlineData(-1, 1, typeof(ArgumentOutOfRangeException))]
+        [InlineData(0, 1, typeof(ArgumentOutOfRangeException))]
+        [InlineData(1, 1, null)]
+        [InlineData(2, 1, null)]
+        [InlineData(10, 1, null)]
+        [InlineData(1, 2, null)]
+        [InlineData(1, 10, null)]
+        [InlineData(1, -10, typeof(ArgumentOutOfRangeException))]
+        [InlineData(1, -1, typeof(ArgumentOutOfRangeException))]
+        [InlineData(1, 0, typeof(ArgumentOutOfRangeException))]
+
+        public void TestGridSizeRange(int numberOfRows, int numberOfColumns, Type expectedExceptionType)
         {
-            const int numberOfColumns = 1;
+            var caughtException = Record.Exception(() => new Grid<int>(numberOfRows, numberOfColumns));
 
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => new Grid<int>(-10, numberOfColumns));
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => new Grid<int>(-1, numberOfColumns));
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => new Grid<int>(0, numberOfColumns));
-
-            var _ = new Grid<int>(1, numberOfColumns);
-            _ = new Grid<int>(2, numberOfColumns);
-            _ = new Grid<int>(10, numberOfColumns);
+            Assert.Equal(expectedExceptionType, caughtException?.GetType());
         }
 
-        [TestMethod]
-        public void TestNumberOfColumnsRange()
-        {
-            const int numberOfRows = 1;
-
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => new Grid<int>(numberOfRows, -10));
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => new Grid<int>(numberOfRows, -1));
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => new Grid<int>(numberOfRows, 0));
-
-            var _ = new Grid<int>(numberOfRows, 1);
-            _ = new Grid<int>(numberOfRows, 2);
-            _ = new Grid<int>(numberOfRows, 10);
-        }
-
-        [TestMethod]
+        [Fact]
         public void TestNumberOfRowsColumns()
         {
             var grid = new Grid<int>(2, 3);
 
-            Assert.AreEqual(2, grid.NumberOfRows);
-            Assert.AreEqual(3, grid.NumberOfColumns);
+            Assert.Equal(2, grid.NumberOfRows);
+            Assert.Equal(3, grid.NumberOfColumns);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestDefaultFieldValue()
         {
-            var defaultFieldValue = 17;
+            const int defaultFieldValue = 17;
 
             var grid = new Grid<int>(2, 3, defaultFieldValue);
 
             foreach (var p in grid.AllPoints())
             {
-                Assert.AreEqual(defaultFieldValue, grid[p]);
+                Assert.Equal(defaultFieldValue, grid[p]);
             }
         }
 
-        [TestMethod]
-        public void TestRowIndexRangeGet()
+        [Theory]
+        [InlineData(-1, 0, typeof(ArgumentOutOfRangeException))]
+        [InlineData(3, 0, typeof(ArgumentOutOfRangeException))]
+        [InlineData(0, -1, typeof(ArgumentOutOfRangeException))]
+        [InlineData(0, 4, typeof(ArgumentOutOfRangeException))]
+        [InlineData(0, 0, null)]
+        [InlineData(2, 0, null)]
+        [InlineData(0, 3, null)]
+        [InlineData(2, 3, null)]
+        public void TestIndexRange(int rowIndex, int columnIndex, Type expectedExceptionType)
         {
             var grid = new Grid<int>(3, 4);
 
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => grid[new GridPoint(-10, 0)]);
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => grid[new GridPoint(-2, 0)]);
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => grid[new GridPoint(-1, 0)]);
+            var caughtException = Record.Exception(() => grid[new GridPoint(rowIndex, columnIndex)]++);
 
-            var _ = grid[new GridPoint(0, 0)];
-            _ = grid[new GridPoint(1, 0)];
-            _ = grid[new GridPoint(2, 0)];
-
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => grid[new GridPoint(3, 0)]);
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => grid[new GridPoint(4, 0)]);
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => grid[new GridPoint(10, 0)]);
+            Assert.Equal(expectedExceptionType, caughtException?.GetType());
         }
 
-        [TestMethod]
-        public void TestColumnIndexRangeGet()
-        {
-            var grid = new Grid<int>(4, 3);
-
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => grid[new GridPoint(0, -10)]);
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => grid[new GridPoint(0, -2)]);
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => grid[new GridPoint(0, -1)]);
-
-            var _ = grid[new GridPoint(0, 0)];
-            _ = grid[new GridPoint(0, 1)];
-            _ = grid[new GridPoint(0, 2)];
-
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => grid[new GridPoint(0, 3)]);
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => grid[new GridPoint(0, 4)]);
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => grid[new GridPoint(0, 10)]);
-        }
-
-        [TestMethod]
-        public void TestRowIndexRangeSet()
-        {
-            var grid = new Grid<int>(3, 4);
-
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => grid[new GridPoint(-10, 0)] = 0);
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => grid[new GridPoint(-2, 0)] = 0);
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => grid[new GridPoint(-1, 0)] = 0);
-
-            grid[new GridPoint(0, 0)] = 0;
-            grid[new GridPoint(1, 0)] = 0;
-            grid[new GridPoint(2, 0)] = 0;
-
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => grid[new GridPoint(3, 0)] = 0);
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => grid[new GridPoint(4, 0)] = 0);
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => grid[new GridPoint(10, 0)] = 0);
-        }
-
-        [TestMethod]
-        public void TestColumnIndexRangeSet()
-        {
-            var grid = new Grid<int>(4, 3);
-
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => grid[new GridPoint(0, -10)] = 0);
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => grid[new GridPoint(0, -2)] = 0);
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => grid[new GridPoint(0, -1)] = 0);
-
-            grid[new GridPoint(0, 0)] = 0;
-            grid[new GridPoint(0, 1)] = 0;
-            grid[new GridPoint(0, 2)] = 0;
-
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => grid[new GridPoint(0, 3)] = 0);
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => grid[new GridPoint(0, 4)] = 0);
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => grid[new GridPoint(0, 10)] = 0);
-        }
-
-        [TestMethod]
+        [Fact]
         public void TestGetSetFieldValue()
         {
             var grid = new Grid<int>(1, 2);
             var p0 = new GridPoint(0, 0);
             var p1 = new GridPoint(0, 1);
 
-            Assert.AreEqual(0, grid[p0]);
-            Assert.AreEqual(0, grid[p1]);
+            Assert.Equal(0, grid[p0]);
+            Assert.Equal(0, grid[p1]);
 
             grid[p0] = 15;
 
-            Assert.AreEqual(15, grid[p0]);
-            Assert.AreEqual(0, grid[p1]);
+            Assert.Equal(15, grid[p0]);
+            Assert.Equal(0, grid[p1]);
 
             grid[p1] = -7;
 
-            Assert.AreEqual(15, grid[p0]);
-            Assert.AreEqual(-7, grid[p1]);
+            Assert.Equal(15, grid[p0]);
+            Assert.Equal(-7, grid[p1]);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestFieldValueChanged()
         {
             var grid = new Grid<int>(1, 2);
@@ -184,106 +122,108 @@ namespace Bimaru.Test
 
         private static void AssertEqualFieldValueChangedEventArgs<T>(IReadOnlyList<FieldValueChangedEventArgs<T>> expected, IReadOnlyList<FieldValueChangedEventArgs<T>> actual)
         {
-            Assert.AreEqual(expected.Count, actual.Count);
+            Assert.Equal(expected.Count, actual.Count);
 
             foreach (var index in Enumerable.Range(0, expected.Count))
             {
-                Assert.AreEqual(expected[index].Point, actual[index].Point);
-                Assert.AreEqual(expected[index].OriginalValue, actual[index].OriginalValue);
+                Assert.Equal(expected[index].Point, actual[index].Point);
+                Assert.Equal(expected[index].OriginalValue, actual[index].OriginalValue);
             }
         }
 
-        [TestMethod]
-        public void TestPointsOfRowRange()
+        [Theory]
+        [InlineData(-10, typeof(ArgumentOutOfRangeException))]
+        [InlineData(-2, typeof(ArgumentOutOfRangeException))]
+        [InlineData(-1, typeof(ArgumentOutOfRangeException))]
+        [InlineData(0, null)]
+        [InlineData(1, null)]
+        [InlineData(2, null)]
+        [InlineData(3, typeof(ArgumentOutOfRangeException))]
+        [InlineData(4, typeof(ArgumentOutOfRangeException))]
+        [InlineData(10, typeof(ArgumentOutOfRangeException))]
+        public void TestPointsOfRowRange(int rowIndex, Type expectedExceptionType)
         {
             var grid = new Grid<int>(3, 2);
 
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => grid.PointsOfRow(-10));
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => grid.PointsOfRow(-2));
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => grid.PointsOfRow(-1));
+            var caughtException = Record.Exception(() => grid.PointsOfRow(rowIndex));
 
-            TestPointsOfRow(grid, 0);
-            TestPointsOfRow(grid, 1);
-            TestPointsOfRow(grid, 2);
-
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => grid.PointsOfRow(3));
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => grid.PointsOfRow(4));
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => grid.PointsOfRow(10));
+            Assert.Equal(expectedExceptionType, caughtException?.GetType());
         }
 
-        private static void TestPointsOfRow<T>(Grid<T> grid, int rowIndex)
+        private static void AssertPointsOfRow<T>(Grid<T> grid, int rowIndex)
         {
             var columnIndex = 0;
             foreach (var p in grid.PointsOfRow(rowIndex))
             {
-                Assert.AreEqual(new GridPoint(rowIndex, columnIndex), p);
+                Assert.Equal(new GridPoint(rowIndex, columnIndex), p);
                 columnIndex++;
             }
-            Assert.AreEqual(grid.NumberOfColumns, columnIndex);
+            Assert.Equal(grid.NumberOfColumns, columnIndex);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestPointsOfRow()
         {
             var grid = new Grid<int>(3, 1);
 
-            TestPointsOfRow(grid, 0);
+            AssertPointsOfRow(grid, 0);
 
             grid = new Grid<int>(3, 2);
 
-            TestPointsOfRow(grid, 0);
+            AssertPointsOfRow(grid, 0);
 
             grid = new Grid<int>(3, 10);
 
-            TestPointsOfRow(grid, 0);
+            AssertPointsOfRow(grid, 0);
         }
 
-        [TestMethod]
-        public void TestPointsOfColumnRange()
+        [Theory]
+        [InlineData(-10, typeof(ArgumentOutOfRangeException))]
+        [InlineData(-2, typeof(ArgumentOutOfRangeException))]
+        [InlineData(-1, typeof(ArgumentOutOfRangeException))]
+        [InlineData(0, null)]
+        [InlineData(1, null)]
+        [InlineData(2, null)]
+        [InlineData(3, typeof(ArgumentOutOfRangeException))]
+        [InlineData(4, typeof(ArgumentOutOfRangeException))]
+        [InlineData(10, typeof(ArgumentOutOfRangeException))]
+        public void TestPointsOfColumnRange(int columnIndex, Type expectedExceptionType)
         {
             var grid = new Grid<int>(2, 3);
 
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => grid.PointsOfColumn(-10));
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => grid.PointsOfColumn(-2));
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => grid.PointsOfColumn(-1));
+            var caughtException = Record.Exception(() => grid.PointsOfColumn(columnIndex));
 
-            TestPointsOfColumn(grid, 0);
-            TestPointsOfColumn(grid, 1);
-            TestPointsOfColumn(grid, 2);
-
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => grid.PointsOfColumn(3));
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => grid.PointsOfColumn(4));
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => grid.PointsOfColumn(10));
+            Assert.Equal(expectedExceptionType, caughtException?.GetType());
         }
 
-        private static void TestPointsOfColumn<T>(Grid<T> grid, int columnIndex)
+        private static void AssertPointsOfColumn<T>(Grid<T> grid, int columnIndex)
         {
             var rowIndex = 0;
             foreach (var p in grid.PointsOfColumn(columnIndex))
             {
-                Assert.AreEqual(new GridPoint(rowIndex, columnIndex), p);
+                Assert.Equal(new GridPoint(rowIndex, columnIndex), p);
                 rowIndex++;
             }
-            Assert.AreEqual(grid.NumberOfRows, rowIndex);
+            Assert.Equal(grid.NumberOfRows, rowIndex);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestPointsOfColumn()
         {
             var grid = new Grid<int>(1, 3);
 
-            TestPointsOfColumn(grid, 0);
+            AssertPointsOfColumn(grid, 0);
 
             grid = new Grid<int>(2, 3);
 
-            TestPointsOfColumn(grid, 0);
+            AssertPointsOfColumn(grid, 0);
 
             grid = new Grid<int>(10, 3);
 
-            TestPointsOfColumn(grid, 0);
+            AssertPointsOfColumn(grid, 0);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestAllPoints()
         {
             var grid = new Grid<int>(2, 3);
@@ -299,10 +239,10 @@ namespace Bimaru.Test
 
             foreach (var p in grid.AllPoints())
             {
-                Assert.IsTrue(expectedPointsInGrid.Remove(p));
+                Assert.True(expectedPointsInGrid.Remove(p));
             }
 
-            Assert.AreEqual(0, expectedPointsInGrid.Count);
+            Assert.Empty(expectedPointsInGrid);
         }
     }
 }

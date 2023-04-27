@@ -2,37 +2,36 @@ using System.Collections.Generic;
 using System.Linq;
 using Bimaru.GameUtil;
 using Bimaru.Interfaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Utility;
+using Xunit;
 
 namespace Bimaru.Test
 {
-    [TestClass]
     public class BimaruGridTests
     {
-        [TestMethod]
+        [Fact]
         public void TestDefaultFieldValues()
         {
             var grid = new BimaruGrid(3, 4);
 
             foreach (var p in grid.AllPoints())
             {
-                Assert.AreEqual(BimaruValue.UNDETERMINED, grid[p]);
+                Assert.Equal(BimaruValue.UNDETERMINED, grid[p]);
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void TestGetOffGridFieldValues()
         {
             var grid = new BimaruGrid(3, 4);
 
             foreach (var p in GetSomeOffGridPoints(grid))
             {
-                Assert.AreEqual(BimaruValue.WATER, grid[p]);
+                Assert.Equal(BimaruValue.WATER, grid[p]);
             }
         }
 
-        private IEnumerable<GridPoint> GetSomeOffGridPoints(BimaruGrid grid)
+        private static IEnumerable<GridPoint> GetSomeOffGridPoints(BimaruGrid grid)
         {
             yield return new GridPoint(0, -1);
             yield return new GridPoint(-1, 0);
@@ -51,18 +50,18 @@ namespace Bimaru.Test
             yield return new GridPoint(grid.NumberOfRows, grid.NumberOfColumns);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestSetOffGridFieldValuesToWater()
         {
             var grid = new BimaruGrid(3, 4);
 
             foreach (var p in GetSomeOffGridPoints(grid))
             {
-                grid[p] = BimaruValue.WATER;
+                Assert.Null(Record.Exception(() => grid[p] = BimaruValue.WATER));
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void TestSetOffGridFieldValuesToNotWater()
         {
             var grid = new BimaruGrid(3, 4);
@@ -71,12 +70,12 @@ namespace Bimaru.Test
             {
                 foreach (var v in BimaruValues.AllBimaruValues().Where(v => v != BimaruValue.WATER))
                 {
-                    Assert.ThrowsException<InvalidFieldValueChangeException>(() => grid[p] = v);
+                    Assert.Throws<InvalidFieldValueChangeException>(() => grid[p] = v);
                 }
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void TestFillUndeterminedFieldsColumnToNo()
         {
             var grid = new BimaruGrid(2, 3);
@@ -92,7 +91,7 @@ namespace Bimaru.Test
             grid.AssertEqual(expectedFieldValues);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestFillUndeterminedFieldsColumnToWater()
         {
             var grid = new BimaruGrid(2, 3);
@@ -108,7 +107,7 @@ namespace Bimaru.Test
             grid.AssertEqual(expectedFieldValues);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestFillUndeterminedFieldsColumnToShip()
         {
             var grid = new BimaruGrid(2, 3);
@@ -124,7 +123,7 @@ namespace Bimaru.Test
             grid.AssertEqual(expectedFieldValues);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestFillUndeterminedFieldsColumnPreset()
         {
             var grid = new BimaruGrid(2, 3)
@@ -143,7 +142,7 @@ namespace Bimaru.Test
             grid.AssertEqual(expectedFieldValues);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestFillUndeterminedFieldsRowToNo()
         {
             var grid = new BimaruGrid(2, 3);
@@ -159,7 +158,7 @@ namespace Bimaru.Test
             grid.AssertEqual(expectedFieldValues);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestFillUndeterminedFieldsRowToWater()
         {
             var grid = new BimaruGrid(2, 3);
@@ -175,7 +174,7 @@ namespace Bimaru.Test
             grid.AssertEqual(expectedFieldValues);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestFillUndeterminedFieldsRowToShip()
         {
             var grid = new BimaruGrid(2, 3);
@@ -191,7 +190,7 @@ namespace Bimaru.Test
             grid.AssertEqual(expectedFieldValues);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestFillUndeterminedFieldsRowPreset()
         {
             var grid = new BimaruGrid(2, 3)
@@ -210,17 +209,17 @@ namespace Bimaru.Test
             grid.AssertEqual(expectedFieldValues);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestNumberOfShipFields()
         {
             var numRows = 4;
             var numColumns = 3;
             var grid = new BimaruGrid(numRows, numColumns);
 
-            Assert.IsTrue(grid.NumberOfUndeterminedFieldsPerColumn.SequenceEqual(new int[numColumns].InitValues(numRows)));
-            Assert.IsTrue(grid.NumberOfShipFieldsPerColumn.SequenceEqual(new int[numColumns].InitValues(0)));
-            Assert.IsTrue(grid.NumberOfUndeterminedFieldsPerRow.SequenceEqual(new int[numRows].InitValues(numColumns)));
-            Assert.IsTrue(grid.NumberOfShipFieldsPerRow.SequenceEqual(new int[numRows].InitValues(0)));
+            Assert.True(grid.NumberOfUndeterminedFieldsPerColumn.SequenceEqual(new int[numColumns].InitValues(numRows)));
+            Assert.True(grid.NumberOfShipFieldsPerColumn.SequenceEqual(new int[numColumns].InitValues(0)));
+            Assert.True(grid.NumberOfUndeterminedFieldsPerRow.SequenceEqual(new int[numRows].InitValues(numColumns)));
+            Assert.True(grid.NumberOfShipFieldsPerRow.SequenceEqual(new int[numRows].InitValues(0)));
 
             // SUW
             // UUS
@@ -233,86 +232,86 @@ namespace Bimaru.Test
             grid[new GridPoint(2, 2)] = BimaruValue.WATER;
             grid[new GridPoint(2, 2)] = BimaruValue.SHIP_UNDETERMINED;
 
-            Assert.IsTrue(grid.NumberOfUndeterminedFieldsPerColumn.SequenceEqual(new[] { 2, 4, 2 }));
-            Assert.IsTrue(grid.NumberOfShipFieldsPerColumn.SequenceEqual(new[] { 2, 0, 1 }));
-            Assert.IsTrue(grid.NumberOfUndeterminedFieldsPerRow.SequenceEqual(new[] { 2, 3, 2, 1 }));
-            Assert.IsTrue(grid.NumberOfShipFieldsPerRow.SequenceEqual(new[] { 1, 0, 1, 1 }));
+            Assert.True(grid.NumberOfUndeterminedFieldsPerColumn.SequenceEqual(new[] { 2, 4, 2 }));
+            Assert.True(grid.NumberOfShipFieldsPerColumn.SequenceEqual(new[] { 2, 0, 1 }));
+            Assert.True(grid.NumberOfUndeterminedFieldsPerRow.SequenceEqual(new[] { 2, 3, 2, 1 }));
+            Assert.True(grid.NumberOfShipFieldsPerRow.SequenceEqual(new[] { 1, 0, 1, 1 }));
         }
 
-        [TestMethod]
+        [Fact]
         public void TestIsFullyDetermined()
         {
             var grid = new BimaruGrid(1, 2);
             var p0 = new GridPoint(0, 0);
             var p1 = new GridPoint(0, 1);
 
-            Assert.IsFalse(grid.IsFullyDetermined);
+            Assert.False(grid.IsFullyDetermined);
             grid[p0] = BimaruValue.WATER;
             grid[p1] = BimaruValue.SHIP_UNDETERMINED;
-            Assert.IsFalse(grid.IsFullyDetermined);
+            Assert.False(grid.IsFullyDetermined);
             grid[p1] = BimaruValue.SHIP_CONT_DOWN;
-            Assert.IsTrue(grid.IsFullyDetermined);
+            Assert.True(grid.IsFullyDetermined);
             grid[p1] = BimaruValue.SHIP_CONT_LEFT;
-            Assert.IsTrue(grid.IsFullyDetermined);
+            Assert.True(grid.IsFullyDetermined);
             grid[p1] = BimaruValue.SHIP_CONT_RIGHT;
-            Assert.IsTrue(grid.IsFullyDetermined);
+            Assert.True(grid.IsFullyDetermined);
             grid[p1] = BimaruValue.SHIP_CONT_UP;
-            Assert.IsTrue(grid.IsFullyDetermined);
+            Assert.True(grid.IsFullyDetermined);
             grid[p1] = BimaruValue.SHIP_MIDDLE;
-            Assert.IsTrue(grid.IsFullyDetermined);
+            Assert.True(grid.IsFullyDetermined);
             grid[p1] = BimaruValue.SHIP_SINGLE;
-            Assert.IsTrue(grid.IsFullyDetermined);
+            Assert.True(grid.IsFullyDetermined);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestIsValidDiagonal()
         {
             var grid = new BimaruGrid(2, 2);
-            Assert.IsTrue(grid.IsValid);
+            Assert.True(grid.IsValid);
             grid[new GridPoint(0, 0)] = BimaruValue.SHIP_UNDETERMINED;
             grid[new GridPoint(1, 1)] = BimaruValue.SHIP_UNDETERMINED;
-            Assert.IsFalse(grid.IsValid);
+            Assert.False(grid.IsValid);
             grid[new GridPoint(0, 0)] = BimaruValue.WATER;
-            Assert.IsTrue(grid.IsValid);
+            Assert.True(grid.IsValid);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestIsValidVertical()
         {
             var grid = new BimaruGrid(2, 2);
-            Assert.IsTrue(grid.IsValid);
+            Assert.True(grid.IsValid);
             grid[new GridPoint(0, 0)] = BimaruValue.SHIP_SINGLE;
             grid[new GridPoint(1, 0)] = BimaruValue.SHIP_UNDETERMINED;
-            Assert.IsFalse(grid.IsValid);
+            Assert.False(grid.IsValid);
             grid[new GridPoint(0, 0)] = BimaruValue.WATER;
-            Assert.IsTrue(grid.IsValid);
+            Assert.True(grid.IsValid);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestIsValidHorizontal()
         {
             var grid = new BimaruGrid(2, 2);
-            Assert.IsTrue(grid.IsValid);
+            Assert.True(grid.IsValid);
             grid[new GridPoint(0, 0)] = BimaruValue.SHIP_SINGLE;
             grid[new GridPoint(0, 1)] = BimaruValue.SHIP_UNDETERMINED;
-            Assert.IsFalse(grid.IsValid);
+            Assert.False(grid.IsValid);
             grid[new GridPoint(0, 0)] = BimaruValue.WATER;
-            Assert.IsTrue(grid.IsValid);
+            Assert.True(grid.IsValid);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestIsValidOffGrid()
         {
             var grid = new BimaruGrid(2, 2);
-            Assert.IsTrue(grid.IsValid);
+            Assert.True(grid.IsValid);
             grid[new GridPoint(0, 0)] = BimaruValue.SHIP_CONT_DOWN;
             grid[new GridPoint(0, 1)] = BimaruValue.WATER;
-            Assert.IsFalse(grid.IsValid);
+            Assert.False(grid.IsValid);
             grid[new GridPoint(0, 0)] = BimaruValue.WATER;
-            Assert.IsTrue(grid.IsValid);
+            Assert.True(grid.IsValid);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestShipCountOne()
         {
             var grid = new BimaruGrid(4, 3)
@@ -327,10 +326,10 @@ namespace Bimaru.Test
                 [new GridPoint(2, 2)] = BimaruValue.SHIP_SINGLE
             };
 
-            Assert.IsTrue(new[] { 0, 2, 0, 0, 0 }.SequenceEqual(grid.NumberOfShipsPerLength));
+            Assert.True(new[] { 0, 2, 0, 0, 0 }.SequenceEqual(grid.NumberOfShipsPerLength));
         }
 
-        [TestMethod]
+        [Fact]
         public void TestShipCountTwo()
         {
             var grid = new BimaruGrid(4, 3)
@@ -346,10 +345,10 @@ namespace Bimaru.Test
                 [new GridPoint(1, 2)] = BimaruValue.SHIP_CONT_LEFT
             };
 
-            Assert.IsTrue(new[] { 0, 0, 2, 0, 0 }.SequenceEqual(grid.NumberOfShipsPerLength));
+            Assert.True(new[] { 0, 0, 2, 0, 0 }.SequenceEqual(grid.NumberOfShipsPerLength));
         }
 
-        [TestMethod]
+        [Fact]
         public void TestShipCountThree()
         {
             var grid = new BimaruGrid(4, 3)
@@ -368,10 +367,10 @@ namespace Bimaru.Test
                 [new GridPoint(2, 2)] = BimaruValue.SHIP_CONT_DOWN
             };
 
-            Assert.IsTrue(new[] { 0, 0, 0, 2, 0 }.SequenceEqual(grid.NumberOfShipsPerLength));
+            Assert.True(new[] { 0, 0, 0, 2, 0 }.SequenceEqual(grid.NumberOfShipsPerLength));
         }
 
-        [TestMethod]
+        [Fact]
         public void TestShipCountFour()
         {
             var grid = new BimaruGrid(4, 3)
@@ -389,10 +388,10 @@ namespace Bimaru.Test
                 [new GridPoint(3, 2)] = BimaruValue.SHIP_CONT_DOWN
             };
 
-            Assert.IsTrue(new[] { 0, 0, 0, 0, 1 }.SequenceEqual(grid.NumberOfShipsPerLength));
+            Assert.True(new[] { 0, 0, 0, 0, 1 }.SequenceEqual(grid.NumberOfShipsPerLength));
         }
 
-        [TestMethod]
+        [Fact]
         public void TestShipCountChaos()
         {
             var grid = new BimaruGrid(3, 3)
@@ -407,22 +406,22 @@ namespace Bimaru.Test
                 [new GridPoint(2, 1)] = BimaruValue.SHIP_CONT_DOWN
             };
 
-            Assert.IsTrue(new[] { 0, 0, 0, 2 }.SequenceEqual(grid.NumberOfShipsPerLength));
+            Assert.True(new[] { 0, 0, 0, 2 }.SequenceEqual(grid.NumberOfShipsPerLength));
 
             grid[new GridPoint(1, 1)] = BimaruValue.SHIP_SINGLE;
 
-            Assert.IsTrue(new[] { 0, 1, 0, 0 }.SequenceEqual(grid.NumberOfShipsPerLength));
+            Assert.True(new[] { 0, 1, 0, 0 }.SequenceEqual(grid.NumberOfShipsPerLength));
 
             grid[new GridPoint(1, 1)] = BimaruValue.SHIP_CONT_RIGHT;
 
-            Assert.IsTrue(new[] { 0, 0, 1, 0 }.SequenceEqual(grid.NumberOfShipsPerLength));
+            Assert.True(new[] { 0, 0, 1, 0 }.SequenceEqual(grid.NumberOfShipsPerLength));
 
             grid[new GridPoint(1, 1)] = BimaruValue.SHIP_MIDDLE;
 
-            Assert.IsTrue(new[] { 0, 0, 0, 2 }.SequenceEqual(grid.NumberOfShipsPerLength));
+            Assert.True(new[] { 0, 0, 0, 2 }.SequenceEqual(grid.NumberOfShipsPerLength));
         }
 
-        [TestMethod]
+        [Fact]
         public void TestClone()
         {
             var grid = new BimaruGrid(1, 2);
@@ -438,10 +437,10 @@ namespace Bimaru.Test
 
             grid[p1] = BimaruValue.SHIP_SINGLE;
 
-            Assert.AreEqual(BimaruValue.UNDETERMINED, clonedGrid[p1]);
+            Assert.Equal(BimaruValue.UNDETERMINED, clonedGrid[p1]);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestOverwriteWith()
         {
             var grid = new BimaruGrid(1, 2);

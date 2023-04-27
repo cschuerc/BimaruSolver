@@ -1,39 +1,27 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Bimaru.GameUtil;
 using Bimaru.Interfaces;
 using Bimaru.SolverUtil;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Utility;
 // ReSharper disable AccessToModifiedClosure
 
 namespace Bimaru.Test
 {
-    [TestClass]
     public class OneMissingShipOrWaterTests
     {
-        [TestMethod]
-        public void TestFullyDeterminedWithoutFallback()
-        {
-            var game = (new GameFactory()).GenerateEmptyGame(1, 1);
-            game.Grid[new GridPoint(0, 0)] = BimaruValue.SHIP_MIDDLE;
-            var rule = new OneMissingShipOrWater(null);
-
-            Assert.ThrowsException<InvalidOperationException>(() => rule.GetChangeTrials(game).Count());
-        }
-
-        [TestMethod]
+        [Fact]
         public void TestFullyDeterminedWithFallback()
         {
             var game = (new GameFactory()).GenerateEmptyGame(1, 1);
             game.Grid[new GridPoint(0, 0)] = BimaruValue.SHIP_MIDDLE;
             var rule = new OneMissingShipOrWater(new BruteForce());
 
-            Assert.AreEqual(0, rule.GetChangeTrials(game).Count());
+            Assert.Empty(rule.GetChangeTrials(game));
         }
 
-        [TestMethod]
+        [Fact]
         public void TestOneMissingShip()
         {
             var game = (new GameFactory()).GenerateEmptyGame(3, 4);
@@ -72,16 +60,16 @@ namespace Bimaru.Test
         {
             var actualAsList = actual.ToList();
 
-            Assert.AreEqual(expected.Count, actualAsList.Count);
+            Assert.Equal(expected.Count, actualAsList.Count);
 
             foreach (var changeExp in expected)
             {
                 var changeActual = actualAsList.FirstOrDefault(a => a.Count == 1 && a.Contains(changeExp));
-                Assert.IsNotNull(changeActual);
+                Assert.NotNull(changeActual);
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void TestOneMissingWater()
         {
             var game = (new GameFactory()).GenerateEmptyGame(3, 4);
@@ -114,7 +102,7 @@ namespace Bimaru.Test
             AssertEqualTrialChanges(changesExpected, rule.GetChangeTrials(game));
         }
 
-        [TestMethod]
+        [Fact]
         public void TestNeverOneMissing()
         {
             var game = (new GameFactory()).GenerateEmptyGame(2, 4);
@@ -131,24 +119,19 @@ namespace Bimaru.Test
             // 2|????
             // => No row or column with one missing WATER or ship.
 
-            var rule = new OneMissingShipOrWater(null);
-
-            // No fall-back rule but fall-back rule is needed.
-            Assert.ThrowsException<InvalidOperationException>(() => rule.GetChangeTrials(game));
-
             // Check fall-back rule is called
             var counter = new CountTrialCalls();
-            rule = new OneMissingShipOrWater(counter);
+            var rule = new OneMissingShipOrWater(counter);
 
             var numTrials = 0;
             foreach (var changes in rule.GetChangeTrials(game))
             {
-                Assert.IsNull(changes);
+                Assert.Null(changes);
                 numTrials++;
             }
 
-            Assert.AreEqual(1, numTrials);
-            Assert.AreEqual(1, counter.NumberOfTrialCalls);
+            Assert.Equal(1, numTrials);
+            Assert.Equal(1, counter.NumberOfTrialCalls);
         }
 
         private class CountTrialCalls : ITrialAndErrorRule

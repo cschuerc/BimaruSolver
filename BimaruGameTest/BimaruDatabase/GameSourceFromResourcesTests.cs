@@ -5,28 +5,27 @@ using System.Reflection;
 using System.Text.Json;
 using Bimaru.DatabaseUtil;
 using Bimaru.Interfaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace Bimaru.Test
 {
-    [TestClass]
     public class GameSourceFromResourcesTests
     {
-        [TestMethod]
+        [Fact]
         public void TestCorrectMetaInfo()
         {
             var gameSource = new GameSourceFromResources();
 
             var expectedGames = GetAllGames();
 
-            Assert.AreEqual(expectedGames.Count, gameSource.GetMetaInfoOfAllGames().Count());
+            Assert.Equal(expectedGames.Count, gameSource.GetMetaInfoOfAllGames().Count());
 
             foreach (var actualMetaInfo in gameSource.GetMetaInfoOfAllGames())
             {
                 var expectedGame = expectedGames.FirstOrDefault(g => g.MetaInfo.Id == actualMetaInfo.Id);
 
-                Assert.IsNotNull(expectedGame);
-                Assert.AreEqual(expectedGame.MetaInfo, actualMetaInfo);
+                Assert.NotNull(expectedGame);
+                Assert.Equal(expectedGame.MetaInfo, actualMetaInfo);
             }
         }
 
@@ -55,7 +54,7 @@ namespace Bimaru.Test
             return games.Values;
         }
 
-        [TestMethod]
+        [Fact]
         public void TestLoadGameIdInRange()
         {
             var gameSource = new GameSourceFromResources();
@@ -67,14 +66,14 @@ namespace Bimaru.Test
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void TestLoadGameIdOutOfRange()
         {
             var gameSource = new GameSourceFromResources();
 
             var maxId = gameSource.GetMetaInfoOfAllGames().Select(m => m.Id).Max();
 
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => gameSource.GetGame(maxId + 1));
+            Assert.Throws<ArgumentOutOfRangeException>(() => gameSource.GetGame(maxId + 1));
         }
     }
 }

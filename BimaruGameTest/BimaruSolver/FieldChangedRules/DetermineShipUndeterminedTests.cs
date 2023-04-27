@@ -1,15 +1,14 @@
 using Bimaru.GameUtil;
 using Bimaru.Interfaces;
 using Bimaru.SolverUtil;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Utility;
 
 namespace Bimaru.Test
 {
-    [TestClass]
     public class DetermineShipUndeterminedTests
     {
-        [TestMethod]
+        [Fact]
         public void TestShipSingle()
         {
             var game = (new GameFactory()).GenerateEmptyGame(3, 3);
@@ -32,7 +31,7 @@ namespace Bimaru.Test
                 });
         }
 
-        [TestMethod]
+        [Fact]
         public void TestShipSingleOrderReversed()
         {
             var game = (new GameFactory()).GenerateEmptyGame(3, 3);
@@ -55,7 +54,7 @@ namespace Bimaru.Test
                 });
         }
 
-        [TestMethod]
+        [Fact]
         public void TestShipMiddleHorizontal()
         {
             var game = (new GameFactory()).GenerateEmptyGame(3, 3);
@@ -75,7 +74,7 @@ namespace Bimaru.Test
                 });
         }
 
-        [TestMethod]
+        [Fact]
         public void TestShipMiddleVertical()
         {
             var game = (new GameFactory()).GenerateEmptyGame(3, 3);
@@ -95,7 +94,7 @@ namespace Bimaru.Test
                 });
         }
 
-        [TestMethod]
+        [Fact]
         public void TestShipContRight()
         {
             var game = (new GameFactory()).GenerateEmptyGame(3, 3);
@@ -115,7 +114,7 @@ namespace Bimaru.Test
                 });
         }
 
-        [TestMethod]
+        [Fact]
         public void TestShipContLeft()
         {
             var game = (new GameFactory()).GenerateEmptyGame(3, 3);
@@ -135,7 +134,7 @@ namespace Bimaru.Test
                 });
         }
 
-        [TestMethod]
+        [Fact]
         public void TestShipContUp()
         {
             var game = (new GameFactory()).GenerateEmptyGame(3, 3);
@@ -155,7 +154,7 @@ namespace Bimaru.Test
                 });
         }
 
-        [TestMethod]
+        [Fact]
         public void TestShipContDown()
         {
             var game = (new GameFactory()).GenerateEmptyGame(3, 3);
@@ -175,7 +174,7 @@ namespace Bimaru.Test
                 });
         }
 
-        [TestMethod]
+        [Fact]
         public void TestSeveralShips()
         {
             var game = (new GameFactory()).GenerateEmptyGame(5, 5);

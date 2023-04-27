@@ -1,37 +1,36 @@
 using Bimaru.DatabaseUtil;
 using Bimaru.SolverUtil;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace Bimaru.Test
 {
-    [TestClass]
     public class SolverFactoryTests
     {
-        [TestMethod]
+        [Fact]
         public void TestTwoSolutionGameNonCounting()
         {
             var solverNonCounting = new SolverFactory().GenerateSolver(false);
-            var game = new GameFactoryForTesting().GenerateGameTwoSolutions();
+            var game = GameFactoryForTesting.GenerateGameTwoSolutions();
 
-            Assert.IsFalse(game.IsSolved);
+            Assert.False(game.IsSolved);
             var numSolutions = solverNonCounting.Solve(game);
-            Assert.IsTrue(game.IsSolved);
-            Assert.AreEqual(1, numSolutions);
+            Assert.True(game.IsSolved);
+            Assert.Equal(1, numSolutions);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestTwoSolutionGameCounting()
         {
             var solverCounting = new SolverFactory().GenerateSolver(true);
-            var game = new GameFactoryForTesting().GenerateGameTwoSolutions();
+            var game = GameFactoryForTesting.GenerateGameTwoSolutions();
 
-            Assert.IsFalse(game.IsSolved);
+            Assert.False(game.IsSolved);
             var numSolutions = solverCounting.Solve(game);
-            Assert.IsTrue(game.IsSolved);
-            Assert.AreEqual(2, numSolutions);
+            Assert.True(game.IsSolved);
+            Assert.Equal(2, numSolutions);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestAllGamesNonCounting()
         {
             var solver = new SolverFactory().GenerateSolver(false);
@@ -39,16 +38,16 @@ namespace Bimaru.Test
 
             foreach (var databaseGame in database.GetAllGames(null))
             {
-                Assert.IsFalse(databaseGame.Game.IsSolved);
+                Assert.False(databaseGame.Game.IsSolved);
 
                 var numSolutions = solver.Solve(databaseGame.Game);
 
-                Assert.IsTrue(databaseGame.Game.IsSolved);
-                Assert.AreEqual(1, numSolutions);
+                Assert.True(databaseGame.Game.IsSolved);
+                Assert.Equal(1, numSolutions);
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void TestAllGamesCounting()
         {
             var solver = new SolverFactory().GenerateSolver(true);
@@ -56,12 +55,12 @@ namespace Bimaru.Test
 
             foreach (var databaseGame in database.GetAllGames(null))
             {
-                Assert.IsFalse(databaseGame.Game.IsSolved);
+                Assert.False(databaseGame.Game.IsSolved);
 
                 var numSolutions = solver.Solve(databaseGame.Game);
 
-                Assert.IsTrue(databaseGame.Game.IsSolved);
-                Assert.AreEqual(1, numSolutions);
+                Assert.True(databaseGame.Game.IsSolved);
+                Assert.Equal(1, numSolutions);
             }
         }
     }

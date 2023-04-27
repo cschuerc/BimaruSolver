@@ -1,15 +1,14 @@
 using Bimaru.GameUtil;
 using Bimaru.Interfaces;
 using Bimaru.SolverUtil;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Utility;
 
 namespace Bimaru.Test
 {
-    [TestClass]
     public class FillRowOrColumnTests
     {
-        [TestMethod]
+        [Fact]
         public void TestSolverRuleWater()
         {
             var game = GetBasicGame();
@@ -33,7 +32,7 @@ namespace Bimaru.Test
         /// 2|???
         /// 
         /// </summary>
-        private IGame GetBasicGame()
+        private static IGame GetBasicGame()
         {
             var game = (new GameFactory()).GenerateEmptyGame(2, 3);
 
@@ -46,7 +45,7 @@ namespace Bimaru.Test
             return game;
         }
 
-        [TestMethod]
+        [Fact]
         public void TestSolverRuleShip()
         {
             var game = GetBasicGame();
@@ -62,7 +61,7 @@ namespace Bimaru.Test
                 });
         }
 
-        [TestMethod]
+        [Fact]
         public void TestFieldValueChangedRuleWater()
         {
             var game = GetBasicGame();
@@ -79,7 +78,7 @@ namespace Bimaru.Test
                 });
         }
 
-        [TestMethod]
+        [Fact]
         public void TestFieldValueChangedRuleShip()
         {
             var game = GetBasicGame();

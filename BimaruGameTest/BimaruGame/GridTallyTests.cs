@@ -1,84 +1,83 @@
 using System;
-using System.Linq;
 using Bimaru.GameUtil;
 using Bimaru.Interfaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
+
 // ReSharper disable RedundantAssignment
 
 namespace Bimaru.Test
 {
-    [TestClass]
     public class GridTallyTests
     {
-        [TestMethod]
-        public void TestCreation()
+        [Theory]
+        [InlineData(-100, typeof(ArgumentOutOfRangeException))]
+        [InlineData(-1, typeof(ArgumentOutOfRangeException))]
+        [InlineData(0, typeof(ArgumentOutOfRangeException))]
+        [InlineData(1, null)]
+        [InlineData(2, null)]
+        [InlineData(10, null)]
+        public void TestCreation(int tallyLength, Type expectedExceptionType)
         {
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => new GridTally(-100));
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => new GridTally(-1));
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => new GridTally(0));
+            var exceptionCaught = Record.Exception(() => new GridTally(tallyLength));
 
-            var _ = new GridTally(1);
-            _ = new GridTally(2);
-            _ = new GridTally(10);
+            Assert.Equal(expectedExceptionType, exceptionCaught?.GetType());
         }
 
-        [TestMethod]
-        public void TestLength()
+        [Theory]
+        [InlineData(1)]
+        [InlineData(2)]
+        [InlineData(10)]
+        public void TestLength(int tallyLength)
         {
-            var tally = new GridTally(1);
-            Assert.AreEqual(1, tally.Length);
+            var tally = new GridTally(tallyLength);
 
-            tally = new GridTally(2);
-            Assert.AreEqual(2, tally.Length);
-
-            tally = new GridTally(10);
-            Assert.AreEqual(10, tally.Length);
+            Assert.Equal(tallyLength, tally.Length);
         }
 
-        [TestMethod]
-        public void TestIndex()
+        [Theory]
+        [InlineData(3, -10, typeof(IndexOutOfRangeException))]
+        [InlineData(3, -2, typeof(IndexOutOfRangeException))]
+        [InlineData(3, -1, typeof(IndexOutOfRangeException))]
+        [InlineData(3, 0, null)]
+        [InlineData(3, 2, null)]
+        [InlineData(3, 3, typeof(IndexOutOfRangeException))]
+        [InlineData(3, 4, typeof(IndexOutOfRangeException))]
+        [InlineData(3, 13, typeof(IndexOutOfRangeException))]
+        public void TestIndex(int tallyLength, int index, Type expectedExceptionType)
         {
-            const int length = 3;
-            var tally = new GridTally(length);
+            var tally = new GridTally(tallyLength);
+            var exceptionCaught = Record.Exception(() => tally[index]);
 
-            Assert.ThrowsException<IndexOutOfRangeException>(() => tally[-10]);
-            Assert.ThrowsException<IndexOutOfRangeException>(() => tally[-2]);
-            Assert.ThrowsException<IndexOutOfRangeException>(() => tally[-1]);
-
-            var _ = tally[0];
-            _ = tally[length - 1];
-
-            Assert.ThrowsException<IndexOutOfRangeException>(() => tally[length]);
-            Assert.ThrowsException<IndexOutOfRangeException>(() => tally[length + 1]);
-            Assert.ThrowsException<IndexOutOfRangeException>(() => tally[length + 10]);
+            Assert.Equal(expectedExceptionType, exceptionCaught?.GetType());
         }
 
-        [TestMethod]
+        [Fact]
         public void TestDefaultValueZero()
         {
             var tally = new GridTally(3);
 
             foreach (var t in tally)
             {
-                Assert.AreEqual(0, t);
+                Assert.Equal(0, t);
             }
         }
 
-        [TestMethod]
-        public void TestValueRange()
+        [Theory]
+        [InlineData(-10, typeof(ArgumentOutOfRangeException))]
+        [InlineData(-2, typeof(ArgumentOutOfRangeException))]
+        [InlineData(-1, typeof(ArgumentOutOfRangeException))]
+        [InlineData(0, null)]
+        [InlineData(1, null)]
+        [InlineData(10, null)]
+        public void TestValueRange(int value, Type expectedExceptionType)
         {
             var tally = new GridTally(3);
+            var exceptionCaught = Record.Exception(() => tally[1] = value);
 
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => tally[0] = -10);
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => tally[1] = -2);
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => tally[2] = -1);
-
-            tally[0] = 0;
-            tally[1] = 1;
-            tally[2] = 10;
+            Assert.Equal(expectedExceptionType, exceptionCaught?.GetType());
         }
 
-        [TestMethod]
+        [Fact]
         public void TestValueSet()
         {
             var tally = new GridTally(3)
@@ -88,46 +87,46 @@ namespace Bimaru.Test
                 [2] = 0
             };
 
-            Assert.AreEqual(7, tally[0]);
-            Assert.AreEqual(5, tally[1]);
-            Assert.AreEqual(0, tally[2]);
+            Assert.Equal(7, tally[0]);
+            Assert.Equal(5, tally[1]);
+            Assert.Equal(0, tally[2]);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestTotal()
         {
             var tally = new GridTally(3);
 
-            Assert.AreEqual(0, tally.Total);
+            Assert.Equal(0, tally.Total);
 
             tally[0] = 7;
 
-            Assert.AreEqual(7, tally.Total);
+            Assert.Equal(7, tally.Total);
 
             tally[1] = 5;
 
-            Assert.AreEqual(12, tally.Total);
+            Assert.Equal(12, tally.Total);
 
             tally[2] = 0;
 
-            Assert.AreEqual(12, tally.Total);
+            Assert.Equal(12, tally.Total);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestSatisfiabilityLengthRange()
         {
             var tally = new GridTally(3);
 
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => tally.GetSatisfiability(new int[2], new int[2]));
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => tally.GetSatisfiability(new int[2], new int[3]));
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => tally.GetSatisfiability(new int[3], new int[2]));
+            Assert.Throws<ArgumentOutOfRangeException>(() => tally.GetSatisfiability(new int[2], new int[2]));
+            Assert.Throws<ArgumentOutOfRangeException>(() => tally.GetSatisfiability(new int[2], new int[3]));
+            Assert.Throws<ArgumentOutOfRangeException>(() => tally.GetSatisfiability(new int[3], new int[2]));
             tally.GetSatisfiability(new int[3], new int[3]);
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => tally.GetSatisfiability(new int[3], new int[4]));
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => tally.GetSatisfiability(new int[4], new int[3]));
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => tally.GetSatisfiability(new int[4], new int[4]));
+            Assert.Throws<ArgumentOutOfRangeException>(() => tally.GetSatisfiability(new int[3], new int[4]));
+            Assert.Throws<ArgumentOutOfRangeException>(() => tally.GetSatisfiability(new int[4], new int[3]));
+            Assert.Throws<ArgumentOutOfRangeException>(() => tally.GetSatisfiability(new int[4], new int[4]));
         }
 
-        [TestMethod]
+        [Fact]
         public void TestSatisfiabilityNoAdditional()
         {
             var tally = new GridTally(1)
@@ -135,13 +134,13 @@ namespace Bimaru.Test
                 [0] = 3
             };
 
-            Assert.AreEqual(Satisfiability.VIOLATED, tally.GetSatisfiability(new[] { 1 }, new[] { 0 }));
-            Assert.AreEqual(Satisfiability.VIOLATED, tally.GetSatisfiability(new[] { 2 }, new[] { 0 }));
-            Assert.AreEqual(Satisfiability.SATISFIED, tally.GetSatisfiability(new[] { 3 }, new[] { 0 }));
-            Assert.AreEqual(Satisfiability.VIOLATED, tally.GetSatisfiability(new[] { 4 }, new[] { 0 }));
+            Assert.Equal(Satisfiability.VIOLATED, tally.GetSatisfiability(new[] { 1 }, new[] { 0 }));
+            Assert.Equal(Satisfiability.VIOLATED, tally.GetSatisfiability(new[] { 2 }, new[] { 0 }));
+            Assert.Equal(Satisfiability.SATISFIED, tally.GetSatisfiability(new[] { 3 }, new[] { 0 }));
+            Assert.Equal(Satisfiability.VIOLATED, tally.GetSatisfiability(new[] { 4 }, new[] { 0 }));
         }
 
-        [TestMethod]
+        [Fact]
         public void TestSatisfiabilityAdditional()
         {
             var tally = new GridTally(1)
@@ -149,13 +148,13 @@ namespace Bimaru.Test
                 [0] = 3
             };
 
-            Assert.AreEqual(Satisfiability.VIOLATED, tally.GetSatisfiability(new[] { 0 }, new[] { 1 }));
-            Assert.AreEqual(Satisfiability.VIOLATED, tally.GetSatisfiability(new[] { 0 }, new[] { 2 }));
-            Assert.AreEqual(Satisfiability.SATISFIABLE, tally.GetSatisfiability(new[] { 0 }, new[] { 3 }));
-            Assert.AreEqual(Satisfiability.SATISFIABLE, tally.GetSatisfiability(new[] { 0 }, new[] { 4 }));
+            Assert.Equal(Satisfiability.VIOLATED, tally.GetSatisfiability(new[] { 0 }, new[] { 1 }));
+            Assert.Equal(Satisfiability.VIOLATED, tally.GetSatisfiability(new[] { 0 }, new[] { 2 }));
+            Assert.Equal(Satisfiability.SATISFIABLE, tally.GetSatisfiability(new[] { 0 }, new[] { 3 }));
+            Assert.Equal(Satisfiability.SATISFIABLE, tally.GetSatisfiability(new[] { 0 }, new[] { 4 }));
         }
 
-        [TestMethod]
+        [Fact]
         public void TestSatisfiabilityCombination()
         {
             var tally = new GridTally(1)
@@ -163,14 +162,14 @@ namespace Bimaru.Test
                 [0] = 3
             };
 
-            Assert.AreEqual(Satisfiability.VIOLATED, tally.GetSatisfiability(new[] { 1 }, new[] { 1 }));
-            Assert.AreEqual(Satisfiability.SATISFIABLE, tally.GetSatisfiability(new[] { 1 }, new[] { 2 }));
-            Assert.AreEqual(Satisfiability.SATISFIED, tally.GetSatisfiability(new[] { 3 }, new[] { 0 }));
-            Assert.AreEqual(Satisfiability.SATISFIED, tally.GetSatisfiability(new[] { 3 }, new[] { 1 }));
-            Assert.AreEqual(Satisfiability.VIOLATED, tally.GetSatisfiability(new[] { 4 }, new[] { 0 }));
+            Assert.Equal(Satisfiability.VIOLATED, tally.GetSatisfiability(new[] { 1 }, new[] { 1 }));
+            Assert.Equal(Satisfiability.SATISFIABLE, tally.GetSatisfiability(new[] { 1 }, new[] { 2 }));
+            Assert.Equal(Satisfiability.SATISFIED, tally.GetSatisfiability(new[] { 3 }, new[] { 0 }));
+            Assert.Equal(Satisfiability.SATISFIED, tally.GetSatisfiability(new[] { 3 }, new[] { 1 }));
+            Assert.Equal(Satisfiability.VIOLATED, tally.GetSatisfiability(new[] { 4 }, new[] { 0 }));
         }
 
-        [TestMethod]
+        [Fact]
         public void TestSatisfiabilityMoreThanOne()
         {
             var tally = new GridTally(2)
@@ -179,20 +178,20 @@ namespace Bimaru.Test
                 [1] = 2
             };
 
-            Assert.AreEqual(Satisfiability.SATISFIABLE, tally.GetSatisfiability(new[] { 0, 0 }, new[] { 1, 2 }));
-            Assert.AreEqual(Satisfiability.SATISFIABLE, tally.GetSatisfiability(new[] { 1, 0 }, new[] { 0, 2 }));
-            Assert.AreEqual(Satisfiability.SATISFIABLE, tally.GetSatisfiability(new[] { 0, 2 }, new[] { 1, 0 }));
+            Assert.Equal(Satisfiability.SATISFIABLE, tally.GetSatisfiability(new[] { 0, 0 }, new[] { 1, 2 }));
+            Assert.Equal(Satisfiability.SATISFIABLE, tally.GetSatisfiability(new[] { 1, 0 }, new[] { 0, 2 }));
+            Assert.Equal(Satisfiability.SATISFIABLE, tally.GetSatisfiability(new[] { 0, 2 }, new[] { 1, 0 }));
 
-            Assert.AreEqual(Satisfiability.SATISFIED, tally.GetSatisfiability(new[] { 1, 2 }, new[] { 0, 0 }));
+            Assert.Equal(Satisfiability.SATISFIED, tally.GetSatisfiability(new[] { 1, 2 }, new[] { 0, 0 }));
 
-            Assert.AreEqual(Satisfiability.VIOLATED, tally.GetSatisfiability(new[] { 2, 1 }, new[] { 0, 1 }));
-            Assert.AreEqual(Satisfiability.VIOLATED, tally.GetSatisfiability(new[] { 0, 3 }, new[] { 1, 0 }));
-            Assert.AreEqual(Satisfiability.VIOLATED, tally.GetSatisfiability(new[] { 2, 2 }, new[] { 0, 0 }));
-            Assert.AreEqual(Satisfiability.VIOLATED, tally.GetSatisfiability(new[] { 1, 3 }, new[] { 0, 0 }));
-            Assert.AreEqual(Satisfiability.VIOLATED, tally.GetSatisfiability(new[] { 2, 3 }, new[] { 0, 0 }));
+            Assert.Equal(Satisfiability.VIOLATED, tally.GetSatisfiability(new[] { 2, 1 }, new[] { 0, 1 }));
+            Assert.Equal(Satisfiability.VIOLATED, tally.GetSatisfiability(new[] { 0, 3 }, new[] { 1, 0 }));
+            Assert.Equal(Satisfiability.VIOLATED, tally.GetSatisfiability(new[] { 2, 2 }, new[] { 0, 0 }));
+            Assert.Equal(Satisfiability.VIOLATED, tally.GetSatisfiability(new[] { 1, 3 }, new[] { 0, 0 }));
+            Assert.Equal(Satisfiability.VIOLATED, tally.GetSatisfiability(new[] { 2, 3 }, new[] { 0, 0 }));
         }
 
-        [TestMethod]
+        [Fact]
         public void TestEnumerator()
         {
             var tally = new GridTally(3)
@@ -202,12 +201,12 @@ namespace Bimaru.Test
                 [2] = 0
             };
 
-            Assert.AreEqual(tally.Length, tally.Length);
+            Assert.Equal(tally.Length, tally.Length);
 
             var index = 0;
             foreach (var t in tally)
             {
-                Assert.AreEqual(tally[index], t);
+                Assert.Equal(tally[index], t);
 
                 index++;
             }

@@ -1,45 +1,44 @@
 using System.Linq;
 using Bimaru.GameUtil;
 using Bimaru.Interfaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace Bimaru.Test
 {
-    [TestClass]
     public class GameFactoryTests
     {
-        [TestMethod]
+        [Fact]
         public void TestGenerateEmptyGameRowTally()
         {
             var game = new GameFactory().GenerateEmptyGame(3, 4);
 
-            Assert.IsTrue(game.TargetNumberOfShipFieldsPerRow.SequenceEqual(new[] { 0, 0, 0 }));
+            Assert.True(game.TargetNumberOfShipFieldsPerRow.SequenceEqual(new[] { 0, 0, 0 }));
         }
 
-        [TestMethod]
+        [Fact]
         public void TestGenerateEmptyGameColumnTally()
         {
             var game = new GameFactory().GenerateEmptyGame(3, 4);
 
-            Assert.IsTrue(game.TargetNumberOfShipFieldsPerColumn.SequenceEqual(new[] { 0, 0, 0, 0 }));
+            Assert.True(game.TargetNumberOfShipFieldsPerColumn.SequenceEqual(new[] { 0, 0, 0, 0 }));
         }
 
-        [TestMethod]
+        [Fact]
         public void TestGenerateEmptyGameShipTarget()
         {
             var game = new GameFactory().GenerateEmptyGame(3, 4);
 
-            Assert.IsNull(game.TargetNumberOfShipsPerLength.LongestShipLength);
+            Assert.Null(game.TargetNumberOfShipsPerLength.LongestShipLength);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestGenerateEmptyGameGrid()
         {
             var game = new GameFactory().GenerateEmptyGame(3, 4);
 
             foreach (var p in game.Grid.AllPoints())
             {
-                Assert.AreEqual(BimaruValue.UNDETERMINED, game.Grid[p]);
+                Assert.Equal(BimaruValue.UNDETERMINED, game.Grid[p]);
             }
         }
     }

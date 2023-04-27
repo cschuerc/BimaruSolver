@@ -18,7 +18,7 @@ namespace Bimaru.SolverUtil
             }
         }
 
-        private void DetermineNeighbors(IGame game, GridPoint point)
+        private static void DetermineNeighbors(IGame game, GridPoint point)
         {
             if (game.Grid[point] != BimaruValue.SHIP_MIDDLE)
             {

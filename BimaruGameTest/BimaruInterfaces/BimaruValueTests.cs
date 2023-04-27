@@ -2,15 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Bimaru.Interfaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Utility;
 
 namespace Bimaru.Test
 {
-    [TestClass]
     public class BimaruValueTests
     {
-        [TestMethod]
+        [Fact]
         public void TestCompatibilitySingleShip()
         {
             foreach (var direction in Directions.GetAllDirections())
@@ -19,13 +18,13 @@ namespace Bimaru.Test
                 {
                     // Single ships are incompatible with any ship neighbors
                     var shouldBeCompatible = !value.IsShip();
-                    Assert.AreEqual(shouldBeCompatible, BimaruValue.SHIP_SINGLE.IsCompatibleWith(direction, value));
-                    Assert.AreEqual(shouldBeCompatible, value.IsCompatibleWith(direction, BimaruValue.SHIP_SINGLE));
+                    Assert.Equal(shouldBeCompatible, BimaruValue.SHIP_SINGLE.IsCompatibleWith(direction, value));
+                    Assert.Equal(shouldBeCompatible, value.IsCompatibleWith(direction, BimaruValue.SHIP_SINGLE));
                 }
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void TestCompatibilityDiagonal()
         {
             foreach (var direction in Directions.GetDirections(DirectionType.DIAGONAL))
@@ -36,14 +35,14 @@ namespace Bimaru.Test
                     {
                         // Ship fields are incompatible with neighbor ship fields at the diagonal
                         var shouldBeCompatible = !value.IsShip() || !neighborValue.IsShip();
-                        Assert.AreEqual(shouldBeCompatible, value.IsCompatibleWith(direction, neighborValue));
-                        Assert.AreEqual(shouldBeCompatible, neighborValue.IsCompatibleWith(direction, value));
+                        Assert.Equal(shouldBeCompatible, value.IsCompatibleWith(direction, neighborValue));
+                        Assert.Equal(shouldBeCompatible, neighborValue.IsCompatibleWith(direction, value));
                     }
                 }
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void TestCompatibilityStartEnd()
         {
             var startEndShipFields =
@@ -71,14 +70,14 @@ namespace Bimaru.Test
                             (value != direction.GetFirstShipValue() && !neighborValue.IsShip()) ||
                             (value == direction.GetFirstShipValue() && isValidShipContinuation);
 
-                        Assert.AreEqual(shouldBeCompatible, value.IsCompatibleWith(direction, neighborValue));
-                        Assert.AreEqual(shouldBeCompatible, neighborValue.IsCompatibleWith(direction.GetOpposite(), value));
+                        Assert.Equal(shouldBeCompatible, value.IsCompatibleWith(direction, neighborValue));
+                        Assert.Equal(shouldBeCompatible, neighborValue.IsCompatibleWith(direction.GetOpposite(), value));
                     }
                 }
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void TestCompatibilityRemaining()
         {
             var remainingShipFields =
@@ -96,63 +95,47 @@ namespace Bimaru.Test
                 {
                     foreach (var neighborValue in remainingShipFields)
                     {
-                        Assert.IsTrue(value.IsCompatibleWith(direction, neighborValue));
-                        Assert.IsTrue(neighborValue.IsCompatibleWith(direction, value));
+                        Assert.True(value.IsCompatibleWith(direction, neighborValue));
+                        Assert.True(neighborValue.IsCompatibleWith(direction, value));
                     }
                 }
             }
         }
 
-        [TestMethod]
-        public void TestWaterIsCompatibleChangeTo()
+        [Theory]
+        [InlineData(BimaruValue.WATER, BimaruValue.WATER, true)]
+        [InlineData(BimaruValue.WATER, BimaruValue.UNDETERMINED, false)]
+        [InlineData(BimaruValue.WATER, BimaruValue.SHIP_UNDETERMINED, false)]
+        [InlineData(BimaruValue.WATER, BimaruValue.SHIP_SINGLE, false)]
+        [InlineData(BimaruValue.WATER, BimaruValue.SHIP_CONT_RIGHT, false)]
+        [InlineData(BimaruValue.UNDETERMINED, BimaruValue.WATER, true)]
+        [InlineData(BimaruValue.UNDETERMINED, BimaruValue.UNDETERMINED, true)]
+        [InlineData(BimaruValue.UNDETERMINED, BimaruValue.SHIP_UNDETERMINED, true)]
+        [InlineData(BimaruValue.UNDETERMINED, BimaruValue.SHIP_SINGLE, true)]
+        [InlineData(BimaruValue.UNDETERMINED, BimaruValue.SHIP_CONT_RIGHT, true)]
+        [InlineData(BimaruValue.SHIP_UNDETERMINED, BimaruValue.WATER, false)]
+        [InlineData(BimaruValue.SHIP_UNDETERMINED, BimaruValue.UNDETERMINED, false)]
+        [InlineData(BimaruValue.SHIP_UNDETERMINED, BimaruValue.SHIP_UNDETERMINED, true)]
+        [InlineData(BimaruValue.SHIP_UNDETERMINED, BimaruValue.SHIP_SINGLE, true)]
+        [InlineData(BimaruValue.SHIP_UNDETERMINED, BimaruValue.SHIP_CONT_RIGHT, true)]
+        [InlineData(BimaruValue.SHIP_SINGLE, BimaruValue.WATER, false)]
+        [InlineData(BimaruValue.SHIP_SINGLE, BimaruValue.UNDETERMINED, false)]
+        [InlineData(BimaruValue.SHIP_SINGLE, BimaruValue.SHIP_UNDETERMINED, false)]
+        [InlineData(BimaruValue.SHIP_SINGLE, BimaruValue.SHIP_SINGLE, true)]
+        [InlineData(BimaruValue.SHIP_SINGLE, BimaruValue.SHIP_CONT_RIGHT, false)]
+        public void TestIsCompatibleChangeTo(BimaruValue actualValue, BimaruValue changedValue, bool expectedIsCompatibleChange)
         {
-            Assert.IsTrue(BimaruValue.WATER.IsCompatibleChangeTo(BimaruValue.WATER));
-            Assert.IsFalse(BimaruValue.WATER.IsCompatibleChangeTo(BimaruValue.UNDETERMINED));
-            Assert.IsFalse(BimaruValue.WATER.IsCompatibleChangeTo(BimaruValue.SHIP_UNDETERMINED));
-            Assert.IsFalse(BimaruValue.WATER.IsCompatibleChangeTo(BimaruValue.SHIP_SINGLE));
-            Assert.IsFalse(BimaruValue.WATER.IsCompatibleChangeTo(BimaruValue.SHIP_CONT_RIGHT));
+            Assert.Equal(expectedIsCompatibleChange, actualValue.IsCompatibleChangeTo(changedValue));
         }
 
-        [TestMethod]
-        public void TestUndeterminedIsCompatibleChangeTo()
-        {
-            Assert.IsTrue(BimaruValue.UNDETERMINED.IsCompatibleChangeTo(BimaruValue.WATER));
-            Assert.IsTrue(BimaruValue.UNDETERMINED.IsCompatibleChangeTo(BimaruValue.UNDETERMINED));
-            Assert.IsTrue(BimaruValue.UNDETERMINED.IsCompatibleChangeTo(BimaruValue.SHIP_UNDETERMINED));
-            Assert.IsTrue(BimaruValue.UNDETERMINED.IsCompatibleChangeTo(BimaruValue.SHIP_SINGLE));
-            Assert.IsTrue(BimaruValue.UNDETERMINED.IsCompatibleChangeTo(BimaruValue.SHIP_CONT_RIGHT));
-        }
-
-        [TestMethod]
-        public void TestShipUndeterminedIsCompatibleChangeTo()
-        {
-            Assert.IsFalse(BimaruValue.SHIP_UNDETERMINED.IsCompatibleChangeTo(BimaruValue.WATER));
-            Assert.IsFalse(BimaruValue.SHIP_UNDETERMINED.IsCompatibleChangeTo(BimaruValue.UNDETERMINED));
-            Assert.IsTrue(BimaruValue.SHIP_UNDETERMINED.IsCompatibleChangeTo(BimaruValue.SHIP_UNDETERMINED));
-            Assert.IsTrue(BimaruValue.SHIP_UNDETERMINED.IsCompatibleChangeTo(BimaruValue.SHIP_SINGLE));
-            Assert.IsTrue(BimaruValue.SHIP_UNDETERMINED.IsCompatibleChangeTo(BimaruValue.SHIP_CONT_RIGHT));
-        }
-
-        [TestMethod]
-        public void TestSpecificShipIsCompatibleChangeTo()
-        {
-            // Any specific ship is only compatible to itself
-            Assert.IsTrue(BimaruValue.SHIP_SINGLE.IsCompatibleChangeTo(BimaruValue.SHIP_SINGLE));
-            Assert.IsFalse(BimaruValue.SHIP_SINGLE.IsCompatibleChangeTo(BimaruValue.UNDETERMINED));
-            Assert.IsFalse(BimaruValue.SHIP_SINGLE.IsCompatibleChangeTo(BimaruValue.WATER));
-            Assert.IsFalse(BimaruValue.SHIP_SINGLE.IsCompatibleChangeTo(BimaruValue.SHIP_UNDETERMINED));
-            Assert.IsFalse(BimaruValue.SHIP_SINGLE.IsCompatibleChangeTo(BimaruValue.SHIP_MIDDLE));
-            Assert.IsFalse(BimaruValue.SHIP_SINGLE.IsCompatibleChangeTo(BimaruValue.SHIP_CONT_RIGHT));
-        }
-
-        [TestMethod]
+        [Fact]
         public void TestFieldValuesOfShipLengthZero()
         {
-            Assert.ThrowsException<ArgumentOutOfRangeException>(
+            Assert.Throws<ArgumentOutOfRangeException>(
                 () => BimaruValues.FieldValuesOfShip(Direction.RIGHT, 0).GetEnumerator().MoveNext());
         }
 
-        [TestMethod]
+        [Fact]
         public void TestFieldValuesOfShipLengthOne()
         {
             AssertEqualFieldValues(
@@ -172,7 +155,7 @@ namespace Bimaru.Test
                 BimaruValues.FieldValuesOfShip(Direction.DOWN, 1));
         }
 
-        [TestMethod]
+        [Fact]
         public void TestFieldValuesOfShipLengthTwo()
         {
             AssertEqualFieldValues(
@@ -204,7 +187,7 @@ namespace Bimaru.Test
                 BimaruValues.FieldValuesOfShip(Direction.DOWN, 2));
         }
 
-        [TestMethod]
+        [Fact]
         public void TestFieldValuesOfShipLengthFour()
         {
             AssertEqualFieldValues(
@@ -246,7 +229,7 @@ namespace Bimaru.Test
 
         private static void AssertEqualFieldValues(IEnumerable<BimaruValue> expectedFieldValues, IEnumerable<BimaruValue> actualFieldValues)
         {
-            Assert.IsTrue(expectedFieldValues.SequenceEqual(actualFieldValues));
+            Assert.True(expectedFieldValues.SequenceEqual(actualFieldValues));
         }
     }
 }

@@ -1,15 +1,14 @@
 using Bimaru.GameUtil;
 using Bimaru.Interfaces;
 using Bimaru.SolverUtil;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Utility;
 
 namespace Bimaru.Test
 {
-    [TestClass]
     public class DetermineShipMiddleNeighborsTests
     {
-        [TestMethod]
+        [Fact]
         public void TestShipMiddleNeighborsUnknown()
         {
             var game = (new GameFactory()).GenerateEmptyGame(3, 3);
@@ -27,7 +26,7 @@ namespace Bimaru.Test
                 });
         }
 
-        [TestMethod]
+        [Fact]
         public void TestShipMiddleNeighborsWater()
         {
             var game = (new GameFactory()).GenerateEmptyGame(3, 3);
@@ -46,7 +45,7 @@ namespace Bimaru.Test
                 });
         }
 
-        [TestMethod]
+        [Fact]
         public void TestShipMiddleNeighborsShip()
         {
             var game = (new GameFactory()).GenerateEmptyGame(3, 3);

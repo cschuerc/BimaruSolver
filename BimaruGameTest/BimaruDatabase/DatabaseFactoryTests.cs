@@ -1,24 +1,23 @@
 using System.Linq;
 using Bimaru.DatabaseUtil;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace Bimaru.Test
 {
-    [TestClass]
     public class DatabaseFactoryTests
     {
-        [TestMethod]
+        [Fact]
         public void TestDatabaseIsNotNull()
         {
-            Assert.IsNotNull(DatabaseFactory.GetDatabase());
+            Assert.NotNull(DatabaseFactory.GetDatabase());
         }
 
-        [TestMethod]
+        [Fact]
         public void TestGamesInDatabase()
         {
             var database = DatabaseFactory.GetDatabase();
 
-            Assert.IsTrue(database.GetAllGames(null).Any());
+            Assert.True(database.GetAllGames(null).Any());
         }
     }
 }

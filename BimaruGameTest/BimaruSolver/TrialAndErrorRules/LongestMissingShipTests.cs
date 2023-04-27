@@ -3,25 +3,24 @@ using System.Linq;
 using Bimaru.GameUtil;
 using Bimaru.Interfaces;
 using Bimaru.SolverUtil;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Utility;
 
 namespace Bimaru.Test
 {
-    [TestClass]
     public class LongestMissingShipTests
     {
-        [TestMethod]
+        [Fact]
         public void TestFullyDetermined()
         {
             var game = (new GameFactory()).GenerateEmptyGame(1, 1);
             game.Grid[new GridPoint(0, 0)] = BimaruValue.SHIP_MIDDLE;
 
             var rule = new LongestMissingShip();
-            Assert.AreEqual(0, rule.GetChangeTrials(game).Count());
+            Assert.Empty(rule.GetChangeTrials(game));
         }
 
-        [TestMethod]
+        [Fact]
         public void TestBasic()
         {
             var game = (new GameFactory()).GenerateEmptyGame(3, 3);
@@ -68,30 +67,30 @@ namespace Bimaru.Test
             IEnumerable<FieldsToChange<BimaruValue>> actual)
         {
             var actualAsList = actual.ToList();
-            Assert.AreEqual(expected.Count, actualAsList.Count);
+            Assert.Equal(expected.Count, actualAsList.Count);
 
             foreach (var expectedChanges in expected)
             {
                 var actualChanges = actualAsList.FirstOrDefault(a => a.Contains(expectedChanges.Key));
 
-                Assert.IsNotNull(actualChanges);
+                Assert.NotNull(actualChanges);
                 AssertEqualChanges(actualChanges, expectedChanges.Value);
             }
         }
 
         private static void AssertEqualChanges(FieldsToChange<BimaruValue> first, FieldsToChange<BimaruValue> second)
         {
-            Assert.AreEqual(first.Count, second.Count);
+            Assert.Equal(first.Count, second.Count);
 
             // FieldsToChange contains by design no duplicate field
             // => Same count + first contained in second is enough for equality
             foreach (var c in first)
             {
-                Assert.IsTrue(second.Contains(c));
+                Assert.Contains(c, second);
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void TestEmptyGrid()
         {
             var game = (new GameFactory()).GenerateEmptyGame(3, 3);
@@ -133,7 +132,7 @@ namespace Bimaru.Test
             AssertEqualTrialChanges(expectedChanges, rule.GetChangeTrials(game));
         }
 
-        [TestMethod]
+        [Fact]
         public void TestSingleShip()
         {
             var game = (new GameFactory()).GenerateEmptyGame(2, 2);
@@ -171,7 +170,7 @@ namespace Bimaru.Test
             AssertEqualTrialChanges(expectedChanges, rule.GetChangeTrials(game));
         }
 
-        [TestMethod]
+        [Fact]
         public void TestPresetShipFields()
         {
             var game = (new GameFactory()).GenerateEmptyGame(3, 3);
@@ -215,7 +214,7 @@ namespace Bimaru.Test
             AssertEqualTrialChanges(expectedChanges, rule.GetChangeTrials(game));
         }
 
-        [TestMethod]
+        [Fact]
         public void TestShipLength()
         {
             var game = (new GameFactory()).GenerateEmptyGame(3, 3);

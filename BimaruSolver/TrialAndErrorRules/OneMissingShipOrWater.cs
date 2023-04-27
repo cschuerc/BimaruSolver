@@ -64,12 +64,7 @@ namespace Bimaru.SolverUtil
                 return GenerateChangeTrials(mostPromisingPoints);
             }
 
-            if (FallBackRule == null)
-            {
-                throw new InvalidOperationException();
-            }
-
-            return FallBackRule.GetChangeTrials(game);
+            return FallBackRule?.GetChangeTrials(game) ?? Enumerable.Empty<FieldsToChange<BimaruValue>>();
         }
 
         private static OneMissingPoints GetMostPromisingPoints(IGame game)

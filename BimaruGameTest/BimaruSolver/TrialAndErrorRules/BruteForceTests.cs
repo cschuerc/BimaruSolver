@@ -3,25 +3,24 @@ using System.Linq;
 using Bimaru.GameUtil;
 using Bimaru.Interfaces;
 using Bimaru.SolverUtil;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Utility;
 
 namespace Bimaru.Test
 {
-    [TestClass]
     public class BruteForceTests
     {
-        [TestMethod]
+        [Fact]
         public void TestFullyDetermined()
         {
             var game = (new GameFactory()).GenerateEmptyGame(1, 1);
-            game.Grid[new(0, 0)] = BimaruValue.SHIP_MIDDLE;
+            game.Grid[new GridPoint(0, 0)] = BimaruValue.SHIP_MIDDLE;
             var rule = new BruteForce();
 
-            Assert.AreEqual(0, rule.GetChangeTrials(game).Count());
+            Assert.Empty( rule.GetChangeTrials(game));
         }
 
-        [TestMethod]
+        [Fact]
         public void TestUndetermined()
         {
             var game = (new GameFactory()).GenerateEmptyGame(1, 1);
@@ -46,16 +45,16 @@ namespace Bimaru.Test
             IReadOnlyCollection<SingleChange<BimaruValue>> expectedTrials,
             IReadOnlyCollection<FieldsToChange<BimaruValue>> actualTrials)
         {
-            Assert.AreEqual(expectedTrials.Count, actualTrials.Count);
+            Assert.Equal(expectedTrials.Count, actualTrials.Count);
 
             foreach (var expectedChange in expectedTrials)
             {
                 var actualChange = actualTrials.FirstOrDefault(a => a.Count == 1 && a.Contains(expectedChange));
-                Assert.IsNotNull(actualChange);
+                Assert.NotNull(actualChange);
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void TestShipUndetermined()
         {
             var game = (new GameFactory()).GenerateEmptyGame(1, 1);

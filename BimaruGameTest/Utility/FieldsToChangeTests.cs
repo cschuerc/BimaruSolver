@@ -1,14 +1,13 @@
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Utility;
 
 namespace Bimaru.Test
 {
-    [TestClass]
     public class FieldsToChangeTests
     {
-        [TestMethod]
+        [Fact]
         public void TestNoChanges()
         {
             var changes = new FieldsToChange<int>();
@@ -18,15 +17,15 @@ namespace Bimaru.Test
 
         private static void AssertEqualFieldChanges(IReadOnlyCollection<SingleChange<int>> expectedFieldChanges, FieldsToChange<int> actualFieldChanges)
         {
-            Assert.AreEqual(expectedFieldChanges.Count, actualFieldChanges.Count);
+            Assert.Equal(expectedFieldChanges.Count, actualFieldChanges.Count);
 
             foreach (var actualChange in actualFieldChanges)
             {
-                Assert.IsTrue(expectedFieldChanges.Contains(actualChange));
+                Assert.Contains(actualChange, expectedFieldChanges);
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void TestSingleChange()
         {
             var p12 = new GridPoint(1, 2);
@@ -40,7 +39,7 @@ namespace Bimaru.Test
                 changes);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestAdd()
         {
             var p12 = new GridPoint(1, 2);
@@ -60,7 +59,7 @@ namespace Bimaru.Test
                 changes);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestSeveralChanges()
         {
             const int numValues = 2;
@@ -79,7 +78,7 @@ namespace Bimaru.Test
                 changes);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestOverwrite()
         {
             var p12 = new GridPoint(1, 2);

@@ -1,31 +1,30 @@
 using System;
 using Bimaru.GameUtil;
 using Bimaru.Interfaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Utility;
 
 namespace Bimaru.Test
 {
-    [TestClass]
     public class BackupTests
     {
-        [TestMethod]
+        [Fact]
         public void TestSetSavePointNull()
         {
-            var stack = new Backup<BimaruGrid>();
+            var backup = new Backup<BimaruGrid>();
 
-            Assert.ThrowsException<ArgumentNullException>(() => stack.SetSavePoint(null));
+            Assert.Throws<ArgumentNullException>(() => backup.SetSavePoint(null));
         }
 
-        [TestMethod]
+        [Fact]
         public void TestRestoreSavePointToNull()
         {
             var backup = new Backup<BimaruGrid>();
 
-            Assert.ThrowsException<ArgumentNullException>(() => backup.RestoreAndDeleteLastSavepoint(null));
+            Assert.Throws<ArgumentNullException>(() => backup.RestoreAndDeleteLastSavepoint(null));
         }
 
-        [TestMethod]
+        [Fact]
         public void TestStackOperations()
         {
             var backup = new Backup<BimaruGrid>();
@@ -57,36 +56,36 @@ namespace Bimaru.Test
         private static void AssertEmptyStack(IBackup<BimaruGrid> backup)
         {
             var destination = new BimaruGrid(1, 1);
-            Assert.ThrowsException<InvalidOperationException>(() => backup.RestoreAndDeleteLastSavepoint(destination));
+            Assert.Throws<InvalidOperationException>(() => backup.RestoreAndDeleteLastSavepoint(destination));
         }
 
-        [TestMethod]
+        [Fact]
         public void TestCloneNullToClipboard()
         {
             var backup = new Backup<BimaruGrid>();
 
-            Assert.ThrowsException<ArgumentNullException>(() => backup.CloneToClipboard(null));
+            Assert.Throws<ArgumentNullException>(() => backup.CloneToClipboard(null));
         }
 
-        [TestMethod]
+        [Fact]
         public void TestRestoreClipBoardToNull()
         {
             var backup = new Backup<BimaruGrid>();
             backup.CloneToClipboard(new BimaruGrid(1, 1));
 
-            Assert.ThrowsException<ArgumentNullException>(() => backup.RestoreFromClipboardTo(null));
+            Assert.Throws<ArgumentNullException>(() => backup.RestoreFromClipboardTo(null));
         }
 
-        [TestMethod]
+        [Fact]
         public void TestRestoreEmptyClipBoard()
         {
             var backup = new Backup<BimaruGrid>();
             var grid = new BimaruGrid(1, 1);
 
-            Assert.ThrowsException<InvalidOperationException>(() => backup.RestoreFromClipboardTo(grid));
+            Assert.Throws<InvalidOperationException>(() => backup.RestoreFromClipboardTo(grid));
         }
 
-        [TestMethod]
+        [Fact]
         public void TestClipboard()
         {
             var backup = new Backup<BimaruGrid>();

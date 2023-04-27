@@ -1,15 +1,14 @@
 using Bimaru.GameUtil;
 using Bimaru.Interfaces;
 using Bimaru.SolverUtil;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Utility;
 
 namespace Bimaru.Test
 {
-    [TestClass]
     public class SetShipEnvironmentTests
     {
-        [TestMethod]
+        [Fact]
         public void TestUndetermined()
         {
             var game = (new GameFactory()).GenerateEmptyGame(3, 3);
@@ -27,7 +26,7 @@ namespace Bimaru.Test
                 });
         }
 
-        [TestMethod]
+        [Fact]
         public void TestWater()
         {
             var game = (new GameFactory()).GenerateEmptyGame(3, 3);
@@ -45,7 +44,7 @@ namespace Bimaru.Test
                 });
         }
 
-        [TestMethod]
+        [Fact]
         public void TestSingleShip()
         {
             var game = (new GameFactory()).GenerateEmptyGame(3, 3);
@@ -63,7 +62,7 @@ namespace Bimaru.Test
                 });
         }
 
-        [TestMethod]
+        [Fact]
         public void TestMiddleShip()
         {
             var game = (new GameFactory()).GenerateEmptyGame(3, 3);
@@ -81,7 +80,7 @@ namespace Bimaru.Test
                 });
         }
 
-        [TestMethod]
+        [Fact]
         public void TestShipUndetermined()
         {
             var game = (new GameFactory()).GenerateEmptyGame(3, 3);
@@ -99,7 +98,7 @@ namespace Bimaru.Test
                 });
         }
 
-        [TestMethod]
+        [Fact]
         public void TestShipContRight()
         {
             var game = (new GameFactory()).GenerateEmptyGame(3, 3);
@@ -117,7 +116,7 @@ namespace Bimaru.Test
                 });
         }
 
-        [TestMethod]
+        [Fact]
         public void TestShipContLeft()
         {
             var game = (new GameFactory()).GenerateEmptyGame(3, 3);
@@ -135,7 +134,7 @@ namespace Bimaru.Test
                 });
         }
 
-        [TestMethod]
+        [Fact]
         public void TestShipContUp()
         {
             var game = (new GameFactory()).GenerateEmptyGame(3, 3);
@@ -153,7 +152,7 @@ namespace Bimaru.Test
                 });
         }
 
-        [TestMethod]
+        [Fact]
         public void TestShipContDown()
         {
             var game = (new GameFactory()).GenerateEmptyGame(3, 3);
@@ -171,7 +170,7 @@ namespace Bimaru.Test
                 });
         }
 
-        [TestMethod]
+        [Fact]
         public void TestShipContOverwrite()
         {
             var game = (new GameFactory()).GenerateEmptyGame(3, 3);

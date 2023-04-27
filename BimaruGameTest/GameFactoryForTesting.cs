@@ -2,9 +2,9 @@
 
 namespace Bimaru.Test
 {
-    public class GameFactoryForTesting
+    public static class GameFactoryForTesting
     {
-        public Game GenerateGameNoSolution()
+        public static Game GenerateGameNoSolution()
         {
             var game = GenerateEmptyGame(2, 2);
 
@@ -26,7 +26,7 @@ namespace Bimaru.Test
             return game;
         }
 
-        public Game GenerateGameOneSolution()
+        public static Game GenerateGameOneSolution()
         {
             var game = GenerateEmptyGame(2, 2);
 
@@ -45,7 +45,7 @@ namespace Bimaru.Test
             return game;
         }
 
-        public Game GenerateGameTwoSolutions()
+        public static Game GenerateGameTwoSolutions()
         {
             var game = GenerateEmptyGame(2, 3);
 
