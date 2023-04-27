@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Bimaru.GameUtil;
+using Bimaru.Game;
 using Bimaru.Interfaces;
 using Utility;
 using Xunit;
@@ -15,7 +15,7 @@ namespace Bimaru.Test
         [MemberData(nameof(CreateDataToTestNullArguments))]
         public void TestNullArguments(IGridTally rowTally, IGridTally columnTally, IShipTarget shipTarget, IBimaruGrid grid, Type expectedExceptionType)
         {
-            var caughtException = Record.Exception(() => new Game(rowTally, columnTally, shipTarget, grid));
+            var caughtException = Record.Exception(() => new BimaruGame(rowTally, columnTally, shipTarget, grid));
 
             Assert.Equal(expectedExceptionType, caughtException?.GetType());
         }
@@ -50,7 +50,7 @@ namespace Bimaru.Test
             var shipTarget = new ShipTarget();
             var grid = new BimaruGrid(4, 3);
 
-            var caughtException = Record.Exception(() => new Game(rowTally, columnTally, shipTarget, grid));
+            var caughtException = Record.Exception(() => new BimaruGame(rowTally, columnTally, shipTarget, grid));
 
             Assert.Equal(expectedExceptionType, caughtException?.GetType());
         }
@@ -124,7 +124,7 @@ namespace Bimaru.Test
         /// 3|???
         /// 
         /// </summary>
-        private static Game GetNotUnsolvableGame()
+        private static BimaruGame GetNotUnsolvableGame()
         {
             var game = GameFactoryForTesting.GenerateEmptyGame(4, 3);
 
@@ -229,7 +229,7 @@ namespace Bimaru.Test
         /// 2|???
         /// 
         /// </summary>
-        private static Game GetValidGame()
+        private static BimaruGame GetValidGame()
         {
             var game = GameFactoryForTesting.GenerateEmptyGame(2, 3);
 
@@ -329,7 +329,7 @@ namespace Bimaru.Test
         /// 2|SWS
         /// 
         /// </summary>
-        private static Game GetSolvedGame()
+        private static BimaruGame GetSolvedGame()
         {
             var game = GameFactoryForTesting.GenerateEmptyGame(4, 3);
 

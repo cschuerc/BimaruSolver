@@ -1,6 +1,6 @@
 ﻿namespace Bimaru.Interfaces
 {
-    public interface IGame
+    public interface IBimaruGame
     {
         IGridTally TargetNumberOfShipFieldsPerRow
         {

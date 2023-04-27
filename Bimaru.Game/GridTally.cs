@@ -1,11 +1,11 @@
-﻿using Bimaru.Interfaces;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Bimaru.Interfaces;
 using Utility;
 
-namespace Bimaru.GameUtil
+namespace Bimaru.Game
 {
     [Serializable]
     public class GridTally : IGridTally

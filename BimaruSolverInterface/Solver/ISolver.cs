@@ -12,6 +12,6 @@
         /// if at least one solution could be found.
         /// </summary>
         /// <returns> Number of found solutions. </returns>
-        int Solve(IGame game);
+        int Solve(IBimaruGame game);
     }
 }

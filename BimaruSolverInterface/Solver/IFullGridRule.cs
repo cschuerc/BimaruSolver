@@ -14,6 +14,6 @@
         /// <summary>
         /// Improves the solution by determining some unambiguous field values.
         /// </summary>
-        void Solve(IGame game);
+        void Solve(IBimaruGame game);
     }
 }

@@ -1,4 +1,4 @@
-using Bimaru.GameUtil;
+using Bimaru.Game;
 using Bimaru.Interfaces;
 using Bimaru.SolverUtil;
 using Xunit;
@@ -32,7 +32,7 @@ namespace Bimaru.Test
         /// 2|???
         /// 
         /// </summary>
-        private static IGame GetBasicGame()
+        private static IBimaruGame GetBasicGame()
         {
             var game = (new GameFactory()).GenerateEmptyGame(2, 3);
 

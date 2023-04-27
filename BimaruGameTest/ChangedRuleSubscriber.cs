@@ -6,7 +6,7 @@ namespace Bimaru.Test
 {
     internal sealed class FieldValueChangedRuleSubscriber : IDisposable
     {
-        public FieldValueChangedRuleSubscriber(IGame game, IFieldValueChangedRule rule)
+        public FieldValueChangedRuleSubscriber(IBimaruGame game, IFieldValueChangedRule rule)
         {
             Game = game;
             Rule = rule;
@@ -14,7 +14,7 @@ namespace Bimaru.Test
             Game.Grid.FieldValueChanged += OnFieldValueChanged;
         }
 
-        private IGame Game
+        private IBimaruGame Game
         {
             get;
         }

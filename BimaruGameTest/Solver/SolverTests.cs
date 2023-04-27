@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Bimaru.GameUtil;
+using Bimaru.Game;
 using Bimaru.Interfaces;
 using Bimaru.SolverUtil;
 using Utility;
@@ -55,7 +55,7 @@ namespace Bimaru.Test
                 get;
             }
 
-            public IEnumerable<FieldsToChange<BimaruValue>> GetChangeTrials(IGame game)
+            public IEnumerable<FieldsToChange<BimaruValue>> GetChangeTrials(IBimaruGame game)
             {
                 var p = new GridPoint(0, 0);
                 yield return new FieldsToChange<BimaruValue>(p, game.Grid[p]);
@@ -189,12 +189,12 @@ namespace Bimaru.Test
                 get;
             }
 
-            public void FieldValueChanged(IGame game, FieldValueChangedEventArgs<BimaruValue> e)
+            public void FieldValueChanged(IBimaruGame game, FieldValueChangedEventArgs<BimaruValue> e)
             {
                 ChangedEventArgs.Add(e);
             }
 
-            public void Solve(IGame game)
+            public void Solve(IBimaruGame game)
             {
                 NumberOfSolverRuleCalls++;
             }
@@ -239,7 +239,7 @@ namespace Bimaru.Test
         /// 1|S?
         /// 
         /// </summary>
-        private static IGame GenerateEasyGame()
+        private static IBimaruGame GenerateEasyGame()
         {
             var game = (new GameFactory()).GenerateEmptyGame(2, 2);
             game.TargetNumberOfShipFieldsPerRow[0] = 1;

@@ -8,7 +8,7 @@ namespace Bimaru.SolverUtil
     /// </summary>
     public class DetermineShipMiddleNeighbors : IFieldValueChangedRule
     {
-        public void FieldValueChanged(IGame game, FieldValueChangedEventArgs<BimaruValue> e)
+        public void FieldValueChanged(IBimaruGame game, FieldValueChangedEventArgs<BimaruValue> e)
         {
             DetermineNeighbors(game, e.Point);
 
@@ -18,7 +18,7 @@ namespace Bimaru.SolverUtil
             }
         }
 
-        private static void DetermineNeighbors(IGame game, GridPoint point)
+        private static void DetermineNeighbors(IBimaruGame game, GridPoint point)
         {
             if (game.Grid[point] != BimaruValue.SHIP_MIDDLE)
             {
@@ -32,7 +32,7 @@ namespace Bimaru.SolverUtil
             }
         }
 
-        private static DirectionType? GetShipMiddleDirection(IGame game, GridPoint pointShipMiddle)
+        private static DirectionType? GetShipMiddleDirection(IBimaruGame game, GridPoint pointShipMiddle)
         {
             var shipDirection = FindNonDiagonalNeighbor(game, pointShipMiddle, BimaruValueConstraint.SHIP);
             if (shipDirection.HasValue)
@@ -59,7 +59,7 @@ namespace Bimaru.SolverUtil
             }
         }
 
-        private static void SetShipMiddleNeighbors(IGame game, GridPoint pointShipMiddle, DirectionType directionShipMiddle)
+        private static void SetShipMiddleNeighbors(IBimaruGame game, GridPoint pointShipMiddle, DirectionType directionShipMiddle)
         {
             foreach (var direction in Directions.GetAllDirections())
             {
@@ -79,7 +79,7 @@ namespace Bimaru.SolverUtil
             }
         }
 
-        private static Direction? FindNonDiagonalNeighbor(IGame game, GridPoint center, BimaruValueConstraint constraint)
+        private static Direction? FindNonDiagonalNeighbor(IBimaruGame game, GridPoint center, BimaruValueConstraint constraint)
         {
             foreach (var direction in Directions.GetNonDiagonalDirections())
             {

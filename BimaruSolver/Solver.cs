@@ -97,7 +97,7 @@ namespace Bimaru.SolverUtil
         }
 
         #region Solve
-        public int Solve(IGame game)
+        public int Solve(IBimaruGame game)
         {
             var numberOfSolutions = SolveToClipboard(game, true);
 
@@ -109,7 +109,7 @@ namespace Bimaru.SolverUtil
             return numberOfSolutions;
         }
 
-        private int SolveToClipboard(IGame game, bool isFirstCall, FieldsToChange<BimaruValue> changes = null)
+        private int SolveToClipboard(IBimaruGame game, bool isFirstCall, FieldsToChange<BimaruValue> changes = null)
         {
             var numSolutions = 0;
 
@@ -132,7 +132,7 @@ namespace Bimaru.SolverUtil
             return numSolutions;
         }
 
-        private int ApplyChangesAndRunRules(IGame game, bool isFirstCall, FieldsToChange<BimaruValue> changes)
+        private int ApplyChangesAndRunRules(IBimaruGame game, bool isFirstCall, FieldsToChange<BimaruValue> changes)
         {
             var hasChangedFieldValues = ApplyChangesAndRunNonTrialRules(game, isFirstCall, changes);
             if (!isFirstCall && !hasChangedFieldValues)
@@ -150,7 +150,7 @@ namespace Bimaru.SolverUtil
             return RunTrialRule(game);
         }
 
-        private bool ApplyChangesAndRunNonTrialRules(IGame game, bool isFirstCall, FieldsToChange<BimaruValue> changes)
+        private bool ApplyChangesAndRunNonTrialRules(IBimaruGame game, bool isFirstCall, FieldsToChange<BimaruValue> changes)
         {
             var hasChangedFieldValues = false;
 
@@ -185,7 +185,7 @@ namespace Bimaru.SolverUtil
             return hasChangedFieldValues;
         }
 
-        private static void CheckIsChangeValid(IGame game, FieldValueChangedEventArgs<BimaruValue> e)
+        private static void CheckIsChangeValid(IBimaruGame game, FieldValueChangedEventArgs<BimaruValue> e)
         {
             var newValue = game.Grid[e.Point];
             if (!game.IsValid || !e.OriginalValue.IsCompatibleChangeTo(newValue))
@@ -202,7 +202,7 @@ namespace Bimaru.SolverUtil
             }
         }
 
-        private void HandleChangedEvents(IGame game, Queue<FieldValueChangedEventArgs<BimaruValue>> unhandledChangedEvents)
+        private void HandleChangedEvents(IBimaruGame game, Queue<FieldValueChangedEventArgs<BimaruValue>> unhandledChangedEvents)
         {
             while (unhandledChangedEvents.Count > 0)
             {
@@ -214,7 +214,7 @@ namespace Bimaru.SolverUtil
             }
         }
 
-        private void RunSolverRules(IGame game, bool isFirstCall)
+        private void RunSolverRules(IBimaruGame game, bool isFirstCall)
         {
             foreach (var rule in SolverRules.Where(rule => isFirstCall || !rule.ShallBeAppliedOnce))
             {
@@ -222,7 +222,7 @@ namespace Bimaru.SolverUtil
             }
         }
 
-        private int RunTrialRule(IGame game)
+        private int RunTrialRule(IBimaruGame game)
         {
             if (TrialRule == null)
             {

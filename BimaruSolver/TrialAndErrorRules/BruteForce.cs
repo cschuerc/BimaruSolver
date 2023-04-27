@@ -23,7 +23,7 @@ namespace Bimaru.SolverUtil
         /// </summary>
         public bool AreTrialsComplete => true;
 
-        public IEnumerable<FieldsToChange<BimaruValue>> GetChangeTrials(IGame game)
+        public IEnumerable<FieldsToChange<BimaruValue>> GetChangeTrials(IBimaruGame game)
         {
             var notFullyDetPoint = GetNotFullyDeterminedPoint(game);
             if (notFullyDetPoint == null)
@@ -43,7 +43,7 @@ namespace Bimaru.SolverUtil
             }
         }
 
-        private static GridPoint? GetNotFullyDeterminedPoint(IGame game)
+        private static GridPoint? GetNotFullyDeterminedPoint(IBimaruGame game)
         {
             return game
                 .Grid

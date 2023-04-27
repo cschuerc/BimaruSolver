@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Bimaru.GameUtil;
+using Bimaru.Game;
 using Bimaru.Interfaces;
 using Utility;
 
@@ -391,7 +391,7 @@ namespace Bimaru.Database.Generator
             return new GameWithMetaInfo(metaInfo, game);
         }
 
-        private static IGame GenerateGame(
+        private static IBimaruGame GenerateGame(
             IReadOnlyList<int> rowTallyData,
             IReadOnlyList<int> columnTallyData,
             IReadOnlyList<int> shipSettingsData,

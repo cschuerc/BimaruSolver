@@ -1,10 +1,10 @@
-﻿using Bimaru.GameUtil;
+﻿using Bimaru.Game;
 
 namespace Bimaru.Test
 {
     public static class GameFactoryForTesting
     {
-        public static Game GenerateGameNoSolution()
+        public static BimaruGame GenerateGameNoSolution()
         {
             var game = GenerateEmptyGame(2, 2);
 
@@ -26,7 +26,7 @@ namespace Bimaru.Test
             return game;
         }
 
-        public static Game GenerateGameOneSolution()
+        public static BimaruGame GenerateGameOneSolution()
         {
             var game = GenerateEmptyGame(2, 2);
 
@@ -45,7 +45,7 @@ namespace Bimaru.Test
             return game;
         }
 
-        public static Game GenerateGameTwoSolutions()
+        public static BimaruGame GenerateGameTwoSolutions()
         {
             var game = GenerateEmptyGame(2, 3);
 
@@ -67,14 +67,14 @@ namespace Bimaru.Test
             return game;
         }
 
-        public static Game GenerateEmptyGame(int numRows, int numColumns)
+        public static BimaruGame GenerateEmptyGame(int numRows, int numColumns)
         {
             var rowTally = new GridTally(numRows);
             var columnTally = new GridTally(numColumns);
             var shipSettings = new ShipTarget();
             var grid = new BimaruGrid(numRows, numColumns);
 
-            return new Game(rowTally, columnTally, shipSettings, grid);
+            return new BimaruGame(rowTally, columnTally, shipSettings, grid);
         }
     }
 }

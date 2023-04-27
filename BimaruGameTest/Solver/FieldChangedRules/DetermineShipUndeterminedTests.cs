@@ -1,4 +1,4 @@
-using Bimaru.GameUtil;
+using Bimaru.Game;
 using Bimaru.Interfaces;
 using Bimaru.SolverUtil;
 using Xunit;

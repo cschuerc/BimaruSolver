@@ -29,7 +29,7 @@ namespace Bimaru.SolverUtil
         public bool AreTrialsComplete => true;
 
         /// <inheritdoc/>
-        public IEnumerable<FieldsToChange<BimaruValue>> GetChangeTrials(IGame game)
+        public IEnumerable<FieldsToChange<BimaruValue>> GetChangeTrials(IBimaruGame game)
         {
             int? shipLength;
 
@@ -53,7 +53,7 @@ namespace Bimaru.SolverUtil
             }
         }
 
-        private static IEnumerable<FieldsToChange<BimaruValue>> GetCompatibleButNotEqualShipTrials(IGame game, int shipLength)
+        private static IEnumerable<FieldsToChange<BimaruValue>> GetCompatibleButNotEqualShipTrials(IBimaruGame game, int shipLength)
         {
             foreach (var ship in GetVerticalShipLocations(game, shipLength).Where(s => s.IsCompatibleButNotEqualIn(game)))
             {
@@ -72,7 +72,7 @@ namespace Bimaru.SolverUtil
             }
         }
 
-        private static IEnumerable<ShipLocation> GetVerticalShipLocations(IGame game, int shipLength)
+        private static IEnumerable<ShipLocation> GetVerticalShipLocations(IBimaruGame game, int shipLength)
         {
             var rowIndexes = Enumerable.Range(0, game.Grid.NumberOfRows - shipLength + 1);
 
@@ -92,7 +92,7 @@ namespace Bimaru.SolverUtil
                 select new GridPoint(rowIndex, columnIndex);
         }
 
-        private static IEnumerable<ShipLocation> GetHorizontalShipLocations(IGame game, int shipLength)
+        private static IEnumerable<ShipLocation> GetHorizontalShipLocations(IBimaruGame game, int shipLength)
         {
             var rowIndexes = Enumerable.Range(0, game.Grid.NumberOfRows).
                 Where(i => game.TargetNumberOfShipFieldsPerRow[i] >= shipLength);
@@ -105,7 +105,7 @@ namespace Bimaru.SolverUtil
             }
         }
 
-        private static IEnumerable<FieldsToChange<BimaruValue>> GetUndeterminedToWaterTrial(IGame game)
+        private static IEnumerable<FieldsToChange<BimaruValue>> GetUndeterminedToWaterTrial(IBimaruGame game)
         {
             var changes = new FieldsToChange<BimaruValue>();
 

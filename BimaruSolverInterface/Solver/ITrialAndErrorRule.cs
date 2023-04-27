@@ -15,7 +15,7 @@ namespace Bimaru.Interfaces
         /// piece of the BATTLESHIP.
         /// 
         /// </summary>
-        IEnumerable<FieldsToChange<BimaruValue>> GetChangeTrials(IGame game);
+        IEnumerable<FieldsToChange<BimaruValue>> GetChangeTrials(IBimaruGame game);
 
         /// <summary>
         /// Disjoint means that each solution is a

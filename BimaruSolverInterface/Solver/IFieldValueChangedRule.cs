@@ -10,6 +10,6 @@ namespace Bimaru.Interfaces
         /// <summary>
         /// Solver rule that is supposed to be run after every field value change.
         /// </summary>
-        void FieldValueChanged(IGame game, FieldValueChangedEventArgs<BimaruValue> e);
+        void FieldValueChanged(IBimaruGame game, FieldValueChangedEventArgs<BimaruValue> e);
     }
 }

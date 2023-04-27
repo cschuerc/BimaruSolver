@@ -16,7 +16,7 @@ namespace Bimaru.SolverUtil
             get;
         }
 
-        public bool IsCompatibleButNotEqualIn(IGame game)
+        public bool IsCompatibleButNotEqualIn(IBimaruGame game)
         {
             var isEqual = true;
 

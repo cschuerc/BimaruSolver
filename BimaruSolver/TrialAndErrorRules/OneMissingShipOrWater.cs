@@ -56,7 +56,7 @@ namespace Bimaru.SolverUtil
         public bool AreTrialsComplete =>
             !(FallBackRule is null) && FallBackRule.AreTrialsComplete;
 
-        public IEnumerable<FieldsToChange<BimaruValue>> GetChangeTrials(IGame game)
+        public IEnumerable<FieldsToChange<BimaruValue>> GetChangeTrials(IBimaruGame game)
         {
             var mostPromisingPoints = GetMostPromisingPoints(game);
             if (mostPromisingPoints != null)
@@ -67,7 +67,7 @@ namespace Bimaru.SolverUtil
             return FallBackRule?.GetChangeTrials(game) ?? Enumerable.Empty<FieldsToChange<BimaruValue>>();
         }
 
-        private static OneMissingPoints GetMostPromisingPoints(IGame game)
+        private static OneMissingPoints GetMostPromisingPoints(IBimaruGame game)
         {
             return new List<OneMissingPoints>()
                 {
@@ -78,14 +78,14 @@ namespace Bimaru.SolverUtil
                 }.Max();
         }
 
-        private static IEnumerable<OneMissingPoints> GetOneMissingShipRow(IGame game)
+        private static IEnumerable<OneMissingPoints> GetOneMissingShipRow(IBimaruGame game)
         {
             return Enumerable.Range(0, game.Grid.NumberOfRows)
                 .Where(i => game.NumberOfMissingShipFieldsPerRow(i) == 1)
                 .Select(rowIndex => OneMissingPoints.ConstructFromRow(game, rowIndex, BimaruValueConstraint.SHIP));
         }
 
-        private static IEnumerable<OneMissingPoints> GetOneMissingWaterRow(IGame game)
+        private static IEnumerable<OneMissingPoints> GetOneMissingWaterRow(IBimaruGame game)
         {
             return Enumerable.Range(0, game.Grid.NumberOfRows)
                 .Where(i => game.NumberOfMissingShipFieldsPerRow(i) ==
@@ -93,14 +93,14 @@ namespace Bimaru.SolverUtil
                 .Select(rowIndex => OneMissingPoints.ConstructFromRow(game, rowIndex, BimaruValueConstraint.WATER));
         }
 
-        private static IEnumerable<OneMissingPoints> GetOneMissingShipColumn(IGame game)
+        private static IEnumerable<OneMissingPoints> GetOneMissingShipColumn(IBimaruGame game)
         {
             return Enumerable.Range(0, game.Grid.NumberOfColumns)
                 .Where(i => game.NumberOfMissingShipFieldsPerColumn(i) == 1)
                 .Select(columnIndex => OneMissingPoints.ConstructFromColumn(game, columnIndex, BimaruValueConstraint.SHIP));
         }
 
-        private static IEnumerable<OneMissingPoints> GetOneMissingWaterColumn(IGame game)
+        private static IEnumerable<OneMissingPoints> GetOneMissingWaterColumn(IBimaruGame game)
         {
             return Enumerable.Range(0, game.Grid.NumberOfColumns)
                 .Where(i => game.NumberOfMissingShipFieldsPerColumn(i) ==
@@ -129,17 +129,17 @@ namespace Bimaru.SolverUtil
                 ShipOrWater = shipOrWater;
             }
 
-            public static OneMissingPoints ConstructFromRow(IGame game, int rowIndex, BimaruValueConstraint shipOrWater)
+            public static OneMissingPoints ConstructFromRow(IBimaruGame game, int rowIndex, BimaruValueConstraint shipOrWater)
             {
                 return ConstructFromPoints(game, game.Grid.PointsOfRow(rowIndex), shipOrWater);
             }
 
-            public static OneMissingPoints ConstructFromColumn(IGame game, int columnIndex, BimaruValueConstraint shipOrWater)
+            public static OneMissingPoints ConstructFromColumn(IBimaruGame game, int columnIndex, BimaruValueConstraint shipOrWater)
             {
                 return ConstructFromPoints(game, game.Grid.PointsOfColumn(columnIndex), shipOrWater);
             }
 
-            private static OneMissingPoints ConstructFromPoints(IGame game, IEnumerable<GridPoint> points, BimaruValueConstraint shipOrWater)
+            private static OneMissingPoints ConstructFromPoints(IBimaruGame game, IEnumerable<GridPoint> points, BimaruValueConstraint shipOrWater)
             {
                 OneMissingPoints result = null;
 

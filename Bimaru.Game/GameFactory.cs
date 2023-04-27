@@ -1,17 +1,17 @@
 ﻿using Bimaru.Interfaces;
 
-namespace Bimaru.GameUtil
+namespace Bimaru.Game
 {
     public class GameFactory : IGameFactory
     {
-        public IGame GenerateEmptyGame(int numRows, int numColumns)
+        public IBimaruGame GenerateEmptyGame(int numRows, int numColumns)
         {
             var rowTally = new GridTally(numRows);
             var columnTally = new GridTally(numColumns);
             var shipSettings = new ShipTarget();
             var grid = new BimaruGrid(numRows, numColumns);
 
-            return new Game(rowTally, columnTally, shipSettings, grid);
+            return new BimaruGame(rowTally, columnTally, shipSettings, grid);
         }
     }
 }

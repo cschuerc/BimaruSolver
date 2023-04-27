@@ -9,7 +9,7 @@ namespace Bimaru.SolverUtil
     /// </summary>
     public class SetShipEnvironment : IFieldValueChangedRule
     {
-        public void FieldValueChanged(IGame game, FieldValueChangedEventArgs<BimaruValue> e)
+        public void FieldValueChanged(IBimaruGame game, FieldValueChangedEventArgs<BimaruValue> e)
         {
             var newValue = game.Grid[e.Point];
             foreach (var direction in Directions.GetAllDirections())

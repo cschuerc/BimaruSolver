@@ -2,6 +2,6 @@
 {
     public interface IGameFactory
     {
-        IGame GenerateEmptyGame(int numRows, int numColumns);
+        IBimaruGame GenerateEmptyGame(int numRows, int numColumns);
     }
 }

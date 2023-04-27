@@ -6,7 +6,7 @@ namespace Bimaru.SolverUtil
 {
     public class DetermineShipUndetermined : IFieldValueChangedRule
     {
-        public void FieldValueChanged(IGame game, FieldValueChangedEventArgs<BimaruValue> e)
+        public void FieldValueChanged(IBimaruGame game, FieldValueChangedEventArgs<BimaruValue> e)
         {
             DetermineFieldValue(game, e.Point);
 
@@ -16,7 +16,7 @@ namespace Bimaru.SolverUtil
             }
         }
 
-        private static void DetermineFieldValue(IGame game, GridPoint point)
+        private static void DetermineFieldValue(IBimaruGame game, GridPoint point)
         {
             if (game.Grid[point] == BimaruValue.SHIP_UNDETERMINED)
             {
@@ -28,7 +28,7 @@ namespace Bimaru.SolverUtil
             }
         }
 
-        private static BimaruValue? GetShipUndeterminedFieldValue(IGame game, GridPoint pointShipUndetermined)
+        private static BimaruValue? GetShipUndeterminedFieldValue(IBimaruGame game, GridPoint pointShipUndetermined)
         {
             BimaruValue? newValue = null;
 
@@ -55,7 +55,7 @@ namespace Bimaru.SolverUtil
             return newValue;
         }
 
-        private static Direction? FindNonDiagonalNeighbor(IGame game, GridPoint center, BimaruValueConstraint constraint)
+        private static Direction? FindNonDiagonalNeighbor(IBimaruGame game, GridPoint center, BimaruValueConstraint constraint)
         {
             foreach (var direction in Directions.GetNonDiagonalDirections())
             {
@@ -69,7 +69,7 @@ namespace Bimaru.SolverUtil
             return null;
         }
 
-        private static bool AreAllNonDiagonalNeighborsWater(IGame game, GridPoint center)
+        private static bool AreAllNonDiagonalNeighborsWater(IBimaruGame game, GridPoint center)
         {
             return Directions.GetNonDiagonalDirections().Select(center.GetNextPoint).All(pointInDirection => game.Grid[pointInDirection] == BimaruValue.WATER);
         }

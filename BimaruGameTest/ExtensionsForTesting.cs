@@ -20,7 +20,7 @@ namespace Bimaru.Test
             expectedGame.Game.AssertEqual(actualGame.Game);
         }
 
-        private static void AssertEqual(this IGame expectedGame, IGame actualGame)
+        private static void AssertEqual(this IBimaruGame expectedGame, IBimaruGame actualGame)
         {
             Assert.True(expectedGame.TargetNumberOfShipFieldsPerRow.SequenceEqual(actualGame.TargetNumberOfShipFieldsPerRow));
             Assert.True(expectedGame.TargetNumberOfShipFieldsPerColumn.SequenceEqual(actualGame.TargetNumberOfShipFieldsPerColumn));

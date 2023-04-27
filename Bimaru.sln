@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33403.182
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BimaruGame", "BimaruGame\BimaruGame.csproj", "{E60408EF-487A-413B-A2F9-76CEEFFC560A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bimaru.Game", "Bimaru.Game\Bimaru.Game.csproj", "{E60408EF-487A-413B-A2F9-76CEEFFC560A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BimaruTest", "BimaruGameTest\BimaruTest.csproj", "{5347E40A-05DC-4407-8378-9DBD14CA9248}"
 EndProject

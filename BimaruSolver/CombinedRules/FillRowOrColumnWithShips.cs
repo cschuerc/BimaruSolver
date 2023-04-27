@@ -15,17 +15,17 @@ namespace Bimaru.SolverUtil
     /// </summary>
     public class FillRowOrColumnWithShips : IFieldValueChangedRule, ISolverRule
     {
-        private static bool AreOnlyShipFieldsMissingRow(IGame game, int rowIndex)
+        private static bool AreOnlyShipFieldsMissingRow(IBimaruGame game, int rowIndex)
         {
             return game.Grid.NumberOfUndeterminedFieldsPerRow[rowIndex] == game.NumberOfMissingShipFieldsPerRow(rowIndex);
         }
 
-        private static bool AreOnlyShipFieldsMissingColumn(IGame game, int columnIndex)
+        private static bool AreOnlyShipFieldsMissingColumn(IBimaruGame game, int columnIndex)
         {
             return game.Grid.NumberOfUndeterminedFieldsPerColumn[columnIndex] == game.NumberOfMissingShipFieldsPerColumn(columnIndex);
         }
 
-        public void FieldValueChanged(IGame game, FieldValueChangedEventArgs<BimaruValue> e)
+        public void FieldValueChanged(IBimaruGame game, FieldValueChangedEventArgs<BimaruValue> e)
         {
             if (AreOnlyShipFieldsMissingRow(game, e.Point.RowIndex))
             {
@@ -41,7 +41,7 @@ namespace Bimaru.SolverUtil
         #region Full grid rule
         public bool ShallBeAppliedOnce => true;
 
-        public void Solve(IGame game)
+        public void Solve(IBimaruGame game)
         {
             foreach (var rowIndex in Enumerable.Range(0, game.Grid.NumberOfRows).Where(i => AreOnlyShipFieldsMissingRow(game, i)))
             {

@@ -1,5 +1,5 @@
 using System.Linq;
-using Bimaru.GameUtil;
+using Bimaru.Game;
 using Bimaru.Interfaces;
 using Xunit;
 

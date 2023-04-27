@@ -1,13 +1,13 @@
-﻿using Bimaru.Interfaces;
-using System;
+﻿using System;
 using System.Linq;
+using Bimaru.Interfaces;
 
-namespace Bimaru.GameUtil
+namespace Bimaru.Game
 {
     [Serializable]
-    public class Game : IGame
+    public class BimaruGame : IBimaruGame
     {
-        public Game(IGridTally targetNumberOfShipFieldsPerRow,
+        public BimaruGame(IGridTally targetNumberOfShipFieldsPerRow,
             IGridTally targetNumberOfShipFieldsPerColumn,
             IShipTarget targetNumberOfShipsPerLength,
             IBimaruGrid grid)
@@ -102,7 +102,7 @@ namespace Bimaru.GameUtil
 
         #endregion
 
-        #region Game properties
+        #region BimaruGame properties
         public bool IsUnsolvable
         {
             get

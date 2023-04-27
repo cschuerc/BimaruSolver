@@ -7,7 +7,7 @@
             get;
         }
 
-        IGame Game
+        IBimaruGame Game
         {
             get;
         }

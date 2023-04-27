@@ -1,9 +1,9 @@
-﻿using Bimaru.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Bimaru.Interfaces;
 
-namespace Bimaru.GameUtil
+namespace Bimaru.Game
 {
     [Serializable]
     public class ShipTarget : IShipTarget

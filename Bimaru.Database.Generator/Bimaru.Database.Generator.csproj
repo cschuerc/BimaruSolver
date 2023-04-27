@@ -7,7 +7,7 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Bimaru.Database\Bimaru.Database.csproj" />
-    <ProjectReference Include="..\BimaruGame\BimaruGame.csproj" />
+    <ProjectReference Include="..\Bimaru.Game\Bimaru.Game.csproj" />
     <ProjectReference Include="..\BimaruSolverInterface\BimaruInterfaces.csproj" />
     <ProjectReference Include="..\Utility\Utility.csproj" />
   </ItemGroup>

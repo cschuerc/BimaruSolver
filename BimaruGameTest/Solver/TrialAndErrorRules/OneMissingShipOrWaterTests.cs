@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using Bimaru.GameUtil;
+using Bimaru.Game;
 using Bimaru.Interfaces;
 using Bimaru.SolverUtil;
 using Xunit;
@@ -151,7 +151,7 @@ namespace Bimaru.Test
 
             public bool AreTrialsComplete => false;
 
-            public IEnumerable<FieldsToChange<BimaruValue>> GetChangeTrials(IGame game)
+            public IEnumerable<FieldsToChange<BimaruValue>> GetChangeTrials(IBimaruGame game)
             {
                 NumberOfTrialCalls++;
                 yield return null;

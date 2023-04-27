@@ -6,7 +6,7 @@ namespace Bimaru.Database
     [Serializable]
     public class GameWithMetaInfo : IGameWithMetaInfo
     {
-        public GameWithMetaInfo(IGameMetaInfo metaInfo, IGame game)
+        public GameWithMetaInfo(IGameMetaInfo metaInfo, IBimaruGame game)
         {
             MetaInfo = metaInfo;
             Game = game;
@@ -23,9 +23,9 @@ namespace Bimaru.Database
         }
 
 
-        private IGame game;
+        private IBimaruGame game;
 
-        public IGame Game
+        public IBimaruGame Game
         {
             get => game;
 
