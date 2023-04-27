@@ -9,7 +9,7 @@ namespace Bimaru.Interface.Utility
     /// Each field on the grid has eight possible boundaries,
     /// for each possible direction one.
     /// </summary>
-    public struct FieldBoundary
+    public readonly struct FieldBoundary
     {
         /// <summary>
         /// Subset of directions such that the boundary representation is unique.
@@ -54,19 +54,11 @@ namespace Bimaru.Interface.Utility
         /// so for example for the boundary between (0, 0)
         /// and (1, 0), the base point is always (0, 0).
         /// </summary>
-        public GridPoint BasePoint
-        {
-            get;
-            private set;
-        }
+        public GridPoint BasePoint { get; }
 
         /// <summary>
         /// Direction of the boundary relative to the base point.
         /// </summary>
-        public Direction DirectionFromBase
-        {
-            get;
-            private set;
-        }
+        public Direction DirectionFromBase { get; }
     }
 }

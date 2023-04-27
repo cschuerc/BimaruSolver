@@ -27,7 +27,7 @@ namespace Bimaru.Database.Generator
             foreach (var game in games)
             {
                 using var fileStream = File.Create(string.Format(databaseNameFormat, game.MetaInfo.Id));
-                JsonSerializer.Serialize(fileStream, game);
+                JsonSerializer.Serialize(fileStream, game, new JsonSerializerOptions { WriteIndented = true });
             }
         }
     }

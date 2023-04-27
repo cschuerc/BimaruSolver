@@ -8,7 +8,7 @@ namespace Bimaru.Interface.Utility
     /// Single change of a field value
     /// </summary>
     /// <typeparam name="T"> Type of field value </typeparam>
-    public struct SingleChange<T>
+    public readonly struct SingleChange<T>
     {
         public SingleChange(GridPoint point, T newValue)
         {
@@ -16,17 +16,9 @@ namespace Bimaru.Interface.Utility
             NewValue = newValue;
         }
 
-        public GridPoint Point
-        {
-            get;
-            private set;
-        }
+        public GridPoint Point { get; }
 
-        public T NewValue
-        {
-            get;
-            private set;
-        }
+        public T NewValue { get; }
     }
 
     /// <summary>

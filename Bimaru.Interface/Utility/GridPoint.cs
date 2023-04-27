@@ -14,15 +14,9 @@ namespace Bimaru.Interface.Utility
             ColumnIndex = columnIndex;
         }
 
-        public int RowIndex
-        {
-            get;
-        }
+        public int RowIndex { get; }
 
-        public int ColumnIndex
-        {
-            get;
-        }
+        public int ColumnIndex { get; }
 
         private static readonly Dictionary<Direction, Tuple<int, int>> indexOffsets =
             new Dictionary<Direction, Tuple<int, int>>()

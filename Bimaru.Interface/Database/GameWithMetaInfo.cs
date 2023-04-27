@@ -12,16 +12,7 @@ namespace Bimaru.Interface.Database
             Game = game;
         }
 
-
-        private GameMetaInfo metaInfo;
-
-        public GameMetaInfo MetaInfo
-        {
-            get => metaInfo;
-
-            private set => metaInfo = value ?? throw new ArgumentNullException(nameof(value));
-        }
-
+        public GameMetaInfo MetaInfo { get; }
 
         private IBimaruGame game;
 
