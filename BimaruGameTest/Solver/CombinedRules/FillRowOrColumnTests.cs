@@ -1,6 +1,6 @@
 using Bimaru.Game;
 using Bimaru.Interfaces;
-using Bimaru.SolverUtil;
+using Bimaru.Solver.CombinedRules;
 using Xunit;
 using Utility;
 

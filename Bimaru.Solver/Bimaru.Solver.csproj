@@ -2,7 +2,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <OutputType>Library</OutputType>
-    <RootNamespace>Bimaru.SolverUtil</RootNamespace>
+    <RootNamespace>Bimaru.Solver</RootNamespace>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <EnableNETAnalyzers>True</EnableNETAnalyzers>
   </PropertyGroup>

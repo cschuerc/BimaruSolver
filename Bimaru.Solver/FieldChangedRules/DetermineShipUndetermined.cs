@@ -2,7 +2,7 @@
 using Bimaru.Interfaces;
 using Utility;
 
-namespace Bimaru.SolverUtil
+namespace Bimaru.Solver.FieldChangedRules
 {
     public class DetermineShipUndetermined : IFieldValueChangedRule
     {

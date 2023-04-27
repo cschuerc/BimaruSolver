@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Bimaru.Game;
 using Bimaru.Interfaces;
-using Bimaru.SolverUtil;
+using Bimaru.Solver.TrialAndErrorRules;
 using Xunit;
 using Utility;
 // ReSharper disable AccessToModifiedClosure

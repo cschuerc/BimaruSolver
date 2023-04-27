@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BimaruInterfaces", "BimaruS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Utility", "Utility\Utility.csproj", "{7F908209-ED83-4B1A-875A-FA329703F374}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BimaruSolver", "BimaruSolver\BimaruSolver.csproj", "{0C0BA203-55FF-4EFC-A0E9-AF1FA30D4699}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bimaru.Solver", "Bimaru.Solver\Bimaru.Solver.csproj", "{0C0BA203-55FF-4EFC-A0E9-AF1FA30D4699}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bimaru.Database", "Bimaru.Database\Bimaru.Database.csproj", "{263B8B66-DCC4-4295-9183-FFBF5E84D0EF}"
 EndProject

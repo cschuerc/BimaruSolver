@@ -1,11 +1,11 @@
-﻿using Bimaru.Interfaces;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Bimaru.Interfaces;
 using Utility;
 
-namespace Bimaru.SolverUtil
+namespace Bimaru.Solver.TrialAndErrorRules
 {
     /// <summary>
     /// Finds a row or column where either only one

@@ -1,10 +1,10 @@
-﻿using Bimaru.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Bimaru.Interfaces;
 using Utility;
 
-namespace Bimaru.SolverUtil
+namespace Bimaru.Solver.TrialAndErrorRules
 {
     /// <summary>
     /// Try all possible locations for the longest, still missing ship.

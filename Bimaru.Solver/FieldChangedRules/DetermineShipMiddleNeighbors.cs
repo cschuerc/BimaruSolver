@@ -1,7 +1,7 @@
 ﻿using Bimaru.Interfaces;
 using Utility;
 
-namespace Bimaru.SolverUtil
+namespace Bimaru.Solver.FieldChangedRules
 {
     /// <summary>
     /// Determines all neighbors of SHIP_MIDDLE if possible.

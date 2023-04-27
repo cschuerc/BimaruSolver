@@ -1,16 +1,16 @@
-﻿using Bimaru.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Bimaru.Interfaces;
 using Utility;
 
-namespace Bimaru.SolverUtil
+namespace Bimaru.Solver
 {
-    public sealed class Solver : ISolver
+    public sealed class BimaruSolver : IBimaruSolver
     {
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Solver"/> class.
+        /// Initializes a new instance of the <see cref="BimaruSolver"/> class.
         /// </summary>
         /// <param name="fieldChangedRules"> True means the number of solutions is counted.
         /// False means it stops after the first solution that is found. </param>
@@ -19,7 +19,7 @@ namespace Bimaru.SolverUtil
         /// <param name="gridBackup"></param>
         /// <param name="shallCountSolutions"></param>
         /// <exception cref="ArgumentException"></exception>
-        public Solver(IEnumerable<IFieldValueChangedRule> fieldChangedRules,
+        public BimaruSolver(IEnumerable<IFieldValueChangedRule> fieldChangedRules,
             IEnumerable<ISolverRule> solverRules,
             ITrialAndErrorRule trialRule,
             IBackup<IBimaruGrid> gridBackup,

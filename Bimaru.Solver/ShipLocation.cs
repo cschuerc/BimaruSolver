@@ -1,7 +1,7 @@
 ﻿using Bimaru.Interfaces;
 using Utility;
 
-namespace Bimaru.SolverUtil
+namespace Bimaru.Solver
 {
     public class ShipLocation
     {

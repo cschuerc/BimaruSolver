@@ -20,7 +20,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Bimaru.Database\Bimaru.Database.csproj" />
     <ProjectReference Include="..\Bimaru.Game\Bimaru.Game.csproj" />
-    <ProjectReference Include="..\BimaruSolver\BimaruSolver.csproj" />
+    <ProjectReference Include="..\Bimaru.Solver\Bimaru.Solver.csproj" />
   </ItemGroup>
 
 </Project>

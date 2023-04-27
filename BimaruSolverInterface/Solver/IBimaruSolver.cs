@@ -1,6 +1,6 @@
 ﻿namespace Bimaru.Interfaces
 {
-    public interface ISolver
+    public interface IBimaruSolver
     {
         /// <summary>
         /// Tries to solve the Bimaru.

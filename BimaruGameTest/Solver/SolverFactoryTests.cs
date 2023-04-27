@@ -1,5 +1,5 @@
 using Bimaru.Database;
-using Bimaru.SolverUtil;
+using Bimaru.Solver;
 using Xunit;
 
 namespace Bimaru.Test

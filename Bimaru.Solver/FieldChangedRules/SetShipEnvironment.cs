@@ -1,7 +1,7 @@
 ﻿using Bimaru.Interfaces;
 using Utility;
 
-namespace Bimaru.SolverUtil
+namespace Bimaru.Solver.FieldChangedRules
 {
     /// <summary>
     /// Sets the surroundings of a ship field.

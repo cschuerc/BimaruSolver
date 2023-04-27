@@ -1,8 +1,8 @@
-﻿using Bimaru.Interfaces;
-using System.Linq;
+﻿using System.Linq;
+using Bimaru.Interfaces;
 using Utility;
 
-namespace Bimaru.SolverUtil
+namespace Bimaru.Solver.CombinedRules
 {
     /// <summary>
     /// Fills all UNDETERMINED fields of a row or a column with SHIP_UNDETERMINED
