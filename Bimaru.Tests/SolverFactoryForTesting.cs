@@ -1,14 +1,15 @@
 ﻿using System.Collections.Generic;
 using Bimaru.Interface.Game;
 using Bimaru.Interface.Solver;
+using Bimaru.Solver;
 using Bimaru.Solver.CombinedRules;
 using Bimaru.Solver.FieldChangedRules;
 using Bimaru.Solver.TrialAndErrorRules;
 using Bimaru.Utility;
 
-namespace Bimaru.Solver
+namespace Bimaru.Tests
 {
-    public class SolverFactory : ISolverFactory
+    public static class SolverFactoryForTesting
     {
         private static ITrialAndErrorRule GetTrialRule(bool shallCountSolutions)
         {
@@ -26,7 +27,7 @@ namespace Bimaru.Solver
             return trialRule;
         }
 
-        public IBimaruSolver GenerateSolver(bool shallCountSolutions)
+        public static IBimaruSolver GenerateSolver(bool shallCountSolutions)
         {
             var fieldChangedRules = new List<IFieldValueChangedRule>()
             {   new SetShipEnvironment(),
