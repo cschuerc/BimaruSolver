@@ -1,7 +1,7 @@
 ﻿using System;
-using Bimaru.Interface;
 using Bimaru.Interface.Game;
 using Bimaru.Interface.Solver;
+using Bimaru.Interface.Utility;
 
 namespace Bimaru.Tests
 {

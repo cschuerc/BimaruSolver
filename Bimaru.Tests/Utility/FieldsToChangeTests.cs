@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using Bimaru.Interface;
-using Bimaru.Interface.Game;
+using Bimaru.Interface.Utility;
 using Xunit;
 
 namespace Bimaru.Tests.Utility

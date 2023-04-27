@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Bimaru.Interface.Game
+namespace Bimaru.Interface.Utility
 {
     /// <summary>
     /// A point on a two-dimensional integer grid

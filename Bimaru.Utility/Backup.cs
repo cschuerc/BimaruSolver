@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Bimaru.Interface.Game;
+using Bimaru.Interface.Utility;
 
 namespace Bimaru.Utility
 {

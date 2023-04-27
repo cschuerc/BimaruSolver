@@ -1,5 +1,4 @@
-using Bimaru.Interface;
-using Bimaru.Interface.Game;
+using Bimaru.Interface.Utility;
 using Xunit;
 
 namespace Bimaru.Tests.Utility

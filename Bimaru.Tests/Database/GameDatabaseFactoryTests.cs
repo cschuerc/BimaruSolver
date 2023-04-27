@@ -4,7 +4,7 @@ using Xunit;
 
 namespace Bimaru.Tests.Database
 {
-    public class DatabaseFactoryTests
+    public class GameDatabaseFactoryTests
     {
         [Fact]
         public void TestDatabaseIsNotNull()

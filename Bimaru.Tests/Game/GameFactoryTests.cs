@@ -1,6 +1,6 @@
 using System.Linq;
 using Bimaru.Game;
-using Bimaru.Interface;
+using Bimaru.Interface.Utility;
 using Xunit;
 
 namespace Bimaru.Tests.Game

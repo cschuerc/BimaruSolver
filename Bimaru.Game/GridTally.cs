@@ -2,8 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Bimaru.Interface;
 using Bimaru.Interface.Game;
+using Bimaru.Interface.Utility;
 using Bimaru.Utility;
 
 namespace Bimaru.Game
@@ -16,10 +16,10 @@ namespace Bimaru.Game
         {
             Length = tallyLength;
 
-            targetNumberPerRowOrColumn = new int[tallyLength];
-            targetNumberPerRowOrColumn.InitValues(0);
+            targetNumberPerIndex = new int[tallyLength];
+            targetNumberPerIndex.InitValues(0);
 
-            Total = targetNumberPerRowOrColumn.Sum();
+            Total = targetNumberPerIndex.Sum();
         }
 
 
@@ -41,11 +41,11 @@ namespace Bimaru.Game
         }
 
 
-        private readonly int[] targetNumberPerRowOrColumn;
+        private readonly int[] targetNumberPerIndex;
 
         public int this[int index]
         {
-            get => targetNumberPerRowOrColumn[index];
+            get => targetNumberPerIndex[index];
 
             set
             {
@@ -54,8 +54,8 @@ namespace Bimaru.Game
                     throw new ArgumentOutOfRangeException(nameof(value));
                 }
 
-                Total += value - targetNumberPerRowOrColumn[index];
-                targetNumberPerRowOrColumn[index] = value;
+                Total += value - targetNumberPerIndex[index];
+                targetNumberPerIndex[index] = value;
             }
         }
 
@@ -81,33 +81,30 @@ namespace Bimaru.Game
                     "Grid tally satisfiability has to be derived from the same number of rows/columns.");
             }
 
-            var isSatisfied = true;
-            for (var index = 0; index < Length; index++)
-            {
-                var numberOfMissingShipField = this[index] - numberOfShipFields[index];
-                if (numberOfMissingShipField < 0 ||
-                    numberOfMissingShipField > numberOfUndeterminedFields[index])
-                {
-                    return Satisfiability.VIOLATED;
-                }
+            var numberOfMissingShipFields = targetNumberPerIndex
+                .Zip(numberOfShipFields, (target, actual) => target - actual)
+                .ToList();
 
-                if (numberOfMissingShipField != 0)
-                {
-                    isSatisfied = false;
-                }
+            if (numberOfMissingShipFields.All((missing) => missing == 0))
+            {
+                return Satisfiability.SATISFIED;
             }
 
-            return isSatisfied ? Satisfiability.SATISFIED : Satisfiability.SATISFIABLE;
+            return numberOfMissingShipFields
+                .Zip(numberOfUndeterminedFields, (missing, undetermined) => (missing >= 0) && (missing <= undetermined))
+                .All(satisfiable => satisfiable)
+                ? Satisfiability.SATISFIABLE
+                : Satisfiability.VIOLATED;
         }
 
         public IEnumerator<int> GetEnumerator()
         {
-            return ((IEnumerable<int>)targetNumberPerRowOrColumn).GetEnumerator();
+            return ((IEnumerable<int>)targetNumberPerIndex).GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return targetNumberPerRowOrColumn.GetEnumerator();
+            return targetNumberPerIndex.GetEnumerator();
         }
     }
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Bimaru.Interface
+namespace Bimaru.Interface.Utility
 {
     public enum BimaruValue
     {
@@ -114,7 +114,7 @@ namespace Bimaru.Interface
         {
             return oldValue == newValue ||
                 oldValue == BimaruValue.UNDETERMINED ||
-                (oldValue == BimaruValue.SHIP_UNDETERMINED && newValue.IsShip());
+                oldValue == BimaruValue.SHIP_UNDETERMINED && newValue.IsShip();
         }
 
         /// <summary>

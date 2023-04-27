@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Bimaru.Interface;
+using Bimaru.Interface.Utility;
 using Xunit;
 
-namespace Bimaru.Tests.Interface
+namespace Bimaru.Tests.Utility
 {
     public class BimaruValueTests
     {
@@ -66,8 +66,8 @@ namespace Bimaru.Tests.Interface
                             neighborValue == direction.GetLastShipValue();
 
                         var shouldBeCompatible =
-                            (value != direction.GetFirstShipValue() && !neighborValue.IsShip()) ||
-                            (value == direction.GetFirstShipValue() && isValidShipContinuation);
+                            value != direction.GetFirstShipValue() && !neighborValue.IsShip() ||
+                            value == direction.GetFirstShipValue() && isValidShipContinuation;
 
                         Assert.Equal(shouldBeCompatible, value.IsCompatibleWith(direction, neighborValue));
                         Assert.Equal(shouldBeCompatible, neighborValue.IsCompatibleWith(direction.GetOpposite(), value));

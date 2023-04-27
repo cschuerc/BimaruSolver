@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Bimaru.Interface
+namespace Bimaru.Interface.Utility
 {
     public enum BimaruValueConstraint
     {

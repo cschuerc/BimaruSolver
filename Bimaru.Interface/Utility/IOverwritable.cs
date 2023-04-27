@@ -1,4 +1,4 @@
-﻿namespace Bimaru.Interface.Game
+﻿namespace Bimaru.Interface.Utility
 {
     public interface IOverwritable
     {

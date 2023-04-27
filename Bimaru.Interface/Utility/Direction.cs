@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Bimaru.Interface
+namespace Bimaru.Interface.Utility
 {
     /// <summary>
     /// Horizontal, vertical and diagonal directions.

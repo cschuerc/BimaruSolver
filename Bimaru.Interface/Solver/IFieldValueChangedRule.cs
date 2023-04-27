@@ -1,4 +1,5 @@
 ﻿using Bimaru.Interface.Game;
+using Bimaru.Interface.Utility;
 
 namespace Bimaru.Interface.Solver
 {

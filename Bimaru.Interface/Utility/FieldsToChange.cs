@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Bimaru.Interface.Game
+namespace Bimaru.Interface.Utility
 {
     /// <summary>
     /// Single change of a field value

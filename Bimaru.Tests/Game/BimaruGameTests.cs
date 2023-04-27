@@ -1,15 +1,15 @@
 using System;
 using System.Collections.Generic;
 using Bimaru.Game;
-using Bimaru.Interface;
 using Bimaru.Interface.Game;
+using Bimaru.Interface.Utility;
 using Xunit;
 
 // ReSharper disable AccessToModifiedClosure
 
 namespace Bimaru.Tests.Game
 {
-    public class GameTests
+    public class BimaruGameTests
     {
         [Theory]
         [MemberData(nameof(CreateDataToTestNullArguments))]

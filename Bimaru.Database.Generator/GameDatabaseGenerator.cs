@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using Bimaru.Game;
-using Bimaru.Interface;
 using Bimaru.Interface.Database;
 using Bimaru.Interface.Game;
+using Bimaru.Interface.Utility;
 
 namespace Bimaru.Database.Generator
 {

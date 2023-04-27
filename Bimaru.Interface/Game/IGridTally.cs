@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Bimaru.Interface.Utility;
 
 namespace Bimaru.Interface.Game
 {
