@@ -130,10 +130,9 @@ namespace Bimaru.GameUtil
 
         private void UpdateNumberOfFields(FieldValueChangedEventArgs<BimaruValue> e)
         {
-            int change;
             var newValue = this[e.Point];
 
-            change = GetChangeInNumberOfFields(e.OriginalValue.IsShip(), newValue.IsShip());
+            var change = GetChangeInNumberOfFields(e.OriginalValue.IsShip(), newValue.IsShip());
             numberOfShipFieldsPerRow[e.Point.RowIndex] += change;
             numberOfShipFieldsPerColumn[e.Point.ColumnIndex] += change;
 
@@ -162,9 +161,9 @@ namespace Bimaru.GameUtil
             var centerValue = GetFieldValueNoCheck(center);
             foreach (var direction in Directions.GetAllDirections())
             {
-                var neighbourValue = this[center.GetNextPoint(direction)];
+                var neighborValue = this[center.GetNextPoint(direction)];
                 var boundary = center.GetBoundary(direction);
-                if (centerValue.IsCompatibleWith(direction, neighbourValue))
+                if (centerValue.IsCompatibleWith(direction, neighborValue))
                 {
                     invalidFieldBoundaries.Remove(boundary);
                 }
@@ -204,11 +203,10 @@ namespace Bimaru.GameUtil
                 yield break;
             }
 
-            int? shipLength;
-
-            // -1 due to double count of the cross point
-            shipLength = GetShipPartLength(point, valueAtPoint, Direction.LEFT) +
-                         GetShipPartLength(point, valueAtPoint, Direction.RIGHT) - 1;
+            var shipLength =
+                // -1 due to double count of the cross point
+                GetShipPartLength(point, valueAtPoint, Direction.LEFT) +
+                GetShipPartLength(point, valueAtPoint, Direction.RIGHT) - 1;
             if (shipLength.HasValue)
             {
                 yield return shipLength.Value;
