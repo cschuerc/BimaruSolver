@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using Bimaru.Game;
 using Bimaru.Interface.Game;
 using Bimaru.Interface.Solver;
 using Bimaru.Interface.Utility;
@@ -16,7 +15,7 @@ namespace Bimaru.Tests.Solver.TrialAndErrorRules
         [Fact]
         public void TestFullyDeterminedWithFallback()
         {
-            var game = (new GameFactory()).GenerateEmptyGame(1, 1);
+            var game = GameFactoryForTesting.GenerateEmptyGame(1, 1);
             game.Grid[new GridPoint(0, 0)] = BimaruValue.SHIP_MIDDLE;
             var rule = new OneMissingShipOrWater(new BruteForce());
 
@@ -26,7 +25,7 @@ namespace Bimaru.Tests.Solver.TrialAndErrorRules
         [Fact]
         public void TestOneMissingShip()
         {
-            var game = (new GameFactory()).GenerateEmptyGame(3, 4);
+            var game = GameFactoryForTesting.GenerateEmptyGame(3, 4);
             game.Grid[new GridPoint(2, 3)] = BimaruValue.WATER;
             game.TargetNumberOfShipFieldsPerRow[0] = 2;
             game.TargetNumberOfShipFieldsPerRow[1] = 2;
@@ -74,7 +73,7 @@ namespace Bimaru.Tests.Solver.TrialAndErrorRules
         [Fact]
         public void TestOneMissingWater()
         {
-            var game = (new GameFactory()).GenerateEmptyGame(3, 4);
+            var game = GameFactoryForTesting.GenerateEmptyGame(3, 4);
             game.Grid[new GridPoint(2, 3)] = BimaruValue.SHIP_UNDETERMINED;
             game.TargetNumberOfShipFieldsPerRow[0] = 2;
             game.TargetNumberOfShipFieldsPerRow[1] = 2;
@@ -107,7 +106,7 @@ namespace Bimaru.Tests.Solver.TrialAndErrorRules
         [Fact]
         public void TestNeverOneMissing()
         {
-            var game = (new GameFactory()).GenerateEmptyGame(2, 4);
+            var game = GameFactoryForTesting.GenerateEmptyGame(2, 4);
             game.TargetNumberOfShipFieldsPerRow[0] = 2;
             game.TargetNumberOfShipFieldsPerRow[1] = 2;
             game.TargetNumberOfShipFieldsPerColumn[0] = 2;

@@ -1,4 +1,3 @@
-using Bimaru.Game;
 using Bimaru.Interface.Game;
 using Bimaru.Interface.Utility;
 using Bimaru.Solver.CombinedRules;
@@ -34,7 +33,7 @@ namespace Bimaru.Tests.Solver.CombinedRules
         /// </summary>
         private static IBimaruGame GetBasicGame()
         {
-            var game = (new GameFactory()).GenerateEmptyGame(2, 3);
+            var game = GameFactoryForTesting.GenerateEmptyGame(2, 3);
 
             game.TargetNumberOfShipFieldsPerRow[0] = 2;
             game.TargetNumberOfShipFieldsPerRow[1] = 1;

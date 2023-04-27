@@ -1,4 +1,3 @@
-using Bimaru.Game;
 using Bimaru.Interface.Utility;
 using Bimaru.Solver.FieldChangedRules;
 using Xunit;
@@ -10,7 +9,7 @@ namespace Bimaru.Tests.Solver.FieldChangedRules
         [Fact]
         public void TestUndetermined()
         {
-            var game = (new GameFactory()).GenerateEmptyGame(3, 3);
+            var game = GameFactoryForTesting.GenerateEmptyGame(3, 3);
             using (new FieldValueChangedRuleSubscriber(game, new SetShipEnvironment()))
             {
                 game.Grid[new GridPoint(1, 1)] = BimaruValue.UNDETERMINED;
@@ -28,7 +27,7 @@ namespace Bimaru.Tests.Solver.FieldChangedRules
         [Fact]
         public void TestWater()
         {
-            var game = (new GameFactory()).GenerateEmptyGame(3, 3);
+            var game = GameFactoryForTesting.GenerateEmptyGame(3, 3);
             using (new FieldValueChangedRuleSubscriber(game, new SetShipEnvironment()))
             {
                 game.Grid[new GridPoint(1, 1)] = BimaruValue.WATER;
@@ -46,7 +45,7 @@ namespace Bimaru.Tests.Solver.FieldChangedRules
         [Fact]
         public void TestSingleShip()
         {
-            var game = (new GameFactory()).GenerateEmptyGame(3, 3);
+            var game = GameFactoryForTesting.GenerateEmptyGame(3, 3);
             using (new FieldValueChangedRuleSubscriber(game, new SetShipEnvironment()))
             {
                 game.Grid[new GridPoint(1, 1)] = BimaruValue.SHIP_SINGLE;
@@ -64,7 +63,7 @@ namespace Bimaru.Tests.Solver.FieldChangedRules
         [Fact]
         public void TestMiddleShip()
         {
-            var game = (new GameFactory()).GenerateEmptyGame(3, 3);
+            var game = GameFactoryForTesting.GenerateEmptyGame(3, 3);
             using (new FieldValueChangedRuleSubscriber(game, new SetShipEnvironment()))
             {
                 game.Grid[new GridPoint(1, 1)] = BimaruValue.SHIP_MIDDLE;
@@ -82,7 +81,7 @@ namespace Bimaru.Tests.Solver.FieldChangedRules
         [Fact]
         public void TestShipUndetermined()
         {
-            var game = (new GameFactory()).GenerateEmptyGame(3, 3);
+            var game = GameFactoryForTesting.GenerateEmptyGame(3, 3);
             using (new FieldValueChangedRuleSubscriber(game, new SetShipEnvironment()))
             {
                 game.Grid[new GridPoint(1, 1)] = BimaruValue.SHIP_UNDETERMINED;
@@ -100,7 +99,7 @@ namespace Bimaru.Tests.Solver.FieldChangedRules
         [Fact]
         public void TestShipContRight()
         {
-            var game = (new GameFactory()).GenerateEmptyGame(3, 3);
+            var game = GameFactoryForTesting.GenerateEmptyGame(3, 3);
             using (new FieldValueChangedRuleSubscriber(game, new SetShipEnvironment()))
             {
                 game.Grid[new GridPoint(1, 1)] = BimaruValue.SHIP_CONT_RIGHT;
@@ -118,7 +117,7 @@ namespace Bimaru.Tests.Solver.FieldChangedRules
         [Fact]
         public void TestShipContLeft()
         {
-            var game = (new GameFactory()).GenerateEmptyGame(3, 3);
+            var game = GameFactoryForTesting.GenerateEmptyGame(3, 3);
             using (new FieldValueChangedRuleSubscriber(game, new SetShipEnvironment()))
             {
                 game.Grid[new GridPoint(1, 1)] = BimaruValue.SHIP_CONT_LEFT;
@@ -136,7 +135,7 @@ namespace Bimaru.Tests.Solver.FieldChangedRules
         [Fact]
         public void TestShipContUp()
         {
-            var game = (new GameFactory()).GenerateEmptyGame(3, 3);
+            var game = GameFactoryForTesting.GenerateEmptyGame(3, 3);
             using (new FieldValueChangedRuleSubscriber(game, new SetShipEnvironment()))
             {
                 game.Grid[new GridPoint(1, 1)] = BimaruValue.SHIP_CONT_UP;
@@ -154,7 +153,7 @@ namespace Bimaru.Tests.Solver.FieldChangedRules
         [Fact]
         public void TestShipContDown()
         {
-            var game = (new GameFactory()).GenerateEmptyGame(3, 3);
+            var game = GameFactoryForTesting.GenerateEmptyGame(3, 3);
             using (new FieldValueChangedRuleSubscriber(game, new SetShipEnvironment()))
             {
                 game.Grid[new GridPoint(1, 1)] = BimaruValue.SHIP_CONT_DOWN;
@@ -172,7 +171,7 @@ namespace Bimaru.Tests.Solver.FieldChangedRules
         [Fact]
         public void TestShipContOverwrite()
         {
-            var game = (new GameFactory()).GenerateEmptyGame(3, 3);
+            var game = GameFactoryForTesting.GenerateEmptyGame(3, 3);
             using (new FieldValueChangedRuleSubscriber(game, new SetShipEnvironment()))
             {
                 game.Grid[new GridPoint(1, 1)] = BimaruValue.SHIP_CONT_RIGHT;

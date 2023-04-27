@@ -398,7 +398,7 @@ namespace Bimaru.Database.Generator
             IReadOnlyList<int> shipSettingsData,
             IEnumerable<Tuple<GridPoint, BimaruValue>> initialFieldValues)
         {
-            var game = (new GameFactory()).GenerateEmptyGame(rowTallyData.Count, columnTallyData.Count);
+            var game = GenerateEmptyGame(rowTallyData.Count, columnTallyData.Count);
 
             CopyToTally(game.TargetNumberOfShipFieldsPerRow, rowTallyData);
             CopyToTally(game.TargetNumberOfShipFieldsPerColumn, columnTallyData);
@@ -406,6 +406,16 @@ namespace Bimaru.Database.Generator
             CopyToGrid(game.Grid, initialFieldValues);
 
             return game;
+        }
+
+        private static IBimaruGame GenerateEmptyGame(int numberOfRows, int numberOfColumns)
+        {
+            var rowTally = new GridTally(numberOfRows);
+            var columnTally = new GridTally(numberOfColumns);
+            var shipSettings = new ShipTarget();
+            var grid = new BimaruGrid(numberOfRows, numberOfColumns);
+
+            return new BimaruGame(rowTally, columnTally, shipSettings, grid);
         }
 
         private static void CopyToTally(IGridTally tally, IReadOnlyList<int> tallyData)

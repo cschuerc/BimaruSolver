@@ -1,4 +1,3 @@
-using Bimaru.Game;
 using Bimaru.Interface.Utility;
 using Bimaru.Solver.FieldChangedRules;
 using Xunit;
@@ -10,7 +9,7 @@ namespace Bimaru.Tests.Solver.FieldChangedRules
         [Fact]
         public void TestShipMiddleNeighborsUnknown()
         {
-            var game = (new GameFactory()).GenerateEmptyGame(3, 3);
+            var game = GameFactoryForTesting.GenerateEmptyGame(3, 3);
             using (new FieldValueChangedRuleSubscriber(game, new DetermineShipMiddleNeighbors()))
             {
                 game.Grid[new GridPoint(1, 1)] = BimaruValue.SHIP_MIDDLE;
@@ -28,7 +27,7 @@ namespace Bimaru.Tests.Solver.FieldChangedRules
         [Fact]
         public void TestShipMiddleNeighborsWater()
         {
-            var game = (new GameFactory()).GenerateEmptyGame(3, 3);
+            var game = GameFactoryForTesting.GenerateEmptyGame(3, 3);
             using (new FieldValueChangedRuleSubscriber(game, new DetermineShipMiddleNeighbors()))
             {
                 game.Grid[new GridPoint(1, 1)] = BimaruValue.SHIP_MIDDLE;
@@ -47,7 +46,7 @@ namespace Bimaru.Tests.Solver.FieldChangedRules
         [Fact]
         public void TestShipMiddleNeighborsShip()
         {
-            var game = (new GameFactory()).GenerateEmptyGame(3, 3);
+            var game = GameFactoryForTesting.GenerateEmptyGame(3, 3);
             using (new FieldValueChangedRuleSubscriber(game, new DetermineShipMiddleNeighbors()))
             {
                 game.Grid[new GridPoint(1, 1)] = BimaruValue.SHIP_MIDDLE;

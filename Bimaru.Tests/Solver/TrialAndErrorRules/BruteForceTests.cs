@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using Bimaru.Game;
 using Bimaru.Interface.Utility;
 using Bimaru.Solver.TrialAndErrorRules;
 using Xunit;
@@ -12,7 +11,7 @@ namespace Bimaru.Tests.Solver.TrialAndErrorRules
         [Fact]
         public void TestFullyDetermined()
         {
-            var game = (new GameFactory()).GenerateEmptyGame(1, 1);
+            var game = GameFactoryForTesting.GenerateEmptyGame(1, 1);
             game.Grid[new GridPoint(0, 0)] = BimaruValue.SHIP_MIDDLE;
             var rule = new BruteForce();
 
@@ -22,7 +21,7 @@ namespace Bimaru.Tests.Solver.TrialAndErrorRules
         [Fact]
         public void TestUndetermined()
         {
-            var game = (new GameFactory()).GenerateEmptyGame(1, 1);
+            var game = GameFactoryForTesting.GenerateEmptyGame(1, 1);
             var rule = new BruteForce();
 
             var p00 = new GridPoint(0, 0);
@@ -56,7 +55,7 @@ namespace Bimaru.Tests.Solver.TrialAndErrorRules
         [Fact]
         public void TestShipUndetermined()
         {
-            var game = (new GameFactory()).GenerateEmptyGame(1, 1);
+            var game = GameFactoryForTesting.GenerateEmptyGame(1, 1);
             var p00 = new GridPoint(0, 0);
             game.Grid[p00] = BimaruValue.SHIP_UNDETERMINED;
 

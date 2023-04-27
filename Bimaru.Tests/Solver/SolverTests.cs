@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Bimaru.Game;
 using Bimaru.Interface.Game;
 using Bimaru.Interface.Solver;
 using Bimaru.Interface.Utility;
@@ -136,7 +135,7 @@ namespace Bimaru.Tests.Solver
         [Fact]
         public void TestInitialFieldChanges()
         {
-            var game = (new GameFactory()).GenerateEmptyGame(2, 2);
+            var game = GameFactoryForTesting.GenerateEmptyGame(2, 2);
             game.Grid[new GridPoint(0, 0)] = BimaruValue.WATER;
             game.Grid[new GridPoint(0, 1)] = BimaruValue.WATER;
 
@@ -246,7 +245,7 @@ namespace Bimaru.Tests.Solver
         /// </summary>
         private static IBimaruGame GenerateEasyGame()
         {
-            var game = (new GameFactory()).GenerateEmptyGame(2, 2);
+            var game = GameFactoryForTesting.GenerateEmptyGame(2, 2);
             game.TargetNumberOfShipFieldsPerRow[0] = 1;
             game.TargetNumberOfShipFieldsPerColumn[0] = 1;
             game.TargetNumberOfShipsPerLength[1] = 1;

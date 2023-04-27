@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using Bimaru.Game;
 using Bimaru.Interface.Utility;
 using Bimaru.Solver;
 using Bimaru.Solver.TrialAndErrorRules;
@@ -13,7 +12,7 @@ namespace Bimaru.Tests.Solver.TrialAndErrorRules
         [Fact]
         public void TestFullyDetermined()
         {
-            var game = (new GameFactory()).GenerateEmptyGame(1, 1);
+            var game = GameFactoryForTesting.GenerateEmptyGame(1, 1);
             game.Grid[new GridPoint(0, 0)] = BimaruValue.SHIP_MIDDLE;
 
             var rule = new LongestMissingShip();
@@ -23,7 +22,7 @@ namespace Bimaru.Tests.Solver.TrialAndErrorRules
         [Fact]
         public void TestBasic()
         {
-            var game = (new GameFactory()).GenerateEmptyGame(3, 3);
+            var game = GameFactoryForTesting.GenerateEmptyGame(3, 3);
             game.TargetNumberOfShipFieldsPerRow[1] = 1;
             game.TargetNumberOfShipFieldsPerRow[2] = 2;
 
@@ -93,7 +92,7 @@ namespace Bimaru.Tests.Solver.TrialAndErrorRules
         [Fact]
         public void TestEmptyGrid()
         {
-            var game = (new GameFactory()).GenerateEmptyGame(3, 3);
+            var game = GameFactoryForTesting.GenerateEmptyGame(3, 3);
             game.TargetNumberOfShipFieldsPerRow[0] = 3;
             game.TargetNumberOfShipFieldsPerRow[1] = 2;
             game.TargetNumberOfShipFieldsPerRow[2] = 3;
@@ -135,7 +134,7 @@ namespace Bimaru.Tests.Solver.TrialAndErrorRules
         [Fact]
         public void TestSingleShip()
         {
-            var game = (new GameFactory()).GenerateEmptyGame(2, 2);
+            var game = GameFactoryForTesting.GenerateEmptyGame(2, 2);
             game.TargetNumberOfShipFieldsPerRow[0] = 1;
             game.TargetNumberOfShipFieldsPerRow[1] = 1;
 
@@ -173,7 +172,7 @@ namespace Bimaru.Tests.Solver.TrialAndErrorRules
         [Fact]
         public void TestPresetShipFields()
         {
-            var game = (new GameFactory()).GenerateEmptyGame(3, 3);
+            var game = GameFactoryForTesting.GenerateEmptyGame(3, 3);
             game.TargetNumberOfShipFieldsPerRow[0] = 2;
             game.TargetNumberOfShipFieldsPerRow[1] = 1;
             game.TargetNumberOfShipFieldsPerRow[2] = 2;
@@ -217,7 +216,7 @@ namespace Bimaru.Tests.Solver.TrialAndErrorRules
         [Fact]
         public void TestShipLength()
         {
-            var game = (new GameFactory()).GenerateEmptyGame(3, 3);
+            var game = GameFactoryForTesting.GenerateEmptyGame(3, 3);
             game.TargetNumberOfShipFieldsPerRow[0] = 1;
             game.TargetNumberOfShipFieldsPerRow[1] = 2;
             game.TargetNumberOfShipFieldsPerRow[2] = 2;

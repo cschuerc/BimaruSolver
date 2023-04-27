@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Bimaru.Game;
 using Bimaru.Interface.Database;
 using Bimaru.Interface.Game;
 using Xunit;
@@ -21,7 +20,7 @@ namespace Bimaru.Tests.Database
         public static IEnumerable<object[]> CreateDataToTestNullArguments()
         {
             var metaInfo = new GameMetaInfo(0, GameSize.LARGE, GameDifficulty.EASY);
-            var game = new GameFactory().GenerateEmptyGame(1, 1);
+            var game = GameFactoryForTesting.GenerateEmptyGame(1, 1);
 
             yield return new object[] { null, game, typeof(ArgumentNullException) };
             yield return new object[] { metaInfo, null, typeof(ArgumentNullException) };

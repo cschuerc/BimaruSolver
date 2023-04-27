@@ -1,4 +1,3 @@
-using Bimaru.Game;
 using Bimaru.Interface.Utility;
 using Bimaru.Solver.FieldChangedRules;
 using Xunit;
@@ -10,7 +9,7 @@ namespace Bimaru.Tests.Solver.FieldChangedRules
         [Fact]
         public void TestShipSingle()
         {
-            var game = (new GameFactory()).GenerateEmptyGame(3, 3);
+            var game = GameFactoryForTesting.GenerateEmptyGame(3, 3);
             using (new FieldValueChangedRuleSubscriber(game, new DetermineShipUndetermined()))
             {
                 game.Grid[new GridPoint(1, 1)] = BimaruValue.SHIP_UNDETERMINED;
@@ -33,7 +32,7 @@ namespace Bimaru.Tests.Solver.FieldChangedRules
         [Fact]
         public void TestShipSingleOrderReversed()
         {
-            var game = (new GameFactory()).GenerateEmptyGame(3, 3);
+            var game = GameFactoryForTesting.GenerateEmptyGame(3, 3);
             using (new FieldValueChangedRuleSubscriber(game, new DetermineShipUndetermined()))
             {
                 game.Grid[new GridPoint(0, 1)] = BimaruValue.WATER;
@@ -56,7 +55,7 @@ namespace Bimaru.Tests.Solver.FieldChangedRules
         [Fact]
         public void TestShipMiddleHorizontal()
         {
-            var game = (new GameFactory()).GenerateEmptyGame(3, 3);
+            var game = GameFactoryForTesting.GenerateEmptyGame(3, 3);
             using (new FieldValueChangedRuleSubscriber(game, new DetermineShipUndetermined()))
             {
                 game.Grid[new GridPoint(1, 0)] = BimaruValue.SHIP_UNDETERMINED;
@@ -76,7 +75,7 @@ namespace Bimaru.Tests.Solver.FieldChangedRules
         [Fact]
         public void TestShipMiddleVertical()
         {
-            var game = (new GameFactory()).GenerateEmptyGame(3, 3);
+            var game = GameFactoryForTesting.GenerateEmptyGame(3, 3);
             using (new FieldValueChangedRuleSubscriber(game, new DetermineShipUndetermined()))
             {
                 game.Grid[new GridPoint(0, 1)] = BimaruValue.SHIP_UNDETERMINED;
@@ -96,7 +95,7 @@ namespace Bimaru.Tests.Solver.FieldChangedRules
         [Fact]
         public void TestShipContRight()
         {
-            var game = (new GameFactory()).GenerateEmptyGame(3, 3);
+            var game = GameFactoryForTesting.GenerateEmptyGame(3, 3);
             using (new FieldValueChangedRuleSubscriber(game, new DetermineShipUndetermined()))
             {
                 game.Grid[new GridPoint(1, 0)] = BimaruValue.WATER;
@@ -116,7 +115,7 @@ namespace Bimaru.Tests.Solver.FieldChangedRules
         [Fact]
         public void TestShipContLeft()
         {
-            var game = (new GameFactory()).GenerateEmptyGame(3, 3);
+            var game = GameFactoryForTesting.GenerateEmptyGame(3, 3);
             using (new FieldValueChangedRuleSubscriber(game, new DetermineShipUndetermined()))
             {
                 game.Grid[new GridPoint(1, 0)] = BimaruValue.SHIP_UNDETERMINED;
@@ -136,7 +135,7 @@ namespace Bimaru.Tests.Solver.FieldChangedRules
         [Fact]
         public void TestShipContUp()
         {
-            var game = (new GameFactory()).GenerateEmptyGame(3, 3);
+            var game = GameFactoryForTesting.GenerateEmptyGame(3, 3);
             using (new FieldValueChangedRuleSubscriber(game, new DetermineShipUndetermined()))
             {
                 game.Grid[new GridPoint(0, 1)] = BimaruValue.WATER;
@@ -156,7 +155,7 @@ namespace Bimaru.Tests.Solver.FieldChangedRules
         [Fact]
         public void TestShipContDown()
         {
-            var game = (new GameFactory()).GenerateEmptyGame(3, 3);
+            var game = GameFactoryForTesting.GenerateEmptyGame(3, 3);
             using (new FieldValueChangedRuleSubscriber(game, new DetermineShipUndetermined()))
             {
                 game.Grid[new GridPoint(0, 1)] = BimaruValue.SHIP_UNDETERMINED;
@@ -176,7 +175,7 @@ namespace Bimaru.Tests.Solver.FieldChangedRules
         [Fact]
         public void TestSeveralShips()
         {
-            var game = (new GameFactory()).GenerateEmptyGame(5, 5);
+            var game = GameFactoryForTesting.GenerateEmptyGame(5, 5);
 
             using (new FieldValueChangedRuleSubscriber(game, new DetermineShipUndetermined()))
             {
