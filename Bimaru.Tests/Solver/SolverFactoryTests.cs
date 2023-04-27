@@ -1,4 +1,5 @@
 using Bimaru.Database;
+using Bimaru.Interface.Database;
 using Bimaru.Solver;
 using Xunit;
 
@@ -34,7 +35,7 @@ namespace Bimaru.Tests.Solver
         public void TestAllGamesNonCounting()
         {
             var solver = new SolverFactory().GenerateSolver(false);
-            var database = GameDatabaseFactory.GetDatabase();
+            var database = GetDatabase();
 
             foreach (var databaseGame in database.GetAllGames(null))
             {
@@ -51,7 +52,7 @@ namespace Bimaru.Tests.Solver
         public void TestAllGamesCounting()
         {
             var solver = new SolverFactory().GenerateSolver(true);
-            var database = GameDatabaseFactory.GetDatabase();
+            var database = GetDatabase();
 
             foreach (var databaseGame in database.GetAllGames(null))
             {
@@ -62,6 +63,12 @@ namespace Bimaru.Tests.Solver
                 Assert.True(databaseGame.Game.IsSolved);
                 Assert.Equal(1, numSolutions);
             }
+        }
+
+        private static IGameDatabase GetDatabase()
+        {
+            var gameSource = new GameSourceFromResources();
+            return new GameDatabase(gameSource);
         }
     }
 }
