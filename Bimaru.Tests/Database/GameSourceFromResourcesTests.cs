@@ -29,15 +29,15 @@ namespace Bimaru.Tests.Database
             }
         }
 
-        private static IReadOnlyCollection<IGameWithMetaInfo> GetAllGames()
+        private static IReadOnlyCollection<GameWithMetaInfo> GetAllGames()
         {
             var databaseAssembly = Assembly.GetAssembly(typeof(GameSourceFromResources));
             if (databaseAssembly == null)
             {
-                return Array.Empty<IGameWithMetaInfo>();
+                return Array.Empty<GameWithMetaInfo>();
             }
 
-            var games = new Dictionary<int, IGameWithMetaInfo>();
+            var games = new Dictionary<int, GameWithMetaInfo>();
 
             foreach (var resourceName in databaseAssembly.GetManifestResourceNames())
             {
@@ -47,7 +47,7 @@ namespace Bimaru.Tests.Database
                     continue;
                 }
 
-                var game = JsonSerializer.Deserialize<IGameWithMetaInfo>(s);
+                var game = JsonSerializer.Deserialize<GameWithMetaInfo>(s);
                 games.Add(game.MetaInfo.Id, game); // Check no duplicate IDs
             }
 

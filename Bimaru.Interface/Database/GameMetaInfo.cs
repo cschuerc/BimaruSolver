@@ -1,14 +1,13 @@
 ﻿using System;
-using Bimaru.Interface.Database;
 
-namespace Bimaru.Database
+namespace Bimaru.Interface.Database
 {
     /// <summary>
     /// Meta information about a Bimaru game.
     /// Equality based on all data fields.
     /// </summary>
     [Serializable]
-    public sealed class GameMetaInfo : IGameMetaInfo
+    public sealed class GameMetaInfo
     {
         public GameMetaInfo(int id, GameSize size, GameDifficulty difficulty)
         {
@@ -34,10 +33,10 @@ namespace Bimaru.Database
 
         public override bool Equals(object obj)
         {
-            return Equals(obj as IGameMetaInfo);
+            return Equals(obj as GameMetaInfo);
         }
 
-        public bool Equals(IGameMetaInfo other)
+        public bool Equals(GameMetaInfo other)
         {
             if (other is null)
             {

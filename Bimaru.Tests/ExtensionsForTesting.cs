@@ -8,7 +8,7 @@ namespace Bimaru.Tests
 {
     public static class ExtensionsForTesting
     {
-        public static void AssertEqual(this IGameWithMetaInfo expectedGame, IGameWithMetaInfo actualGame)
+        public static void AssertEqual(this GameWithMetaInfo expectedGame, GameWithMetaInfo actualGame)
         {
             if (expectedGame == null && actualGame == null)
             {

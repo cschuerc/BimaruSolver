@@ -22,7 +22,7 @@ namespace Bimaru.Database.Generator
 
         private static void SerializeGamesToFile(
             string databaseNameFormat,
-            IEnumerable<IGameWithMetaInfo> games)
+            IEnumerable<GameWithMetaInfo> games)
         {
             foreach (var game in games)
             {

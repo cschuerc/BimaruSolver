@@ -37,9 +37,9 @@ namespace Bimaru.Database
             return resourceNamesPerId;
         }
 
-        private static IGameWithMetaInfo LoadResource(string resourceName)
+        private static GameWithMetaInfo LoadResource(string resourceName)
         {
-            IGameWithMetaInfo resource;
+            GameWithMetaInfo resource;
 
             var assembly = Assembly.GetExecutingAssembly();
             using (var stream = assembly.GetManifestResourceStream(resourceName))
@@ -50,12 +50,12 @@ namespace Bimaru.Database
             return resource;
         }
 
-        public IEnumerable<IGameMetaInfo> GetMetaInfoOfAllGames()
+        public IEnumerable<GameMetaInfo> GetMetaInfoOfAllGames()
         {
             return ResourceNamesPerId.Keys.Select(id => GetGame(id).MetaInfo);
         }
 
-        public IGameWithMetaInfo GetGame(int id)
+        public GameWithMetaInfo GetGame(int id)
         {
             if (!ResourceNamesPerId.ContainsKey(id))
             {

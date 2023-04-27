@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Bimaru.Database;
 using Bimaru.Game;
 using Bimaru.Interface.Database;
 using Bimaru.Interface.Game;
@@ -12,7 +11,7 @@ namespace Bimaru.Tests.Database
     {
         [Theory]
         [MemberData(nameof(CreateDataToTestNullArguments))]
-        public void TestNullArguments(IGameMetaInfo metaInfo, IBimaruGame game, Type expectedExceptionType)
+        public void TestNullArguments(GameMetaInfo metaInfo, IBimaruGame game, Type expectedExceptionType)
         {
             var exceptionCaught = Record.Exception(() => new GameWithMetaInfo(metaInfo, game));
 

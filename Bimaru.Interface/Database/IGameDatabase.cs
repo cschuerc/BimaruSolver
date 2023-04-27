@@ -8,6 +8,6 @@ namespace Bimaru.Interface.Database
         /// <summary>
         /// Get all games satisfying the given filter
         /// </summary>
-        IEnumerable<IGameWithMetaInfo> GetAllGames(Func<IGameMetaInfo, bool> filter);
+        IEnumerable<GameWithMetaInfo> GetAllGames(Func<GameMetaInfo, bool> filter);
     }
 }

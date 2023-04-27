@@ -1,22 +1,21 @@
 ﻿using System;
-using Bimaru.Interface.Database;
 using Bimaru.Interface.Game;
 
-namespace Bimaru.Database
+namespace Bimaru.Interface.Database
 {
     [Serializable]
-    public class GameWithMetaInfo : IGameWithMetaInfo
+    public class GameWithMetaInfo
     {
-        public GameWithMetaInfo(IGameMetaInfo metaInfo, IBimaruGame game)
+        public GameWithMetaInfo(GameMetaInfo metaInfo, IBimaruGame game)
         {
             MetaInfo = metaInfo;
             Game = game;
         }
 
 
-        private IGameMetaInfo metaInfo;
+        private GameMetaInfo metaInfo;
 
-        public IGameMetaInfo MetaInfo
+        public GameMetaInfo MetaInfo
         {
             get => metaInfo;
 

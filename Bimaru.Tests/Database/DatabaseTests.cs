@@ -24,9 +24,9 @@ namespace Bimaru.Tests.Database
             }
         }
 
-        private static IReadOnlyCollection<IGameWithMetaInfo> GetStubGames()
+        private static IReadOnlyCollection<GameWithMetaInfo> GetStubGames()
         {
-            var stubGames = new List<IGameWithMetaInfo>();
+            var stubGames = new List<GameWithMetaInfo>();
 
             var metaInfo = new GameMetaInfo(0, GameSize.SMALL, GameDifficulty.EASY);
             var game = new GameFactory().GenerateEmptyGame(1, 1);
@@ -53,25 +53,25 @@ namespace Bimaru.Tests.Database
 
         private class GameSourceStub : IGameSource
         {
-            public GameSourceStub(IEnumerable<IGameWithMetaInfo> games)
+            public GameSourceStub(IEnumerable<GameWithMetaInfo> games)
             {
-                Games = new List<IGameWithMetaInfo>(games);
+                Games = new List<GameWithMetaInfo>(games);
             }
 
-            private List<IGameWithMetaInfo> Games { get; }
+            private List<GameWithMetaInfo> Games { get; }
 
-            public IEnumerable<IGameMetaInfo> GetMetaInfoOfAllGames()
+            public IEnumerable<GameMetaInfo> GetMetaInfoOfAllGames()
             {
                 return Games.Select(g => g.MetaInfo);
             }
 
-            public IGameWithMetaInfo GetGame(int id)
+            public GameWithMetaInfo GetGame(int id)
             {
                 return Games.FirstOrDefault(g => g.MetaInfo.Id == id);
             }
         }
 
-        private static readonly List<Func<IGameMetaInfo, bool>> filtersToTest = new()
+        private static readonly List<Func<GameMetaInfo, bool>> filtersToTest = new()
         {
             null,
             _ => true,
@@ -83,7 +83,7 @@ namespace Bimaru.Tests.Database
             m => m.Size == GameSize.MIDDLE && m.Difficulty == GameDifficulty.MIDDLE,
         };
 
-        private static void AssertEqualGames(IReadOnlyCollection<IGameWithMetaInfo> expectedGames, IReadOnlyCollection<IGameWithMetaInfo> actualGames)
+        private static void AssertEqualGames(IReadOnlyCollection<GameWithMetaInfo> expectedGames, IReadOnlyCollection<GameWithMetaInfo> actualGames)
         {
             Assert.Equal(expectedGames.Count, actualGames.Count);
 
@@ -112,7 +112,7 @@ namespace Bimaru.Tests.Database
             }
         }
 
-        private static void AssertContainsGame(IReadOnlyCollection<IGameWithMetaInfo> expectedGames, IGameWithMetaInfo actualGame)
+        private static void AssertContainsGame(IReadOnlyCollection<GameWithMetaInfo> expectedGames, GameWithMetaInfo actualGame)
         {
             if (!expectedGames.Any() && actualGame == null)
             {

@@ -4,8 +4,8 @@ namespace Bimaru.Interface.Database
 {
     public interface IGameSource
     {
-        IEnumerable<IGameMetaInfo> GetMetaInfoOfAllGames();
+        IEnumerable<GameMetaInfo> GetMetaInfoOfAllGames();
 
-        IGameWithMetaInfo GetGame(int id);
+        GameWithMetaInfo GetGame(int id);
     }
 }

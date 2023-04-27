@@ -9,9 +9,9 @@ namespace Bimaru.Database.Generator
 {
     public static class GameDatabaseGenerator
     {
-        public static IEnumerable<IGameWithMetaInfo> GenerateGames()
+        public static IEnumerable<GameWithMetaInfo> GenerateGames()
         {
-            return new List<IGameWithMetaInfo>()
+            return new List<GameWithMetaInfo>()
             {
                 GenerateDatabaseGame(
                     1,
@@ -376,7 +376,7 @@ namespace Bimaru.Database.Generator
             };
         }
 
-        private static IGameWithMetaInfo GenerateDatabaseGame(
+        private static GameWithMetaInfo GenerateDatabaseGame(
             int id,
             GameSize size,
             GameDifficulty difficulty,
