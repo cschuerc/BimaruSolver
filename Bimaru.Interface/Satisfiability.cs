@@ -1,4 +1,4 @@
-﻿namespace Bimaru.Interfaces
+﻿namespace Bimaru.Interface
 {
     public enum Satisfiability
     {

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Bimaru.Game;
-using Bimaru.Interfaces;
+using Bimaru.Interface;
 using Bimaru.Solver.TrialAndErrorRules;
 using Xunit;
 using Utility;

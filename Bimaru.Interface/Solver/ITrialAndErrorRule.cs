@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
+using Bimaru.Interface.Game;
 using Utility;
 
-namespace Bimaru.Interfaces
+namespace Bimaru.Interface.Solver
 {
     public interface ITrialAndErrorRule
     {

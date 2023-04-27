@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
 using Bimaru.Game;
-using Bimaru.Interfaces;
+using Bimaru.Interface;
+using Bimaru.Interface.Game;
 using Utility;
 using Xunit;
 

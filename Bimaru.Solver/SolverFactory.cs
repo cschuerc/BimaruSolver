@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
-using Bimaru.Interfaces;
+using Bimaru.Interface.Game;
+using Bimaru.Interface.Solver;
 using Bimaru.Solver.CombinedRules;
 using Bimaru.Solver.FieldChangedRules;
 using Bimaru.Solver.TrialAndErrorRules;

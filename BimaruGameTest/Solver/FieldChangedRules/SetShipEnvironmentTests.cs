@@ -1,5 +1,5 @@
 using Bimaru.Game;
-using Bimaru.Interfaces;
+using Bimaru.Interface;
 using Bimaru.Solver.FieldChangedRules;
 using Xunit;
 using Utility;

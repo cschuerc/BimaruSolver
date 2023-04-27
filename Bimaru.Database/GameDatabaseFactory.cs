@@ -1,4 +1,4 @@
-﻿using Bimaru.Interfaces;
+﻿using Bimaru.Interface.Database;
 
 namespace Bimaru.Database
 {

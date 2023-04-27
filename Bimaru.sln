@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bimaru.Game", "Bimaru.Game\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BimaruTest", "BimaruGameTest\BimaruTest.csproj", "{5347E40A-05DC-4407-8378-9DBD14CA9248}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BimaruInterfaces", "BimaruSolverInterface\BimaruInterfaces.csproj", "{B8BAA0B3-7981-4D88-A12A-66FDBE6E7FFA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bimaru.Interface", "Bimaru.Interface\Bimaru.Interface.csproj", "{B8BAA0B3-7981-4D88-A12A-66FDBE6E7FFA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Utility", "Utility\Utility.csproj", "{7F908209-ED83-4B1A-875A-FA329703F374}"
 EndProject

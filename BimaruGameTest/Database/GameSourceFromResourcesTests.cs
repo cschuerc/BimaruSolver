@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text.Json;
 using Bimaru.Database;
-using Bimaru.Interfaces;
+using Bimaru.Interface.Database;
 using Xunit;
 
 namespace Bimaru.Test

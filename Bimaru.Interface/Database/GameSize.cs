@@ -1,4 +1,4 @@
-﻿namespace Bimaru.Interfaces
+﻿namespace Bimaru.Interface.Database
 {
     /// <summary>
     /// Subjective Bimaru game size

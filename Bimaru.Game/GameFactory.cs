@@ -1,4 +1,4 @@
-﻿using Bimaru.Interfaces;
+﻿using Bimaru.Interface.Game;
 
 namespace Bimaru.Game
 {

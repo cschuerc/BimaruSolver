@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Bimaru.Database;
 using Bimaru.Game;
-using Bimaru.Interfaces;
+using Bimaru.Interface;
+using Bimaru.Interface.Database;
 using Xunit;
 
 namespace Bimaru.Test

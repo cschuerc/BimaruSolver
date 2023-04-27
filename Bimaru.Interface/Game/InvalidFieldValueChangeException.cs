@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Bimaru.Interfaces
+namespace Bimaru.Interface.Game
 {
     /// <summary>
     /// A field value is changed to an invalid value.

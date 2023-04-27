@@ -1,6 +1,6 @@
 using System;
 using Bimaru.Game;
-using Bimaru.Interfaces;
+using Bimaru.Interface;
 using Xunit;
 using Utility;
 

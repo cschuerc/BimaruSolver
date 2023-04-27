@@ -70,15 +70,13 @@
     <EmbeddedResource Include="Games\bimaru24.json" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BimaruSolverInterface\BimaruInterfaces.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-    <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
     <PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.4.421302">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="System.Text.Json" Version="7.0.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Bimaru.Interface\Bimaru.Interface.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Properties\Resources.resx">

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Bimaru.Interfaces
+namespace Bimaru.Interface.Game
 {
     /// <summary>
     /// Target number of ships per length

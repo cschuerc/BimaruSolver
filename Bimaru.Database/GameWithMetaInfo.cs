@@ -1,5 +1,6 @@
 ﻿using System;
-using Bimaru.Interfaces;
+using Bimaru.Interface.Database;
+using Bimaru.Interface.Game;
 
 namespace Bimaru.Database
 {

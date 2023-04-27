@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text.Json;
-using Bimaru.Interfaces;
+using Bimaru.Interface.Database;
 
 namespace Bimaru.Database
 {

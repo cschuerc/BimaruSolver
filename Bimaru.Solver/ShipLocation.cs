@@ -1,4 +1,5 @@
-﻿using Bimaru.Interfaces;
+﻿using Bimaru.Interface;
+using Bimaru.Interface.Game;
 using Utility;
 
 namespace Bimaru.Solver

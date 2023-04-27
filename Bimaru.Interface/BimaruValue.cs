@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Utility;
 
-namespace Bimaru.Interfaces
+namespace Bimaru.Interface
 {
     public enum BimaruValue
     {

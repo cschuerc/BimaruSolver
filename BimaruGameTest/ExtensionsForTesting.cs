@@ -1,6 +1,8 @@
-﻿using Bimaru.Interfaces;
+﻿using Bimaru.Interface;
 using Xunit;
 using System.Linq;
+using Bimaru.Interface.Database;
+using Bimaru.Interface.Game;
 
 namespace Bimaru.Test
 {

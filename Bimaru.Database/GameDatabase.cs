@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Bimaru.Interfaces;
+using Bimaru.Interface.Database;
 
 namespace Bimaru.Database
 {

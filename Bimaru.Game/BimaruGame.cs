@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
-using Bimaru.Interfaces;
+using Bimaru.Interface;
+using Bimaru.Interface.Game;
 
 namespace Bimaru.Game
 {
