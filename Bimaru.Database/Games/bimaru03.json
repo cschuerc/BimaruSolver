@@ -1,1 +1,190 @@
-{"MetaInfo":{"ID":3,"Size":20,"Difficulty":10},"Game":{"TargetNumberOfShipFieldsPerRow":[4,0,4,1,1,4,1,5],"TargetNumberOfShipFieldsPerColumn":[5,2,2,2,2,2,2,3],"TargetNumberOfShipsPerLength":{"LongestShipLength":4,"TotalShipFields":20},"Grid":{"NumberOfRows":8,"NumberOfColumns":8,"NumberOfShipFieldsPerRow":[1,0,2,0,0,1,0,0],"NumberOfShipFieldsPerColumn":[1,0,1,1,0,0,0,1],"NumberOfUndeterminedFieldsPerRow":[7,8,6,8,8,6,8,8],"NumberOfUndeterminedFieldsPerColumn":[7,8,7,7,8,8,7,7],"NumberOfShipsPerLength":[0,1,0,0,0,0,0,0,0],"IsValid":true,"IsFullyDetermined":false},"LengthOfLongestMissingShip":4,"IsUnsolvable":false,"IsValid":true,"IsSolved":false}}
+{
+  "MetaInfo": {
+    "Id": 3,
+    "Size": 20,
+    "Difficulty": 10
+  },
+  "Game": {
+    "$type": "Bimaru.Game.BimaruGame, Bimaru.Game",
+    "TargetNumberOfShipFieldsPerRow": {
+      "$type": "Bimaru.Game.GridTally, Bimaru.Game",
+      "targetNumberPerIndex": [
+        4,
+        0,
+        4,
+        1,
+        1,
+        4,
+        1,
+        5
+      ],
+      "Length": 8,
+      "Total": 20
+    },
+    "TargetNumberOfShipFieldsPerColumn": {
+      "$type": "Bimaru.Game.GridTally, Bimaru.Game",
+      "targetNumberPerIndex": [
+        5,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        3
+      ],
+      "Length": 8,
+      "Total": 20
+    },
+    "TargetNumberOfShipsPerLength": {
+      "$type": "Bimaru.Game.ShipTarget, Bimaru.Game",
+      "targetNumberOfShipsPerLength": {
+        "1": 4,
+        "2": 3,
+        "3": 2,
+        "4": 1
+      },
+      "TotalShipFields": 20
+    },
+    "Grid": {
+      "$type": "Bimaru.Game.BimaruGrid, Bimaru.Game",
+      "numberOfShipFieldsPerRow": [
+        1,
+        0,
+        2,
+        0,
+        0,
+        1,
+        0,
+        0
+      ],
+      "numberOfShipFieldsPerColumn": [
+        1,
+        0,
+        1,
+        1,
+        0,
+        0,
+        0,
+        1
+      ],
+      "numberOfUndeterminedFieldsPerRow": [
+        7,
+        8,
+        6,
+        8,
+        8,
+        6,
+        8,
+        8
+      ],
+      "numberOfUndeterminedFieldsPerColumn": [
+        7,
+        8,
+        7,
+        7,
+        8,
+        8,
+        7,
+        7
+      ],
+      "numberOfNotFullyDeterminedFields": 59,
+      "invalidFieldBoundaries": [],
+      "numberOfShipsPerLength": [
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "fieldValues": [
+        [
+          0,
+          0,
+          6,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          7,
+          0,
+          0,
+          0,
+          3
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          6,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "NumberOfRows": 8,
+      "NumberOfColumns": 8
+    }
+  }
+}

@@ -3,7 +3,6 @@ using Bimaru.Interface.Game;
 
 namespace Bimaru.Interface.Database
 {
-    [Serializable]
     public class GameWithMetaInfo
     {
         public GameWithMetaInfo(GameMetaInfo metaInfo, IBimaruGame game)

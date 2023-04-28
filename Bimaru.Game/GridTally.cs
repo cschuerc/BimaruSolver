@@ -5,23 +5,23 @@ using System.Linq;
 using Bimaru.Interface.Game;
 using Bimaru.Interface.Utility;
 using Bimaru.Utility;
+using Newtonsoft.Json;
 
 namespace Bimaru.Game
 {
-    [Serializable]
+    [JsonObject]
     public class GridTally : IGridTally
     {
-        /// <param name="tallyLength"> Number of rows/columns </param>
-        public GridTally(int tallyLength)
+        /// <param name="length"> Number of rows/columns </param>
+        public GridTally(int length)
         {
-            Length = tallyLength;
+            Length = length;
 
-            targetNumberPerIndex = new int[tallyLength];
+            targetNumberPerIndex = new int[length];
             targetNumberPerIndex.InitValues(0);
 
             Total = targetNumberPerIndex.Sum();
         }
-
 
         private int length;
 
@@ -40,9 +40,10 @@ namespace Bimaru.Game
             }
         }
 
-
+        [JsonProperty]
         private readonly int[] targetNumberPerIndex;
 
+        [JsonIgnore]
         public int this[int index]
         {
             get => targetNumberPerIndex[index];

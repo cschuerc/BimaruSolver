@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text.Json;
 using Bimaru.Interface.Database;
+using Newtonsoft.Json;
 
 namespace Bimaru.Database
 {
@@ -21,6 +22,12 @@ namespace Bimaru.Database
         {
             get;
         }
+
+        private static readonly JsonSerializer jsonSerializer = new JsonSerializer()
+        {
+            Formatting = Formatting.Indented,
+            TypeNameHandling = TypeNameHandling.Auto
+        };
 
         private static Dictionary<int, string> GetResourceNamesPerId()
         {
@@ -43,8 +50,10 @@ namespace Bimaru.Database
 
             var assembly = Assembly.GetExecutingAssembly();
             using (var stream = assembly.GetManifestResourceStream(resourceName))
+            using (var streamReader = new StreamReader(stream ?? throw new InvalidOperationException()))
+            using (var jsonTextReader = new JsonTextReader(streamReader))
             {
-                resource = JsonSerializer.Deserialize<GameWithMetaInfo>(stream ?? throw new InvalidOperationException());
+                resource = jsonSerializer.Deserialize<GameWithMetaInfo>(jsonTextReader);
             }
 
             return resource;

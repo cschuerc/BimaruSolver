@@ -1,12 +1,18 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using System.Text.Json;
 using Bimaru.Interface.Database;
+using Newtonsoft.Json;
 
 namespace Bimaru.Database.Generator
 {
     internal static class GamesToFiles
     {
+        private static readonly JsonSerializer jsonSerializer = new()
+        {
+            Formatting = Formatting.Indented,
+            TypeNameHandling = TypeNameHandling.Auto
+        };
+
         internal static void Main(string[] args)
         {
             if (args.Length < 1)
@@ -26,8 +32,8 @@ namespace Bimaru.Database.Generator
         {
             foreach (var game in games)
             {
-                using var fileStream = File.Create(string.Format(databaseNameFormat, game.MetaInfo.Id));
-                JsonSerializer.Serialize(fileStream, game, new JsonSerializerOptions { WriteIndented = true });
+                using var fileWriter = File.CreateText(string.Format(databaseNameFormat, game.MetaInfo.Id));
+                jsonSerializer.Serialize(fileWriter, game);
             }
         }
     }

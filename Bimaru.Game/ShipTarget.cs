@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using Bimaru.Interface.Game;
 using Bimaru.Interface.Utility;
+using Newtonsoft.Json;
 
 namespace Bimaru.Game
 {
-    [Serializable]
     public class ShipTarget : IShipTarget
     {
         public ShipTarget()
@@ -14,7 +14,7 @@ namespace Bimaru.Game
             targetNumberOfShipsPerLength = new SortedDictionary<int, int>();
         }
 
-
+        [JsonProperty]
         private readonly SortedDictionary<int, int> targetNumberOfShipsPerLength;
 
         public int this[int shipLength]
@@ -55,6 +55,7 @@ namespace Bimaru.Game
             TotalShipFields += (newNumberOfShips - oldNumberOfShips) * shipLength;
         }
 
+        [JsonIgnore]
         public int? LongestShipLength
         {
             get

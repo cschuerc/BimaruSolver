@@ -2,10 +2,10 @@
 using System.Linq;
 using Bimaru.Interface.Game;
 using Bimaru.Interface.Utility;
+using Newtonsoft.Json;
 
 namespace Bimaru.Game
 {
-    [Serializable]
     public class BimaruGame : IBimaruGame
     {
         public BimaruGame(IGridTally targetNumberOfShipFieldsPerRow,
@@ -99,11 +99,13 @@ namespace Bimaru.Game
             return targetNumberOfShipFieldsPerColumn[columnIndex] - grid.NumberOfShipFieldsPerColumn[columnIndex];
         }
 
+        [JsonIgnore]
         public int? LengthOfLongestMissingShip => TargetNumberOfShipsPerLength.LengthOfLongestMissingShip(Grid.NumberOfShipsPerLength);
 
         #endregion
 
         #region BimaruGame properties
+        [JsonIgnore]
         public bool IsUnsolvable
         {
             get
@@ -116,6 +118,7 @@ namespace Bimaru.Game
             }
         }
 
+        [JsonIgnore]
         public bool IsValid =>
             !IsUnsolvable &&
             Grid.IsValid &&
@@ -123,6 +126,7 @@ namespace Bimaru.Game
             TargetShipFieldsColumnSatisfiability != Satisfiability.VIOLATED &&
             TargetNumberOfShipsSatisfiability != Satisfiability.VIOLATED;
 
+        [JsonIgnore]
         public bool IsSolved =>
             !IsUnsolvable &&
             Grid.IsValid &&

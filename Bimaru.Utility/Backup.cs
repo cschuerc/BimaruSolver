@@ -4,7 +4,6 @@ using Bimaru.Interface.Utility;
 
 namespace Bimaru.Utility
 {
-    [Serializable]
     public class Backup<T> : IBackup<T> where T : ICloneable, IOverwritable
     {
         public Backup()

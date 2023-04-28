@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Bimaru.Database;
+using Bimaru.Interface.Database;
 using Bimaru.Interface.Game;
 using Bimaru.Interface.Solver;
 using Bimaru.Interface.Utility;
@@ -299,6 +301,70 @@ namespace Bimaru.Tests.Solver
             // A non-changing trial and error rule could lead to an infinite recursion
             // => check if instead correct exception
             Assert.Throws<InvalidOperationException>(() => solver.Solve(game));
+        }
+
+        [Fact]
+        public void TestTwoSolutionGameNonCounting()
+        {
+            var solverNonCounting = SolverFactoryForTesting.GenerateSolver(false);
+            var game = GameFactoryForTesting.GenerateGameTwoSolutions();
+
+            Assert.False(game.IsSolved);
+            var numSolutions = solverNonCounting.Solve(game);
+            Assert.True(game.IsSolved);
+            Assert.Equal(1, numSolutions);
+        }
+
+        [Fact]
+        public void TestTwoSolutionGameCounting()
+        {
+            var solverCounting = SolverFactoryForTesting.GenerateSolver(true);
+            var game = GameFactoryForTesting.GenerateGameTwoSolutions();
+
+            Assert.False(game.IsSolved);
+            var numSolutions = solverCounting.Solve(game);
+            Assert.True(game.IsSolved);
+            Assert.Equal(2, numSolutions);
+        }
+
+        [Fact]
+        public void TestAllGamesNonCounting()
+        {
+            var solver = SolverFactoryForTesting.GenerateSolver(false);
+            var database = GetDatabase();
+
+            foreach (var databaseGame in database.GetAllGames(null))
+            {
+                Assert.False(databaseGame.Game.IsSolved);
+
+                var numSolutions = solver.Solve(databaseGame.Game);
+
+                Assert.True(databaseGame.Game.IsSolved);
+                Assert.Equal(1, numSolutions);
+            }
+        }
+
+        [Fact]
+        public void TestAllGamesCounting()
+        {
+            var solver = SolverFactoryForTesting.GenerateSolver(true);
+            var database = GetDatabase();
+
+            foreach (var databaseGame in database.GetAllGames(null))
+            {
+                Assert.False(databaseGame.Game.IsSolved);
+
+                var numSolutions = solver.Solve(databaseGame.Game);
+
+                Assert.True(databaseGame.Game.IsSolved);
+                Assert.Equal(1, numSolutions);
+            }
+        }
+
+        private static IGameDatabase GetDatabase()
+        {
+            var gameSource = new GameSourceFromResources();
+            return new GameDatabase(gameSource);
         }
     }
 }

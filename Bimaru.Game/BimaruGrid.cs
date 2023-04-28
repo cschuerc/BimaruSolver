@@ -4,10 +4,10 @@ using System.Linq;
 using Bimaru.Interface.Game;
 using Bimaru.Interface.Utility;
 using Bimaru.Utility;
+using Newtonsoft.Json;
 
 namespace Bimaru.Game
 {
-    [Serializable]
     public class BimaruGrid : Grid<BimaruValue>, IBimaruGrid
     {
         public BimaruGrid(int numberOfRows, int numberOfColumns)
@@ -99,32 +99,38 @@ namespace Bimaru.Game
         #endregion
 
         #region Field counts
+        [JsonProperty]
         private int[] numberOfShipFieldsPerRow;
 
+        [JsonIgnore]
         public IReadOnlyList<int> NumberOfShipFieldsPerRow
             => Array.AsReadOnly(numberOfShipFieldsPerRow);
 
-
+        [JsonProperty]
         private int[] numberOfShipFieldsPerColumn;
 
+        [JsonIgnore]
         public IReadOnlyList<int> NumberOfShipFieldsPerColumn
             => Array.AsReadOnly(numberOfShipFieldsPerColumn);
 
-
+        [JsonProperty]
         private int[] numberOfUndeterminedFieldsPerRow;
 
+        [JsonIgnore]
         public IReadOnlyList<int> NumberOfUndeterminedFieldsPerRow
             => Array.AsReadOnly(numberOfUndeterminedFieldsPerRow);
 
-
+        [JsonProperty]
         private int[] numberOfUndeterminedFieldsPerColumn;
 
+        [JsonIgnore]
         public IReadOnlyList<int> NumberOfUndeterminedFieldsPerColumn
             => Array.AsReadOnly(numberOfUndeterminedFieldsPerColumn);
 
-
+        [JsonProperty]
         private int numberOfNotFullyDeterminedFields;
 
+        [JsonIgnore]
         public bool IsFullyDetermined
             => numberOfNotFullyDeterminedFields == 0;
 
@@ -152,8 +158,10 @@ namespace Bimaru.Game
         #endregion
 
         #region IsValid
+        [JsonProperty]
         private HashSet<FieldBoundary> invalidFieldBoundaries;
 
+        [JsonIgnore]
         public bool IsValid
             => invalidFieldBoundaries.Count == 0;
 
@@ -177,8 +185,10 @@ namespace Bimaru.Game
         #endregion
 
         #region Ship count
+        [JsonProperty]
         private int[] numberOfShipsPerLength;
 
+        [JsonIgnore]
         public IReadOnlyList<int> NumberOfShipsPerLength
             => Array.AsReadOnly(numberOfShipsPerLength);
 
