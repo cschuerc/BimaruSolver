@@ -10,6 +10,15 @@ namespace Bimaru.Tests.Solver.TrialAndErrorRules
     public class LongestMissingShipTests
     {
         [Fact]
+        public void TestAreTrialsDisjointComplete()
+        {
+            var rule = new LongestMissingShip();
+
+            Assert.False(rule.AreTrialsDisjoint);
+            Assert.True(rule.AreTrialsComplete);
+        }
+
+        [Fact]
         public void TestFullyDetermined()
         {
             var game = GameFactoryForTesting.GenerateEmptyGame(1, 1);
@@ -241,7 +250,7 @@ namespace Bimaru.Tests.Solver.TrialAndErrorRules
 
             var rule = new LongestMissingShip();
 
-            var shipLength = 2;
+            const int shipLength = 2;
 
             var startChange0 = new SingleChange<BimaruValue>(new GridPoint(2, 0), BimaruValue.SHIP_CONT_DOWN);
 
@@ -260,6 +269,42 @@ namespace Bimaru.Tests.Solver.TrialAndErrorRules
             };
 
             AssertEqualTrialChanges(expectedChanges, rule.GetChangeTrials(game));
+        }
+
+        [Fact]
+        public void TestOnlyWaterIsMissing()
+        {
+            var game = GameFactoryForTesting.GenerateEmptyGame(2, 2);
+            game.TargetNumberOfShipFieldsPerRow[0] = 0;
+            game.TargetNumberOfShipFieldsPerRow[1] = 1;
+
+            game.TargetNumberOfShipFieldsPerColumn[0] = 1;
+            game.TargetNumberOfShipFieldsPerColumn[1] = 0;
+
+            game.TargetNumberOfShipsPerLength[1] = 1;
+
+            game.Grid[new GridPoint(1, 0)] = BimaruValue.SHIP_SINGLE;
+
+            // 1xSUBMARINE
+            //   10
+            //   --
+            // 1|S?
+            // 0|??
+
+            var rule = new LongestMissingShip();
+
+            var actualTrials = rule.GetChangeTrials(game).ToList();
+
+            Assert.Equal(1, actualTrials.Count);
+
+            var expectedChanges = new FieldsToChange<BimaruValue>()
+            {
+                { new GridPoint(0, 0), BimaruValue.WATER },
+                { new GridPoint(0, 1), BimaruValue.WATER },
+                { new GridPoint(1, 1), BimaruValue.WATER }
+            };
+
+            AssertEqualChanges(expectedChanges, actualTrials[0]);
         }
     }
 }

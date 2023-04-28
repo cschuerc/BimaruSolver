@@ -6,6 +6,15 @@ namespace Bimaru.Tests.Utility
     public class FieldBoundaryTests
     {
         [Fact]
+        public void TestBoundaryUnambiguity()
+        {
+            var b0 = new FieldBoundary(new GridPoint(5, 5), Direction.DOWN);
+            var b1 = new FieldBoundary(new GridPoint(4, 5), Direction.UP);
+
+            Assert.Equal(b0.BasePoint, b1.BasePoint);
+            Assert.Equal(b0.DirectionFromBase, b1.DirectionFromBase);
+        }
+        [Fact]
         public void TestBoundaryEqualityVertical()
         {
             var b0 = new FieldBoundary(new GridPoint(5, 5), Direction.DOWN);

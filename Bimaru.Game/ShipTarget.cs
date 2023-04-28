@@ -103,7 +103,7 @@ namespace Bimaru.Game
             switch (satisfiability)
             {
                 case Satisfiability.VIOLATED:
-                    throw new ArgumentOutOfRangeException(nameof(numberOfShipsPerLength), numberOfShipsPerLength, "Ship target is violated.");
+                    throw new InvalidBimaruGameException("Ship target is violated.");
                 case Satisfiability.SATISFIED:
                     return null;
                 case Satisfiability.SATISFIABLE:

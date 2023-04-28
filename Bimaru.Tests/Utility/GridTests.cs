@@ -62,11 +62,29 @@ namespace Bimaru.Tests.Utility
         [InlineData(2, 0, null)]
         [InlineData(0, 3, null)]
         [InlineData(2, 3, null)]
-        public void TestIndexRange(int rowIndex, int columnIndex, Type expectedExceptionType)
+        public void TestIndexRangeOfGetter(int rowIndex, int columnIndex, Type expectedExceptionType)
         {
             var grid = new Grid<int>(3, 4);
 
-            var caughtException = Record.Exception(() => grid[new GridPoint(rowIndex, columnIndex)]++);
+            var caughtException = Record.Exception(() => grid[new GridPoint(rowIndex, columnIndex)]);
+
+            Assert.Equal(expectedExceptionType, caughtException?.GetType());
+        }
+
+        [Theory]
+        [InlineData(-1, 0, typeof(ArgumentOutOfRangeException))]
+        [InlineData(3, 0, typeof(ArgumentOutOfRangeException))]
+        [InlineData(0, -1, typeof(ArgumentOutOfRangeException))]
+        [InlineData(0, 4, typeof(ArgumentOutOfRangeException))]
+        [InlineData(0, 0, null)]
+        [InlineData(2, 0, null)]
+        [InlineData(0, 3, null)]
+        [InlineData(2, 3, null)]
+        public void TestIndexRangeOfSetter(int rowIndex, int columnIndex, Type expectedExceptionType)
+        {
+            var grid = new Grid<int>(3, 4);
+
+            var caughtException = Record.Exception(() => grid[new GridPoint(rowIndex, columnIndex)] = 2);
 
             Assert.Equal(expectedExceptionType, caughtException?.GetType());
         }

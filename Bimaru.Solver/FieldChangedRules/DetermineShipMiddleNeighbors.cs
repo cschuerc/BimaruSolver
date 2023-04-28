@@ -55,6 +55,7 @@ namespace Bimaru.Solver.FieldChangedRules
                     return DirectionType.ROW;
                 case DirectionType.ROW:
                     return DirectionType.COLUMN;
+                case DirectionType.DIAGONAL:
                 default:
                     return null;
             }

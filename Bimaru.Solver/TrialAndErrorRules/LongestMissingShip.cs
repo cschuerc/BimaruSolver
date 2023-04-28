@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Bimaru.Interface.Game;
 using Bimaru.Interface.Solver;
@@ -32,26 +31,11 @@ namespace Bimaru.Solver.TrialAndErrorRules
         /// <inheritdoc/>
         public IEnumerable<FieldsToChange<BimaruValue>> GetChangeTrials(IBimaruGame game)
         {
-            int? shipLength;
+            var shipLength = game.LengthOfLongestMissingShip;
 
-            try
-            {
-                shipLength = game.LengthOfLongestMissingShip;
-            }
-            catch (ArgumentOutOfRangeException e)
-            {
-                throw new InvalidBimaruGameException("", e);
-            }
-
-            if (shipLength.HasValue)
-            {
-                return GetCompatibleButNotEqualShipTrials(game, shipLength.Value);
-            }
-            else
-            {
-                // All ships are set => Only water missing
-                return GetUndeterminedToWaterTrial(game);
-            }
+            return shipLength.HasValue ?
+                GetCompatibleButNotEqualShipTrials(game, shipLength.Value) :
+                GetUndeterminedToWaterTrial(game); // All ships are set => Only water missing
         }
 
         private static IEnumerable<FieldsToChange<BimaruValue>> GetCompatibleButNotEqualShipTrials(IBimaruGame game, int shipLength)

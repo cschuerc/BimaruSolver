@@ -68,9 +68,9 @@ namespace Bimaru.Solver.TrialAndErrorRules
             return FallBackRule?.GetChangeTrials(game) ?? Enumerable.Empty<FieldsToChange<BimaruValue>>();
         }
 
-        private static OneMissingPoints GetMostPromisingPoints(IBimaruGame game)
+        private static PointsWithEqualValueExceptOne GetMostPromisingPoints(IBimaruGame game)
         {
-            return new List<OneMissingPoints>()
+            return new List<PointsWithEqualValueExceptOne>()
                 {
                     GetOneMissingShipRow(game).Max(),
                     GetOneMissingWaterRow(game).Max(),
@@ -79,37 +79,37 @@ namespace Bimaru.Solver.TrialAndErrorRules
                 }.Max();
         }
 
-        private static IEnumerable<OneMissingPoints> GetOneMissingShipRow(IBimaruGame game)
+        private static IEnumerable<PointsWithEqualValueExceptOne> GetOneMissingShipRow(IBimaruGame game)
         {
             return Enumerable.Range(0, game.Grid.NumberOfRows)
                 .Where(i => game.NumberOfMissingShipFieldsPerRow(i) == 1)
-                .Select(rowIndex => OneMissingPoints.ConstructFromRow(game, rowIndex, BimaruValueConstraint.SHIP));
+                .Select(rowIndex => PointsWithEqualValueExceptOne.ConstructFromRow(game, rowIndex, BimaruValueConstraint.SHIP));
         }
 
-        private static IEnumerable<OneMissingPoints> GetOneMissingWaterRow(IBimaruGame game)
+        private static IEnumerable<PointsWithEqualValueExceptOne> GetOneMissingWaterRow(IBimaruGame game)
         {
             return Enumerable.Range(0, game.Grid.NumberOfRows)
                 .Where(i => game.NumberOfMissingShipFieldsPerRow(i) ==
                             (game.Grid.NumberOfUndeterminedFieldsPerRow[i] - 1))
-                .Select(rowIndex => OneMissingPoints.ConstructFromRow(game, rowIndex, BimaruValueConstraint.WATER));
+                .Select(rowIndex => PointsWithEqualValueExceptOne.ConstructFromRow(game, rowIndex, BimaruValueConstraint.WATER));
         }
 
-        private static IEnumerable<OneMissingPoints> GetOneMissingShipColumn(IBimaruGame game)
+        private static IEnumerable<PointsWithEqualValueExceptOne> GetOneMissingShipColumn(IBimaruGame game)
         {
             return Enumerable.Range(0, game.Grid.NumberOfColumns)
                 .Where(i => game.NumberOfMissingShipFieldsPerColumn(i) == 1)
-                .Select(columnIndex => OneMissingPoints.ConstructFromColumn(game, columnIndex, BimaruValueConstraint.SHIP));
+                .Select(columnIndex => PointsWithEqualValueExceptOne.ConstructFromColumn(game, columnIndex, BimaruValueConstraint.SHIP));
         }
 
-        private static IEnumerable<OneMissingPoints> GetOneMissingWaterColumn(IBimaruGame game)
+        private static IEnumerable<PointsWithEqualValueExceptOne> GetOneMissingWaterColumn(IBimaruGame game)
         {
             return Enumerable.Range(0, game.Grid.NumberOfColumns)
                 .Where(i => game.NumberOfMissingShipFieldsPerColumn(i) ==
                             (game.Grid.NumberOfUndeterminedFieldsPerColumn[i] - 1))
-                .Select(columnIndex => OneMissingPoints.ConstructFromColumn(game, columnIndex, BimaruValueConstraint.WATER));
+                .Select(columnIndex => PointsWithEqualValueExceptOne.ConstructFromColumn(game, columnIndex, BimaruValueConstraint.WATER));
         }
 
-        private static IEnumerable<FieldsToChange<BimaruValue>> GenerateChangeTrials(OneMissingPoints points)
+        private static IEnumerable<FieldsToChange<BimaruValue>> GenerateChangeTrials(PointsWithEqualValueExceptOne points)
         {
             var valueToSet = points.ShipOrWater.GetRepresentativeValue();
             foreach (var p in points)
@@ -122,32 +122,32 @@ namespace Bimaru.Solver.TrialAndErrorRules
         /// UNDETERMINED grid points where exactly one
         /// can be WATER or exactly one can be a ship.
         /// </summary>
-        private sealed class OneMissingPoints : IEnumerable<GridPoint>, IComparable<OneMissingPoints>
+        private sealed class PointsWithEqualValueExceptOne : IEnumerable<GridPoint>, IComparable<PointsWithEqualValueExceptOne>
         {
-            private OneMissingPoints(IEnumerable<GridPoint> points, BimaruValueConstraint shipOrWater)
+            private PointsWithEqualValueExceptOne(IEnumerable<GridPoint> points, BimaruValueConstraint shipOrWater)
             {
                 Points = points;
                 ShipOrWater = shipOrWater;
             }
 
-            public static OneMissingPoints ConstructFromRow(IBimaruGame game, int rowIndex, BimaruValueConstraint shipOrWater)
+            public static PointsWithEqualValueExceptOne ConstructFromRow(IBimaruGame game, int rowIndex, BimaruValueConstraint shipOrWater)
             {
                 return ConstructFromPoints(game, game.Grid.PointsOfRow(rowIndex), shipOrWater);
             }
 
-            public static OneMissingPoints ConstructFromColumn(IBimaruGame game, int columnIndex, BimaruValueConstraint shipOrWater)
+            public static PointsWithEqualValueExceptOne ConstructFromColumn(IBimaruGame game, int columnIndex, BimaruValueConstraint shipOrWater)
             {
                 return ConstructFromPoints(game, game.Grid.PointsOfColumn(columnIndex), shipOrWater);
             }
 
-            private static OneMissingPoints ConstructFromPoints(IBimaruGame game, IEnumerable<GridPoint> points, BimaruValueConstraint shipOrWater)
+            private static PointsWithEqualValueExceptOne ConstructFromPoints(IBimaruGame game, IEnumerable<GridPoint> points, BimaruValueConstraint shipOrWater)
             {
-                OneMissingPoints result = null;
+                PointsWithEqualValueExceptOne result = null;
 
                 var undeterminedPoints = points.Where(p => game.Grid[p] == BimaruValue.UNDETERMINED).ToList();
                 if (undeterminedPoints.Any())
                 {
-                    result = new OneMissingPoints(
+                    result = new PointsWithEqualValueExceptOne(
                         undeterminedPoints,
                         shipOrWater);
                 }
@@ -169,7 +169,7 @@ namespace Bimaru.Solver.TrialAndErrorRules
             /// Most promising candidate in terms of leading to a fast solver.
             /// Empirical heuristic.
             /// </summary>
-            public static bool operator >(OneMissingPoints left, OneMissingPoints right)
+            public static bool operator >(PointsWithEqualValueExceptOne left, PointsWithEqualValueExceptOne right)
             {
                 if (left is null || right is null)
                 {
@@ -189,7 +189,7 @@ namespace Bimaru.Solver.TrialAndErrorRules
                         left.Points.Count() > right.Points.Count());
             }
 
-            public static bool operator <(OneMissingPoints left, OneMissingPoints right)
+            public static bool operator <(PointsWithEqualValueExceptOne left, PointsWithEqualValueExceptOne right)
             {
                 return right > left;
             }
@@ -204,7 +204,7 @@ namespace Bimaru.Solver.TrialAndErrorRules
                 return Points.GetEnumerator();
             }
 
-            public int CompareTo(OneMissingPoints other)
+            public int CompareTo(PointsWithEqualValueExceptOne other)
             {
                 return this > other ? 1 : -1;
             }

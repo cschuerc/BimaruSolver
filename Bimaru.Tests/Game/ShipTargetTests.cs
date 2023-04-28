@@ -174,7 +174,7 @@ namespace Bimaru.Tests.Game
             var shipTarget = new ShipTarget();
 
             Assert.Null(shipTarget.LengthOfLongestMissingShip(new[] { 0, 0 }));
-            Assert.Throws<ArgumentOutOfRangeException>(() => shipTarget.LengthOfLongestMissingShip(new[] { 0, 1 }));
+            Assert.Throws<InvalidBimaruGameException>(() => shipTarget.LengthOfLongestMissingShip(new[] { 0, 1 }));
         }
 
         [Fact]
@@ -191,8 +191,8 @@ namespace Bimaru.Tests.Game
 
             Assert.Null(shipTarget.LengthOfLongestMissingShip(new[] { 0, 2, 1 }));
 
-            Assert.Throws<ArgumentOutOfRangeException>(() => shipTarget.LengthOfLongestMissingShip(new[] { 0, 0, 2 }));
-            Assert.Throws<ArgumentOutOfRangeException>(() => shipTarget.LengthOfLongestMissingShip(new[] { 0, 3, 1 }));
+            Assert.Throws<InvalidBimaruGameException>(() => shipTarget.LengthOfLongestMissingShip(new[] { 0, 0, 2 }));
+            Assert.Throws<InvalidBimaruGameException>(() => shipTarget.LengthOfLongestMissingShip(new[] { 0, 3, 1 }));
         }
     }
 }

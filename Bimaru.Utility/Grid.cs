@@ -114,7 +114,7 @@ namespace Bimaru.Utility
             return fieldValues[point.RowIndex, point.ColumnIndex];
         }
 
-        protected void SetFieldValueNoCheck(GridPoint point, T newValue)
+        private void SetFieldValueNoCheck(GridPoint point, T newValue)
         {
             var oldValue = GetFieldValueNoCheck(point);
             if (oldValue.Equals(newValue))
