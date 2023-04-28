@@ -1,0 +1,143 @@
+{
+  "MetaInfo": {
+    "Id": 1,
+    "Size": 10,
+    "Difficulty": 10
+  },
+  "Game": {
+    "$type": "Bimaru.Game.BimaruGame, Bimaru.Game",
+    "TargetNumberOfShipFieldsPerRow": {
+      "$type": "Bimaru.Game.GridTally, Bimaru.Game",
+      "targetNumberPerIndex": [
+        2,
+        1,
+        3,
+        1,
+        1,
+        2
+      ],
+      "Length": 6,
+      "Total": 10
+    },
+    "TargetNumberOfShipFieldsPerColumn": {
+      "$type": "Bimaru.Game.GridTally, Bimaru.Game",
+      "targetNumberPerIndex": [
+        2,
+        1,
+        2,
+        2,
+        0,
+        3
+      ],
+      "Length": 6,
+      "Total": 10
+    },
+    "TargetNumberOfShipsPerLength": {
+      "$type": "Bimaru.Game.ShipTarget, Bimaru.Game",
+      "targetNumberOfShipsPerLength": {
+        "1": 3,
+        "2": 2,
+        "3": 1
+      },
+      "TotalShipFields": 10
+    },
+    "Grid": {
+      "$type": "Bimaru.Game.BimaruGrid, Bimaru.Game",
+      "numberOfShipFieldsPerRow": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "numberOfShipFieldsPerColumn": [
+        0,
+        1,
+        0,
+        0,
+        0,
+        0
+      ],
+      "numberOfUndeterminedFieldsPerRow": [
+        5,
+        6,
+        5,
+        6,
+        6,
+        4
+      ],
+      "numberOfUndeterminedFieldsPerColumn": [
+        5,
+        5,
+        5,
+        6,
+        6,
+        5
+      ],
+      "numberOfNotFullyDeterminedFields": 32,
+      "invalidFieldBoundaries": [],
+      "numberOfShipsPerLength": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "fieldValues": [
+        [
+          0,
+          4,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          0,
+          0,
+          0,
+          1
+        ]
+      ],
+      "NumberOfRows": 6,
+      "NumberOfColumns": 6
+    }
+  }
+}

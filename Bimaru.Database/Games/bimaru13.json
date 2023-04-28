@@ -1,0 +1,244 @@
+{
+  "MetaInfo": {
+    "Id": 13,
+    "Size": 30,
+    "Difficulty": 20
+  },
+  "Game": {
+    "$type": "Bimaru.Game.BimaruGame, Bimaru.Game",
+    "TargetNumberOfShipFieldsPerRow": {
+      "$type": "Bimaru.Game.GridTally, Bimaru.Game",
+      "targetNumberPerIndex": [
+        2,
+        4,
+        0,
+        2,
+        4,
+        1,
+        1,
+        2,
+        2,
+        2
+      ],
+      "Length": 10,
+      "Total": 20
+    },
+    "TargetNumberOfShipFieldsPerColumn": {
+      "$type": "Bimaru.Game.GridTally, Bimaru.Game",
+      "targetNumberPerIndex": [
+        1,
+        4,
+        1,
+        1,
+        3,
+        2,
+        3,
+        1,
+        3,
+        1
+      ],
+      "Length": 10,
+      "Total": 20
+    },
+    "TargetNumberOfShipsPerLength": {
+      "$type": "Bimaru.Game.ShipTarget, Bimaru.Game",
+      "targetNumberOfShipsPerLength": {
+        "1": 4,
+        "2": 3,
+        "3": 2,
+        "4": 1
+      },
+      "TotalShipFields": 20
+    },
+    "Grid": {
+      "$type": "Bimaru.Game.BimaruGrid, Bimaru.Game",
+      "numberOfShipFieldsPerRow": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2,
+        0,
+        0
+      ],
+      "numberOfShipFieldsPerColumn": [
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        1,
+        0
+      ],
+      "numberOfUndeterminedFieldsPerRow": [
+        9,
+        10,
+        10,
+        9,
+        10,
+        9,
+        10,
+        8,
+        10,
+        10
+      ],
+      "numberOfUndeterminedFieldsPerColumn": [
+        10,
+        9,
+        9,
+        10,
+        10,
+        10,
+        8,
+        10,
+        9,
+        10
+      ],
+      "numberOfNotFullyDeterminedFields": 95,
+      "invalidFieldBoundaries": [],
+      "numberOfShipsPerLength": [
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "fieldValues": [
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          2,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          7,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          6,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "NumberOfRows": 10,
+      "NumberOfColumns": 10
+    }
+  }
+}
