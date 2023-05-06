@@ -12,7 +12,11 @@ namespace Bimaru.Game
     [JsonObject]
     public class GridTally : IGridTally
     {
-        /// <param name="length"> Number of rows/columns </param>
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="length">Number of rows/columns</param>
+        [JsonConstructor]
         public GridTally(int length)
         {
             Length = length;
@@ -21,6 +25,15 @@ namespace Bimaru.Game
             targetNumberPerIndex.InitValues(0);
 
             Total = targetNumberPerIndex.Sum();
+        }
+
+        public GridTally(int[] targetNumberPerIndex)
+            : this(targetNumberPerIndex.Length)
+        {
+            foreach (var it in targetNumberPerIndex.Select((t, i) => new { TargetNumber = t, Index = i }))
+            {
+                this[it.Index] = it.TargetNumber;
+            }
         }
 
         private int length;

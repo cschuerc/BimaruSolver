@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using Bimaru.Database;
 using Bimaru.Game;
@@ -69,7 +68,7 @@ namespace Bimaru.Tests.Database
 
             var maxId = gameSource.GetMetaInfoOfAllGames().Select(m => m.Id).Max();
 
-            Assert.Throws<ArgumentOutOfRangeException>(() => gameSource.GetGame(maxId + 1));
+            Assert.Null( gameSource.GetGame(maxId + 1));
         }
     }
 }

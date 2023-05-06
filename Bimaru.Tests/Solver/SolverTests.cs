@@ -327,31 +327,18 @@ namespace Bimaru.Tests.Solver
             Assert.Equal(2, numSolutions);
         }
 
-        [Fact]
-        public void TestAllGamesNonCounting()
+        [Theory]
+        [InlineData(false)]
+        [InlineData(true)]
+        public void TestSolvingAllGames(bool shallCountSolutions)
         {
-            var solver = SolverFactoryForTesting.GenerateSolver(false);
+            var solver = SolverFactoryForTesting.GenerateSolver(shallCountSolutions);
             var database = GetDatabase();
 
-            foreach (var databaseGame in database.GetAllGames(null))
+            foreach (var metaInfo in database.GetMetaInfoOfGames())
             {
-                Assert.False(databaseGame.Game.IsSolved);
+                var databaseGame = database.GetGameById(metaInfo.Id);
 
-                var numSolutions = solver.Solve(databaseGame.Game);
-
-                Assert.True(databaseGame.Game.IsSolved);
-                Assert.Equal(1, numSolutions);
-            }
-        }
-
-        [Fact]
-        public void TestAllGamesCounting()
-        {
-            var solver = SolverFactoryForTesting.GenerateSolver(true);
-            var database = GetDatabase();
-
-            foreach (var databaseGame in database.GetAllGames(null))
-            {
                 Assert.False(databaseGame.Game.IsSolved);
 
                 var numSolutions = solver.Solve(databaseGame.Game);

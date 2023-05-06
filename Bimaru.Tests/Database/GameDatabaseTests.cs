@@ -17,10 +17,7 @@ namespace Bimaru.Tests.Database
             var gameSource = new GameSourceStub(stubGames);
             var db = new GameDatabase(gameSource);
 
-            foreach (var filter in filtersToTest)
-            {
-                AssertEqualGames(stubGames.Where(g => filter == null || filter(g.MetaInfo)).ToList(), db.GetAllGames(filter).ToList());
-            }
+            Assert.Equal(stubGames.Select((g) => g.MetaInfo), db.GetMetaInfoOfGames());
         }
 
         private static IReadOnlyCollection<GameWithMetaInfo> GetStubGames()
@@ -70,30 +67,6 @@ namespace Bimaru.Tests.Database
             }
         }
 
-        private static readonly List<Func<GameMetaInfo, bool>> filtersToTest = new()
-        {
-            null,
-            _ => true,
-            _ => false,
-            m => m.Size == GameSize.LARGE,
-            m => m.Size != GameSize.LARGE,
-            m => m.Difficulty == GameDifficulty.EASY,
-            m => m.Difficulty != GameDifficulty.EASY,
-            m => m.Size == GameSize.MIDDLE && m.Difficulty == GameDifficulty.MIDDLE,
-        };
-
-        private static void AssertEqualGames(IReadOnlyCollection<GameWithMetaInfo> expectedGames, IReadOnlyCollection<GameWithMetaInfo> actualGames)
-        {
-            Assert.Equal(expectedGames.Count, actualGames.Count);
-
-            foreach (var expectedGame in expectedGames)
-            {
-                var match = actualGames.First(g => g.MetaInfo.Id == expectedGame.MetaInfo.Id);
-
-                expectedGame.AssertEqual(match);
-            }
-        }
-
         [Fact]
         public void TestGetRandomGame()
         {
@@ -106,21 +79,25 @@ namespace Bimaru.Tests.Database
             {
                 foreach (var _ in Enumerable.Range(0, numTrials))
                 {
-                    AssertContainsGame(stubGames.Where(g => filter == null || filter(g.MetaInfo)).ToList(), db.GetRandomGame(filter));
+                    AssertContainsGame(stubGames.Where((g) => filter(g.MetaInfo)), db.GetRandomGame(filter));
                 }
             }
         }
 
-        private static void AssertContainsGame(IReadOnlyCollection<GameWithMetaInfo> expectedGames, GameWithMetaInfo actualGame)
+        private static readonly List<Func<GameMetaInfo, bool>> filtersToTest = new()
         {
-            if (!expectedGames.Any() && actualGame == null)
-            {
-                return;
-            }
+            _ => true,
+            _ => false,
+            m => m.Size == GameSize.LARGE,
+            m => m.Size != GameSize.LARGE,
+            m => m.Difficulty == GameDifficulty.EASY,
+            m => m.Difficulty != GameDifficulty.EASY,
+            m => m is { Size: GameSize.MIDDLE, Difficulty: GameDifficulty.MIDDLE },
+        };
 
-            Assert.NotNull(actualGame);
-
-            var expectedGame = expectedGames.First(g => g.MetaInfo.Id == actualGame.MetaInfo.Id);
+        private static void AssertContainsGame(IEnumerable<GameWithMetaInfo> expectedGames, GameWithMetaInfo actualGame)
+        {
+            var expectedGame = expectedGames.FirstOrDefault(g => g.MetaInfo.Id == actualGame?.MetaInfo.Id);
 
             expectedGame.AssertEqual(actualGame);
         }
@@ -135,11 +112,11 @@ namespace Bimaru.Tests.Database
             var maxId = 0;
             foreach (var game in stubGames)
             {
-                game.AssertEqual(db.GetSpecificGame(game.MetaInfo.Id));
+                game.AssertEqual(db.GetGameById(game.MetaInfo.Id));
                 maxId = Math.Max(maxId, game.MetaInfo.Id);
             }
 
-            db.GetSpecificGame(maxId + 1).AssertEqual(null);
+            db.GetGameById(maxId + 1).AssertEqual(null);
         }
     }
 }

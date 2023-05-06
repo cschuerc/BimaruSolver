@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Bimaru.Interface.Game;
@@ -9,9 +10,19 @@ namespace Bimaru.Game
 {
     public class ShipTarget : IShipTarget
     {
+        [JsonConstructor]
         public ShipTarget()
         {
             targetNumberOfShipsPerLength = new SortedDictionary<int, int>();
+        }
+
+        public ShipTarget(int[] targetNumberOfShipsPerLength)
+            : this()
+        {
+            foreach (var it in targetNumberOfShipsPerLength.Select((t, l) => new { TargetNumber = t, ShipLength = l + 1 }))
+            {
+                this[it.ShipLength] = it.TargetNumber;
+            }
         }
 
         [JsonProperty]
@@ -110,6 +121,23 @@ namespace Bimaru.Game
                 default:
                     return targetNumberOfShipsPerLength.Last(p => p.Value > numberOfShipsPerLength[p.Key]).Key;
             }
+        }
+
+        public IEnumerator<int> GetEnumerator()
+        {
+            return GetTargetNumberOfShipsEnumeratedByLength().GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        private IEnumerable<int> GetTargetNumberOfShipsEnumeratedByLength()
+        {
+            var maxLength = targetNumberOfShipsPerLength.Keys.Max(i => (int?)i) ?? 0;
+
+            return Enumerable.Range(1, maxLength).Select(shipLength => this[shipLength]);
         }
     }
 }

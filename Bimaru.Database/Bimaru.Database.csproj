@@ -73,9 +73,9 @@
     <PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.4.421302">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Bimaru.Game\Bimaru.Game.csproj" />
     <ProjectReference Include="..\Bimaru.Interface\Bimaru.Interface.csproj" />
   </ItemGroup>
   <ItemGroup>

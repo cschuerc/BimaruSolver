@@ -6,7 +6,7 @@ namespace Bimaru.Interface.Game
     /// <summary>
     /// Target number of ships per length
     /// </summary>
-    public interface IShipTarget
+    public interface IShipTarget : IEnumerable<int>
     {
         /// <summary>
         /// Target number of ships of given length

@@ -26,24 +26,18 @@ namespace Bimaru.Database
         /// <summary>
         /// Thumbnails (only meta info) of all games in the database
         /// </summary>
-        private List<GameMetaInfo> Thumbnails
-        {
-            get;
-        }
+        private List<GameMetaInfo> Thumbnails { get; }
 
-        private Random RandomNumberGenerator
-        {
-            get;
-        }
+        private Random RandomNumberGenerator { get; }
 
-        public IEnumerable<GameWithMetaInfo> GetAllGames(Func<GameMetaInfo, bool> filter)
+        public IEnumerable<GameMetaInfo> GetMetaInfoOfGames()
         {
-            return Thumbnails.Where(t => filter == null || filter(t)).Select(t => GameSource.GetGame(t.Id));
+            return Thumbnails;
         }
 
         public GameWithMetaInfo GetRandomGame(Func<GameMetaInfo, bool> filter)
         {
-            var filteredGames = Thumbnails.Where(t => filter == null || filter(t)).ToList();
+            var filteredGames = Thumbnails.Where(filter).ToList();
 
             if (!filteredGames.Any())
             {
@@ -55,7 +49,7 @@ namespace Bimaru.Database
             return GameSource.GetGame(thumbnail.Id);
         }
 
-        public GameWithMetaInfo GetSpecificGame(int id)
+        public GameWithMetaInfo GetGameById(int id)
         {
             return GameSource.GetGame(id);
         }

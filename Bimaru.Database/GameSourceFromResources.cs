@@ -66,12 +66,7 @@ namespace Bimaru.Database
 
         public GameWithMetaInfo GetGame(int id)
         {
-            if (!ResourceNamesPerId.ContainsKey(id))
-            {
-                throw new ArgumentOutOfRangeException(nameof(id));
-            }
-
-            return LoadResource(ResourceNamesPerId[id]);
+            return !ResourceNamesPerId.ContainsKey(id) ? null : LoadResource(ResourceNamesPerId[id]);
         }
     }
 }
