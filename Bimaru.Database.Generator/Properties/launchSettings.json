@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "BimaruDatabaseGenerator": {
-      "commandName": "Project",
-      "commandLineArgs": "bimaru{0:d2}.json"
-    }
-  }
-}

@@ -1,9 +1,13 @@
-﻿using Bimaru.Interface.Database;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Bimaru.Database.Entities;
+using Bimaru.Interface.Database;
 using Bimaru.Interface.Utility;
 using Microsoft.EntityFrameworkCore;
-using webapi.Entities;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace webapi.DbContexts
+namespace Bimaru.Database.DbContexts
 {
     public static class SeedGameDb
     {

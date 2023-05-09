@@ -1,3 +1,5 @@
+using Bimaru.Database.DbContexts;
+using Bimaru.Database.Repositories;
 using Bimaru.Interface.Solver;
 using Bimaru.Interface.Utility;
 using Bimaru.Solver;
@@ -6,8 +8,6 @@ using Bimaru.Solver.FieldChangedRules;
 using Bimaru.Solver.TrialAndErrorRules;
 using Bimaru.Utility;
 using Microsoft.EntityFrameworkCore;
-using webapi.DbContexts;
-using webapi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -1,6 +1,6 @@
 ﻿using Bimaru.Interface.Utility;
 
-namespace webapi.Entities;
+namespace Bimaru.Database.Entities;
 
 public class GridValueEntity
 {

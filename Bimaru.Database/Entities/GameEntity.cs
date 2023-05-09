@@ -1,6 +1,7 @@
-﻿using Bimaru.Interface.Database;
+﻿using System.Collections.Generic;
+using Bimaru.Interface.Database;
 
-namespace webapi.Entities;
+namespace Bimaru.Database.Entities;
 
 public class GameEntity
 {

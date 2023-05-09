@@ -1,8 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
-using webapi.DbContexts;
-using webapi.Entities;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
+using Bimaru.Database.DbContexts;
+using Bimaru.Database.Entities;
+using Microsoft.EntityFrameworkCore;
 
-namespace webapi.Services;
+namespace Bimaru.Database.Repositories;
 
 public class GameRepository : IGameRepository
 {
@@ -13,7 +16,7 @@ public class GameRepository : IGameRepository
         this.context = context;
     }
 
-    public async Task<GameEntity?> GetGameAsync(int gameId)
+    public async Task<GameEntity> GetGameAsync(int gameId)
     {
         return await context.Games
             .Include(g => g.GridValues)

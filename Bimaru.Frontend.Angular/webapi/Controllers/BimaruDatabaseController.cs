@@ -1,10 +1,10 @@
 using AutoMapper;
+using Bimaru.Database.Entities;
+using Bimaru.Database.Repositories;
 using Bimaru.Interface.Game;
 using Bimaru.Interface.Solver;
 using Microsoft.AspNetCore.Mvc;
-using webapi.Entities;
 using webapi.Models;
-using webapi.Services;
 
 namespace webapi.Controllers;
 

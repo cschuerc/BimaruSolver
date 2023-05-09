@@ -1,10 +1,11 @@
-﻿using webapi.Entities;
+﻿using System.Threading.Tasks;
+using Bimaru.Database.Entities;
 
-namespace webapi.Services;
+namespace Bimaru.Database.Repositories;
 
 public interface IGameRepository
 {
-    Task<GameEntity?> GetGameAsync(int gameId);
+    Task<GameEntity> GetGameAsync(int gameId);
 
     Task<GameEntity?> GetRandomGameAsync();
 

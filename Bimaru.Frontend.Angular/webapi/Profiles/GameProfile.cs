@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
+using Bimaru.Database.Entities;
 using Bimaru.Interface.Game;
-using webapi.Entities;
 using webapi.Models;
 
 namespace webapi.Profiles;

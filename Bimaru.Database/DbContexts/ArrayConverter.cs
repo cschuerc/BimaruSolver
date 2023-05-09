@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace webapi.DbContexts;
+namespace Bimaru.Database.DbContexts;
 
 public class ArrayConverter<T> : ValueConverter<T[], string> where T : struct
 {

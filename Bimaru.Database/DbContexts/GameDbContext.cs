@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using webapi.Entities;
+﻿using Bimaru.Database.Entities;
+using Microsoft.EntityFrameworkCore;
 
-namespace webapi.DbContexts;
+namespace Bimaru.Database.DbContexts;
 
 public class GameDbContext : DbContext
 {

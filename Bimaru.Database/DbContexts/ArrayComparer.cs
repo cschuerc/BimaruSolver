@@ -1,6 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
+﻿using System;
+using System.Linq;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
-namespace webapi.DbContexts;
+namespace Bimaru.Database.DbContexts;
 
 public class ArrayComparer<T> : ValueComparer<T[]> where T : struct
 {

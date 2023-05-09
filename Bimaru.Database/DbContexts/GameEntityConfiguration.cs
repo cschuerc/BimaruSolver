@@ -1,8 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Bimaru.Database.Entities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using webapi.Entities;
 
-namespace webapi.DbContexts;
+namespace Bimaru.Database.DbContexts;
 
 public class GameEntityConfiguration : IEntityTypeConfiguration<GameEntity>
 {
