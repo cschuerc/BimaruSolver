@@ -169,7 +169,7 @@ namespace Bimaru.Tests.Utility
             Assert.Equal(expectedExceptionType, caughtException?.GetType());
         }
 
-        private static void AssertPointsOfRow<T>(Grid<T> grid, int rowIndex)
+        private static void AssertPointsOfRow(Grid<int> grid, int rowIndex)
         {
             var columnIndex = 0;
             foreach (var p in grid.PointsOfRow(rowIndex))
@@ -215,7 +215,7 @@ namespace Bimaru.Tests.Utility
             Assert.Equal(expectedExceptionType, caughtException?.GetType());
         }
 
-        private static void AssertPointsOfColumn<T>(Grid<T> grid, int columnIndex)
+        private static void AssertPointsOfColumn(Grid<int> grid, int columnIndex)
         {
             var rowIndex = 0;
             foreach (var p in grid.PointsOfColumn(columnIndex))

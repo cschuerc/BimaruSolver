@@ -295,7 +295,7 @@ namespace Bimaru.Tests.Solver.TrialAndErrorRules
 
             var actualTrials = rule.GetChangeTrials(game).ToList();
 
-            Assert.Equal(1, actualTrials.Count);
+            Assert.Single(actualTrials);
 
             var expectedChanges = new FieldsToChange<BimaruValue>()
             {

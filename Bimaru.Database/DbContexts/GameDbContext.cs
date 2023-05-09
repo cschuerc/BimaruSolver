@@ -1,4 +1,4 @@
-﻿using Bimaru.Database.Entities;
+﻿using Bimaru.Interface.Database;
 using Microsoft.EntityFrameworkCore;
 
 namespace Bimaru.Database.DbContexts;

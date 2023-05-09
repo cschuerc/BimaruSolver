@@ -251,7 +251,7 @@ namespace Bimaru.Game
         #region Cloning
         public override void OverwriteWith(object source)
         {
-            if (!(source is BimaruGrid sourceAsGrid))
+            if (source is not BimaruGrid sourceAsGrid)
             {
                 throw new ArgumentException("Source is not a BimaruGrid.");
             }

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Bimaru.Interface.Utility
+﻿namespace Bimaru.Interface.Utility
 {
     /// <summary>
     /// An invalid Bimaru game is found where only valid are meaningful.

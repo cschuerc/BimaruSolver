@@ -1,8 +1,5 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using Bimaru.Database.DbContexts;
-using Bimaru.Database.Entities;
+﻿using Bimaru.Database.DbContexts;
+using Bimaru.Interface.Database;
 using Microsoft.EntityFrameworkCore;
 
 namespace Bimaru.Database.Repositories;
@@ -16,7 +13,7 @@ public class GameRepository : IGameRepository
         this.context = context;
     }
 
-    public async Task<GameEntity> GetGameAsync(int gameId)
+    public async Task<GameEntity?> GetGameAsync(int gameId)
     {
         return await context.Games
             .Include(g => g.GridValues)

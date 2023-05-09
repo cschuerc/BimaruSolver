@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿
 
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 
@@ -21,7 +21,7 @@ namespace Bimaru.Interface.Utility
         /// RIGHT_DOWN and LEFT_UP
         /// </summary>
         private static readonly HashSet<Direction> baseDirections =
-            new HashSet<Direction>()
+            new()
             {
                 Direction.UP,
                 Direction.RIGHT_UP,

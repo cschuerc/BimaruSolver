@@ -55,7 +55,7 @@ namespace Bimaru.Solver.TrialAndErrorRules
         /// hence it is not complete.
         /// </summary>
         public bool AreTrialsComplete =>
-            !(FallBackRule is null) && FallBackRule.AreTrialsComplete;
+            FallBackRule is not null && FallBackRule.AreTrialsComplete;
 
         public IEnumerable<FieldsToChange<BimaruValue>> GetChangeTrials(IBimaruGame game)
         {
@@ -173,7 +173,7 @@ namespace Bimaru.Solver.TrialAndErrorRules
             {
                 if (left is null || right is null)
                 {
-                    return !(left is null);
+                    return left is not null;
                 }
 
                 // Rules of thumb to support this order:

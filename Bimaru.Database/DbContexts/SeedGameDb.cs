@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Bimaru.Database.Entities;
-using Bimaru.Interface.Database;
+﻿using Bimaru.Interface.Database;
 using Bimaru.Interface.Utility;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,7 +24,7 @@ namespace Bimaru.Database.DbContexts
             context.SaveChanges();
         }
 
-        private static List<GameEntity> GetGameEntities()
+        public static List<GameEntity> GetGameEntities()
         {
             return new List<GameEntity>()
             {

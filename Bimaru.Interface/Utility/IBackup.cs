@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Bimaru.Interface.Utility
+﻿namespace Bimaru.Interface.Utility
 {
     public interface IBackup<in T> where T : ICloneable, IOverwritable
     {

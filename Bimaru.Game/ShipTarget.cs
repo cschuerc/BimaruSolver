@@ -107,16 +107,15 @@ namespace Bimaru.Game
         public int? LengthOfLongestMissingShip(IReadOnlyList<int> numberOfShipsPerLength)
         {
             var satisfiability = GetSatisfiability(numberOfShipsPerLength);
-            switch (satisfiability)
+            return satisfiability switch
             {
-                case Satisfiability.VIOLATED:
-                    throw new InvalidBimaruGameException("Ship target is violated.");
-                case Satisfiability.SATISFIED:
-                    return null;
-                case Satisfiability.SATISFIABLE:
-                default:
-                    return targetNumberOfShipsPerLength.Last(p => p.Value > numberOfShipsPerLength[p.Key]).Key;
-            }
+                Satisfiability.VIOLATED => throw new InvalidBimaruGameException("Ship target is violated."),
+                Satisfiability.SATISFIED => null,
+                Satisfiability.SATISFIABLE => targetNumberOfShipsPerLength
+                    .Last(p => p.Value > numberOfShipsPerLength[p.Key])
+                    .Key,
+                _ => targetNumberOfShipsPerLength.Last(p => p.Value > numberOfShipsPerLength[p.Key]).Key
+            };
         }
 
         public IEnumerator<int> GetEnumerator()

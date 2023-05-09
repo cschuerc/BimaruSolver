@@ -1,5 +1,6 @@
 using Bimaru.Database.DbContexts;
 using Bimaru.Database.Repositories;
+using Bimaru.Interface.Database;
 using Bimaru.Interface.Solver;
 using Bimaru.Interface.Utility;
 using Bimaru.Solver;

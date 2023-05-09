@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Bimaru.Database;
-using Bimaru.Interface.Database;
 using Bimaru.Interface.Game;
 using Bimaru.Interface.Solver;
 using Bimaru.Interface.Utility;
@@ -303,55 +301,18 @@ namespace Bimaru.Tests.Solver
             Assert.Throws<InvalidOperationException>(() => solver.Solve(game));
         }
 
-        [Fact]
-        public void TestTwoSolutionGameNonCounting()
+        [Theory]
+        [InlineData(false, 1)]
+        [InlineData(true, 2)]
+        public void TestTwoSolutionGame(bool shallCountSolutions, int expectedNumberOfSolutions)
         {
-            var solverNonCounting = SolverFactoryForTesting.GenerateSolver(false);
+            var solverNonCounting = SolverFactoryForTesting.GenerateSolver(shallCountSolutions);
             var game = GameFactoryForTesting.GenerateGameTwoSolutions();
 
             Assert.False(game.IsSolved);
             var numSolutions = solverNonCounting.Solve(game);
             Assert.True(game.IsSolved);
-            Assert.Equal(1, numSolutions);
-        }
-
-        [Fact]
-        public void TestTwoSolutionGameCounting()
-        {
-            var solverCounting = SolverFactoryForTesting.GenerateSolver(true);
-            var game = GameFactoryForTesting.GenerateGameTwoSolutions();
-
-            Assert.False(game.IsSolved);
-            var numSolutions = solverCounting.Solve(game);
-            Assert.True(game.IsSolved);
-            Assert.Equal(2, numSolutions);
-        }
-
-        [Theory]
-        [InlineData(false)]
-        [InlineData(true)]
-        public void TestSolvingAllGames(bool shallCountSolutions)
-        {
-            var solver = SolverFactoryForTesting.GenerateSolver(shallCountSolutions);
-            var database = GetDatabase();
-
-            foreach (var metaInfo in database.GetMetaInfoOfGames())
-            {
-                var databaseGame = database.GetGameById(metaInfo.Id);
-
-                Assert.False(databaseGame.Game.IsSolved);
-
-                var numSolutions = solver.Solve(databaseGame.Game);
-
-                Assert.True(databaseGame.Game.IsSolved);
-                Assert.Equal(1, numSolutions);
-            }
-        }
-
-        private static IGameDatabase GetDatabase()
-        {
-            var gameSource = new GameSourceFromResources();
-            return new GameDatabase(gameSource);
+            Assert.Equal(expectedNumberOfSolutions, numSolutions);
         }
     }
 }

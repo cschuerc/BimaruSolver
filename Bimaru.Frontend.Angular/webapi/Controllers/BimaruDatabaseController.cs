@@ -1,6 +1,5 @@
 using AutoMapper;
-using Bimaru.Database.Entities;
-using Bimaru.Database.Repositories;
+using Bimaru.Interface.Database;
 using Bimaru.Interface.Game;
 using Bimaru.Interface.Solver;
 using Microsoft.AspNetCore.Mvc;

@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Bimaru.Database.Entities;
+using Bimaru.Interface.Database;
 using Bimaru.Interface.Game;
 using webapi.Models;
 
@@ -10,6 +10,7 @@ public class GameProfile : Profile
     public GameProfile()
     {
         // For getting
+        CreateMap<GameEntity, GameDto>();
         CreateMap<GameEntity, GameWithMetaDataDto>();
         CreateMap<GridValueEntity, GridValueDto>();
 
