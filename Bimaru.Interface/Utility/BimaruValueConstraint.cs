@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Bimaru.Interface.Utility
+﻿namespace Bimaru.Interface.Utility
 {
     public enum BimaruValueConstraint
     {
@@ -17,7 +15,7 @@ namespace Bimaru.Interface.Utility
     public static class BimaruValueConstraints
     {
         private static readonly Dictionary<BimaruValueConstraint, BimaruValue> representativeValue =
-            new Dictionary<BimaruValueConstraint, BimaruValue>()
+            new()
             {
                 { BimaruValueConstraint.WATER, BimaruValue.WATER },
                 { BimaruValueConstraint.SHIP, BimaruValue.SHIP_UNDETERMINED },

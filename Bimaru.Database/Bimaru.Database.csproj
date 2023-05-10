@@ -1,94 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <OutputType>Library</OutputType>
-    <RootNamespace>$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DocumentationFile>
-    </DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
-    <EnableNETAnalyzers>True</EnableNETAnalyzers>
-    <NeutralLanguage>en</NeutralLanguage>
-  </PropertyGroup>
-  <ItemGroup>
-    <EmbeddedResource Remove="Properties\Resources.resx" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Remove="Games\bimaru01.json" />
-    <None Remove="Games\bimaru02.json" />
-    <None Remove="Games\bimaru03.json" />
-    <None Remove="Games\bimaru04.json" />
-    <None Remove="Games\bimaru05.json" />
-    <None Remove="Games\bimaru06.json" />
-    <None Remove="Games\bimaru07.json" />
-    <None Remove="Games\bimaru08.json" />
-    <None Remove="Games\bimaru09.json" />
-    <None Remove="Games\bimaru10.json" />
-    <None Remove="Games\bimaru11.json" />
-    <None Remove="Games\bimaru12.json" />
-    <None Remove="Games\bimaru13.json" />
-    <None Remove="Games\bimaru14.json" />
-    <None Remove="Games\bimaru15.json" />
-    <None Remove="Games\bimaru16.json" />
-    <None Remove="Games\bimaru17.json" />
-    <None Remove="Games\bimaru18.json" />
-    <None Remove="Games\bimaru19.json" />
-    <None Remove="Games\bimaru20.json" />
-    <None Remove="Games\bimaru21.json" />
-    <None Remove="Games\bimaru22.json" />
-    <None Remove="Games\bimaru23.json" />
-    <None Remove="Games\bimaru24.json" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Games\bimaru01.json" />
-    <EmbeddedResource Include="Games\bimaru02.json" />
-    <EmbeddedResource Include="Games\bimaru03.json" />
-    <EmbeddedResource Include="Games\bimaru04.json" />
-    <EmbeddedResource Include="Games\bimaru05.json" />
-    <EmbeddedResource Include="Games\bimaru06.json" />
-    <EmbeddedResource Include="Games\bimaru07.json" />
-    <EmbeddedResource Include="Games\bimaru08.json" />
-    <EmbeddedResource Include="Games\bimaru09.json" />
-    <EmbeddedResource Include="Games\bimaru10.json" />
-    <EmbeddedResource Include="Games\bimaru11.json" />
-    <EmbeddedResource Include="Games\bimaru12.json" />
-    <EmbeddedResource Include="Games\bimaru13.json" />
-    <EmbeddedResource Include="Games\bimaru14.json" />
-    <EmbeddedResource Include="Games\bimaru15.json" />
-    <EmbeddedResource Include="Games\bimaru16.json" />
-    <EmbeddedResource Include="Games\bimaru17.json" />
-    <EmbeddedResource Include="Games\bimaru18.json" />
-    <EmbeddedResource Include="Games\bimaru19.json" />
-    <EmbeddedResource Include="Games\bimaru20.json" />
-    <EmbeddedResource Include="Games\bimaru21.json" />
-    <EmbeddedResource Include="Games\bimaru22.json" />
-    <EmbeddedResource Include="Games\bimaru23.json" />
-    <EmbeddedResource Include="Games\bimaru24.json" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.4.421302">
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Bimaru.Game\Bimaru.Game.csproj" />
-    <ProjectReference Include="..\Bimaru.Interface\Bimaru.Interface.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </Resource>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Update="Properties\Resources.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
+
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.5" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Bimaru.Interface\Bimaru.Interface.csproj" />
+	</ItemGroup>
+
 </Project>

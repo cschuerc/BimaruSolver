@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Bimaru.Interface.Utility
+﻿namespace Bimaru.Interface.Utility
 {
     /// <typeparam name="T"> Type of field value </typeparam>
     public class FieldValueChangedEventArgs<T> : EventArgs

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace Bimaru.Interface.Utility
+﻿namespace Bimaru.Interface.Utility
 {
     /// <summary>
     /// Horizontal, vertical and diagonal directions.
@@ -37,7 +33,7 @@ namespace Bimaru.Interface.Utility
     public static class Directions
     {
         private static readonly Dictionary<Direction, Direction> opposite =
-            new Dictionary<Direction, Direction>()
+            new()
             {
                 { Direction.DOWN, Direction.UP },
                 { Direction.LEFT, Direction.RIGHT },
@@ -71,7 +67,7 @@ namespace Bimaru.Interface.Utility
         }
 
         private static readonly Dictionary<DirectionType, List<Direction>> directionsOfType =
-            new Dictionary<DirectionType, List<Direction>>()
+            new()
             {
                 {
                     DirectionType.ROW,
@@ -119,7 +115,7 @@ namespace Bimaru.Interface.Utility
         }
 
         private static readonly Dictionary<Direction, DirectionType> directionType =
-            new Dictionary<Direction, DirectionType>()
+            new()
             {
                 { Direction.DOWN, DirectionType.COLUMN },
                 { Direction.LEFT, DirectionType.ROW },

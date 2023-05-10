@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Bimaru.Interface.Utility
+﻿namespace Bimaru.Interface.Utility
 {
     /// <summary>
     /// A point on a two-dimensional integer grid
@@ -19,7 +16,7 @@ namespace Bimaru.Interface.Utility
         public int ColumnIndex { get; }
 
         private static readonly Dictionary<Direction, Tuple<int, int>> indexOffsets =
-            new Dictionary<Direction, Tuple<int, int>>()
+            new()
             {
                 { Direction.DOWN      , new Tuple<int, int>(-1, 0) },
                 { Direction.LEFT      , new Tuple<int, int>( 0,-1) },

@@ -49,16 +49,12 @@ namespace Bimaru.Solver.FieldChangedRules
 
             var type = waterDirection.Value.GetDirectionType();
 
-            switch (type)
+            return type switch
             {
-                case DirectionType.COLUMN:
-                    return DirectionType.ROW;
-                case DirectionType.ROW:
-                    return DirectionType.COLUMN;
-                case DirectionType.DIAGONAL:
-                default:
-                    return null;
-            }
+                DirectionType.COLUMN => DirectionType.ROW,
+                DirectionType.ROW => DirectionType.COLUMN,
+                _ => null
+            };
         }
 
         private static void SetShipMiddleNeighbors(IBimaruGame game, GridPoint pointShipMiddle, DirectionType directionShipMiddle)

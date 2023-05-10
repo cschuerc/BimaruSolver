@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Bimaru.Interface.Utility;
-using Newtonsoft.Json;
 
 namespace Bimaru.Utility
 {
@@ -10,7 +9,7 @@ namespace Bimaru.Utility
     /// Implementation of a two-dimensional grid of fixed size
     /// </summary>
     /// <typeparam name="T"> Type of the field values </typeparam>
-    public class Grid<T>
+    public class Grid<T> where T : struct
     {
         public Grid(int numberOfRows, int numberOfColumns, T defaultFieldValue = default)
         {
@@ -56,7 +55,6 @@ namespace Bimaru.Utility
             }
         }
 
-        [JsonProperty]
         private T[,] fieldValues;
 
         private void CreateFieldValues(T defaultValue)
@@ -216,7 +214,7 @@ namespace Bimaru.Utility
         /// </summary>
         public virtual void OverwriteWith(object source)
         {
-            if (!(source is Grid<T> sourceAsGrid))
+            if (source is not Grid<T> sourceAsGrid)
             {
                 throw new ArgumentException("Source is not a Grid.");
             }

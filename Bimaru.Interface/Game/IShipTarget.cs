@@ -1,12 +1,11 @@
-﻿using System.Collections.Generic;
-using Bimaru.Interface.Utility;
+﻿using Bimaru.Interface.Utility;
 
 namespace Bimaru.Interface.Game
 {
     /// <summary>
     /// Target number of ships per length
     /// </summary>
-    public interface IShipTarget
+    public interface IShipTarget : IEnumerable<int>
     {
         /// <summary>
         /// Target number of ships of given length

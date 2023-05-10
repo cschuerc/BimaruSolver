@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace Bimaru.Interface.Utility
+﻿namespace Bimaru.Interface.Utility
 {
     public enum BimaruValue
     {
@@ -64,7 +60,7 @@ namespace Bimaru.Interface.Utility
 
 
         private static readonly HashSet<BimaruValue> isNotFullyDetermined =
-            new HashSet<BimaruValue>()
+            new()
             {
                 BimaruValue.UNDETERMINED,
                 BimaruValue.SHIP_UNDETERMINED
@@ -80,7 +76,7 @@ namespace Bimaru.Interface.Utility
         }
 
         private static readonly Dictionary<Direction, BimaruValue> startBimaruValue =
-            new Dictionary<Direction, BimaruValue>()
+            new()
             {
                 { Direction.DOWN, BimaruValue.SHIP_CONT_DOWN },
                 { Direction.LEFT, BimaruValue.SHIP_CONT_LEFT },
@@ -151,7 +147,7 @@ namespace Bimaru.Interface.Utility
         }
 
         private static readonly Dictionary<BimaruValue, BimaruValueConstraint> constraintOfValue =
-            new Dictionary<BimaruValue, BimaruValueConstraint>()
+            new()
             {
                 { BimaruValue.SHIP_CONT_DOWN, BimaruValueConstraint.SHIP },
                 { BimaruValue.SHIP_CONT_LEFT, BimaruValueConstraint.SHIP },

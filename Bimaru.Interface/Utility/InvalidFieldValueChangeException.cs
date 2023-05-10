@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Bimaru.Interface.Utility
+﻿namespace Bimaru.Interface.Utility
 {
     /// <summary>
     /// A field value is changed to an invalid value.

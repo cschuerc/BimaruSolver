@@ -1,9 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Bimaru.Interface.Game;
 using Bimaru.Interface.Utility;
-using Newtonsoft.Json;
 
 namespace Bimaru.Game
 {
@@ -14,7 +14,15 @@ namespace Bimaru.Game
             targetNumberOfShipsPerLength = new SortedDictionary<int, int>();
         }
 
-        [JsonProperty]
+        public ShipTarget(int[] targetNumberOfShipsPerLength)
+            : this()
+        {
+            foreach (var it in targetNumberOfShipsPerLength.Select((t, l) => new { TargetNumber = t, ShipLength = l + 1 }))
+            {
+                this[it.ShipLength] = it.TargetNumber;
+            }
+        }
+
         private readonly SortedDictionary<int, int> targetNumberOfShipsPerLength;
 
         public int this[int shipLength]
@@ -55,7 +63,6 @@ namespace Bimaru.Game
             TotalShipFields += (newNumberOfShips - oldNumberOfShips) * shipLength;
         }
 
-        [JsonIgnore]
         public int? LongestShipLength
         {
             get
@@ -100,16 +107,32 @@ namespace Bimaru.Game
         public int? LengthOfLongestMissingShip(IReadOnlyList<int> numberOfShipsPerLength)
         {
             var satisfiability = GetSatisfiability(numberOfShipsPerLength);
-            switch (satisfiability)
+            return satisfiability switch
             {
-                case Satisfiability.VIOLATED:
-                    throw new InvalidBimaruGameException("Ship target is violated.");
-                case Satisfiability.SATISFIED:
-                    return null;
-                case Satisfiability.SATISFIABLE:
-                default:
-                    return targetNumberOfShipsPerLength.Last(p => p.Value > numberOfShipsPerLength[p.Key]).Key;
-            }
+                Satisfiability.VIOLATED => throw new InvalidBimaruGameException("Ship target is violated."),
+                Satisfiability.SATISFIED => null,
+                Satisfiability.SATISFIABLE => targetNumberOfShipsPerLength
+                    .Last(p => p.Value > numberOfShipsPerLength[p.Key])
+                    .Key,
+                _ => targetNumberOfShipsPerLength.Last(p => p.Value > numberOfShipsPerLength[p.Key]).Key
+            };
+        }
+
+        public IEnumerator<int> GetEnumerator()
+        {
+            return GetTargetNumberOfShipsEnumeratedByLength().GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        private IEnumerable<int> GetTargetNumberOfShipsEnumeratedByLength()
+        {
+            var maxLength = targetNumberOfShipsPerLength.Keys.Max(i => (int?)i) ?? 0;
+
+            return Enumerable.Range(1, maxLength).Select(shipLength => this[shipLength]);
         }
     }
 }
