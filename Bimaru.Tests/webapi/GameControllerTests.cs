@@ -75,13 +75,13 @@ public class GameControllerTests
     {
         // Arrange
         var mockRepo = new Mock<IGameRepository>();
-        mockRepo.Setup(repo => repo.GetRandomGameAsync())
+        mockRepo.Setup(repo => repo.GetRandomGameAsync(null, null))
             .ReturnsAsync(() => null);
 
         var controller = CreateGameController(mockRepo);
 
         // Act
-        var result = await controller.GetRandomGame();
+        var result = await controller.GetRandomGame(null, null);
 
         // Assert
         Assert.IsType<NotFoundResult>(result.Result);
@@ -92,13 +92,13 @@ public class GameControllerTests
     {
         // Arrange
         var mockRepo = new Mock<IGameRepository>();
-        mockRepo.Setup(repo => repo.GetRandomGameAsync())
+        mockRepo.Setup(repo => repo.GetRandomGameAsync(null, null))
             .ReturnsAsync(expectedGame);
 
         var controller = CreateGameController(mockRepo);
 
         // Act
-        var result = await controller.GetRandomGame();
+        var result = await controller.GetRandomGame(null, null);
 
         // Assert
         Assert.IsType<OkObjectResult>(result.Result);
