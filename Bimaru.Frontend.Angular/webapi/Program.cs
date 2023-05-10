@@ -10,6 +10,7 @@ using Bimaru.Solver.FieldChangedRules;
 using Bimaru.Solver.TrialAndErrorRules;
 using Bimaru.Utility;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Converters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,9 +20,12 @@ builder.Services.AddControllers
     (
         options => options.ReturnHttpNotAcceptable = true
     )
-    .AddNewtonsoftJson();
+    .AddNewtonsoftJson(options =>
+        options.SerializerSettings.Converters.Add(new StringEnumConverter()));
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGenNewtonsoftSupport();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<GameDbContext>
