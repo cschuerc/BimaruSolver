@@ -5,7 +5,7 @@
     {
         Task<GameEntity?> GetGameAsync(int gameId);
 
-        Task<GameEntity?> GetRandomGameAsync();
+        Task<GameEntity?> GetRandomGameAsync(GameSize? size, GameDifficulty? difficulty);
 
         void AddGame(GameEntity game);
 

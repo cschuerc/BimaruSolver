@@ -36,9 +36,9 @@ public class GameController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<GameWithMetaDataDto>> GetRandomGame()
+    public async Task<ActionResult<GameWithMetaDataDto>> GetRandomGame(GameSize? size, GameDifficulty? difficulty)
     {
-        var gameEntity = await gameRepository.GetRandomGameAsync();
+        var gameEntity = await gameRepository.GetRandomGameAsync(size, difficulty);
 
         var game = mapper.Map<GameWithMetaDataDto>(gameEntity);
 

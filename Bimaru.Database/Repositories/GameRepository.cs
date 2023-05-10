@@ -21,9 +21,11 @@ public class GameRepository : IGameRepository
             .FirstOrDefaultAsync();
     }
 
-    public async Task<GameEntity?> GetRandomGameAsync()
+    public async Task<GameEntity?> GetRandomGameAsync(GameSize? size, GameDifficulty? difficulty)
     {
         return await context.Games
+            .Where(g => size == null || g.Size == size )
+            .Where(g => difficulty == null || g.Difficulty == difficulty)
             .Include(g => g.GridValues)
             .OrderBy(g => Guid.NewGuid())
             .FirstOrDefaultAsync();
