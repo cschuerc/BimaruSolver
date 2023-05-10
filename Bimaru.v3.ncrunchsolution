@@ -4,6 +4,7 @@
     <MetricsExclusionList>
       <Value>Bimaru.Database\Bimaru.Database.csproj\Properties</Value>
       <Value>Bimaru.Database.Generator\Bimaru.Database.Generator.csproj</Value>
+      <Value>Program.cs:Bimaru.Frontend.Angular\webapi\webapi.csproj</Value>
     </MetricsExclusionList>
     <SolutionConfigured>True</SolutionConfigured>
   </Settings>

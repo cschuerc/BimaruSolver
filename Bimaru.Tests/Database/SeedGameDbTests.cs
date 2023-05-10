@@ -1,9 +1,7 @@
 ﻿using System.Linq;
-using AutoMapper;
-using Bimaru.Database.DbContexts;
-using Bimaru.Interface.Game;
+using Bimaru.Database;
+using webapi.Mappers;
 using webapi.Models;
-using webapi.Profiles;
 using Xunit;
 
 namespace Bimaru.Tests.Database;
@@ -14,9 +12,13 @@ public class SeedGameDbTests
     public void TestAllSeededGamesHaveUniqueSolution()
     {
         var solver = SolverFactoryForTesting.GenerateSolver(true);
-        var mapper = GetMapper();
+        var entityMapper = GameMapperFactoryForTesting.Generate();
 
-        foreach (var game in SeedGameDb.GetGameEntities().Select(g => mapper.Map<GameDto>(g)).Select(g => mapper.Map<IBimaruGame>(g)))
+        var games = SeedGameDb.GetGameEntities()
+            .Select(entityMapper.Map<GameDto>)
+            .Select(GameDtoGameMapper.Map);
+
+        foreach (var game in games)
         {
             Assert.False(game.IsSolved);
 
@@ -25,13 +27,5 @@ public class SeedGameDbTests
             Assert.True(game.IsSolved);
             Assert.Equal(1, numSolutions);
         }
-    }
-
-    private static IMapper GetMapper()
-    {
-        var config = new MapperConfiguration(cfg
-            => cfg.AddProfile(new GameProfile()));
-
-        return config.CreateMapper();
     }
 }

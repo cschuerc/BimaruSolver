@@ -4,10 +4,10 @@ namespace webapi.Models;
 
 public class GameDto
 {
-    [Range(0, 10)]
+    [Range(6, 10)]
     public int NumberOfRows { get; set; }
 
-    [Range(0, 10)]
+    [Range(6, 10)]
     public int NumberOfColumns { get; set; }
 
     public int[] TargetNumberOfShipFieldsPerRow { get; set; } = null!;

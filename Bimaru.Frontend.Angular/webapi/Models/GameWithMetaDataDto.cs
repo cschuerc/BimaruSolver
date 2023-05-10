@@ -1,5 +1,4 @@
 ﻿using Bimaru.Interface.Database;
-using System.ComponentModel.DataAnnotations;
 
 namespace webapi.Models;
 
@@ -11,10 +10,8 @@ public class GameWithMetaDataDto
 
     public GameDifficulty Difficulty { get; set; }
 
-    [Range(0, 10)]
     public int NumberOfRows { get; set; }
 
-    [Range(0, 10)]
     public int NumberOfColumns { get; set; }
 
     public int[] TargetNumberOfShipFieldsPerRow { get; set; } = null!;

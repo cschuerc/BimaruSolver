@@ -1,9 +1,10 @@
-﻿using Bimaru.Interface.Database;
+﻿using Bimaru.Database.DbContexts;
+using Bimaru.Interface.Database;
 using Bimaru.Interface.Utility;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Bimaru.Database.DbContexts
+namespace Bimaru.Database
 {
     public static class SeedGameDb
     {
