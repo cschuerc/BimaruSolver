@@ -1,5 +1,8 @@
 ﻿namespace Bimaru.Interface.Utility
 {
+    /// <summary>
+    /// Possible values for a Bimaru field (e.g. water)
+    /// </summary>
     public enum BimaruValue
     {
         /// <summary>
