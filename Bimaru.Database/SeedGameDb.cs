@@ -35,7 +35,7 @@ namespace Bimaru.Database
                     NumberOfColumns = 6,
                     TargetNumberOfShipFieldsPerRow = new[] { 2, 1, 3, 1, 1, 2 },
                     TargetNumberOfShipFieldsPerColumn = new[] { 2, 1, 2, 2, 0, 3 },
-                    TargetNumberOfShipsPerLength = new[] { 3, 2, 1, 0 },
+                    TargetNumberOfShipsPerLength = new[] { 3, 2, 1 },
                     GridValues = new List<GridValueEntity>()
                     {
                         new(0, 1, BimaruValue.SHIP_CONT_RIGHT),
@@ -53,7 +53,7 @@ namespace Bimaru.Database
                     NumberOfColumns = 6,
                     TargetNumberOfShipFieldsPerRow = new[] { 1, 2, 2, 1, 1, 3 },
                     TargetNumberOfShipFieldsPerColumn = new[] { 2, 2, 0, 2, 1, 3 },
-                    TargetNumberOfShipsPerLength = new[] { 3, 2, 1, 0 },
+                    TargetNumberOfShipsPerLength = new[] { 3, 2, 1 },
                     GridValues = new List<GridValueEntity>()
                     {
                         new(2, 4, BimaruValue.WATER),
