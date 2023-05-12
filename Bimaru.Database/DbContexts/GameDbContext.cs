@@ -5,8 +5,17 @@ namespace Bimaru.Database.DbContexts;
 
 public class GameDbContext : DbContext
 {
-    public GameDbContext(DbContextOptions<GameDbContext> options) : base(options)
+    private readonly IEntityTypeConfiguration<GameEntity> gameConfiguration;
+    private readonly IEntityTypeConfiguration<GridValueEntity> gridValueConfiguration;
+
+    public GameDbContext(
+        DbContextOptions<GameDbContext> options,
+        IEntityTypeConfiguration<GameEntity> gameConfiguration,
+        IEntityTypeConfiguration<GridValueEntity> gridValueConfiguration)
+        : base(options)
     {
+        this.gameConfiguration = gameConfiguration;
+        this.gridValueConfiguration = gridValueConfiguration;
     }
 
     public DbSet<GameEntity> Games { get; set; } = null!;
@@ -17,8 +26,8 @@ public class GameDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.ApplyConfiguration(new GameEntityConfiguration());
-        modelBuilder.ApplyConfiguration(new GridValueEntityConfiguration());
+        modelBuilder.ApplyConfiguration(gameConfiguration);
+        modelBuilder.ApplyConfiguration(gridValueConfiguration);
     }
 
     protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)

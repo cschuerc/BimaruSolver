@@ -1,5 +1,6 @@
 using Bimaru.Database;
 using Bimaru.Database.DbContexts;
+using Bimaru.Database.Entities;
 using Bimaru.Database.Repositories;
 using Bimaru.Interface.Database;
 using Bimaru.Interface.Solver;
@@ -28,6 +29,11 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGenNewtonsoftSupport();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddScoped<IDerivedValueGenerator<GameEntity, int>, GameAlmostUniqueIdGenerator>();
+builder.Services.AddScoped<IDerivedValueGenerator<GameEntity, GameSize>, GameSizeGenerator>();
+builder.Services.AddScoped<IDerivedValueGenerator<GameEntity, GameDifficulty>, GameDifficultyGenerator>();
+builder.Services.AddScoped<IEntityTypeConfiguration<GameEntity>, GameEntityConfiguration>();
+builder.Services.AddScoped<IEntityTypeConfiguration<GridValueEntity>, GridValueEntityConfiguration>();
 builder.Services.AddDbContext<GameDbContext>
 (
     dbContextOptions =>

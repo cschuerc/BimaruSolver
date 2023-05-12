@@ -79,7 +79,7 @@ public class GameController : ControllerBase
             return BadRequest(actionResult.Result);
         }
 
-        var gameEntity = GameDtoToGameEntityMapper.MapGame(game);
+        var gameEntity = mapper.Map<GameEntity>(game);
         gameRepository.AddGame(gameEntity);
         await gameRepository.SaveChangesAsync();
 
