@@ -17,7 +17,6 @@ public class GameDto
     public int[] TargetNumberOfShipFieldsPerColumn { get; set; } = null!;
 
     [Required]
-    [MinLength(4), MaxLength(4)]
     public int[] TargetNumberOfShipsPerLength { get; set; } = null!;
 
     [Required]

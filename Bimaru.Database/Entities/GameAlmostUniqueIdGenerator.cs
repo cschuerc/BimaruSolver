@@ -12,7 +12,10 @@ public class GameAlmostUniqueIdGenerator : IDerivedValueGenerator<GameEntity, in
         almostUniqueId = Combine(almostUniqueId, entity.NumberOfColumns);
         almostUniqueId = entity.TargetNumberOfShipFieldsPerRow.Aggregate(almostUniqueId, Combine);
         almostUniqueId = entity.TargetNumberOfShipFieldsPerColumn.Aggregate(almostUniqueId, Combine);
-        almostUniqueId = entity.TargetNumberOfShipsPerLength.Aggregate(almostUniqueId, Combine);
+        almostUniqueId = entity.TargetNumberOfShipsPerLength
+            .Reverse()
+            .SkipWhile(t => t == 0) // Trailing 0s lead to equivalent games.
+            .Aggregate(almostUniqueId, Combine);
 
         foreach (var gridValue in entity.GridValues.OrderBy(v => v.RowIndex).ThenBy(v => v.ColumnIndex))
         {

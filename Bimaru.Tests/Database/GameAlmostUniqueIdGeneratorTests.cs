@@ -107,6 +107,20 @@ public class GameAlmostUniqueIdGeneratorTests
         Assert.NotEqual(sut.GenerateValue(game), sut.GenerateValue(gameCopy));
     }
 
+    [Fact]
+    public void TestSameValueWhenTargetShipHasTrailingZeroes()
+    {
+        var game = GenerateDeterministicGameEntity();
+
+        var gameCopy = GenerateDeterministicGameEntity();
+        gameCopy.TargetNumberOfShipsPerLength = new int[game.TargetNumberOfShipsPerLength.Length + 1];
+        game.TargetNumberOfShipsPerLength.CopyTo(gameCopy.TargetNumberOfShipsPerLength, 0);
+
+        var sut = new GameAlmostUniqueIdGenerator();
+
+        Assert.Equal(sut.GenerateValue(game), sut.GenerateValue(gameCopy));
+    }
+
     [Theory]
     [InlineData(2, 0, BimaruValue.SHIP_MIDDLE)]
     [InlineData(1, 1, BimaruValue.SHIP_MIDDLE)]
