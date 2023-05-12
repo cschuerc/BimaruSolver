@@ -10,8 +10,13 @@ using Bimaru.Solver.CombinedRules;
 using Bimaru.Solver.FieldChangedRules;
 using Bimaru.Solver.TrialAndErrorRules;
 using Bimaru.Utility;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Converters;
+using System.Reflection;
+
+[assembly: ApiConventionType(typeof(DefaultApiConventions))]
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,7 +32,22 @@ builder.Services.AddControllers
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGenNewtonsoftSupport();
-builder.Services.AddSwaggerGen();
+
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Version = "v1",
+        Title = "Bimaru API",
+        Description = "An ASP.NET Core Web API for finding, solving and persisting Bimaru games (see https://en.wikipedia.org/wiki/Battleship_(puzzle))."
+    });
+
+    var webapiDocuXmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, webapiDocuXmlFilename));
+
+    var interfacesXmlFilename = $"{Assembly.GetAssembly(typeof(BimaruValue))!.GetName().Name}.xml";
+    options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, interfacesXmlFilename));
+});
 
 builder.Services.AddScoped<IDerivedValueGenerator<GameEntity, int>, GameAlmostUniqueIdGenerator>();
 builder.Services.AddScoped<IDerivedValueGenerator<GameEntity, GameSize>, GameSizeGenerator>();

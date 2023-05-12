@@ -1,7 +1,7 @@
 ﻿namespace Bimaru.Interface.Database
 {
     /// <summary>
-    /// Subjective Bimaru game size
+    /// Possible game sizes (e.g. small)
     /// </summary>
     public enum GameSize
     {

@@ -1,7 +1,7 @@
 ﻿namespace Bimaru.Interface.Database
 {
     /// <summary>
-    /// Subjective Bimaru game difficulty
+    /// Possible game difficulties (e.g. hard)
     /// </summary>
     public enum GameDifficulty
     {

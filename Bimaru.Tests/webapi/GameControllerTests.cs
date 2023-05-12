@@ -46,7 +46,7 @@ public class GameControllerTests
         var controller = CreateGameController(mockRepo);
 
         // Act
-        var result = await controller.GetGameById(3);
+        var result = await controller.FindGameById(3);
 
         // Assert
         Assert.IsType<NotFoundResult>(result.Result);
@@ -63,7 +63,7 @@ public class GameControllerTests
         var controller = CreateGameController(mockRepo);
 
         // Act
-        var result = await controller.GetGameById(3);
+        var result = await controller.FindGameById(3);
 
         // Assert
         Assert.IsType<OkObjectResult>(result.Result);
