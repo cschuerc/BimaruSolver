@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Bimaru.Database.DbContexts;
+namespace Bimaru.Database.Entities;
 
 public class GridValueEntityConfiguration : IEntityTypeConfiguration<GridValueEntity>
 {
