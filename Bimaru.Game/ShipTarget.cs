@@ -130,9 +130,7 @@ namespace Bimaru.Game
 
         private IEnumerable<int> GetTargetNumberOfShipsEnumeratedByLength()
         {
-            var maxLength = targetNumberOfShipsPerLength.Keys.Max(i => (int?)i) ?? 0;
-
-            return Enumerable.Range(1, maxLength).Select(shipLength => this[shipLength]);
+            return Enumerable.Range(1, LongestShipLength ?? 0).Select(shipLength => this[shipLength]);
         }
     }
 }
