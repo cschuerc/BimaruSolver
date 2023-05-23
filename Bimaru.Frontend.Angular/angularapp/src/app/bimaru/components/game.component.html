@@ -1,0 +1,14 @@
+<div class="game">
+    <app-tally
+        #rowTally
+        class="row-tally"
+        [isHorizontal]="false">
+    </app-tally>
+    <app-tally
+        #columnTally
+        class="column-tally"
+        [isHorizontal]="true">
+    </app-tally>
+    <app-grid class="grid" [pickedValue]="pickedValue"></app-grid>
+    <app-picker class="picker" (pickedValueChanged)="onPickedValueChanged($event)"></app-picker>
+</div>

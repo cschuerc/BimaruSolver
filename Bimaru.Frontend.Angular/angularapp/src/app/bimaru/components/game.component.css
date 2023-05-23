@@ -1,0 +1,29 @@
+.game {
+    display: grid;
+    grid: auto auto auto / 22.3px auto;
+    grid-template-areas:
+        ".         column-tally"
+        "row-tally grid        "
+        ".         picker";
+    width: 50%;
+}
+
+.row-tally {
+    border: solid 1px black;
+    grid-area: row-tally;
+    /* overflow: hidden; */
+}
+
+.column-tally {
+    border: solid 1px black;
+    grid-area: column-tally;
+}
+
+.grid {
+    border: solid 1px black;
+    grid-area: grid
+}
+
+.picker {
+    grid-area: picker
+}

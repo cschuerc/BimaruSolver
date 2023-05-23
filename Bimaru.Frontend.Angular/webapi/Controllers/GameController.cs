@@ -69,7 +69,7 @@ public class GameController : ControllerBase
     /// <returns></returns>
     /// <response code="200">Returns the solved game</response>
     /// <response code="400">The game is not uniquely solvable or already solved</response>
-    [HttpGet("solve")]
+    [HttpPost("solve")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public ActionResult<GameDto> SolveGame(GameDto game)

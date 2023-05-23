@@ -1,0 +1,9 @@
+<mat-button-toggle-group
+    class="picker"
+    (change)="onTileClicked($event.value)">
+    <mat-button-toggle *ngFor="let pickerValue of pickerValues;"
+        class="picker-button"
+        [value]=pickerValue
+        [style.background-image]="'url(' + getImageFromValue(pickerValue) + ')'">
+    </mat-button-toggle>
+</mat-button-toggle-group>
