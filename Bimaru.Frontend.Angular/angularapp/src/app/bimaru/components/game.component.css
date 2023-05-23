@@ -1,17 +1,17 @@
 .game {
     display: grid;
-    grid: auto auto auto / 22.3px auto;
+    grid: auto auto auto auto / 22.3px auto;
     grid-template-areas:
         ".         column-tally"
         "row-tally grid        "
-        ".         picker";
+        ".         picker      "
+        ".         ship-target ";
     width: 50%;
 }
 
 .row-tally {
     border: solid 1px black;
     grid-area: row-tally;
-    /* overflow: hidden; */
 }
 
 .column-tally {
@@ -26,4 +26,9 @@
 
 .picker {
     grid-area: picker
+}
+
+.ship-target {
+    border: solid 1px black;
+    grid-area: ship-target;
 }

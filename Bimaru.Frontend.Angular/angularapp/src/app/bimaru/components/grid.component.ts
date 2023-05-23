@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 
 import { GridValueDto } from "../interfaces/gridValueDto"
 import { BimaruValue } from '../interfaces/bimaruValue';
+import { BimaruImagesService } from 'src/app/services/bimaru-images.service';
 
 @Component({
   selector: 'app-grid',
@@ -19,6 +20,10 @@ export class GridComponent {
     );
 
   @Input() pickedValue: BimaruValue = BimaruValue.Water;
+
+  constructor(private imageService: BimaruImagesService) {
+
+  }
 
   public loadGrid(numberOfRows: number, numberOfColumns: number, gridValues: GridValueDto[]) {
     this.numberOfRows = numberOfRows;
@@ -50,6 +55,10 @@ export class GridComponent {
     return gridValues;
   }
 
+  getImageFromIndices(rowIndex: number, columnIndex: number): string {
+    return this.imageService.getImageFromValue(this.gridValues[rowIndex][columnIndex])
+  }
+
   onTileClicked(rowIndex: number, columnIndex: number): void {
     this.gridValues[rowIndex][columnIndex] = this.pickedValue;
   }
@@ -57,37 +66,5 @@ export class GridComponent {
   onTileRightClicked(rowIndex: number, columnIndex: number): boolean {
     this.gridValues[rowIndex][columnIndex] = BimaruValue.Undetermined;
     return false;
-  }
-
-  getImageFromValue(value: BimaruValue) {
-    switch (value) {
-      case BimaruValue.Undetermined: {
-        return "/assets/images/undetermined.png";
-      }
-      case BimaruValue.Water: {
-        return "/assets/images/water.png";
-      }
-      case BimaruValue.ShipContinuedLeft: {
-        return "/assets/images/shipContinuedLeft.png";
-      }
-      case BimaruValue.ShipContinuedUp: {
-        return "/assets/images/shipContinuedUp.png";
-      }
-      case BimaruValue.ShipContinuedRight: {
-        return "/assets/images/shipContinuedRight.png";
-      }
-      case BimaruValue.ShipContinuedDown: {
-        return "/assets/images/shipContinuedDown.png";
-      }
-      case BimaruValue.ShipMiddle: {
-        return "/assets/images/shipMiddle.png";
-      }
-      case BimaruValue.ShipSingle: {
-        return "/assets/images/shipSingle.png";
-      }
-      case BimaruValue.ShipUndetermined: {
-        return "/assets/images/shipUndetermined.png";
-      }
-    }
   }
 }

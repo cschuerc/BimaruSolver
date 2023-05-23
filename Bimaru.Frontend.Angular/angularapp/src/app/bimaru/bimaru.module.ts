@@ -8,13 +8,15 @@ import { GridComponent } from './components/grid.component';
 import { PickerComponent } from './components/picker.component';
 import { TallyComponent } from './components/tally.component';
 import { GameComponent } from './components/game.component';
+import { ShipTargetComponent } from './components/ship-target.component';
 
 @NgModule({
   declarations: [
     GridComponent,
     PickerComponent,
     TallyComponent,
-    GameComponent
+    GameComponent,
+    ShipTargetComponent
   ],
   imports: [
     CommonModule,
