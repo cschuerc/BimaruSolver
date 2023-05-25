@@ -1,8 +1,7 @@
-<mat-grid-list class="grid" cols={{numberOfColumns}} rowHeight="1:1">
+<mat-grid-list cols={{numberOfColumns}} rowHeight="1:1">
     <ng-container *ngFor="let gridRow of gridValues; let rowIndex = index" >
-        <mat-grid-tile *ngFor="let gridValue of gridRow; let columnIndex = index"
+        <mat-grid-tile class="background-of-mat-grid-tile" *ngFor="let gridValue of gridRow; let columnIndex = index"
             [style.background-image]="'url(' + getImageFromIndices(rowIndex, columnIndex) + ')'"
-            style="background-size: 100%"
             (click)="onTileClicked(rowIndex, columnIndex)"
             (contextmenu)="onTileRightClicked(rowIndex, columnIndex)">
         </mat-grid-tile>

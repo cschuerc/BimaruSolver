@@ -2,3 +2,8 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.background-of-mat-grid-tile {
+    background-size: 100%;
+    background-repeat: no-repeat;
+}

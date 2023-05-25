@@ -1,6 +1,5 @@
 import { Component, Input } from '@angular/core';
 
-import { GridValueDto } from "../interfaces/gridValueDto"
 import { BimaruValue } from '../interfaces/bimaruValue';
 import { BimaruImagesService } from 'src/app/services/bimaru-images.service';
 

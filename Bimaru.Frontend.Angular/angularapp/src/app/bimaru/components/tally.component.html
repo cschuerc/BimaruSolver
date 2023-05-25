@@ -1,4 +1,6 @@
-<mat-grid-list class="tally" [cols]="isHorizontal ? targetNumbers.length : 1" rowHeight="1:1">
+<mat-grid-list
+    [cols]="isHorizontal ? targetNumbers.length : 1"
+    rowHeight="1:1">
     <mat-grid-tile *ngFor="let target of targetNumbers">
         {{target}}
     </mat-grid-tile>

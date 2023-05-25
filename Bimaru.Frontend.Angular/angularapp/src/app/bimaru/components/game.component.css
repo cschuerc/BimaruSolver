@@ -10,17 +10,14 @@
 }
 
 .row-tally {
-    border: solid 1px black;
     grid-area: row-tally;
 }
 
 .column-tally {
-    border: solid 1px black;
     grid-area: column-tally;
 }
 
 .grid {
-    border: solid 1px black;
     grid-area: grid
 }
 

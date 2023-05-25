@@ -1,6 +1,5 @@
-.picker {
-}
-
 .picker-button {
-    background-size: 100%;
+    background-size: 50%;
+    background-repeat: no-repeat;
+    background-position: center;
 }

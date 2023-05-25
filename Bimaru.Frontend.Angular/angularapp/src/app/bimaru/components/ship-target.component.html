@@ -1,10 +1,9 @@
-<mat-grid-list cols={{targetNumberOfShipsPerLength.length+2}} rowHeight="1:1">
+<mat-grid-list cols={{targetNumberOfShipsPerLength.length+2}} rowHeight="1:1" gutterSize="0">
     <ng-container *ngFor="let targetNumberOfShips of targetNumberOfShipsPerLength; let shipIndex = index">
         <mat-grid-tile>{{targetNumberOfShips}}</mat-grid-tile>
         <mat-grid-tile>x</mat-grid-tile>
-        <mat-grid-tile *ngFor="let value of getShipValues(shipIndex + 1)"
-            [style.background-image]="'url(' + getImageFromValue(value) + ')'"
-            style="background-size: 100%">
+        <mat-grid-tile class="background-of-mat-grid-tile" *ngFor="let value of getShipValues(shipIndex + 1)"
+            [style.background-image]="'url(' + getImageFromValue(value) + ')'">
         </mat-grid-tile>
     </ng-container>
 </mat-grid-list>
