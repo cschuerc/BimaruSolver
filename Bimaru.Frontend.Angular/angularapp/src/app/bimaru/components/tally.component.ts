@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'app-tally',
+  selector: 'bim-tally',
   templateUrl: './tally.component.html',
   styleUrls: ['./tally.component.css']
 })

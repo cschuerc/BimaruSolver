@@ -1,26 +1,27 @@
 <div class="game">
-    <app-tally
+    <bim-tally
         class="row-tally"
         [isHorizontal]="false"
         [targetNumbers]="game.TargetNumberOfShipFieldsPerRow">
-    </app-tally>
-    <app-tally
+    </bim-tally>
+    <bim-tally
         class="column-tally"
         [isHorizontal]="true"
         [targetNumbers]="game.TargetNumberOfShipFieldsPerColumn">
-    </app-tally>
-    <app-grid
+    </bim-tally>
+    <bim-grid
         class="grid"
         [pickedValue]="pickedValue"
         [numberOfRows]="game.NumberOfRows"
         [numberOfColumns]="game.NumberOfColumns"
-        [gridValues]="game.GridValues"></app-grid>
-    <app-picker
+        [gridValues]="game.GridValues">
+    </bim-grid>
+    <bim-picker
         class="picker"
         (pickedValueChanged)="onPickedValueChanged($event)">
-    </app-picker>
-    <app-ship-target
+    </bim-picker>
+    <bim-ship-target
         class="ship-target"
         [targetNumberOfShipsPerLength]="game.TargetNumberOfShipsPerLength">
-    </app-ship-target>
+    </bim-ship-target>
 </div>

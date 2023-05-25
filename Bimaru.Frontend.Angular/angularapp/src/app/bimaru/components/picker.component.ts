@@ -2,7 +2,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { BimaruValue } from '../interfaces/bimaruValue';
 
 @Component({
-  selector: 'app-picker',
+  selector: 'bim-picker',
   templateUrl: './picker.component.html',
   styleUrls: ['./picker.component.css']
 })

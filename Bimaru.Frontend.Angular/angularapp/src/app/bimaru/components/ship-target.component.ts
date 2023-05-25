@@ -3,7 +3,7 @@ import { BimaruImagesService } from 'src/app/services/bimaru-images.service';
 import { BimaruValue } from '../interfaces/bimaruValue';
 
 @Component({
-  selector: 'app-ship-target',
+  selector: 'bim-ship-target',
   templateUrl: './ship-target.component.html',
   styleUrls: ['./ship-target.component.css']
 })

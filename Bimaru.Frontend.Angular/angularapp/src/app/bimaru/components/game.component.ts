@@ -3,7 +3,7 @@ import { BimaruValue } from '../interfaces/bimaruValue';
 import { Game } from '../interfaces/game';
 
 @Component({
-  selector: 'app-game',
+  selector: 'bim-game',
   templateUrl: './game.component.html',
   styleUrls: ['./game.component.css']
 })

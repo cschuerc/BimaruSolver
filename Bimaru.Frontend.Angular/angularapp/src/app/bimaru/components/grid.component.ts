@@ -5,7 +5,7 @@ import { BimaruValue } from '../interfaces/bimaruValue';
 import { BimaruImagesService } from 'src/app/services/bimaru-images.service';
 
 @Component({
-  selector: 'app-grid',
+  selector: 'bim-grid',
   templateUrl: './grid.component.html',
   styleUrls: ['./grid.component.css']
 })
