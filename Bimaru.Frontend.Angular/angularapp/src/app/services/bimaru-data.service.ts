@@ -1,10 +1,11 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { GameDto } from '../bimaru/interfaces/gameDto';
 import { Observable, map, tap } from 'rxjs';
 import { Game } from '../bimaru/interfaces/game';
 import { GridValueDto } from '../bimaru/interfaces/gridValueDto';
 import { BimaruValue } from '../bimaru/interfaces/bimaruValue';
+import { GridTile } from '../bimaru/interfaces/gridTile';
 
 @Injectable({
   providedIn: 'root'
@@ -51,21 +52,28 @@ export class BimaruDataService {
       TargetNumberOfShipFieldsPerRow: gameDto.TargetNumberOfShipFieldsPerRow,
       TargetNumberOfShipFieldsPerColumn: gameDto.TargetNumberOfShipFieldsPerColumn,
       TargetNumberOfShipsPerLength: gameDto.TargetNumberOfShipsPerLength,
-      GridValues: this.convertFromGridValueDtos(gameDto.GridValues, gameDto.NumberOfRows, gameDto.NumberOfColumns)
+      GridTiles: this.convertFromGridValueDtos(gameDto.GridValues, gameDto.NumberOfRows, gameDto.NumberOfColumns)
     };
   }
 
-  convertFromGridValueDtos(gridValuesDto: GridValueDto[], numberOfRows: number, numberOfColumns: number): BimaruValue[][] {
-    let gridValues = Array.from(
+  convertFromGridValueDtos(gridValuesDto: GridValueDto[], numberOfRows: number, numberOfColumns: number): GridTile[][] {
+    let gridTiles = Array.from(
       { length: numberOfRows },
-      () => Array<BimaruValue>(numberOfColumns).fill(BimaruValue.Undetermined)
+      () => Array.from({length: numberOfColumns },
+        () => <GridTile> {
+          value: BimaruValue.Undetermined,
+          isReadOnly: false
+        })
     );
 
     gridValuesDto.forEach( (gridValue) => {
-      gridValues[gridValue.RowIndex][gridValue.ColumnIndex] = gridValue.Value;
+      let tile = gridTiles[gridValue.RowIndex][gridValue.ColumnIndex];
+
+      tile.value = gridValue.Value;
+      tile.isReadOnly = true;
     });
 
-    return gridValues;
+    return gridTiles;
   }
 
   convertToGameDto(game: Game): GameDto {
@@ -75,19 +83,19 @@ export class BimaruDataService {
       TargetNumberOfShipFieldsPerRow: game.TargetNumberOfShipFieldsPerRow,
       TargetNumberOfShipFieldsPerColumn: game.TargetNumberOfShipFieldsPerColumn,
       TargetNumberOfShipsPerLength: game.TargetNumberOfShipsPerLength,
-      GridValues: this.convertToGridValueDtos(game.GridValues)
+      GridValues: this.convertToGridValueDtos(game.GridTiles)
     }
   }
 
-  convertToGridValueDtos(gridValues: BimaruValue[][]): GridValueDto[] {
+  convertToGridValueDtos(gridTiles: GridTile[][]): GridValueDto[] {
     let gridValueDtos: GridValueDto[] = [];
 
-    gridValues.forEach((gridRow, rowIndex) => {
-      gridRow.forEach((value, columnIndex) => {
+    gridTiles.forEach((tilesRow, rowIndex) => {
+      tilesRow.forEach((tile, columnIndex) => {
         gridValueDtos.push({
           RowIndex: rowIndex,
           ColumnIndex: columnIndex,
-          Value: value
+          Value: tile.value
         })
       })
     });

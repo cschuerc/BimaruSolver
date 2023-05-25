@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 
 import { BimaruValue } from '../interfaces/bimaruValue';
 import { BimaruImagesService } from 'src/app/services/bimaru-images.service';
+import { GridTile } from '../interfaces/gridTile';
 
 @Component({
   selector: 'bim-grid',
@@ -12,21 +13,28 @@ import { BimaruImagesService } from 'src/app/services/bimaru-images.service';
 export class GridComponent {
   @Input() numberOfRows!: number;
   @Input() numberOfColumns!: number;
-  @Input() gridValues!: BimaruValue[][];
+  @Input() tiles!: GridTile[][];
   @Input() pickedValue: BimaruValue = BimaruValue.Water;
 
   constructor(private imageService: BimaruImagesService) {}
 
-  getImageFromIndices(rowIndex: number, columnIndex: number): string {
-    return this.imageService.getImageFromValue(this.gridValues[rowIndex][columnIndex])
+  getImageFromTile(tile: GridTile): string {
+    return this.imageService.getImageFromValue(tile.value)
   }
 
-  onTileClicked(rowIndex: number, columnIndex: number): void {
-    this.gridValues[rowIndex][columnIndex] = this.pickedValue;
+  onTileClicked(tile: GridTile): void {
+    this.setTileValue(tile, this.pickedValue);
   }
 
-  onTileRightClicked(rowIndex: number, columnIndex: number): boolean {
-    this.gridValues[rowIndex][columnIndex] = BimaruValue.Undetermined;
+  onTileRightClicked(tile: GridTile): boolean {
+    this.setTileValue(tile, BimaruValue.Undetermined);
+    
     return false;
+  }
+
+  private setTileValue(tile: GridTile, value: BimaruValue) {
+    if (!tile.isReadOnly) {
+      tile.value = value;
+    }
   }
 }

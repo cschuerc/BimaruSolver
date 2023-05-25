@@ -1,5 +1,6 @@
 .picker-button {
     background-size: 50%;
+    background-blend-mode: darken;
     background-repeat: no-repeat;
     background-position: center;
 }

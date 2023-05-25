@@ -1,9 +1,10 @@
 <mat-grid-list cols={{numberOfColumns}} rowHeight="1:1">
-    <ng-container *ngFor="let gridRow of gridValues; let rowIndex = index" >
-        <mat-grid-tile class="background-of-mat-grid-tile" *ngFor="let gridValue of gridRow; let columnIndex = index"
-            [style.background-image]="'url(' + getImageFromIndices(rowIndex, columnIndex) + ')'"
-            (click)="onTileClicked(rowIndex, columnIndex)"
-            (contextmenu)="onTileRightClicked(rowIndex, columnIndex)">
+    <ng-container *ngFor="let tilesRow of tiles; let rowIndex = index" >
+        <mat-grid-tile class="background-of-mat-grid-tile" *ngFor="let tile of tilesRow; let columnIndex = index"
+            [style.background-image]="'url(' + getImageFromTile(tile) + ')'"
+            [style.background-blend-mode]="tile.isReadOnly? 'lighten' : 'normal'"
+            (click)="onTileClicked(tile)"
+            (contextmenu)="onTileRightClicked(tile)">
         </mat-grid-tile>
     </ng-container>
 </mat-grid-list>

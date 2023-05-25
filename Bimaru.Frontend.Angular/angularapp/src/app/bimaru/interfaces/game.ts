@@ -1,4 +1,4 @@
-import { BimaruValue } from "./bimaruValue";
+import { GridTile } from "./gridTile";
 
 export interface Game {
     NumberOfRows: number;
@@ -6,5 +6,5 @@ export interface Game {
     TargetNumberOfShipFieldsPerRow: number[];
     TargetNumberOfShipFieldsPerColumn: number[];
     TargetNumberOfShipsPerLength: number[];
-    GridValues: BimaruValue[][];
+    GridTiles: GridTile[][];
 }
