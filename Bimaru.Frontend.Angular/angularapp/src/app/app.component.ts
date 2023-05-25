@@ -1,7 +1,7 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { GameComponent } from './bimaru/components/game.component';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { BimaruDataService } from './services/bimaru-data.service';
+import { Game } from './bimaru/interfaces/game';
 
 @Component({
   selector: 'app-root',
@@ -9,8 +9,8 @@ import { BimaruDataService } from './services/bimaru-data.service';
   styleUrls: ['./app.component.css']
 })
 
-export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
-  @ViewChild(GameComponent) game!: GameComponent;
+export class AppComponent implements AfterViewInit, OnInit {
+  game!: Game;
   sub!: Subscription;
 
   constructor(
@@ -19,7 +19,7 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.sub = this.loadNewGame();
+    this.loadNewGame();
   }
 
   ngAfterViewInit(): void {
@@ -27,24 +27,20 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
     this.changeDetector.detectChanges();
   }
 
-  ngOnDestroy(): void {
-    this.sub.unsubscribe();
-  }
-
   loadNewGame(): Subscription {
     return this.bimaruDataService
       .getRandomBimaruGame()
       .subscribe({
-        next: gameDto => this.game.loadGame(gameDto),
+        next: game => this.game = game,
         error: err => console.error(`An error occurred: ${err.status}, error message is: ${err.message}`)
       });
   }
 
   solveGame(): Subscription {
     return this.bimaruDataService
-      .solveGame(this.game.getGame())
+      .solveGame(this.game)
       .subscribe({
-        next: gameDto => this.game.loadGame(gameDto),
+        next: game => this.game = game,
         error: err => console.error(`An error occurred: ${err.status}, error message is: ${err.message}`)
       });
   }

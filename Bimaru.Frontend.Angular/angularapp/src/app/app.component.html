@@ -3,7 +3,7 @@
         <mat-card-title>Bimaru</mat-card-title>
     </mat-card-header>
     <div class="game-flex">
-        <app-game></app-game>
+        <app-game [game]="game"></app-game>
     </div>
     <div class="buttons">
         <button mat-button (click)="loadNewGame()">Next</button>

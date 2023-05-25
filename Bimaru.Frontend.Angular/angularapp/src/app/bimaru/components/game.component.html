@@ -1,15 +1,26 @@
 <div class="game">
     <app-tally
-        #rowTally
         class="row-tally"
-        [isHorizontal]="false">
+        [isHorizontal]="false"
+        [targetNumbers]="game.TargetNumberOfShipFieldsPerRow">
     </app-tally>
     <app-tally
-        #columnTally
         class="column-tally"
-        [isHorizontal]="true">
+        [isHorizontal]="true"
+        [targetNumbers]="game.TargetNumberOfShipFieldsPerColumn">
     </app-tally>
-    <app-grid class="grid" [pickedValue]="pickedValue"></app-grid>
-    <app-picker class="picker" (pickedValueChanged)="onPickedValueChanged($event)"></app-picker>
-    <app-ship-target class="ship-target"></app-ship-target>
+    <app-grid
+        class="grid"
+        [pickedValue]="pickedValue"
+        [numberOfRows]="game.NumberOfRows"
+        [numberOfColumns]="game.NumberOfColumns"
+        [gridValues]="game.GridValues"></app-grid>
+    <app-picker
+        class="picker"
+        (pickedValueChanged)="onPickedValueChanged($event)">
+    </app-picker>
+    <app-ship-target
+        class="ship-target"
+        [targetNumberOfShipsPerLength]="game.TargetNumberOfShipsPerLength">
+    </app-ship-target>
 </div>

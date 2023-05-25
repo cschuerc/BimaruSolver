@@ -7,9 +7,5 @@ import { Component, Input } from '@angular/core';
 })
 export class TallyComponent {
   @Input() isHorizontal: boolean = true;
-  targetNumbers: number[] = [];
-
-  public loadTally(targetNumbers: number[]) {
-    this.targetNumbers = Object.assign([], targetNumbers);
-  }
+  @Input() targetNumbers: number[] = [];
 }

@@ -1,10 +1,10 @@
-import { GridValueDto } from "./gridValueDto";
+import { BimaruValue } from "./bimaruValue";
 
-export interface GameDto {
+export interface Game {
     NumberOfRows: number;
     NumberOfColumns: number;
     TargetNumberOfShipFieldsPerRow: number[];
     TargetNumberOfShipFieldsPerColumn: number[];
     TargetNumberOfShipsPerLength: number[];
-    GridValues: GridValueDto[];
+    GridValues: BimaruValue[][];
 }
